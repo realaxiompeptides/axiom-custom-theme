@@ -1,126 +1,125 @@
-<div id="site-footer"></div>
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-column footer-brand">
+          <h2>Axiom Peptides</h2>
+          <p>
+            Axiom Peptides is a supplier of research-use compounds committed
+            to delivering high-quality materials for laboratory and scientific
+            purposes. Our products are tested for purity and consistency and
+            are distributed strictly for research applications only.
+          </p>
+        </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const mount = document.getElementById("ageGateMount");
-  const themeBase = "<?php echo esc_js(get_template_directory_uri()); ?>";
+        <div class="footer-column">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>">Shop</a></li>
+            <li><a href="<?php echo esc_url(home_url('/track-order/')); ?>">Track Order</a></li>
+            <li><a href="<?php echo esc_url(home_url('/contact-us/')); ?>">Contact Us</a></li>
+            <li><a href="<?php echo esc_url(home_url('/privacy-policy/')); ?>">Privacy Policy</a></li>
+            <li><a href="<?php echo esc_url(home_url('/terms-and-conditions/')); ?>">Terms &amp; Conditions</a></li>
+            <li><a href="<?php echo esc_url(home_url('/refund-policy/')); ?>">Refund Policy</a></li>
+            <li><a href="<?php echo esc_url(home_url('/shipping-policy/')); ?>">Shipping Policy</a></li>
+            <li><a href="<?php echo esc_url(home_url('/research-disclaimer/')); ?>">Research Disclaimer</a></li>
+          </ul>
+        </div>
 
-  if (mount) {
-    fetch(themeBase + "/parts/age-gate.html", { cache: "no-store" })
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Could not load age gate HTML");
-        }
-        return response.text();
-      })
-      .then(function (html) {
-        mount.innerHTML = html;
+        <div class="footer-column">
+          <h3>Get In Touch</h3>
+          <p><strong>Email:</strong> realaxiompeptides@gmail.com</p>
+          <p><strong>Business Address:</strong></p>
+          <p>30 N Gould St # 61352</p>
+          <p>Sheridan, WY 82801</p>
+        </div>
+      </div>
 
-        if (window.AXIOM_AGE_GATE && typeof window.AXIOM_AGE_GATE.init === "function") {
-          window.AXIOM_AGE_GATE.init({
-            logoPath: themeBase + "/assets/images/axiom-menu-logo.PNG",
-            exitUrl: "https://www.google.com"
-          });
-        }
-      })
-      .catch(function (error) {
-        console.error("Age gate failed to load:", error);
-      });
-  }
+      <div class="footer-copy">
+        © 2026 Axiom Peptides. All rights reserved.
+      </div>
+    </div>
+  </div>
 
-  setTimeout(function () {
-    try {
-      const rawCart = localStorage.getItem("axiom_cart");
-      const cart = JSON.parse(rawCart || "[]");
-      const products = Array.isArray(window.AXIOM_PRODUCTS)
-        ? window.AXIOM_PRODUCTS
-        : Array.isArray(window.productData)
-          ? window.productData
-          : [];
+  <div class="footer-disclaimer">
+    <div class="footer-container">
+      <h3>FDA DISCLAIMER</h3>
 
-      if (!Array.isArray(cart) || !cart.length || !products.length) return;
+      <p>
+        The statements made within this website have not been evaluated by the
+        United States Food and Drug Administration. The products offered by
+        Axiom Peptides are not intended to diagnose, treat, cure, or prevent
+        any disease. All products are for laboratory research use only and are
+        not for human consumption.
+      </p>
 
-      let needsUpdate = false;
+      <p>
+        Axiom Peptides is a chemical supplier and is not a compounding pharmacy
+        or registered outsourcing facility as defined by the Federal Food,
+        Drug, and Cosmetic Act.
+      </p>
 
-      function normalizeImagePath(path) {
-        if (!path || typeof path !== "string") return "";
-        const cleanPath = path.trim();
+      <p class="footer-disclaimer-strong">
+        THE PRODUCTS WE OFFER ARE NOT INTENDED FOR HUMAN USE. THEY ARE
+        INTENDED FOR IN-VITRO AND PRE-CLINICAL RESEARCH PURPOSES ONLY.
+      </p>
+    </div>
+  </div>
+</footer>
 
-        if (
-          cleanPath.startsWith("http://") ||
-          cleanPath.startsWith("https://") ||
-          cleanPath.startsWith("/")
-        ) {
-          return cleanPath;
-        }
+<div class="age-gate-overlay" id="ageGateOverlay" aria-hidden="true">
+  <div class="age-gate-backdrop"></div>
 
-        if (cleanPath.startsWith("./")) {
-          return cleanPath.replace("./", "");
-        }
+  <div
+    class="age-gate-modal"
+    id="ageGateModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="ageGateTitle"
+    aria-describedby="ageGateDescription"
+  >
+    <div class="age-gate-logo-wrap">
+      <img src="" alt="Axiom Peptides" class="age-gate-logo" id="ageGateLogo" />
+    </div>
 
-        if (cleanPath.startsWith("../")) {
-          return cleanPath.replace("../", "");
-        }
+    <p class="age-gate-kicker">RESEARCH ACCESS NOTICE</p>
+    <h1 class="age-gate-title" id="ageGateTitle">21+ Access Agreement</h1>
 
-        return cleanPath;
-      }
+    <p class="age-gate-description" id="ageGateDescription">
+      This website contains laboratory research products intended strictly for
+      in-vitro research use only. By continuing, you confirm that you meet the
+      age requirement and understand the nature of the materials presented on this site.
+    </p>
 
-      function getProductImage(product) {
-        if (!product) return "";
+    <div class="age-gate-points">
+      <div class="age-gate-point"><i class="fa-solid fa-circle-check"></i><span>Research-use-only product catalog</span></div>
+      <div class="age-gate-point"><i class="fa-solid fa-circle-check"></i><span>No human consumption or medical use</span></div>
+      <div class="age-gate-point"><i class="fa-solid fa-circle-check"></i><span>Access limited to adults 21 years of age or older</span></div>
+    </div>
 
-        if (typeof product.image === "string" && product.image.trim()) {
-          return normalizeImagePath(product.image);
-        }
+    <div class="age-gate-checkboxes">
+      <label class="age-gate-check">
+        <input type="checkbox" id="ageGateAgeCheck" />
+        <span>I confirm that I am <strong>21 years of age or older</strong>.</span>
+      </label>
 
-        if (Array.isArray(product.images) && product.images.length) {
-          const firstImage = product.images[0];
-          if (typeof firstImage === "string" && firstImage.trim()) {
-            return normalizeImagePath(firstImage);
-          }
-        }
+      <label class="age-gate-check">
+        <input type="checkbox" id="ageGateUseCheck" />
+        <span>I understand these materials are offered for <strong>in-vitro laboratory research only</strong> and not for human consumption.</span>
+      </label>
+    </div>
 
-        return "";
-      }
+    <div class="age-gate-actions">
+      <button type="button" class="age-gate-btn age-gate-btn-primary" id="ageGateEnterBtn" disabled>Enter Site</button>
+      <button type="button" class="age-gate-btn age-gate-btn-secondary" id="ageGateExitBtn">Exit</button>
+    </div>
 
-      const fixedCart = cart.map(function (item) {
-        if (item.image && String(item.image).trim()) {
-          return item;
-        }
-
-        const match = products.find(function (product) {
-          if (item.slug && product.slug && item.slug === product.slug) return true;
-          if (item.id && product.id && String(item.id) === String(product.id)) return true;
-
-          if (Array.isArray(product.variants)) {
-            return product.variants.some(function (variant) {
-              return item.id && variant.id && String(item.id) === String(variant.id);
-            });
-          }
-
-          return false;
-        });
-
-        const image = getProductImage(match);
-        if (!image) return item;
-
-        needsUpdate = true;
-        return {
-          ...item,
-          image: image
-        };
-      });
-
-      if (needsUpdate) {
-        localStorage.setItem("axiom_cart", JSON.stringify(fixedCart));
-        window.dispatchEvent(new Event("axiom-cart-updated"));
-        window.dispatchEvent(new Event("storage"));
-      }
-    } catch (error) {
-      console.error("Failed to repair cart images:", error);
-    }
-  }, 500);
-});
-</script>
+    <p class="age-gate-footer">
+      By entering, you agree to these conditions and acknowledge responsibility
+      for compliance with your local laws and regulations.
+    </p>
+  </div>
+</div>
 
 <?php wp_footer(); ?>
 </body>
