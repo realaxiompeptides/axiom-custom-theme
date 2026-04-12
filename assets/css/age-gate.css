@@ -1,0 +1,148 @@
+.age-gate-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: none;
+}
+
+.age-gate-overlay.active {
+  display: block;
+}
+
+.age-gate-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.age-gate-modal {
+  position: relative;
+  z-index: 2;
+  width: min(720px, calc(100% - 24px));
+  margin: min(8vh, 60px) auto;
+  padding: 30px 26px;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.22);
+}
+
+.age-gate-logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.age-gate-logo {
+  width: 180px;
+  height: auto;
+}
+
+.age-gate-kicker {
+  margin: 0 0 10px;
+  text-align: center;
+  color: var(--axiom-blue-dark);
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.age-gate-title {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.02;
+}
+
+.age-gate-description {
+  max-width: 620px;
+  margin: 0 auto 22px;
+  text-align: center;
+  color: #64748b;
+}
+
+.age-gate-points {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.age-gate-point {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+.age-gate-point i {
+  color: var(--axiom-success);
+}
+
+.age-gate-checkboxes {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.age-gate-check {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f8fafc;
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+}
+
+.age-gate-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.age-gate-btn {
+  flex: 1;
+  min-height: 54px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.age-gate-btn-primary {
+  background: var(--axiom-blue);
+  color: #ffffff;
+}
+
+.age-gate-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.age-gate-btn-secondary {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.age-gate-footer {
+  margin: 0;
+  text-align: center;
+  color: #64748b;
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .age-gate-modal {
+    margin: 16px auto;
+    padding: 22px 18px;
+    border-radius: 22px;
+  }
+
+  .age-gate-actions {
+    flex-direction: column;
+  }
+}
