@@ -10,8 +10,9 @@
 <?php wp_body_open(); ?>
 
 <?php
-$main_logo = axiom_get_logo_url('axiom-logo.PNG');
-$menu_logo = axiom_get_logo_url('axiom-menu-logo.PNG');
+$theme_uri = get_template_directory_uri();
+$main_logo = $theme_uri . '/assets/images/axiom-logo.PNG';
+$menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
 ?>
 
 <div class="top-announcement-bar">
@@ -49,11 +50,7 @@ $menu_logo = axiom_get_logo_url('axiom-menu-logo.PNG');
 
     <div class="header-center">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="site-logo" aria-label="Axiom Peptides home">
-        <?php if ($main_logo) : ?>
-          <img src="<?php echo esc_url($main_logo); ?>" alt="Axiom Peptides logo" />
-        <?php else : ?>
-          <span class="site-logo-text">Axiom Peptides</span>
-        <?php endif; ?>
+        <img src="<?php echo esc_url($main_logo); ?>" alt="Axiom Peptides logo" />
       </a>
     </div>
 
@@ -79,13 +76,7 @@ $menu_logo = axiom_get_logo_url('axiom-menu-logo.PNG');
   <div class="mobile-menu-inner">
     <div class="mobile-menu-header">
       <a href="<?php echo esc_url(home_url('/')); ?>" class="mobile-menu-logo" aria-label="Axiom Peptides home">
-        <?php if ($menu_logo) : ?>
-          <img src="<?php echo esc_url($menu_logo); ?>" alt="Axiom Peptides logo" />
-        <?php elseif ($main_logo) : ?>
-          <img src="<?php echo esc_url($main_logo); ?>" alt="Axiom Peptides logo" />
-        <?php else : ?>
-          <span class="site-logo-text">Axiom Peptides</span>
-        <?php endif; ?>
+        <img src="<?php echo esc_url($menu_logo); ?>" alt="Axiom Peptides logo" />
       </a>
 
       <button class="drawer-close" id="menuClose" aria-label="Close menu" type="button">
