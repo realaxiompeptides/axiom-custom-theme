@@ -42,79 +42,176 @@ document.addEventListener("DOMContentLoaded", function () {
     body.style.overflow = "";
   }
 
+  async function postAjax(action, extra = {}) {
+    const params = new URLSearchParams();
+    params.append("action", action);
+    params.append("nonce", AXIOM_THEME.nonce);
+
+    Object.keys(extra).forEach((key) => {
+      params.append(key, extra[key]);
+    });
+
+    const response = await fetch(AXIOM_THEME.ajaxUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+      body: params.toString(),
+      credentials: "same-origin",
+    });
+
+    return response.json();
+  }
+
+  function renderUpsell(upsell) {
+    if (!upsell) return "";
+
+    return `
+      <div class="cart-upsell-card">
+        <div class="cart-upsell-copy">
+          <span class="cart-upsell-kicker">Recommended Add-On</span>
+          <h3 class="cart-upsell-title">Add ${upsell.name}</h3>
+          <div class="cart-upsell-price">${upsell.priceHtml}</div>
+        </div>
+
+        <div class="cart-upsell-right">
+          <div class="cart-upsell-image-wrap">
+            <img src="${upsell.image}" alt="${upsell.name}">
+          </div>
+          <button
+            class="cart-upsell-btn"
+            type="button"
+            data-add-product-id="${upsell.productId}"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCartItem(item) {
+    return `
+      <div class="cart-item-card" data-cart-key="${item.key}">
+        <a class="cart-item-image-wrap" href="${item.link || "#"}">
+          <img src="${item.image}" alt="${item.name}">
+        </a>
+
+        <div class="cart-item-main">
+          <div class="cart-item-top-row">
+            <div class="cart-item-meta">
+              <h3 class="cart-item-name">${item.name}</h3>
+              ${item.variant ? `<p class="cart-item-variant">${item.variant}</p>` : ""}
+            </div>
+
+            <button
+              class="cart-remove-btn"
+              type="button"
+              aria-label="Remove item"
+              data-remove-cart-key="${item.key}"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+          <div class="cart-item-bottom-row">
+            <div class="cart-qty-control">
+              <button type="button" class="cart-qty-btn" data-qty-action="decrease" data-cart-key="${item.key}">−</button>
+              <span class="cart-qty-value">${item.quantity}</span>
+              <button type="button" class="cart-qty-btn" data-qty-action="increase" data-cart-key="${item.key}">+</button>
+            </div>
+
+            <div class="cart-item-price-wrap">
+              <span class="cart-item-price">${item.subtotal}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCartDrawer(data) {
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    if (cartCount) {
+      cartCount.textContent = String(data.count || 0);
+    }
+
+    if (cartSubtotal) {
+      cartSubtotal.innerHTML = data.subtotal || "$0.00";
+    }
+
+    if (!cartItemsList || !cartEmptyState) return;
+
+    if (!items.length) {
+      cartEmptyState.hidden = false;
+      cartItemsList.hidden = false;
+      cartItemsList.innerHTML = `
+        ${data.upsell ? renderUpsell(data.upsell) : ""}
+      `;
+      return;
+    }
+
+    cartEmptyState.hidden = true;
+    cartItemsList.hidden = false;
+
+    cartItemsList.innerHTML = `
+      <div class="cart-items-stack">
+        ${items.map(renderCartItem).join("")}
+      </div>
+      ${data.upsell ? renderUpsell(data.upsell) : ""}
+    `;
+  }
+
   async function refreshCartDrawer() {
-    if (!AXIOM_THEME || !AXIOM_THEME.ajaxUrl) return;
-
     try {
-      const params = new URLSearchParams();
-      params.append("action", "axiom_get_cart_drawer");
-      params.append("nonce", AXIOM_THEME.nonce);
-
-      const response = await fetch(AXIOM_THEME.ajaxUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-        },
-        body: params.toString(),
-        credentials: "same-origin",
-      });
-
-      const result = await response.json();
+      const result = await postAjax("axiom_get_cart_drawer");
 
       if (!result || !result.success || !result.data) return;
-
-      const data = result.data;
-      const items = Array.isArray(data.items) ? data.items : [];
-
-      if (cartCount) {
-        cartCount.textContent = String(data.count || 0);
-      }
-
-      if (cartSubtotal) {
-        cartSubtotal.innerHTML = data.subtotal || "$0.00";
-      }
-
-      if (!cartItemsList || !cartEmptyState) return;
-
-      if (!items.length) {
-        cartItemsList.hidden = true;
-        cartEmptyState.hidden = false;
-        cartItemsList.innerHTML = "";
-        return;
-      }
-
-      cartEmptyState.hidden = true;
-      cartItemsList.hidden = false;
-
-      cartItemsList.innerHTML = items
-        .map((item) => {
-          return `
-            <div class="cart-item-card">
-              <a class="cart-item-image-wrap" href="${item.link || "#"}">
-                <img src="${item.image}" alt="${item.name}">
-              </a>
-
-              <div class="cart-item-content">
-                <div class="cart-item-top">
-                  <div>
-                    <h3 class="cart-item-name">${item.name}</h3>
-                    ${item.variant ? `<p class="cart-item-variant">${item.variant}</p>` : ""}
-                  </div>
-                </div>
-
-                <div class="cart-item-bottom">
-                  <div class="cart-qty"><span>${item.quantity}</span></div>
-                  <div class="cart-item-price-wrap">
-                    <span class="cart-item-price">${item.subtotal}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        })
-        .join("");
+      renderCartDrawer(result.data);
     } catch (error) {
       console.error("Cart drawer refresh failed:", error);
+    }
+  }
+
+  async function updateCartQuantity(cartKey, quantity) {
+    try {
+      const result = await postAjax("axiom_update_cart_item_quantity", {
+        cart_key: cartKey,
+        quantity: quantity,
+      });
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+    } catch (error) {
+      console.error("Update quantity failed:", error);
+    }
+  }
+
+  async function removeCartItem(cartKey) {
+    try {
+      const result = await postAjax("axiom_remove_cart_item", {
+        cart_key: cartKey,
+      });
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+    } catch (error) {
+      console.error("Remove item failed:", error);
+    }
+  }
+
+  async function addSimpleProduct(productId) {
+    try {
+      const result = await postAjax("axiom_add_simple_product_to_cart", {
+        product_id: productId,
+      });
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+      openCart();
+    } catch (error) {
+      console.error("Upsell add failed:", error);
     }
   }
 
@@ -138,6 +235,40 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  if (cartItemsList) {
+    cartItemsList.addEventListener("click", async function (e) {
+      const qtyBtn = e.target.closest(".cart-qty-btn");
+      const removeBtn = e.target.closest("[data-remove-cart-key]");
+      const addBtn = e.target.closest("[data-add-product-id]");
+
+      if (qtyBtn) {
+        const cartKey = qtyBtn.getAttribute("data-cart-key");
+        const card = qtyBtn.closest(".cart-item-card");
+        const valueEl = card ? card.querySelector(".cart-qty-value") : null;
+        const currentQty = valueEl ? parseInt(valueEl.textContent, 10) || 1 : 1;
+        const action = qtyBtn.getAttribute("data-qty-action");
+
+        let nextQty = currentQty;
+        if (action === "increase") nextQty = currentQty + 1;
+        if (action === "decrease") nextQty = Math.max(0, currentQty - 1);
+
+        await updateCartQuantity(cartKey, nextQty);
+        return;
+      }
+
+      if (removeBtn) {
+        const cartKey = removeBtn.getAttribute("data-remove-cart-key");
+        await removeCartItem(cartKey);
+        return;
+      }
+
+      if (addBtn) {
+        const productId = addBtn.getAttribute("data-add-product-id");
+        await addSimpleProduct(productId);
+      }
+    });
+  }
+
   document.body.addEventListener("added_to_cart", function () {
     refreshCartDrawer();
   });
@@ -148,14 +279,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function initAgeGate() {
     const STORAGE_KEY = "axiom_age_gate_accepted_v1";
-    const overlay = document.getElementById("ageGateOverlay");
+    const gateOverlay = document.getElementById("ageGateOverlay");
     const ageCheck = document.getElementById("ageGateAgeCheck");
     const useCheck = document.getElementById("ageGateUseCheck");
     const enterBtn = document.getElementById("ageGateEnterBtn");
     const exitBtn = document.getElementById("ageGateExitBtn");
     const logo = document.getElementById("ageGateLogo");
 
-    if (!overlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) return;
+    if (!gateOverlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) return;
 
     logo.src = AXIOM_THEME.themeUrl + "/assets/images/axiom-menu-logo.PNG";
 
@@ -164,12 +295,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function openGate() {
-      overlay.classList.add("active");
+      gateOverlay.classList.add("active");
       body.classList.add("age-gate-locked");
     }
 
     function closeGate() {
-      overlay.classList.remove("active");
+      gateOverlay.classList.remove("active");
       body.classList.remove("age-gate-locked");
     }
 
