@@ -68,16 +68,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
     return `
       <div class="cart-upsell-card">
+        <div class="cart-upsell-image-wrap">
+          <img src="${upsell.image}" alt="${upsell.name}">
+        </div>
+
         <div class="cart-upsell-copy">
           <span class="cart-upsell-kicker">Recommended Add-On</span>
-          <h3 class="cart-upsell-title">Add ${upsell.name}</h3>
+          <h3 class="cart-upsell-title">${upsell.name}</h3>
           <div class="cart-upsell-price">${upsell.priceHtml}</div>
         </div>
 
         <div class="cart-upsell-right">
-          <div class="cart-upsell-image-wrap">
-            <img src="${upsell.image}" alt="${upsell.name}">
-          </div>
           <button
             class="cart-upsell-btn"
             type="button"
@@ -146,9 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!items.length) {
       cartEmptyState.hidden = false;
       cartItemsList.hidden = false;
-      cartItemsList.innerHTML = `
-        ${data.upsell ? renderUpsell(data.upsell) : ""}
-      `;
+      cartItemsList.innerHTML = data.upsell ? renderUpsell(data.upsell) : "";
       return;
     }
 
@@ -265,6 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (addBtn) {
         const productId = addBtn.getAttribute("data-add-product-id");
         await addSimpleProduct(productId);
+        return;
       }
     });
   }
