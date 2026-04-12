@@ -132,7 +132,6 @@ $menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
     <div class="cart-body">
       <div class="cart-empty-state" id="cartEmptyState">
         <p class="cart-empty-text">Your cart is currently empty.</p>
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="cart-pill-btn cart-outline-btn">Browse Products</a>
       </div>
 
       <div class="cart-items-list" id="cartItemsList" hidden></div>
