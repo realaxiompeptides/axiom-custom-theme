@@ -16,6 +16,8 @@ function axiom_custom_theme_setup() {
         'style',
         'script',
     ));
+
+    add_image_size('axiom_product_card', 700, 700, true);
 }
 add_action('after_setup_theme', 'axiom_custom_theme_setup');
 
@@ -36,31 +38,41 @@ function axiom_custom_theme_assets() {
         '6.5.2'
     );
 
-    wp_enqueue_style('axiom-base', $theme_uri . '/assets/css/style.css', array(), '1.2');
-    wp_enqueue_style('axiom-menu', $theme_uri . '/assets/css/menu.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-cart', $theme_uri . '/assets/css/cart.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-home', $theme_uri . '/assets/css/home.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-collection', $theme_uri . '/assets/css/homepage-collection.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-trust', $theme_uri . '/assets/css/trust-strip.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-faq', $theme_uri . '/assets/css/faq-section.css', array('axiom-base'), '1.2');
-    wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '1.2');
+    wp_enqueue_style('axiom-base', $theme_uri . '/assets/css/style.css', array(), '1.3');
+    wp_enqueue_style('axiom-menu', $theme_uri . '/assets/css/menu.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-cart', $theme_uri . '/assets/css/cart.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-home', $theme_uri . '/assets/css/home.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-collection', $theme_uri . '/assets/css/homepage-collection.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-faq', $theme_uri . '/assets/css/faq-section.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '1.3');
+    wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '1.3');
 
     wp_enqueue_script(
         'axiom-main',
         $theme_uri . '/assets/js/main.js',
         array(),
-        '1.2',
+        '1.3',
         true
     );
 
     wp_localize_script('axiom-main', 'AXIOM_THEME', array(
-        'themeUrl' => $theme_uri,
-        'homeUrl'  => home_url('/'),
-        'shopUrl'  => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
-        'cartUrl'  => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
+        'themeUrl'    => $theme_uri,
+        'homeUrl'     => home_url('/'),
+        'shopUrl'     => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+        'cartUrl'     => function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/'),
         'checkoutUrl' => function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/'),
         'accountUrl'  => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/'),
     ));
 }
 add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
+
+function axiom_get_logo_url($filename = 'axiom-logo.PNG') {
+    $file_path = get_template_directory() . '/assets/images/' . $filename;
+    $file_url  = get_template_directory_uri() . '/assets/images/' . $filename;
+
+    if (file_exists($file_path)) {
+        return $file_url;
+    }
+
+    return '';
+}
