@@ -3,14 +3,12 @@
 <main>
   <section class="hero-section">
     <div class="hero-bg">
-      <?php $hero = axiom_get_logo_url('hero-image.PNG'); ?>
-      <?php if ($hero) : ?>
-        <img src="<?php echo esc_url($hero); ?>" alt="Laboratory research environment" />
-      <?php endif; ?>
+      <?php $hero = get_template_directory_uri() . '/assets/images/hero-image.PNG'; ?>
+      <img src="<?php echo esc_url($hero); ?>" alt="Laboratory research environment" />
     </div>
     <div class="hero-overlay"></div>
 
-    <div class="hero-content container">
+    <div class="hero-content container hero-content-centered-mobile">
       <p class="hero-kicker">Premium Research Compounds</p>
       <h1>Your Supplier For Research Compounds</h1>
       <p class="hero-subtext">
@@ -48,7 +46,7 @@
           <div class="axiom-proof-icon"><i class="fa-solid fa-file-circle-check"></i></div>
           <div class="axiom-proof-content">
             <h3>COA Transparency</h3>
-            <p>Transparent documentation and batch quality focus for serious research buyers.</p>
+            <p>Transparent documentation and batch quality focus for research-use products.</p>
           </div>
         </article>
 
@@ -99,12 +97,8 @@
 
             $image_id   = $product->get_image_id();
             $image_html = $image_id
-              ? wp_get_attachment_image($image_id, 'axiom_product_card', false, array('alt' => $product->get_name()))
-              : wc_placeholder_img('axiom_product_card');
-
-            $regular_price = $product->get_regular_price();
-            $sale_price    = $product->get_sale_price();
-            $display_price = $product->get_price_html();
+              ? wp_get_attachment_image($image_id, 'woocommerce_thumbnail', false, array('alt' => $product->get_name()))
+              : wc_placeholder_img('woocommerce_thumbnail');
             ?>
             <article class="homepage-product-card">
               <div class="homepage-product-image-wrap">
@@ -123,11 +117,11 @@
                 </h3>
 
                 <div class="homepage-product-price-block">
-                  <?php if (!empty($regular_price) && !empty($sale_price) && $product->is_on_sale()) : ?>
-                    <span class="homepage-product-old-price"><?php echo wp_kses_post(wc_price($regular_price)); ?></span>
+                  <?php if ($product->is_on_sale() && $product->get_regular_price()) : ?>
+                    <span class="homepage-product-old-price"><?php echo wp_kses_post(wc_price($product->get_regular_price())); ?></span>
                   <?php endif; ?>
 
-                  <span class="homepage-product-price"><?php echo wp_kses_post($display_price); ?></span>
+                  <span class="homepage-product-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
                 </div>
 
                 <a href="<?php the_permalink(); ?>" class="homepage-product-button">View Product</a>
@@ -158,7 +152,7 @@
       </div>
 
       <div class="axiom-faq-list">
-        <details class="axiom-faq-item" open>
+        <details class="axiom-faq-item">
           <summary>Are your products for human consumption? <i class="fa-solid fa-plus"></i></summary>
           <p>No. All products offered by Axiom Peptides are sold strictly for laboratory, analytical, and in-vitro research use only.</p>
         </details>
