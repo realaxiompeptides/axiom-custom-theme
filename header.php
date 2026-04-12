@@ -11,100 +11,6 @@
     content="Axiom Peptides offers premium research compounds with a clean, trusted, and modern experience."
   />
   <?php wp_head(); ?>
-
-  <style>
-    .cart-btn {
-      position: relative !important;
-      width: 58px !important;
-      height: 58px !important;
-      border-radius: 999px !important;
-      background: #f8fafc !important;
-      border: 0 !important;
-      box-shadow: inset 0 0 0 1px #e5e7eb !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      color: #0f172a !important;
-      text-decoration: none !important;
-      padding: 0 !important;
-      cursor: pointer !important;
-      -webkit-appearance: none !important;
-      appearance: none !important;
-      margin-right: 0 !important;
-      z-index: 10 !important;
-    }
-
-    .cart-btn svg {
-      width: 28px !important;
-      height: 28px !important;
-      fill: #111827 !important;
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    .cart-count {
-      position: absolute !important;
-      top: -4px !important;
-      right: -4px !important;
-      min-width: 26px !important;
-      height: 26px !important;
-      border-radius: 999px !important;
-      background: #2f84bf !important;
-      color: #ffffff !important;
-      font-size: 13px !important;
-      font-weight: 800 !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      padding: 0 7px !important;
-      line-height: 1 !important;
-      border: 2px solid #ffffff !important;
-    }
-
-    .header-inner {
-      display: flex !important;
-      align-items: center !important;
-      justify-content: space-between !important;
-      width: 100% !important;
-      padding-left: 16px !important;
-      padding-right: 16px !important;
-    }
-
-    .site-logo {
-      margin: 0 auto !important;
-      position: absolute !important;
-      left: 50% !important;
-      transform: translateX(-50%) !important;
-    }
-
-    .hamburger-btn {
-      z-index: 10 !important;
-      margin-left: 0 !important;
-    }
-
-    @media (max-width: 640px) {
-      .cart-btn {
-        width: 54px !important;
-        height: 54px !important;
-      }
-
-      .cart-btn svg {
-        width: 26px !important;
-        height: 26px !important;
-      }
-
-      .cart-count {
-        min-width: 24px !important;
-        height: 24px !important;
-        font-size: 12px !important;
-        top: -4px !important;
-        right: -4px !important;
-        padding: 0 6px !important;
-        border-width: 2px !important;
-      }
-    }
-  </style>
 </head>
 <body <?php body_class('home-page'); ?>>
 <?php wp_body_open(); ?>
@@ -181,22 +87,22 @@
         <span class="mobile-nav-arrow">›</span>
       </a>
 
-      <a href="<?php echo esc_url(home_url('/shop')); ?>" class="mobile-nav-link">
+      <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>" class="mobile-nav-link">
         <span>Products</span>
         <span class="mobile-nav-arrow">›</span>
       </a>
 
-      <a href="<?php echo esc_url(home_url('/track-order')); ?>" class="mobile-nav-link">
+      <a href="<?php echo esc_url(home_url('/track-order/')); ?>" class="mobile-nav-link">
         <span>Track Your Order</span>
         <span class="mobile-nav-arrow">›</span>
       </a>
 
-      <a href="<?php echo esc_url(home_url('/affiliate-program')); ?>" class="mobile-nav-link">
+      <a href="<?php echo esc_url(home_url('/affiliate-program/')); ?>" class="mobile-nav-link">
         <span>Affiliate Program</span>
         <span class="mobile-nav-arrow">›</span>
       </a>
 
-      <a href="<?php echo esc_url(home_url('/contact-us')); ?>" class="mobile-nav-link">
+      <a href="<?php echo esc_url(home_url('/contact-us/')); ?>" class="mobile-nav-link">
         <span>Contact Us</span>
         <span class="mobile-nav-arrow">›</span>
       </a>
@@ -205,7 +111,7 @@
     <div class="mobile-menu-divider"></div>
 
     <div class="mobile-menu-secondary">
-      <a href="<?php echo esc_url(home_url('/my-account')); ?>" class="mobile-nav-link secondary-link">
+      <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/')); ?>" class="mobile-nav-link secondary-link">
         <span>Account</span>
         <span class="mobile-nav-arrow">›</span>
       </a>
@@ -225,7 +131,7 @@
     <div class="cart-body">
       <div class="cart-empty-state" id="cartEmptyState">
         <p class="cart-empty-text">Your cart is currently empty.</p>
-        <a href="<?php echo esc_url(home_url('/shop')); ?>" class="cart-pill-btn cart-outline-btn">Browse Products</a>
+        <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>" class="cart-pill-btn cart-outline-btn">Browse Products</a>
       </div>
 
       <div class="cart-items-list" id="cartItemsList" hidden></div>
@@ -238,8 +144,8 @@
       </div>
 
       <div class="cart-action-stack">
-        <a href="<?php echo esc_url(home_url('/cart')); ?>" class="cart-pill-btn cart-muted-btn">View Cart</a>
-        <a href="<?php echo esc_url(home_url('/checkout')); ?>" class="cart-pill-btn cart-outline-btn">Checkout</a>
+        <a href="<?php echo esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/')); ?>" class="cart-pill-btn cart-muted-btn">View Cart</a>
+        <a href="<?php echo esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/')); ?>" class="cart-pill-btn cart-outline-btn">Checkout</a>
       </div>
     </div>
   </div>
