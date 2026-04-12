@@ -14,80 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartItemsList = document.getElementById("cartItemsList");
   const cartEmptyState = document.getElementById("cartEmptyState");
 
-  function getCart() {
-    try {
-      return JSON.parse(localStorage.getItem("axiom_cart") || "[]");
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function formatMoney(value) {
-    return "$" + Number(value || 0).toFixed(2);
-  }
-
-  function updateCartDrawer() {
-    const cart = getCart();
-    let count = 0;
-    let subtotal = 0;
-
-    if (cartCount) {
-      cart.forEach((item) => {
-        count += Number(item.quantity || item.qty || 0);
-      });
-      cartCount.textContent = String(count);
-    }
-
-    if (!cartItemsList || !cartEmptyState || !cartSubtotal) return;
-
-    if (!cart.length) {
-      cartItemsList.hidden = true;
-      cartEmptyState.hidden = false;
-      cartItemsList.innerHTML = "";
-      cartSubtotal.textContent = "$0.00";
-      return;
-    }
-
-    cartItemsList.hidden = false;
-    cartEmptyState.hidden = true;
-
-    cartItemsList.innerHTML = cart
-      .map((item) => {
-        const qty = Number(item.quantity || item.qty || 1);
-        const price = Number(item.price || 0);
-        subtotal += qty * price;
-
-        const image = item.image || (AXIOM_THEME.themeUrl + "/assets/images/axiom-logo.PNG");
-        const name = item.name || "Product";
-        const variant = item.variantLabel || item.variant || "";
-
-        return `
-          <div class="cart-item-card">
-            <div class="cart-item-image-wrap">
-              <img src="${image}" alt="${name}">
-            </div>
-            <div class="cart-item-content">
-              <div class="cart-item-top">
-                <div>
-                  <h3 class="cart-item-name">${name}</h3>
-                  ${variant ? `<p class="cart-item-variant">${variant}</p>` : ""}
-                </div>
-              </div>
-              <div class="cart-item-bottom">
-                <div class="cart-qty"><span>${qty}</span></div>
-                <div class="cart-item-price-wrap">
-                  <span class="cart-item-price">${formatMoney(price * qty)}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-      })
-      .join("");
-
-    cartSubtotal.textContent = formatMoney(subtotal);
-  }
-
   function openMenu() {
     if (!mobileMenu || !overlay) return;
     mobileMenu.classList.add("active");
@@ -116,13 +42,92 @@ document.addEventListener("DOMContentLoaded", function () {
     body.style.overflow = "";
   }
 
+  async function refreshCartDrawer() {
+    if (!AXIOM_THEME || !AXIOM_THEME.ajaxUrl) return;
+
+    try {
+      const params = new URLSearchParams();
+      params.append("action", "axiom_get_cart_drawer");
+      params.append("nonce", AXIOM_THEME.nonce);
+
+      const response = await fetch(AXIOM_THEME.ajaxUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        body: params.toString(),
+        credentials: "same-origin",
+      });
+
+      const result = await response.json();
+
+      if (!result || !result.success || !result.data) return;
+
+      const data = result.data;
+      const items = Array.isArray(data.items) ? data.items : [];
+
+      if (cartCount) {
+        cartCount.textContent = String(data.count || 0);
+      }
+
+      if (cartSubtotal) {
+        cartSubtotal.innerHTML = data.subtotal || "$0.00";
+      }
+
+      if (!cartItemsList || !cartEmptyState) return;
+
+      if (!items.length) {
+        cartItemsList.hidden = true;
+        cartEmptyState.hidden = false;
+        cartItemsList.innerHTML = "";
+        return;
+      }
+
+      cartEmptyState.hidden = true;
+      cartItemsList.hidden = false;
+
+      cartItemsList.innerHTML = items
+        .map((item) => {
+          return `
+            <div class="cart-item-card">
+              <a class="cart-item-image-wrap" href="${item.link || "#"}">
+                <img src="${item.image}" alt="${item.name}">
+              </a>
+
+              <div class="cart-item-content">
+                <div class="cart-item-top">
+                  <div>
+                    <h3 class="cart-item-name">${item.name}</h3>
+                    ${item.variant ? `<p class="cart-item-variant">${item.variant}</p>` : ""}
+                  </div>
+                </div>
+
+                <div class="cart-item-bottom">
+                  <div class="cart-qty"><span>${item.quantity}</span></div>
+                  <div class="cart-item-price-wrap">
+                    <span class="cart-item-price">${item.subtotal}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+    } catch (error) {
+      console.error("Cart drawer refresh failed:", error);
+    }
+  }
+
   if (menuToggle) menuToggle.addEventListener("click", openMenu);
   if (menuClose) menuClose.addEventListener("click", closeMenu);
 
-  if (cartToggle) cartToggle.addEventListener("click", function () {
-    updateCartDrawer();
-    openCart();
-  });
+  if (cartToggle) {
+    cartToggle.addEventListener("click", async function (e) {
+      e.preventDefault();
+      await refreshCartDrawer();
+      openCart();
+    });
+  }
 
   if (cartClose) cartClose.addEventListener("click", closeCart);
 
@@ -132,6 +137,14 @@ document.addEventListener("DOMContentLoaded", function () {
       closeCart();
     });
   }
+
+  document.body.addEventListener("added_to_cart", function () {
+    refreshCartDrawer();
+  });
+
+  jQuery(document.body).on("added_to_cart removed_from_cart updated_cart_totals wc_fragments_refreshed", function () {
+    refreshCartDrawer();
+  });
 
   function initAgeGate() {
     const STORAGE_KEY = "axiom_age_gate_accepted_v1";
@@ -183,8 +196,5 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   initAgeGate();
-  updateCartDrawer();
-
-  window.addEventListener("storage", updateCartDrawer);
-  window.addEventListener("axiom-cart-updated", updateCartDrawer);
+  refreshCartDrawer();
 });
