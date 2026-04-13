@@ -47,7 +47,10 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
-    if (function_exists('is_shop') && (is_shop() || is_product_taxonomy() || is_product_category() || is_product_tag())) {
+    if (
+        function_exists('is_shop') &&
+        (is_shop() || is_product_category() || is_product_tag() || is_tax('product_cat') || is_tax('product_tag'))
+    ) {
         wp_enqueue_style(
             'axiom-catalog-layout',
             $theme_uri . '/assets/css/shop/catalog-layout.css',
@@ -91,6 +94,10 @@ function axiom_custom_theme_assets() {
                 '1.0',
                 true
             );
+
+            wp_localize_script('axiom-catalog', 'AXIOM_CATALOG', array(
+                'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+            ));
         }
     }
 
@@ -213,12 +220,6 @@ function axiom_custom_theme_assets() {
         'ajaxUrl'     => admin_url('admin-ajax.php'),
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
-
-    if (wp_script_is('axiom-catalog', 'enqueued')) {
-        wp_localize_script('axiom-catalog', 'AXIOM_CATALOG', array(
-            'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
-        ));
-    }
 }
 add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
 
@@ -227,7 +228,7 @@ function axiom_disable_default_catalog_bits() {
         return;
     }
 
-    if (is_shop() || is_product_taxonomy() || is_product_category() || is_product_tag()) {
+    if (is_shop() || is_product_category() || is_product_tag() || is_tax('product_cat') || is_tax('product_tag')) {
         remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
         remove_action('woocommerce_before_shop_loop', 'woocommerce_result_count', 20);
         remove_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);
@@ -518,9 +519,6 @@ function axiom_add_product_from_product_page() {
 add_action('wp_ajax_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
 add_action('wp_ajax_nopriv_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
 
-/*
- * Force checkout field order so email and phone show at the top.
- */
 function axiom_reorder_checkout_fields($fields) {
     if (isset($fields['billing']['billing_email'])) {
         $fields['billing']['billing_email']['priority'] = 10;
@@ -567,10 +565,6 @@ function axiom_reorder_checkout_fields($fields) {
 }
 add_filter('woocommerce_checkout_fields', 'axiom_reorder_checkout_fields', 999);
 
-/*
- * Validate the custom research use checkbox that is rendered
- * inside the checkout payment template.
- */
 function axiom_checkout_research_use_validation() {
     if (!isset($_POST['axiom_research_use_ack'])) {
         wc_add_notice('Please confirm the research use only acknowledgment before placing your order.', 'error');
@@ -583,5 +577,3 @@ function axiom_checkout_research_use_save($order_id) {
     update_post_meta($order_id, '_axiom_research_use_ack', $value);
 }
 add_action('woocommerce_checkout_update_order_meta', 'axiom_checkout_research_use_save');
-
-Give me the full updated code. Also, I made all those css files but none of it is loading yet
