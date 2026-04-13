@@ -47,6 +47,25 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
+    if (function_exists('is_shop') && (is_shop() || is_product_taxonomy() || is_product_category() || is_product_tag())) {
+        wp_enqueue_style(
+            'axiom-catalog',
+            $theme_uri . '/assets/css/shop/catalog.css',
+            array('axiom-base'),
+            '1.0'
+        );
+
+        if (file_exists(get_template_directory() . '/assets/js/shop/catalog.js')) {
+            wp_enqueue_script(
+                'axiom-catalog',
+                $theme_uri . '/assets/js/shop/catalog.js',
+                array(),
+                '1.0',
+                true
+            );
+        }
+    }
+
     if (function_exists('is_product') && is_product()) {
         wp_enqueue_style(
             'axiom-product-layout',
@@ -166,8 +185,27 @@ function axiom_custom_theme_assets() {
         'ajaxUrl'     => admin_url('admin-ajax.php'),
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
+
+    if (wp_script_is('axiom-catalog', 'enqueued')) {
+        wp_localize_script('axiom-catalog', 'AXIOM_CATALOG', array(
+            'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
+        ));
+    }
 }
 add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
+
+function axiom_disable_default_catalog_bits() {
+    if (!function_exists('is_shop')) {
+        return;
+    }
+
+    if (is_shop() || is_product_taxonomy() || is_product_category() || is_product_tag()) {
+        remove_action('woocommerce_sidebar', 'woocommerce_get_sidebar', 10);
+        remove_action('woocommerce_before_shop_loop', 'woocommerce_result_count', 20);
+        remove_action('woocommerce_before_shop_loop', 'woocommerce_catalog_ordering', 30);
+    }
+}
+add_action('wp', 'axiom_disable_default_catalog_bits');
 
 function axiom_get_logo_url($filename = 'axiom-logo.PNG') {
     return get_template_directory_uri() . '/assets/images/' . $filename;
