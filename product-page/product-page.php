@@ -253,10 +253,10 @@ if ($is_variable) {
               <span class="payment-icon-pill" aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></span>
               <span class="payment-icon-pill" aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></span>
               <span class="payment-icon-pill payment-icon-image-pill" aria-label="Venmo">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.PNG'); ?>" alt="Venmo">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo">
               </span>
               <span class="payment-icon-pill payment-icon-image-pill" aria-label="Zelle">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.PNG'); ?>" alt="Zelle">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle">
               </span>
               <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
             </div>
