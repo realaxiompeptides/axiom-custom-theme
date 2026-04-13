@@ -3,19 +3,42 @@ document.addEventListener("DOMContentLoaded", function () {
   const qtyMinus = document.getElementById("qtyMinus");
   const qtyPlus = document.getElementById("qtyPlus");
 
+  const stickyQtyMinus = document.getElementById("stickyQtyMinus");
+  const stickyQtyPlus = document.getElementById("stickyQtyPlus");
+  const stickyQtyValue = document.getElementById("stickyQtyValue");
+
   const variationSelect = document.getElementById("productVariantSelect");
   const variationIdInput = document.getElementById("variation_id");
   const productPrice = document.getElementById("productPrice");
   const stickyProductPrice = document.getElementById("stickyProductPrice");
+  const stickyProductVariant = document.getElementById("stickyProductVariant");
   const productStock = document.getElementById("productStock");
   const productMainImage = document.getElementById("productMainImage");
   const addToCartBtn = document.getElementById("productAddToCart");
   const stickyAddToCartBtn = document.getElementById("stickyAddToCartBtn");
   const productPurchaseBox = document.getElementById("productPurchaseBox");
   const stickyBar = document.getElementById("stickyProductBar");
-  const productForm = document.querySelector(".ajax-product-form");
+  const productForm = document.getElementById("ajaxProductForm");
 
   const variationData = window.AXIOM_PRODUCT_PAGE || { isVariable: false, productId: 0, variations: [] };
+
+  function syncQtyDisplays(value) {
+    const safeValue = Math.max(1, parseInt(value || "1", 10) || 1);
+    if (qtyInput) qtyInput.value = safeValue;
+    if (stickyQtyValue) stickyQtyValue.textContent = safeValue;
+  }
+
+  function currentQty() {
+    return Math.max(1, parseInt(qtyInput ? qtyInput.value : "1", 10) || 1);
+  }
+
+  function increaseQty() {
+    syncQtyDisplays(currentQty() + 1);
+  }
+
+  function decreaseQty() {
+    syncQtyDisplays(Math.max(1, currentQty() - 1));
+  }
 
   function openCartDrawerIfAvailable() {
     const cartToggle = document.getElementById("cartToggle");
@@ -58,42 +81,38 @@ document.addEventListener("DOMContentLoaded", function () {
   async function addProductAjax(payload) {
     try {
       const result = await postAjax("axiom_add_product_from_product_page", payload);
+
       if (result && result.success) {
-        if (document.body && window.jQuery) {
+        if (window.jQuery) {
           jQuery(document.body).trigger("added_to_cart");
         }
         openCartDrawerIfAvailable();
+      } else {
+        console.error(result);
       }
     } catch (error) {
       console.error("Product add failed:", error);
     }
   }
 
-  if (qtyMinus && qtyInput) {
-    qtyMinus.addEventListener("click", function () {
-      const current = parseInt(qtyInput.value || "1", 10);
-      qtyInput.value = Math.max(1, current - 1);
-    });
-  }
-
-  if (qtyPlus && qtyInput) {
-    qtyPlus.addEventListener("click", function () {
-      const current = parseInt(qtyInput.value || "1", 10);
-      qtyInput.value = current + 1;
-    });
-  }
+  if (qtyMinus) qtyMinus.addEventListener("click", decreaseQty);
+  if (qtyPlus) qtyPlus.addEventListener("click", increaseQty);
+  if (stickyQtyMinus) stickyQtyMinus.addEventListener("click", decreaseQty);
+  if (stickyQtyPlus) stickyQtyPlus.addEventListener("click", increaseQty);
 
   if (qtyInput) {
     qtyInput.addEventListener("input", function () {
-      const current = parseInt(qtyInput.value || "1", 10);
-      qtyInput.value = Math.max(1, current || 1);
+      syncQtyDisplays(qtyInput.value);
     });
   }
+
+  syncQtyDisplays(1);
 
   if (variationSelect && variationData.isVariable) {
     variationSelect.addEventListener("change", function () {
       const selected = variationSelect.options[variationSelect.selectedIndex];
       const variationId = selected.value || "";
+      const variationLabel = selected.getAttribute("data-label") || "Select variant";
       const priceHtml = selected.getAttribute("data-price-html") || "";
       const image = selected.getAttribute("data-image") || "";
       const stockText = selected.getAttribute("data-stock-text") || "";
@@ -113,6 +132,10 @@ document.addEventListener("DOMContentLoaded", function () {
         stickyProductPrice.innerHTML = priceHtml;
       }
 
+      if (stickyProductVariant) {
+        stickyProductVariant.textContent = variationId ? variationLabel : "Select variant";
+      }
+
       if (productMainImage && image) {
         productMainImage.src = image;
       }
@@ -129,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (stickyAddToCartBtn) {
         stickyAddToCartBtn.disabled = !variationId || !purchasable;
+        stickyAddToCartBtn.textContent = variationId ? (purchasable ? "Add To Cart" : "Select Variant") : "Select Variant";
       }
 
       try {
@@ -143,44 +167,47 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Failed to parse variation attributes", error);
       }
     });
+  } else if (stickyProductVariant) {
+    stickyProductVariant.textContent = "Ready to add";
+  }
+
+  async function handleProductSubmit() {
+    const quantity = currentQty();
+
+    if (variationData.isVariable) {
+      const variationId = variationIdInput ? variationIdInput.value : "";
+      if (!variationId) return;
+
+      const payload = {
+        product_id: variationData.productId,
+        variation_id: variationId,
+        quantity: quantity
+      };
+
+      const hiddenFields = productForm.querySelectorAll('input[id^="attribute_"]');
+      hiddenFields.forEach((field) => {
+        payload[field.id] = field.value;
+      });
+
+      await addProductAjax(payload);
+    } else {
+      await addProductAjax({
+        product_id: variationData.productId,
+        quantity: quantity
+      });
+    }
   }
 
   if (productForm) {
     productForm.addEventListener("submit", async function (e) {
       e.preventDefault();
-
-      const quantity = qtyInput ? parseInt(qtyInput.value || "1", 10) : 1;
-
-      if (variationData.isVariable) {
-        const variationId = variationIdInput ? variationIdInput.value : "";
-        if (!variationId) return;
-
-        const payload = {
-          product_id: variationData.productId,
-          variation_id: variationId,
-          quantity: quantity
-        };
-
-        const hiddenFields = productForm.querySelectorAll('input[id^="attribute_"]');
-        hiddenFields.forEach((field) => {
-          payload[field.id] = field.value;
-        });
-
-        await addProductAjax(payload);
-      } else {
-        await addProductAjax({
-          product_id: variationData.productId,
-          quantity: quantity
-        });
-      }
+      await handleProductSubmit();
     });
   }
 
   if (stickyAddToCartBtn) {
-    stickyAddToCartBtn.addEventListener("click", function () {
-      if (productForm) {
-        productForm.requestSubmit();
-      }
+    stickyAddToCartBtn.addEventListener("click", async function () {
+      await handleProductSubmit();
     });
   }
 
