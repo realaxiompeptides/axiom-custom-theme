@@ -1,9 +1,9 @@
 .product-price-stack {
-  margin: 0 0 18px;
+  margin: 0 0 16px;
 }
 
 .product-price-row {
-  margin: 0 0 10px;
+  margin: 0 0 8px;
 }
 
 .product-price-current,
@@ -11,7 +11,7 @@
 .product-price-current ins,
 .product-price-current ins .amount {
   color: #111111 !important;
-  font-size: clamp(34px, 7vw, 56px);
+  font-size: clamp(28px, 6vw, 56px);
   font-weight: 900;
   line-height: 1;
   text-decoration: none !important;
@@ -25,15 +25,15 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 0 0 20px;
+  gap: 8px;
+  margin: 0 0 16px;
 }
 
 .product-compare-text {
   color: #61a8df;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 #productComparePrice,
@@ -46,37 +46,37 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
-  padding: 0 14px;
+  min-height: 34px;
+  padding: 0 12px;
   border-radius: 999px;
   background: #eaf8ee;
   border: 1px solid #bfe8cc;
   color: #18914d;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 900;
   white-space: nowrap;
 }
 
 .product-purchase-box {
-  margin-top: 16px;
+  margin-top: 14px;
   padding: 0;
   background: transparent;
   border: 0;
 }
 
 .product-form {
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .product-option-group {
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .product-option-label {
   display: block;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: #0f172a;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: 900;
 }
 
@@ -86,13 +86,13 @@
 
 .product-variant-select {
   width: 100%;
-  min-height: 58px;
-  padding: 0 48px 0 18px;
-  border-radius: 18px;
+  min-height: 52px;
+  padding: 0 42px 0 14px;
+  border-radius: 16px;
   border: 1px solid #d9e5f1;
   background: #ffffff;
   color: #0f172a;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 700;
   appearance: none;
 }
@@ -100,7 +100,7 @@
 .product-select-icon {
   position: absolute;
   top: 50%;
-  right: 18px;
+  right: 14px;
   transform: translateY(-50%);
   color: #6b7d95;
   pointer-events: none;
@@ -110,8 +110,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  max-width: 352px;
-  min-height: 84px;
+  max-width: 360px;
+  min-height: 64px;
   border-radius: 999px;
   border: 2px solid #d6e2ef;
   background: #ffffff;
@@ -119,23 +119,27 @@
 }
 
 .product-qty-btn {
-  width: 72px;
-  height: 84px;
+  width: 64px;
+  height: 64px;
   border: 0;
   background: transparent;
   color: #4f9adb;
-  font-size: 46px;
+  font-size: 34px;
   font-weight: 700;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-qty-input {
   flex: 1;
+  min-width: 0;
   border: 0;
   background: transparent;
   text-align: center;
   color: #0f172a;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 900;
   outline: none;
 }
@@ -148,85 +152,60 @@
 
 .product-add-to-cart-btn {
   width: 100%;
-  min-height: 82px;
+  min-height: 68px;
   border: 0;
   border-radius: 999px;
   background: linear-gradient(135deg, #2f6fd0, #376fcb);
   color: #ffffff;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 900;
-  box-shadow: 0 18px 30px rgba(47, 111, 208, 0.2);
+  box-shadow: 0 16px 26px rgba(47, 111, 208, 0.18);
 }
 
 .product-add-to-cart-btn:disabled {
   opacity: 0.6;
 }
 
-@media (max-width: 767px) {
-  .product-price-stack {
-    margin-bottom: 16px;
-  }
-
+@media (min-width: 768px) {
   .product-price-current,
   .product-price-current .amount,
   .product-price-current ins,
   .product-price-current ins .amount {
-    font-size: 28px;
-  }
-
-  .product-compare-row {
-    gap: 8px;
-    margin-bottom: 16px;
+    font-size: clamp(34px, 5vw, 56px);
   }
 
   .product-compare-text {
-    font-size: 14px;
+    font-size: 17px;
   }
 
   .product-save-pill {
-    min-height: 32px;
-    padding: 0 10px;
-    font-size: 13px;
-  }
-
-  .product-option-group {
-    margin-bottom: 14px;
+    min-height: 38px;
+    padding: 0 14px;
+    font-size: 15px;
   }
 
   .product-option-label {
-    margin-bottom: 8px;
-    font-size: 15px;
-  }
-
-  .product-variant-select {
-    min-height: 52px;
-    padding: 0 42px 0 14px;
-    border-radius: 16px;
-    font-size: 15px;
-  }
-
-  .product-select-icon {
-    right: 14px;
+    font-size: 17px;
   }
 
   .product-qty-wrap {
-    max-width: 100%;
-    min-height: 64px;
+    max-width: 352px;
+    min-height: 84px;
   }
 
   .product-qty-btn {
-    width: 56px;
-    height: 64px;
-    font-size: 34px;
+    width: 72px;
+    height: 84px;
+    font-size: 46px;
   }
 
   .product-qty-input {
-    font-size: 22px;
+    font-size: 28px;
   }
 
   .product-add-to-cart-btn {
-    min-height: 64px;
-    font-size: 18px;
+    min-height: 82px;
+    font-size: 24px;
   }
 }
 
@@ -239,10 +218,31 @@
   }
 
   .product-compare-text {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .product-save-pill {
-    font-size: 12px;
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+
+  .product-qty-wrap {
+    min-height: 58px;
+  }
+
+  .product-qty-btn {
+    width: 56px;
+    height: 58px;
+    font-size: 30px;
+  }
+
+  .product-qty-input {
+    font-size: 20px;
+  }
+
+  .product-add-to-cart-btn {
+    min-height: 62px;
+    font-size: 18px;
   }
 }
