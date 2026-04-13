@@ -1,7 +1,11 @@
 <?php
 defined('ABSPATH') || exit;
 
-do_action('woocommerce_before_checkout_form', $checkout);
+/*
+ * Do NOT use woocommerce_before_checkout_form here,
+ * because it prints the default coupon/login area above the custom layout.
+ */
+wc_print_notices();
 
 if (!$checkout->is_registration_enabled() && $checkout->is_registration_required() && !is_user_logged_in()) {
 	echo esc_html(apply_filters('woocommerce_checkout_must_be_logged_in_message', __('You must be logged in to checkout.', 'woocommerce')));
@@ -11,7 +15,7 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 
 <main class="axiom-checkout-page">
   <section class="axiom-checkout-shell">
-    <div class="container">
+    <div class="axiom-checkout-fluid">
       <div class="axiom-checkout-topbar">
         <div class="axiom-checkout-brand">
           <img
