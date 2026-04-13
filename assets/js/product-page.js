@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const productPrice = document.getElementById("productPrice");
   const stickyProductPrice = document.getElementById("stickyProductPrice");
   const stickyProductVariant = document.getElementById("stickyProductVariant");
+  const stickyProductImage = document.getElementById("stickyProductImage");
   const productStock = document.getElementById("productStock");
   const productMainImage = document.getElementById("productMainImage");
   const addToCartBtn = document.getElementById("productAddToCart");
@@ -48,8 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function syncStickyVisibility() {
-    if (!stickyBar || !productPurchaseBox) return;
-    const rect = productPurchaseBox.getBoundingClientRect();
+    if (!stickyBar || !addToCartBtn) return;
+    const rect = addToCartBtn.getBoundingClientRect();
     if (rect.bottom < 0) {
       stickyBar.classList.add("active");
     } else {
@@ -79,7 +80,20 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   async function addProductAjax(payload) {
+    const originalMainText = addToCartBtn ? addToCartBtn.textContent : "";
+    const originalStickyText = stickyAddToCartBtn ? stickyAddToCartBtn.textContent : "";
+
     try {
+      if (addToCartBtn) {
+        addToCartBtn.disabled = true;
+        addToCartBtn.textContent = "Adding...";
+      }
+
+      if (stickyAddToCartBtn) {
+        stickyAddToCartBtn.disabled = true;
+        stickyAddToCartBtn.textContent = "Adding...";
+      }
+
       const result = await postAjax("axiom_add_product_from_product_page", payload);
 
       if (result && result.success) {
@@ -92,6 +106,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     } catch (error) {
       console.error("Product add failed:", error);
+    } finally {
+      if (addToCartBtn) {
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = originalMainText || "Add To Cart";
+      }
+
+      if (stickyAddToCartBtn) {
+        stickyAddToCartBtn.disabled = false;
+        stickyAddToCartBtn.textContent = originalStickyText || "Add To Cart";
+      }
     }
   }
 
@@ -138,6 +162,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (productMainImage && image) {
         productMainImage.src = image;
+      }
+
+      if (stickyProductImage && image) {
+        stickyProductImage.src = image;
       }
 
       if (productStock) {
