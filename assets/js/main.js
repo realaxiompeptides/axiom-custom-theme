@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartSubtotal = document.getElementById("cartSubtotal");
   const cartItemsList = document.getElementById("cartItemsList");
   const cartEmptyState = document.getElementById("cartEmptyState");
+  const cartCheckoutLink = document.getElementById("cartCheckoutLink");
 
   function openMenu() {
     if (!mobileMenu || !overlay) return;
@@ -214,8 +215,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  if (menuToggle) menuToggle.addEventListener("click", openMenu);
-  if (menuClose) menuClose.addEventListener("click", closeMenu);
+  if (menuToggle) {
+    menuToggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      openMenu();
+    });
+  }
+
+  if (menuClose) {
+    menuClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeMenu();
+    });
+  }
 
   if (cartToggle) {
     cartToggle.addEventListener("click", async function (e) {
@@ -225,7 +237,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  if (cartClose) cartClose.addEventListener("click", closeCart);
+  if (cartClose) {
+    cartClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeCart();
+    });
+  }
+
+  if (cartCheckoutLink) {
+    cartCheckoutLink.addEventListener("click", function () {
+      closeCart();
+    });
+  }
 
   if (overlay) {
     overlay.addEventListener("click", function () {
@@ -241,6 +264,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const addBtn = e.target.closest("[data-add-product-id]");
 
       if (qtyBtn) {
+        e.preventDefault();
+
         const cartKey = qtyBtn.getAttribute("data-cart-key");
         const card = qtyBtn.closest(".cart-item-card");
         const valueEl = card ? card.querySelector(".cart-qty-value") : null;
@@ -256,12 +281,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       if (removeBtn) {
+        e.preventDefault();
         const cartKey = removeBtn.getAttribute("data-remove-cart-key");
         await removeCartItem(cartKey);
         return;
       }
 
       if (addBtn) {
+        e.preventDefault();
         const productId = addBtn.getAttribute("data-add-product-id");
         await addSimpleProduct(productId);
         return;
@@ -273,9 +300,14 @@ document.addEventListener("DOMContentLoaded", function () {
     refreshCartDrawer();
   });
 
-  jQuery(document.body).on("added_to_cart removed_from_cart updated_cart_totals wc_fragments_refreshed", function () {
-    refreshCartDrawer();
-  });
+  if (window.jQuery) {
+    jQuery(document.body).on(
+      "added_to_cart removed_from_cart updated_cart_totals wc_fragments_refreshed",
+      function () {
+        refreshCartDrawer();
+      }
+    );
+  }
 
   function initAgeGate() {
     const STORAGE_KEY = "axiom_age_gate_accepted_v1";
