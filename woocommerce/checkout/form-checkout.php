@@ -69,13 +69,6 @@ $contact_keys = array('billing_email', 'billing_phone');
         <div class="axiom-checkout-grid axiom-checkout-grid--single">
           <div class="axiom-checkout-main axiom-checkout-main--full">
 
-            <?php
-            $summary_template = get_template_directory() . '/checkout/checkout-order-summary.php';
-            if (file_exists($summary_template)) {
-              include $summary_template;
-            }
-            ?>
-
             <section class="axiom-checkout-card axiom-checkout-contact-card">
               <div class="axiom-checkout-card-header">
                 <h2 class="axiom-checkout-main-title">Checkout</h2>
@@ -83,7 +76,6 @@ $contact_keys = array('billing_email', 'billing_phone');
               </div>
 
               <div class="axiom-checkout-card-body">
-
                 <div class="axiom-checkout-contact-section">
                   <h3>Contact Information</h3>
 
@@ -132,7 +124,6 @@ $contact_keys = array('billing_email', 'billing_phone');
                 </div>
 
                 <?php do_action('woocommerce_checkout_shipping'); ?>
-
               </div>
             </section>
 
@@ -166,14 +157,16 @@ $contact_keys = array('billing_email', 'billing_phone');
 
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
+              </div>
+            </section>
 
-                <?php
-                $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
-                if (file_exists($research_box_template)) {
-                  include $research_box_template;
-                }
-                ?>
+            <section class="axiom-checkout-card axiom-checkout-order-card">
+              <div class="axiom-checkout-card-header">
+                <p class="axiom-checkout-kicker">Order Summary</p>
+                <h2>Review your order</h2>
+              </div>
 
+              <div class="axiom-checkout-card-body">
                 <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
 
                 <div class="axiom-checkout-review-wrap">
@@ -186,9 +179,20 @@ $contact_keys = array('billing_email', 'billing_phone');
                   <div id="order_review" class="woocommerce-checkout-review-order">
                     <?php do_action('woocommerce_checkout_order_review'); ?>
                   </div>
-
-                  <?php do_action('woocommerce_checkout_after_order_review'); ?>
                 </div>
+              </div>
+            </section>
+
+            <?php
+            $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
+            if (file_exists($research_box_template)) {
+              include $research_box_template;
+            }
+            ?>
+
+            <section class="axiom-checkout-card axiom-checkout-place-order-card">
+              <div class="axiom-checkout-card-body">
+                <?php do_action('woocommerce_checkout_after_order_review'); ?>
               </div>
             </section>
 
