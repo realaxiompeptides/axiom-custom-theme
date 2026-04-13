@@ -4,9 +4,6 @@ defined('ABSPATH') || exit;
 if ( ! wp_doing_ajax() ) {
 	do_action( 'woocommerce_review_order_before_payment' );
 }
-
-$theme_checkout_research_file    = get_template_directory() . '/checkout/checkout-research-box.php';
-$theme_checkout_place_order_file = get_template_directory() . '/checkout/checkout-place-order-extras.php';
 ?>
 
 <div id="payment" class="woocommerce-checkout-payment axiom-payment-wrap">
@@ -34,35 +31,27 @@ $theme_checkout_place_order_file = get_template_directory() . '/checkout/checkou
 		</ul>
 	<?php endif; ?>
 
-	<?php
-	if ( file_exists( $theme_checkout_research_file ) ) {
-		include $theme_checkout_research_file;
-	} else {
-		?>
-		<div class="axiom-checkout-research-wrap axiom-checkout-research-wrap--payment">
-			<p class="axiom-checkout-kicker">Required acknowledgment</p>
-			<h3>Research use only</h3>
-			<p class="axiom-checkout-research-help">
-				All products are intended strictly for laboratory, analytical, and in-vitro research use only.
-				Not for human or veterinary consumption.
-			</p>
+	<div class="axiom-checkout-research-wrap axiom-checkout-research-wrap--payment">
+		<p class="axiom-checkout-kicker">Required acknowledgment</p>
+		<h3>Research use only</h3>
+		<p class="axiom-checkout-research-help">
+			All products are intended strictly for laboratory, analytical, and in-vitro research use only.
+			Not for human or veterinary consumption.
+		</p>
 
-			<?php
-			woocommerce_form_field(
-				'axiom_research_use_ack',
-				array(
-					'type'     => 'checkbox',
-					'class'    => array( 'form-row-wide' ),
-					'required' => true,
-					'label'    => 'I acknowledge this order is for research use only',
-				),
-				WC()->checkout()->get_value( 'axiom_research_use_ack' )
-			);
-			?>
-		</div>
 		<?php
-	}
-	?>
+		woocommerce_form_field(
+			'axiom_research_use_ack',
+			array(
+				'type'     => 'checkbox',
+				'class'    => array( 'form-row-wide', 'axiom-checkout-checkbox-row' ),
+				'required' => true,
+				'label'    => 'I acknowledge this order is for research use only',
+			),
+			WC()->checkout()->get_value( 'axiom_research_use_ack' )
+		);
+		?>
+	</div>
 
 	<div class="axiom-place-order-section">
 		<div class="form-row place-order">
@@ -104,39 +93,31 @@ $theme_checkout_place_order_file = get_template_directory() . '/checkout/checkou
 			<?php wp_nonce_field( 'woocommerce-process_checkout', 'woocommerce-process-checkout-nonce' ); ?>
 		</div>
 
-		<?php
-		if ( file_exists( $theme_checkout_place_order_file ) ) {
-			include $theme_checkout_place_order_file;
-		} else {
-			?>
-			<div class="axiom-place-order-trust-icons">
-				<div class="axiom-place-order-trust-item">
-					<span class="axiom-place-order-trust-emoji">🔒</span>
-					<strong>99%+</strong>
-					<small>Purity</small>
-				</div>
-
-				<div class="axiom-place-order-trust-item">
-					<span class="axiom-place-order-trust-emoji">✅</span>
-					<strong>Third-Party</strong>
-					<small>Verified</small>
-				</div>
-
-				<div class="axiom-place-order-trust-item">
-					<span class="axiom-place-order-trust-emoji">📍</span>
-					<strong>U.S. Based</strong>
-					<small>California</small>
-				</div>
-
-				<div class="axiom-place-order-trust-item">
-					<span class="axiom-place-order-trust-emoji">📦</span>
-					<strong>Same-Day Ship</strong>
-					<small>Before 2PM PST</small>
-				</div>
+		<div class="axiom-place-order-trust-icons">
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-emoji">🔒</span>
+				<strong>99%+</strong>
+				<small>Purity</small>
 			</div>
-			<?php
-		}
-		?>
+
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-emoji">✅</span>
+				<strong>Third-Party</strong>
+				<small>Verified</small>
+			</div>
+
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-emoji">📍</span>
+				<strong>U.S. Based</strong>
+				<small>California</small>
+			</div>
+
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-emoji">📦</span>
+				<strong>Same-Day Ship</strong>
+				<small>Before 2PM PST</small>
+			</div>
+		</div>
 	</div>
 </div>
 
