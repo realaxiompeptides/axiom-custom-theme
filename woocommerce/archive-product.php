@@ -6,7 +6,7 @@ get_header('shop');
 $shop_page_id = function_exists('wc_get_page_id') ? wc_get_page_id('shop') : 0;
 $shop_title   = $shop_page_id ? get_the_title($shop_page_id) : __('Shop', 'axiom');
 
-$current_term = get_queried_object();
+$current_term   = get_queried_object();
 $is_tax_archive = is_tax('product_cat') || is_tax('product_tag');
 
 $page_title = $shop_title;
@@ -19,9 +19,6 @@ if ($is_tax_archive && $current_term && !empty($current_term->name)) {
     }
 }
 
-/*
- * Pull every published product.
- */
 $product_query_args = array(
     'post_type'           => 'product',
     'post_status'         => 'publish',
@@ -45,9 +42,6 @@ if ($is_tax_archive && $current_term && !empty($current_term->term_id)) {
 
 $products = new WP_Query($product_query_args);
 
-/*
- * Get all product categories with products for filter pills.
- */
 $catalog_terms = get_terms(array(
     'taxonomy'   => 'product_cat',
     'hide_empty' => true,
@@ -65,9 +59,8 @@ $catalog_terms = get_terms(array(
         </div>
     </section>
 
-    <section class="axiom-catalog-controls-wrap">
-        <div class="axiom-catalog-controls">
-
+    <section class="axiom-catalog-toolbar-section">
+        <div class="axiom-catalog-toolbar">
             <div class="axiom-catalog-search-wrap">
                 <input
                     type="search"
@@ -106,14 +99,12 @@ $catalog_terms = get_terms(array(
             <?php endif; ?>
         </div>
 
-        <div class="axiom-catalog-meta">
-            <span id="axiomCatalogCount">
-                <?php echo intval($products->found_posts); ?> results
-            </span>
+        <div class="axiom-catalog-results-row">
+            <span id="axiomCatalogCount"><?php echo intval($products->found_posts); ?> results</span>
         </div>
     </section>
 
-    <section class="axiom-catalog-grid-wrap">
+    <section class="axiom-catalog-grid-section">
         <div class="axiom-catalog-grid" id="axiomCatalogGrid">
             <?php if ($products->have_posts()) : ?>
                 <?php while ($products->have_posts()) : $products->the_post(); ?>
@@ -123,14 +114,14 @@ $catalog_terms = get_terms(array(
                         continue;
                     }
 
-                    $product_id = $product->get_id();
+                    $product_id   = $product->get_id();
                     $product_name = $product->get_name();
                     $product_link = get_permalink($product_id);
-                    $image_html = $product->get_image('woocommerce_thumbnail');
-                    $price_html = $product->get_price_html();
-                    $is_on_sale = $product->is_on_sale();
+                    $image_html   = $product->get_image('woocommerce_thumbnail');
+                    $price_html   = $product->get_price_html();
+                    $is_on_sale   = $product->is_on_sale();
                     $date_created = $product->get_date_created() ? $product->get_date_created()->date('U') : 0;
-                    $raw_price = $product->get_price() !== '' ? (float) $product->get_price() : 0;
+                    $raw_price    = $product->get_price() !== '' ? (float) $product->get_price() : 0;
 
                     $product_terms = get_the_terms($product_id, 'product_cat');
                     $term_slugs = array();
@@ -225,5 +216,4 @@ $catalog_terms = get_terms(array(
     </section>
 </main>
 
-<?php
-get_footer('shop');
+<?php get_footer('shop'); ?>
