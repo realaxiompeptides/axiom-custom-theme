@@ -1,0 +1,396 @@
+.axiom-catalog-page {
+  background: #f7f9fc;
+  color: #0f172a;
+}
+
+.axiom-catalog-hero {
+  background:
+    linear-gradient(90deg, rgba(0, 18, 56, 0.94) 0%, rgba(2, 9, 23, 0.98) 100%);
+  color: #ffffff;
+  padding: 36px 0 28px;
+}
+
+.axiom-catalog-hero-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.axiom-catalog-kicker {
+  margin: 0;
+  color: #7dd3fc;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-catalog-hero h1 {
+  margin: 0;
+  font-size: clamp(38px, 7vw, 72px);
+  line-height: 0.96;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.axiom-catalog-subtext {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(255,255,255,0.84);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.axiom-catalog-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.axiom-catalog-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(125, 211, 252, 0.32);
+  background: rgba(125, 211, 252, 0.08);
+  color: #86d8ff;
+  font-weight: 800;
+  font-size: 14px;
+}
+
+.axiom-catalog-badge-muted {
+  color: rgba(255,255,255,0.72);
+  border-color: rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.06);
+}
+
+.axiom-catalog-toolbar-wrap {
+  background: #ffffff;
+  border-bottom: 1px solid #e7edf5;
+}
+
+.axiom-catalog-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.axiom-catalog-results {
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.axiom-catalog-toolbar .woocommerce-ordering {
+  margin: 0;
+}
+
+.axiom-catalog-toolbar .orderby {
+  min-height: 50px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid #d8e2ef;
+  background: #f8fbff;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.axiom-catalog-grid-section {
+  padding: 26px 0 22px;
+}
+
+.axiom-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.axiom-catalog-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #dce6f2;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.05);
+}
+
+.axiom-catalog-card-image-link {
+  position: relative;
+  display: block;
+  text-decoration: none;
+}
+
+.axiom-catalog-card-image-wrap {
+  aspect-ratio: 1 / 1;
+  background: #fbfdff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 26px;
+}
+
+.axiom-catalog-card-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.axiom-catalog-sale-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  height: 68px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #2f84bf;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 10px 24px rgba(47, 132, 191, 0.28);
+}
+
+.axiom-catalog-card-body {
+  padding: 20px 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.axiom-catalog-card-title {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.05;
+  font-weight: 900;
+}
+
+.axiom-catalog-card-title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.axiom-catalog-card-title a:hover {
+  color: #2f84bf;
+}
+
+.axiom-catalog-card-price {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.axiom-catalog-card-price del {
+  color: #94a3b8;
+  opacity: 1;
+  margin-right: 8px;
+}
+
+.axiom-catalog-card-price ins {
+  text-decoration: none;
+  color: #b59a18;
+}
+
+.axiom-catalog-card-actions {
+  margin-top: auto;
+}
+
+.axiom-catalog-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 54px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #2f84bf 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: 0 16px 30px rgba(47, 132, 191, 0.22);
+}
+
+.axiom-catalog-card-btn:hover {
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+.axiom-catalog-pagination {
+  margin-top: 28px;
+}
+
+.axiom-catalog-pagination .page-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.axiom-catalog-pagination .page-numbers a,
+.axiom-catalog-pagination .page-numbers span {
+  min-width: 46px;
+  height: 46px;
+  border-radius: 999px;
+  border: 1px solid #d9e4f0;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #0f172a;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.axiom-catalog-pagination .page-numbers .current {
+  background: #2f84bf;
+  border-color: #2f84bf;
+  color: #ffffff;
+}
+
+.axiom-catalog-coa-section,
+.axiom-catalog-disclaimer-section {
+  padding-bottom: 24px;
+}
+
+.axiom-catalog-coa-card,
+.axiom-catalog-disclaimer-card {
+  background: #ffffff;
+  border: 1px solid #dce6f2;
+  border-radius: 28px;
+  padding: 30px 24px;
+}
+
+.axiom-catalog-coa-card h2 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1.04;
+  font-weight: 900;
+}
+
+.axiom-catalog-coa-card p,
+.axiom-catalog-disclaimer-card p {
+  margin: 0;
+  color: #667085;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.axiom-catalog-coa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  margin-top: 22px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #0b1220 0%, #14532d 100%);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.axiom-catalog-coa-btn:hover {
+  color: #ffffff;
+  opacity: 0.96;
+}
+
+.axiom-catalog-empty {
+  background: #ffffff;
+  border: 1px solid #dce6f2;
+  border-radius: 24px;
+  padding: 34px 22px;
+  text-align: center;
+}
+
+.axiom-catalog-empty h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.axiom-catalog-empty p {
+  margin: 0;
+  color: #667085;
+  font-size: 17px;
+}
+
+@media (max-width: 991px) {
+  .axiom-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .axiom-catalog-card-title {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-catalog-hero {
+    padding: 28px 0 22px;
+  }
+
+  .axiom-catalog-subtext {
+    font-size: 16px;
+  }
+
+  .axiom-catalog-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axiom-catalog-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .axiom-catalog-card-image-wrap {
+    padding: 18px;
+  }
+
+  .axiom-catalog-card-title {
+    font-size: 22px;
+  }
+
+  .axiom-catalog-card-body {
+    padding: 16px 16px 18px;
+  }
+
+  .axiom-catalog-sale-badge {
+    top: 12px;
+    left: 12px;
+    min-width: 60px;
+    height: 60px;
+    font-size: 14px;
+  }
+
+  .axiom-catalog-coa-card,
+  .axiom-catalog-disclaimer-card {
+    padding: 22px 16px;
+    border-radius: 22px;
+  }
+
+  .axiom-catalog-coa-card p,
+  .axiom-catalog-disclaimer-card p {
+    font-size: 16px;
+  }
+
+  .axiom-catalog-coa-btn {
+    width: 100%;
+  }
+}
