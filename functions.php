@@ -101,6 +101,25 @@ function axiom_custom_theme_assets() {
         }
     }
 
+    if (function_exists('is_page_template') && is_page_template('track-order/track-order-template.php')) {
+        wp_enqueue_style(
+            'axiom-track-order',
+            $theme_uri . '/assets/css/track-order/track-order.css',
+            array('axiom-base'),
+            '1.0'
+        );
+
+        if (file_exists(get_template_directory() . '/assets/js/track-order/track-order.js')) {
+            wp_enqueue_script(
+                'axiom-track-order',
+                $theme_uri . '/assets/js/track-order/track-order.js',
+                array(),
+                '1.0',
+                true
+            );
+        }
+    }
+
     if (function_exists('is_product') && is_product()) {
         wp_enqueue_style(
             'axiom-product-layout',
@@ -454,7 +473,7 @@ function axiom_add_simple_product_to_cart() {
 
     wp_send_json_success(axiom_get_cart_drawer_payload());
 }
-add_action('wp_ajax_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
+add_action('wp_ajax_axiOM_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
 add_action('wp_ajax_nopriv_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
 
 function axiom_add_product_from_product_page() {
