@@ -1,225 +1,114 @@
 .axiom-checkout-payment-icons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  justify-content: center;
   align-items: center;
-  margin: 0 0 20px;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 .axiom-payment-icon,
 .axiom-payment-image {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
 }
 
 .axiom-payment-icon i {
-  font-size: 34px;
-  color: #122041;
+  font-size: 29px;
+  color: #0f172a;
+  line-height: 1;
 }
 
 .axiom-payment-image img {
   display: block;
-  width: 34px;
-  height: 34px;
+  max-width: 28px;
+  max-height: 28px;
   object-fit: contain;
 }
 
-#payment {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background: transparent !important;
-  border: 0 !important;
+.woocommerce-checkout #payment {
+  margin-top: 18px;
+  background: #ffffff !important;
+  border: 1px solid #dbe7f3 !important;
+  border-radius: 22px !important;
+  overflow: hidden;
 }
 
-#payment .wc_payment_methods {
-  margin: 0 0 18px !important;
-  padding: 0 !important;
-  list-style: none;
-  background: transparent !important;
-  border: 0 !important;
-}
-
-#payment .wc_payment_method {
-  margin: 0 0 14px !important;
+.woocommerce-checkout #payment ul.payment_methods {
   padding: 16px !important;
-  border: 1px solid #d9e4f0 !important;
-  border-radius: 18px !important;
-  background: #fff !important;
+  border-bottom: 1px solid #e7eef5 !important;
+  margin: 0 !important;
 }
 
-#payment .wc_payment_method > label {
-  display: flex !important;
-  align-items: center;
-  gap: 10px;
-  margin: 0 !important;
-  color: #18233f !important;
-  font-size: 17px !important;
-  font-weight: 800 !important;
-}
-
-#payment .wc_payment_method input[type="radio"] {
-  width: 26px !important;
-  height: 26px !important;
-  min-width: 26px !important;
-  min-height: 26px !important;
-  margin: 0 !important;
+.woocommerce-checkout #payment ul.payment_methods li {
+  margin: 0 0 12px !important;
   padding: 0 !important;
 }
 
-#payment .payment_box {
-  margin: 14px 0 0 !important;
-  padding: 16px !important;
-  border-radius: 16px !important;
+.woocommerce-checkout #payment ul.payment_methods li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.woocommerce-checkout #payment div.payment_box {
+  margin: 10px 0 0 !important;
   background: #f8fbff !important;
-  color: #54627d !important;
-  border: 1px solid #dfe8f2 !important;
-  box-shadow: none !important;
+  border: 1px solid #dbe7f3 !important;
+  color: #42566f !important;
+  border-radius: 16px !important;
 }
 
-#payment .payment_box::before {
+.woocommerce-checkout #payment div.payment_box::before {
   display: none !important;
 }
 
-.axiom-checkout-research-wrap--payment {
-  margin-top: 8px;
-  margin-bottom: 18px !important;
+.woocommerce-checkout #payment .form-row {
   padding: 18px !important;
-  border: 1px solid #ead27a !important;
-  background: #fff9e8 !important;
-  border-radius: 22px !important;
+  margin: 0 !important;
 }
 
-.axiom-checkout-research-wrap--payment h3 {
-  margin: 0 0 10px;
-  color: #7c4a18;
-  font-size: 22px;
-  font-weight: 900;
+button[name="woocommerce_checkout_place_order"],
+#place_order {
+  width: 100%;
+  min-height: 62px;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 16px 28px rgba(47, 132, 191, 0.18);
 }
 
-.axiom-checkout-research-help {
-  margin: 0 0 14px;
-  color: #8f6a24;
-  font-size: 16px;
+button[name="woocommerce_checkout_place_order"]:hover,
+#place_order:hover {
+  filter: brightness(1.03);
+}
+
+button[name="woocommerce_checkout_place_order"]:disabled,
+#place_order:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.woocommerce-privacy-policy-text,
+.woocommerce-terms-and-conditions-wrapper,
+.woocommerce-terms-and-conditions-wrapper p {
+  color: #64748b;
+  font-size: 13px;
   line-height: 1.65;
 }
 
-.axiom-checkout-research-wrap--payment .form-row {
-  margin: 0 !important;
-}
-
-.axiom-checkout-research-wrap--payment label.checkbox {
-  display: flex !important;
-  align-items: flex-start;
-  gap: 12px;
-  color: #24314c !important;
-  font-size: 17px !important;
-  font-weight: 800 !important;
-  line-height: 1.45 !important;
-}
-
-.axiom-checkout-research-wrap--payment input[type="checkbox"] {
-  width: 32px !important;
-  height: 32px !important;
-  min-width: 32px !important;
-  min-height: 32px !important;
-  margin: 2px 0 0 !important;
-  padding: 0 !important;
-  border-radius: 8px !important;
-}
-
-.axiom-place-order-section {
-  margin-top: 0;
-  padding: 0;
-}
-
-.axiom-place-order-button,
-#place_order,
-.woocommerce #payment #place_order,
-.woocommerce-page #payment #place_order {
-  width: 100% !important;
-  min-height: 68px !important;
-  padding: 0 20px !important;
-  border: 0 !important;
-  border-radius: 22px !important;
-  background: linear-gradient(90deg, #165b43 0%, #1f6a4d 100%) !important;
-  color: #fff !important;
-  font-size: 22px !important;
-  font-weight: 900 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  box-shadow: none !important;
-}
-
-.axiom-place-order-button:hover,
-#place_order:hover {
-  opacity: 0.96;
-}
-
-.axiom-place-order-trust-icons {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
-
-.axiom-place-order-trust-item {
-  padding: 16px 10px;
-  border: 1px solid #d9e4f0;
-  border-radius: 18px;
-  background: #fff;
-  text-align: center;
-}
-
-.axiom-place-order-trust-emoji {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 24px;
-  line-height: 1;
-}
-
-.axiom-place-order-trust-item strong {
-  display: block;
-  color: #26314b;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.2;
-}
-
-.axiom-place-order-trust-item small {
-  display: block;
-  margin-top: 6px;
-  color: #7b8798;
-  font-size: 14px;
-  line-height: 1.35;
-}
-
-#payment .place-order {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-#payment .woocommerce-terms-and-conditions-wrapper {
-  margin: 0 0 16px;
-}
-
-#payment .woocommerce-terms-and-conditions-checkbox-text,
-#payment .form-row label.checkbox {
-  color: #344159;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-#payment .form-row input[type="checkbox"] {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  margin-top: 2px !important;
+.woocommerce form .woocommerce-terms-and-conditions-wrapper .required {
+  color: #e25353;
 }
