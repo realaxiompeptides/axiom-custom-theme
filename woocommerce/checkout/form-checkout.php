@@ -21,6 +21,20 @@ $theme_uri  = get_template_directory_uri();
 $home_url   = home_url('/');
 $cart_url   = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
 $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_contents_count()) : 0;
+
+$checkout_fields = $checkout->get_checkout_fields();
+$billing_fields  = isset($checkout_fields['billing']) ? $checkout_fields['billing'] : array();
+
+/*
+ * Split billing fields:
+ * Contact section:
+ * - billing_email
+ * - billing_phone
+ *
+ * Billing details section:
+ * - everything else
+ */
+$contact_keys = array('billing_email', 'billing_phone');
 ?>
 
 <main class="axiom-checkout-page">
@@ -64,6 +78,13 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
         <div class="axiom-checkout-grid axiom-checkout-grid--single">
           <div class="axiom-checkout-main axiom-checkout-main--full">
 
+            <?php
+            $summary_template = get_template_directory() . '/checkout/checkout-order-summary.php';
+            if (file_exists($summary_template)) {
+              include $summary_template;
+            }
+            ?>
+
             <section class="axiom-checkout-card axiom-checkout-contact-card">
               <div class="axiom-checkout-card-header">
                 <p class="axiom-checkout-kicker">Contact Information</p>
@@ -72,8 +93,56 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
               </div>
 
               <div class="axiom-checkout-card-body">
-                <?php do_action('woocommerce_checkout_billing'); ?>
+
+                <div class="axiom-checkout-contact-section">
+                  <h3>Contact Information</h3>
+
+                  <?php
+                  foreach ($contact_keys as $field_key) {
+                    if (isset($billing_fields[$field_key])) {
+                      woocommerce_form_field(
+                        $field_key,
+                        $billing_fields[$field_key],
+                        $checkout->get_value($field_key)
+                      );
+                    }
+                  }
+                  ?>
+
+                  <?php if (isset($billing_fields['billing_email'])) : ?>
+                    <p class="form-row form-row-wide axiom-checkout-email-optin">
+                      <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                        <input
+                          id="axiom_email_optin_visual"
+                          class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+                          type="checkbox"
+                        />
+                        <span>I would like to receive exclusive emails with discounts and product information</span>
+                      </label>
+                    </p>
+                  <?php endif; ?>
+                </div>
+
+                <div class="axiom-checkout-billing-section">
+                  <h3>Billing details</h3>
+
+                  <?php
+                  foreach ($billing_fields as $field_key => $field_args) {
+                    if (in_array($field_key, $contact_keys, true)) {
+                      continue;
+                    }
+
+                    woocommerce_form_field(
+                      $field_key,
+                      $field_args,
+                      $checkout->get_value($field_key)
+                    );
+                  }
+                  ?>
+                </div>
+
                 <?php do_action('woocommerce_checkout_shipping'); ?>
+
               </div>
             </section>
 
@@ -90,12 +159,21 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-mastercard"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-amex"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-discover"></i></span>
+
                   <span class="axiom-payment-image">
-                    <img src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>" alt="Venmo" />
+                    <img
+                      src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>"
+                      alt="Venmo"
+                    />
                   </span>
+
                   <span class="axiom-payment-image">
-                    <img src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>" alt="Zelle" />
+                    <img
+                      src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>"
+                      alt="Zelle"
+                    />
                   </span>
+
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
 
