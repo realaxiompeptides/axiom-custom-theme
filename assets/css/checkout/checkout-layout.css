@@ -1,127 +1,129 @@
 .axiom-checkout-page {
-  background: linear-gradient(180deg, #f6f9fd 0%, #eef4fb 100%);
-  padding: 20px 0 40px;
+  width: 100%;
+  max-width: 100%;
+  background: #f5f7fb;
 }
 
-.axiom-checkout-shell .container {
-  max-width: 1280px;
+.axiom-checkout-shell {
+  width: 100%;
+  padding: 20px 0 48px;
+}
+
+.axiom-checkout-page .container {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding-left: 18px;
+  padding-right: 18px;
+  box-sizing: border-box;
+}
+
+.axiom-checkout-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.axiom-checkout-main,
+.axiom-checkout-sidebar {
+  min-width: 0;
+}
+
+.axiom-checkout-topbar,
+.axiom-checkout-card,
+.axiom-checkout-payment-card,
+.axiom-checkout-order-card,
+.axiom-checkout-summary-card,
+.axiom-checkout-research-wrap {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #dbe4f0;
+  border-radius: 28px;
 }
 
 .axiom-checkout-topbar {
+  margin: 0 0 24px;
+  padding: 22px 20px;
+}
+
+.axiom-checkout-brand {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-bottom: 24px;
-  padding: 18px 22px;
-  background: #ffffff;
-  border: 1px solid #dce6f1;
-  border-radius: 24px;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.04);
+  width: 100%;
 }
 
 .axiom-checkout-brand img {
   display: block;
-  width: auto;
-  height: 58px;
-  max-width: 100%;
+  width: 96px;
+  max-width: 96px;
+  height: auto;
+  margin: 0 auto;
 }
 
 .axiom-checkout-secure-note {
   display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 10px;
 }
 
 .axiom-checkout-secure-note span {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 0 14px;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 18px;
   border-radius: 999px;
-  background: #edf6ff;
-  border: 1px solid #d8e9f8;
+  background: #eef6fd;
+  border: 1px solid #cfe0f2;
   color: #2f84bf;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   white-space: nowrap;
 }
 
-.axiom-checkout-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 390px;
-  gap: 24px;
-  align-items: start;
-}
-
-.axiom-checkout-main {
-  display: grid;
-  gap: 22px;
-}
-
-.axiom-checkout-sidebar {
-  position: sticky;
-  top: 24px;
-}
-
 .axiom-checkout-card,
-.axiom-checkout-summary-card {
-  background: #ffffff;
-  border: 1px solid #dce6f1;
-  border-radius: 28px;
-  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.04);
-  overflow: hidden;
+.axiom-checkout-payment-card,
+.axiom-checkout-order-card,
+.axiom-checkout-summary-card,
+.axiom-checkout-research-wrap {
+  padding: 28px;
+  margin-bottom: 20px;
 }
 
-.axiom-checkout-card-header {
-  padding: 24px 24px 0;
+.axiom-checkout-card-header,
+.axiom-checkout-section-header {
+  margin-bottom: 22px;
 }
 
-.axiom-checkout-card-body {
-  padding: 24px;
-}
-
-.axiom-checkout-kicker {
-  margin: 0 0 10px;
-  color: #70839c;
-  font-size: 13px;
+.axiom-checkout-kicker,
+.axiom-checkout-section-kicker {
+  margin: 0 0 12px;
+  color: #6a778f;
+  font-size: 14px;
   font-weight: 900;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
-.axiom-checkout-card-header h2 {
-  margin: 0 0 8px;
+.axiom-checkout-card-header h2,
+.axiom-checkout-section-header h2 {
+  margin: 0 0 12px;
   color: #0f172a;
-  font-size: 30px;
+  font-size: 42px;
+  line-height: 1.08;
   font-weight: 900;
-  line-height: 1.02;
-  letter-spacing: -0.03em;
 }
 
-.axiom-checkout-card-header p {
+.axiom-checkout-card-header p,
+.axiom-checkout-section-header p {
   margin: 0;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.axiom-checkout-sections {
-  display: grid;
-  gap: 24px;
-}
-
-.axiom-checkout-section h3 {
-  margin: 0 0 14px;
-  color: #0f172a;
+  color: #667085;
   font-size: 18px;
-  font-weight: 900;
-}
-
-.axiom-checkout-contact-card .axiom-checkout-card-body,
-.axiom-checkout-research-card .axiom-checkout-card-body,
-.axiom-checkout-payment-card .axiom-checkout-card-body {
-  padding-top: 22px;
+  line-height: 1.65;
 }
