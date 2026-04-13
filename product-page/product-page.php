@@ -4,12 +4,16 @@ defined('ABSPATH') || exit;
 global $product;
 
 if (!$product || !is_a($product, 'WC_Product')) {
+    $product = wc_get_product(get_the_ID());
+}
+
+if (!$product) {
+    echo '<main class="product-main"><div class="container"><p>Product not found.</p></div></main>';
     return;
 }
 
 $product_id        = $product->get_id();
 $product_name      = $product->get_name();
-$product_permalink = get_permalink($product_id);
 $product_image_id  = $product->get_image_id();
 $product_image_url = $product_image_id ? wp_get_attachment_image_url($product_image_id, 'large') : wc_placeholder_img_src();
 $product_short     = $product->get_short_description();
@@ -18,38 +22,32 @@ $product_price     = $product->get_price_html();
 $product_sku       = $product->get_sku();
 
 $is_variable = $product->is_type('variable');
-$is_simple   = $product->is_type('simple');
 
-$stock_text = '';
-$stock_class = 'stock-backorder';
+$stock_text = $product->is_in_stock() ? 'In stock' : 'Out of stock';
+$stock_class = $product->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
 if ($product->managing_stock()) {
     $qty = (int) $product->get_stock_quantity();
-
     if ($qty > 5) {
         $stock_text = $qty . ' available';
         $stock_class = 'stock-high';
     } elseif ($qty > 0) {
         $stock_text = $qty . ' available';
         $stock_class = 'stock-low';
+    } elseif ($product->backorders_allowed()) {
+        $stock_text = 'Available on backorder';
+        $stock_class = 'stock-backorder';
     } else {
-        $stock_text = $product->backorders_allowed() ? 'Available on backorder' : 'Out of stock';
-        $stock_class = $product->backorders_allowed() ? 'stock-backorder' : 'stock-unavailable';
-    }
-} else {
-    if ($product->is_in_stock()) {
-        $stock_text = 'In stock';
-        $stock_class = 'stock-high';
-    } else {
-        $stock_text = $product->backorders_allowed() ? 'Available on backorder' : 'Out of stock';
-        $stock_class = $product->backorders_allowed() ? 'stock-backorder' : 'stock-unavailable';
+        $stock_text = 'Out of stock';
+        $stock_class = 'stock-unavailable';
     }
 }
 
-$available_variations = $is_variable ? $product->get_available_variations() : array();
 $variation_options = array();
 
-if ($is_variable && !empty($available_variations)) {
+if ($is_variable) {
+    $available_variations = $product->get_available_variations();
+
     foreach ($available_variations as $variation) {
         $variation_obj = wc_get_product($variation['variation_id']);
         if (!$variation_obj) {
@@ -58,14 +56,12 @@ if ($is_variable && !empty($available_variations)) {
 
         $label_parts = array();
         foreach ($variation['attributes'] as $attr_key => $attr_value) {
-            if (!$attr_value) {
-                continue;
-            }
+            if (!$attr_value) continue;
             $label_parts[] = ucwords(str_replace('-', ' ', $attr_value));
         }
 
-        $variation_stock_text = '';
-        $variation_stock_class = 'stock-backorder';
+        $variation_stock_text = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
+        $variation_stock_class = $variation_obj->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
         if ($variation_obj->managing_stock()) {
             $vqty = (int) $variation_obj->get_stock_quantity();
@@ -75,13 +71,13 @@ if ($is_variable && !empty($available_variations)) {
             } elseif ($vqty > 0) {
                 $variation_stock_text = $vqty . ' available';
                 $variation_stock_class = 'stock-low';
+            } elseif ($variation_obj->backorders_allowed()) {
+                $variation_stock_text = 'Available on backorder';
+                $variation_stock_class = 'stock-backorder';
             } else {
-                $variation_stock_text = $variation_obj->backorders_allowed() ? 'Available on backorder' : 'Out of stock';
-                $variation_stock_class = $variation_obj->backorders_allowed() ? 'stock-backorder' : 'stock-unavailable';
+                $variation_stock_text = 'Out of stock';
+                $variation_stock_class = 'stock-unavailable';
             }
-        } else {
-            $variation_stock_text = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
-            $variation_stock_class = $variation_obj->is_in_stock() ? 'stock-high' : 'stock-unavailable';
         }
 
         $variation_options[] = array(
@@ -116,45 +112,68 @@ if ($is_variable && !empty($available_variations)) {
           <?php endif; ?>
 
           <div class="product-gallery-main">
-            <img
-              id="productMainImage"
-              src="<?php echo esc_url($product_image_url); ?>"
-              alt="<?php echo esc_attr($product_name); ?>"
-            />
+            <img id="productMainImage" src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" />
           </div>
         </div>
 
         <div class="product-info-card">
           <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
 
-          <div class="product-price-row" id="productPriceWrap">
+          <div class="product-price-row">
             <span class="product-price-current" id="productPrice"><?php echo wp_kses_post($product_price); ?></span>
           </div>
 
+          <div class="product-conversion-stack">
+            <div class="product-conversion-pill product-conversion-pill-green">
+              <i class="fa-solid fa-shield-heart"></i>
+              <span>Research-use-only product catalog</span>
+            </div>
+
+            <div class="product-conversion-pill product-conversion-pill-blue">
+              <i class="fa-solid fa-vial-circle-check"></i>
+              <span>Third-party verification and batch-focused quality standards</span>
+            </div>
+
+            <div class="product-conversion-pill product-conversion-pill-slate">
+              <i class="fa-solid fa-truck-fast"></i>
+              <span>Fast USA fulfillment</span>
+            </div>
+          </div>
+
           <?php if (!empty($product_short)) : ?>
-            <div class="product-short-description" id="productShortDescription">
+            <div class="product-short-description">
               <?php echo wp_kses_post(wpautop($product_short)); ?>
             </div>
           <?php endif; ?>
 
-          <?php include get_template_directory() . '/product-page/icon-benefits.php'; ?>
+          <?php
+          $benefits = get_template_directory() . '/product-page/icon-benefits.php';
+          if (file_exists($benefits)) include $benefits;
+          ?>
+
+          <div class="product-disclaimer-box">
+            <div class="product-disclaimer-icon">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <div class="product-disclaimer-copy">
+              <strong>Research Use Only</strong>
+              <p>This product is intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.</p>
+            </div>
+          </div>
 
           <p id="productStock" class="product-stock-text <?php echo esc_attr($stock_class); ?>">
             <?php echo esc_html($stock_text); ?>
           </p>
 
-          <div class="product-purchase-box">
+          <div class="product-purchase-box" id="productPurchaseBox">
             <?php if ($is_variable && !empty($variation_options)) : ?>
-              <form class="product-form" method="post" action="<?php echo esc_url(wc_get_cart_url()); ?>">
-                <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
+              <form class="product-form ajax-product-form" data-product-type="variable">
                 <input type="hidden" name="product_id" value="<?php echo esc_attr($product_id); ?>">
                 <input type="hidden" name="variation_id" id="variation_id" value="">
-                <?php
-                $first_attributes = !empty($variation_options[0]['attributes']) ? $variation_options[0]['attributes'] : array();
-                foreach ($product->get_variation_attributes() as $attribute_name => $options) :
-                    $field_name = 'attribute_' . sanitize_title($attribute_name);
-                    ?>
-                    <input type="hidden" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_name); ?>" value="">
+
+                <?php foreach ($product->get_variation_attributes() as $attribute_name => $options) :
+                  $field_name = 'attribute_' . sanitize_title($attribute_name); ?>
+                  <input type="hidden" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_name); ?>" value="">
                 <?php endforeach; ?>
 
                 <div class="product-option-group">
@@ -176,18 +195,16 @@ if ($is_variable && !empty($available_variations)) {
                         </option>
                       <?php endforeach; ?>
                     </select>
-                    <span class="product-select-icon">
-                      <i class="fa-solid fa-chevron-down"></i>
-                    </span>
+                    <span class="product-select-icon"><i class="fa-solid fa-chevron-down"></i></span>
                   </div>
                 </div>
 
                 <div class="product-option-group">
                   <label class="product-option-label" for="productQty">Quantity</label>
                   <div class="product-qty-wrap">
-                    <button type="button" class="product-qty-btn" id="qtyMinus" aria-label="Decrease quantity">−</button>
-                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1" inputmode="numeric" />
-                    <button type="button" class="product-qty-btn" id="qtyPlus" aria-label="Increase quantity">+</button>
+                    <button type="button" class="product-qty-btn" id="qtyMinus">−</button>
+                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1">
+                    <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
                 </div>
 
@@ -195,17 +212,16 @@ if ($is_variable && !empty($available_variations)) {
                   Select Variant
                 </button>
               </form>
-
             <?php else : ?>
-              <form class="product-form" method="post" action="<?php echo esc_url(wc_get_cart_url()); ?>">
-                <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
+              <form class="product-form ajax-product-form" data-product-type="simple">
+                <input type="hidden" name="product_id" value="<?php echo esc_attr($product_id); ?>">
 
                 <div class="product-option-group">
                   <label class="product-option-label" for="productQty">Quantity</label>
                   <div class="product-qty-wrap">
-                    <button type="button" class="product-qty-btn" id="qtyMinus" aria-label="Decrease quantity">−</button>
-                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1" inputmode="numeric" />
-                    <button type="button" class="product-qty-btn" id="qtyPlus" aria-label="Increase quantity">+</button>
+                    <button type="button" class="product-qty-btn" id="qtyMinus">−</button>
+                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1">
+                    <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
                 </div>
 
@@ -248,14 +264,30 @@ if ($is_variable && !empty($available_variations)) {
         </div>
       </section>
 
-      <?php include get_template_directory() . '/product-page/why-choose-us.php'; ?>
+      <?php
+      $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
+      if (file_exists($why_choose)) include $why_choose;
+      ?>
     </div>
   </section>
 </main>
 
+<div class="sticky-product-bar" id="stickyProductBar">
+  <div class="sticky-product-bar-inner">
+    <div class="sticky-product-bar-copy">
+      <strong><?php echo esc_html($product_name); ?></strong>
+      <span id="stickyProductPrice"><?php echo wp_kses_post($product_price); ?></span>
+    </div>
+    <button type="button" class="sticky-product-bar-btn" id="stickyAddToCartBtn">
+      Add To Cart
+    </button>
+  </div>
+</div>
+
 <script>
-  window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
-    'isVariable' => $is_variable,
-    'variations' => $variation_options,
-  )); ?>;
+window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
+  'isVariable' => $is_variable,
+  'productId'  => $product_id,
+  'variations' => $variation_options,
+)); ?>;
 </script>
