@@ -126,7 +126,9 @@ $menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
   <div class="cart-drawer-inner">
     <div class="cart-drawer-header">
       <h2>Your Cart</h2>
-      <button class="drawer-close" id="cartClose" aria-label="Close cart" type="button">&times;</button>
+      <button class="drawer-close" id="cartClose" aria-label="Close cart" type="button">
+        &times;
+      </button>
     </div>
 
     <div class="cart-body">
@@ -144,8 +146,20 @@ $menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
       </div>
 
       <div class="cart-action-stack">
-        <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-pill-btn cart-muted-btn">View Cart</a>
-        <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-pill-btn cart-outline-btn">Checkout</a>
+        <a
+          href="<?php echo esc_url(wc_get_cart_url()); ?>"
+          class="cart-pill-btn cart-muted-btn"
+        >
+          View Cart
+        </a>
+
+        <a
+          href="<?php echo esc_url(wc_get_checkout_url()); ?>"
+          class="cart-pill-btn cart-outline-btn"
+          id="cartCheckoutLink"
+        >
+          Checkout
+        </a>
       </div>
     </div>
   </div>
