@@ -20,14 +20,27 @@ $product_short     = $product->get_short_description();
 $product_long      = $product->get_description();
 $product_price     = $product->get_price_html();
 $product_sku       = $product->get_sku();
+$is_variable       = $product->is_type('variable');
+$is_on_sale        = $product->is_on_sale();
 
-$is_variable = $product->is_type('variable');
+$regular_price = $product->get_regular_price();
+$sale_price    = $product->get_sale_price();
+
+$compare_html = '';
+$save_percent = '';
+
+if ($is_on_sale && $regular_price && $sale_price && (float) $regular_price > 0) {
+    $percent = round(((float) $regular_price - (float) $sale_price) / (float) $regular_price * 100);
+    $compare_html = wc_price($regular_price);
+    $save_percent = $percent > 0 ? 'Save ' . $percent . '%' : '';
+}
 
 $stock_text = $product->is_in_stock() ? 'In stock' : 'Out of stock';
 $stock_class = $product->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
 if ($product->managing_stock()) {
     $qty = (int) $product->get_stock_quantity();
+
     if ($qty > 5) {
         $stock_text = $qty . ' available';
         $stock_class = 'stock-high';
@@ -56,15 +69,20 @@ if ($is_variable) {
 
         $label_parts = array();
         foreach ($variation['attributes'] as $attr_key => $attr_value) {
-            if (!$attr_value) continue;
+            if (!$attr_value) {
+                continue;
+            }
             $label_parts[] = ucwords(str_replace('-', ' ', $attr_value));
         }
+
+        $variation_label = implode(' / ', $label_parts);
 
         $variation_stock_text = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
         $variation_stock_class = $variation_obj->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
         if ($variation_obj->managing_stock()) {
             $vqty = (int) $variation_obj->get_stock_quantity();
+
             if ($vqty > 5) {
                 $variation_stock_text = $vqty . ' available';
                 $variation_stock_class = 'stock-high';
@@ -80,15 +98,27 @@ if ($is_variable) {
             }
         }
 
+        $v_regular = $variation_obj->get_regular_price();
+        $v_sale    = $variation_obj->get_sale_price();
+        $v_save    = '';
+
+        if ($variation_obj->is_on_sale() && $v_regular && $v_sale && (float) $v_regular > 0) {
+            $v_percent = round(((float) $v_regular - (float) $v_sale) / (float) $v_regular * 100);
+            $v_save = $v_percent > 0 ? 'Save ' . $v_percent . '%' : '';
+        }
+
         $variation_options[] = array(
             'variation_id' => $variation['variation_id'],
-            'label'        => implode(' / ', $label_parts),
+            'label'        => $variation_label,
             'price_html'   => $variation_obj->get_price_html(),
             'image'        => !empty($variation['image']['src']) ? $variation['image']['src'] : $product_image_url,
             'stock_text'   => $variation_stock_text,
             'stock_class'  => $variation_stock_class,
             'attributes'   => $variation['attributes'],
             'purchasable'  => $variation_obj->is_purchasable() && ($variation_obj->is_in_stock() || $variation_obj->backorders_allowed()),
+            'regular_price_html' => $v_regular ? wc_price($v_regular) : '',
+            'save_percent' => $v_save,
+            'is_on_sale'   => $variation_obj->is_on_sale(),
         );
     }
 }
@@ -107,7 +137,7 @@ if ($is_variable) {
 
       <div class="product-layout">
         <div class="product-gallery-card">
-          <?php if ($product->is_on_sale()) : ?>
+          <?php if ($is_on_sale) : ?>
             <div class="product-badge">Sale</div>
           <?php endif; ?>
 
@@ -119,8 +149,15 @@ if ($is_variable) {
         <div class="product-info-card">
           <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
 
-          <div class="product-price-row">
-            <span class="product-price-current" id="productPrice"><?php echo wp_kses_post($product_price); ?></span>
+          <div class="product-price-stack">
+            <div class="product-price-row">
+              <span class="product-price-current" id="productPrice"><?php echo wp_kses_post($product_price); ?></span>
+            </div>
+
+            <div class="product-compare-row" id="productCompareRow"<?php echo ($compare_html || $save_percent) ? '' : ' style="display:none;"'; ?>>
+              <span class="product-compare-text">Compare at <span id="productComparePrice"><?php echo wp_kses_post($compare_html); ?></span></span>
+              <span class="product-save-pill" id="productSavePill"><?php echo esc_html($save_percent); ?></span>
+            </div>
           </div>
 
           <?php if (!empty($product_short)) : ?>
@@ -131,7 +168,9 @@ if ($is_variable) {
 
           <?php
           $benefits = get_template_directory() . '/product-page/icon-benefits.php';
-          if (file_exists($benefits)) include $benefits;
+          if (file_exists($benefits)) {
+              include $benefits;
+          }
           ?>
 
           <p id="productStock" class="product-stock-text <?php echo esc_attr($stock_class); ?>">
@@ -145,7 +184,7 @@ if ($is_variable) {
                 <input type="hidden" name="variation_id" id="variation_id" value="">
 
                 <?php foreach ($product->get_variation_attributes() as $attribute_name => $options) :
-                  $field_name = 'attribute_' . sanitize_title($attribute_name); ?>
+                    $field_name = 'attribute_' . sanitize_title($attribute_name); ?>
                   <input type="hidden" name="<?php echo esc_attr($field_name); ?>" id="<?php echo esc_attr($field_name); ?>" value="">
                 <?php endforeach; ?>
 
@@ -164,6 +203,9 @@ if ($is_variable) {
                           data-stock-class="<?php echo esc_attr($option['stock_class']); ?>"
                           data-purchasable="<?php echo $option['purchasable'] ? '1' : '0'; ?>"
                           data-attributes="<?php echo esc_attr(wp_json_encode($option['attributes'])); ?>"
+                          data-regular-price-html="<?php echo esc_attr(wp_strip_all_tags($option['regular_price_html'])); ?>"
+                          data-save-percent="<?php echo esc_attr($option['save_percent']); ?>"
+                          data-is-on-sale="<?php echo $option['is_on_sale'] ? '1' : '0'; ?>"
                         >
                           <?php echo esc_html($option['label']); ?>
                         </option>
@@ -206,31 +248,46 @@ if ($is_variable) {
             <?php endif; ?>
 
             <div class="product-payment-icons">
-              <span class="payment-pill"><i class="fa-brands fa-cc-visa"></i> Visa</span>
-              <span class="payment-pill"><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
-              <span class="payment-pill"><i class="fa-brands fa-cc-amex"></i> Amex</span>
-              <span class="payment-pill"><i class="fa-brands fa-cc-discover"></i> Discover</span>
-              <span class="payment-pill">Venmo</span>
-              <span class="payment-pill">Zelle</span>
-              <span class="payment-pill"><i class="fa-brands fa-bitcoin"></i> Crypto</span>
+              <span class="payment-icon-pill" aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></span>
+              <span class="payment-icon-pill" aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
+              <span class="payment-icon-pill" aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></span>
+              <span class="payment-icon-pill" aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></span>
+              <span class="payment-icon-pill payment-icon-image-pill" aria-label="Venmo">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.PNG'); ?>" alt="Venmo">
+              </span>
+              <span class="payment-icon-pill payment-icon-image-pill" aria-label="Zelle">
+                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.PNG'); ?>" alt="Zelle">
+              </span>
+              <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
             </div>
 
             <div class="product-meta">
-              <?php if (!empty($product_sku)) : ?>
-                <div class="product-meta-item">
-                  <i class="fa-solid fa-barcode"></i>
-                  <span>SKU: <?php echo esc_html($product_sku); ?></span>
-                </div>
-              <?php endif; ?>
-
               <div class="product-meta-item">
                 <i class="fa-solid fa-truck-fast"></i>
-                <span>Fast USA fulfillment</span>
+                <span>Same day shipping on orders before 1pm PST</span>
               </div>
 
               <div class="product-meta-item">
                 <i class="fa-solid fa-shield-halved"></i>
                 <span>Research use only</span>
+              </div>
+            </div>
+
+            <div class="product-trust-stack">
+              <div class="product-trust-card product-trust-card-green">
+                <div class="product-trust-card-icon">🛡️</div>
+                <div class="product-trust-card-copy">
+                  <strong>30-Day Money-Back Guarantee</strong>
+                  <span>Not satisfied? Contact us and we will make it right.</span>
+                </div>
+              </div>
+
+              <div class="product-trust-card product-trust-card-blue">
+                <div class="product-trust-card-icon">📦</div>
+                <div class="product-trust-card-copy">
+                  <strong>Shipment Protection Included</strong>
+                  <span>Lost or damaged in transit? We will help resolve it quickly.</span>
+                </div>
               </div>
             </div>
           </div>
@@ -260,13 +317,15 @@ if ($is_variable) {
 
       <?php
       $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
-      if (file_exists($why_choose)) include $why_choose;
+      if (file_exists($why_choose)) {
+          include $why_choose;
+      }
       ?>
     </div>
   </section>
 </main>
 
-<div class="sticky-product-bar" id="stickyProductBar">
+<div class="sticky-product-bar" id="stickyProductBar" aria-hidden="true">
   <div class="sticky-product-bar-inner">
     <div class="sticky-product-thumb">
       <img id="stickyProductImage" src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_name); ?>">
@@ -294,8 +353,8 @@ if ($is_variable) {
 
 <script>
 window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
-  'isVariable' => $is_variable,
-  'productId'  => $product_id,
-  'variations' => $variation_options,
+    'isVariable' => $is_variable,
+    'productId' => $product_id,
+    'variations' => $variation_options,
 )); ?>;
 </script>
