@@ -123,23 +123,6 @@ if ($is_variable) {
             <span class="product-price-current" id="productPrice"><?php echo wp_kses_post($product_price); ?></span>
           </div>
 
-          <div class="product-conversion-stack">
-            <div class="product-conversion-pill product-conversion-pill-green">
-              <i class="fa-solid fa-shield-heart"></i>
-              <span>Research-use-only product catalog</span>
-            </div>
-
-            <div class="product-conversion-pill product-conversion-pill-blue">
-              <i class="fa-solid fa-vial-circle-check"></i>
-              <span>Third-party verification and batch-focused quality standards</span>
-            </div>
-
-            <div class="product-conversion-pill product-conversion-pill-slate">
-              <i class="fa-solid fa-truck-fast"></i>
-              <span>Fast USA fulfillment</span>
-            </div>
-          </div>
-
           <?php if (!empty($product_short)) : ?>
             <div class="product-short-description">
               <?php echo wp_kses_post(wpautop($product_short)); ?>
@@ -222,6 +205,16 @@ if ($is_variable) {
               </form>
             <?php endif; ?>
 
+            <div class="product-payment-icons">
+              <span class="payment-pill"><i class="fa-brands fa-cc-visa"></i> Visa</span>
+              <span class="payment-pill"><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
+              <span class="payment-pill"><i class="fa-brands fa-cc-amex"></i> Amex</span>
+              <span class="payment-pill"><i class="fa-brands fa-cc-discover"></i> Discover</span>
+              <span class="payment-pill">Venmo</span>
+              <span class="payment-pill">Zelle</span>
+              <span class="payment-pill"><i class="fa-brands fa-bitcoin"></i> Crypto</span>
+            </div>
+
             <div class="product-meta">
               <?php if (!empty($product_sku)) : ?>
                 <div class="product-meta-item">
@@ -275,9 +268,13 @@ if ($is_variable) {
 
 <div class="sticky-product-bar" id="stickyProductBar">
   <div class="sticky-product-bar-inner">
+    <div class="sticky-product-thumb">
+      <img id="stickyProductImage" src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_name); ?>">
+    </div>
+
     <div class="sticky-product-bar-copy">
       <strong><?php echo esc_html($product_name); ?></strong>
-      <span id="stickyProductVariant"><?php echo $is_variable ? 'Select variant' : 'Ready to add' ; ?></span>
+      <span id="stickyProductVariant"><?php echo $is_variable ? 'Select variant' : 'Ready to add'; ?></span>
       <span id="stickyProductPrice"><?php echo wp_kses_post($product_price); ?></span>
     </div>
 
