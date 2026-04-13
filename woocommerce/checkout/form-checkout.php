@@ -7,7 +7,11 @@ defined('ABSPATH') || exit;
  */
 wc_print_notices();
 
-if (!$checkout->is_registration_enabled() && $checkout->is_registration_required() && !is_user_logged_in()) {
+if (
+	!$checkout->is_registration_enabled() &&
+	$checkout->is_registration_required() &&
+	!is_user_logged_in()
+) {
 	echo esc_html(
 		apply_filters(
 			'woocommerce_checkout_must_be_logged_in_message',
@@ -26,6 +30,7 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
 <main class="axiom-checkout-page">
   <section class="axiom-checkout-shell">
     <div class="axiom-checkout-fluid">
+
       <div class="axiom-checkout-topbar">
         <div class="axiom-checkout-topbar-row">
           <a href="<?php echo esc_url($home_url); ?>" class="axiom-checkout-brand" aria-label="Axiom Peptides home">
@@ -70,27 +75,18 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
             }
             ?>
 
-            <?php
-            $contact_shipping_template = get_template_directory() . '/checkout/checkout-contact-shipping.php';
-            if (file_exists($contact_shipping_template)) {
-              include $contact_shipping_template;
-            } else {
-              ?>
-              <section class="axiom-checkout-card axiom-checkout-contact-card">
-                <div class="axiom-checkout-card-header">
-                  <p class="axiom-checkout-kicker">Contact Information</p>
-                  <h2>Checkout</h2>
-                  <p>Enter your billing and shipping details below.</p>
-                </div>
+            <section class="axiom-checkout-card axiom-checkout-contact-card">
+              <div class="axiom-checkout-card-header">
+                <p class="axiom-checkout-kicker">Contact Information</p>
+                <h2>Checkout</h2>
+                <p>Enter your billing and shipping details below.</p>
+              </div>
 
-                <div class="axiom-checkout-card-body">
-                  <?php do_action('woocommerce_checkout_billing'); ?>
-                  <?php do_action('woocommerce_checkout_shipping'); ?>
-                </div>
-              </section>
-              <?php
-            }
-            ?>
+              <div class="axiom-checkout-card-body">
+                <?php do_action('woocommerce_checkout_billing'); ?>
+                <?php do_action('woocommerce_checkout_shipping'); ?>
+              </div>
+            </section>
 
             <section class="axiom-checkout-card axiom-checkout-payment-card">
               <div class="axiom-checkout-card-header">
