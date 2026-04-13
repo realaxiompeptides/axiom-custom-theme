@@ -1,7 +1,7 @@
 .axiom-checkout-page {
   width: 100%;
   max-width: 100%;
-  background: #f4f7fb;
+  background: #ffffff;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
@@ -10,14 +10,14 @@
 .axiom-checkout-shell {
   width: 100%;
   max-width: 100%;
-  padding: 0 0 28px;
+  padding: 8px 0 28px;
   margin: 0;
 }
 
 .axiom-checkout-fluid {
   width: 100%;
   max-width: 100%;
-  padding: 0 8px;
+  padding: 0 2px;
   margin: 0;
   box-sizing: border-box;
 }
@@ -56,8 +56,8 @@
   max-width: 100%;
   box-sizing: border-box;
   margin: 0 0 14px;
-  padding: 0;
-  background: transparent;
+  padding: 6px 0 0;
+  background: #ffffff;
   border: 0;
   border-radius: 0;
 }
@@ -105,7 +105,7 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  margin: 0;
+  margin: 4px 0 0;
   padding: 0;
 }
 
@@ -231,16 +231,17 @@
   }
 
   .axiom-checkout-shell {
-    padding: 0 0 20px;
+    padding: 8px 0 20px;
   }
 
   .axiom-checkout-fluid {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 2px;
+    padding-right: 2px;
   }
 
   .axiom-checkout-topbar {
     margin-bottom: 12px;
+    padding-top: 6px;
   }
 
   .axiom-checkout-topbar-row {
@@ -262,6 +263,7 @@
     height: 56px;
     min-width: 56px;
     flex-basis: 56px;
+    margin-top: 4px;
   }
 
   .axiom-checkout-cart-link svg {
@@ -311,13 +313,13 @@
   }
 
   .axiom-checkout-fluid {
-    padding-left: 8px !important;
-    padding-right: 8px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
 
   .axiom-checkout-topbar {
     margin: 0 0 10px;
-    padding: 0;
+    padding: 6px 0 0;
   }
 
   .axiom-checkout-topbar-row {
@@ -335,6 +337,7 @@
     height: 54px;
     min-width: 54px;
     flex-basis: 54px;
+    margin-top: 4px;
   }
 
   .axiom-checkout-cart-count {
@@ -371,12 +374,13 @@ body {
   margin: 0 !important;
   padding: 0 !important;
   overflow-x: hidden !important;
+  background: #ffffff !important;
 }
 
 body.woocommerce-checkout {
   margin: 0 !important;
   padding: 0 !important;
-  background: #f4f7fb !important;
+  background: #ffffff !important;
   overflow-x: hidden !important;
 }
 
@@ -391,6 +395,7 @@ body.woocommerce-checkout main {
   padding: 0 !important;
   max-width: 100% !important;
   width: 100% !important;
+  background: #ffffff !important;
 }
 
 body.woocommerce-checkout .axiom-checkout-page {
@@ -398,21 +403,21 @@ body.woocommerce-checkout .axiom-checkout-page {
   max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  background: #f4f7fb !important;
+  background: #ffffff !important;
 }
 
 body.woocommerce-checkout .axiom-checkout-shell {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 0 0 24px !important;
+  padding: 8px 0 24px !important;
 }
 
 body.woocommerce-checkout .axiom-checkout-fluid {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding: 0 8px !important;
+  padding: 0 2px !important;
   box-sizing: border-box !important;
 }
 
@@ -420,8 +425,8 @@ body.woocommerce-checkout .axiom-checkout-topbar {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 0 10px !important;
-  padding: 0 !important;
-  background: transparent !important;
+  padding: 6px 0 0 !important;
+  background: #ffffff !important;
   border: 0 !important;
   border-radius: 0 !important;
 }
@@ -460,7 +465,7 @@ body.woocommerce-checkout .axiom-checkout-cart-link {
   height: 54px !important;
   min-width: 54px !important;
   flex: 0 0 54px !important;
-  margin: 0 !important;
+  margin: 4px 0 0 !important;
   padding: 0 !important;
   border-radius: 999px !important;
   border: 1px solid #d5ddea !important;
@@ -506,12 +511,14 @@ body.woocommerce-checkout .axiom-checkout-research-wrap {
 
 @media (max-width: 520px) {
   body.woocommerce-checkout .axiom-checkout-fluid {
-    padding-left: 8px !important;
-    padding-right: 8px !important;
+    padding-left: 2px !important;
+    padding-right: 2px !important;
   }
 
   body.woocommerce-checkout .axiom-checkout-topbar {
     margin-top: 0 !important;
-    padding-top: 0 !important;
+    padding-top: 6px !important;
   }
 }
+
+only change what I told you to change. Don’t change anything else.
