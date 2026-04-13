@@ -1,0 +1,95 @@
+.axiom-checkout-summary-review,
+.axiom-order-review-box {
+  background: #f8fbff;
+  border: 1px solid #dbe7f3;
+  border-radius: 22px;
+  padding: 16px;
+}
+
+.woocommerce-checkout-review-order-table,
+.shop_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 !important;
+}
+
+.woocommerce-checkout-review-order-table th,
+.woocommerce-checkout-review-order-table td,
+.shop_table th,
+.shop_table td {
+  padding: 14px 0 !important;
+  border-top: 1px solid #e7eef5 !important;
+  color: #0f172a;
+  font-size: 14px;
+  vertical-align: top;
+}
+
+.woocommerce-checkout-review-order-table thead th,
+.shop_table thead th {
+  padding-top: 0 !important;
+  color: #70839c;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.woocommerce-checkout-review-order-table tr:first-child th,
+.woocommerce-checkout-review-order-table tr:first-child td,
+.shop_table tr:first-child th,
+.shop_table tr:first-child td {
+  border-top: 0 !important;
+}
+
+.woocommerce-checkout-review-order-table .product-name,
+.shop_table .product-name {
+  padding-right: 12px !important;
+}
+
+.woocommerce-checkout-review-order-table .product-total,
+.shop_table .product-total {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.woocommerce-checkout-review-order-table .product-quantity {
+  color: #64748b;
+  font-weight: 800;
+}
+
+.order-total th,
+.order-total td {
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+}
+
+.cart-subtotal th,
+.cart-subtotal td,
+.shipping th,
+.shipping td,
+.tax-rate th,
+.tax-rate td,
+.fee th,
+.fee td {
+  color: #334155;
+}
+
+.woocommerce-remove-coupon {
+  color: #d64545 !important;
+}
+
+.woocommerce-checkout-review-order-table ul,
+.shop_table ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.woocommerce-checkout-review-order-table small,
+.shop_table small {
+  color: #64748b;
+}
+
+.axiom-checkout-summary-card .woocommerce-checkout-review-order-table {
+  background: transparent;
+}
