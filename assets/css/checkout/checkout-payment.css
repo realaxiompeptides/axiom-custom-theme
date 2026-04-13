@@ -1,0 +1,114 @@
+.axiom-checkout-payment-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.axiom-payment-icon,
+.axiom-payment-image {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.axiom-payment-icon i {
+  font-size: 29px;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.axiom-payment-image img {
+  display: block;
+  max-width: 28px;
+  max-height: 28px;
+  object-fit: contain;
+}
+
+.woocommerce-checkout #payment {
+  margin-top: 18px;
+  background: #ffffff !important;
+  border: 1px solid #dbe7f3 !important;
+  border-radius: 22px !important;
+  overflow: hidden;
+}
+
+.woocommerce-checkout #payment ul.payment_methods {
+  padding: 16px !important;
+  border-bottom: 1px solid #e7eef5 !important;
+  margin: 0 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li {
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li:last-child {
+  margin-bottom: 0 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.woocommerce-checkout #payment div.payment_box {
+  margin: 10px 0 0 !important;
+  background: #f8fbff !important;
+  border: 1px solid #dbe7f3 !important;
+  color: #42566f !important;
+  border-radius: 16px !important;
+}
+
+.woocommerce-checkout #payment div.payment_box::before {
+  display: none !important;
+}
+
+.woocommerce-checkout #payment .form-row {
+  padding: 18px !important;
+  margin: 0 !important;
+}
+
+button[name="woocommerce_checkout_place_order"],
+#place_order {
+  width: 100%;
+  min-height: 62px;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 16px 28px rgba(47, 132, 191, 0.18);
+}
+
+button[name="woocommerce_checkout_place_order"]:hover,
+#place_order:hover {
+  filter: brightness(1.03);
+}
+
+button[name="woocommerce_checkout_place_order"]:disabled,
+#place_order:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.woocommerce-privacy-policy-text,
+.woocommerce-terms-and-conditions-wrapper,
+.woocommerce-terms-and-conditions-wrapper p {
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.woocommerce form .woocommerce-terms-and-conditions-wrapper .required {
+  color: #e25353;
+}
