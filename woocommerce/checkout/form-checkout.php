@@ -157,6 +157,13 @@ $contact_keys = array('billing_email', 'billing_phone');
                     <?php esc_html_e('Order summary', 'woocommerce'); ?>
                   </h3>
 
+                  <?php
+                  $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
+                  if (file_exists($research_box_template)) {
+                    include $research_box_template;
+                  }
+                  ?>
+
                   <?php do_action('woocommerce_checkout_before_order_review'); ?>
 
                   <div id="order_review" class="woocommerce-checkout-review-order">
