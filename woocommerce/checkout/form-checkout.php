@@ -25,15 +25,6 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
 $checkout_fields = $checkout->get_checkout_fields();
 $billing_fields  = isset($checkout_fields['billing']) ? $checkout_fields['billing'] : array();
 
-/*
- * Split billing fields:
- * Contact section:
- * - billing_email
- * - billing_phone
- *
- * Billing details section:
- * - everything else
- */
 $contact_keys = array('billing_email', 'billing_phone');
 ?>
 
@@ -87,8 +78,7 @@ $contact_keys = array('billing_email', 'billing_phone');
 
             <section class="axiom-checkout-card axiom-checkout-contact-card">
               <div class="axiom-checkout-card-header">
-                <p class="axiom-checkout-kicker">Contact Information</p>
-                <h2>Checkout</h2>
+                <h2 class="axiom-checkout-main-title">Checkout</h2>
                 <p>Enter your billing and shipping details below.</p>
               </div>
 
