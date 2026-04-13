@@ -17,9 +17,11 @@ $menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
 $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order_received_page();
 
 $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
-$checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
 $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
 $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
+
+/* Force the drawer checkout to the actual checkout page path */
+$drawer_checkout_url = home_url('/checkout/');
 ?>
 
 <?php if (!$is_checkout_page) : ?>
@@ -167,7 +169,7 @@ $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink(
             type="button"
             class="cart-pill-btn cart-outline-btn"
             id="cartCheckoutBtn"
-            data-checkout-url="<?php echo esc_url($checkout_url); ?>"
+            onclick="window.location.href='<?php echo esc_url($drawer_checkout_url); ?>';"
           >
             Checkout
           </button>
