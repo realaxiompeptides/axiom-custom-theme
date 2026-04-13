@@ -872,3 +872,67 @@
     display: none;
   }
 }
+
+.product-afterpay-box {
+  margin-top: 14px;
+  padding: 16px;
+  border: 1px solid #dbe7f3;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #fbfdff 0%, #f7fbff 100%);
+}
+
+.product-afterpay-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #5f6f85;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.product-afterpay-row + .product-afterpay-row {
+  margin-top: 14px;
+}
+
+.product-afterpay-row i {
+  color: #4b97d1;
+  font-size: 18px;
+  width: 20px;
+  text-align: center;
+}
+
+.product-afterpay-box .product-trust-stack {
+  margin-top: 16px;
+}
+
+.product-afterpay-box .product-trust-card {
+  border-radius: 18px;
+}
+
+.product-price-current,
+.product-price-current .amount {
+  color: #111111 !important;
+}
+
+.product-compare-text,
+.product-compare-text span,
+#productComparePrice {
+  color: #5da9df !important;
+}
+
+.product-save-pill {
+  background: #eaf8ee;
+  color: #18914d;
+  border: 1px solid #bfe8cc;
+}
+
+@media (max-width: 767px) {
+  .product-afterpay-box {
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  .product-afterpay-row {
+    font-size: 14px;
+  }
+}
