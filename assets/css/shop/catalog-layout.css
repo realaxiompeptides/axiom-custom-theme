@@ -1,0 +1,154 @@
+.axiom-catalog-page {
+  background: #f6f8fc;
+  color: #0f172a;
+  padding-bottom: 40px;
+}
+
+.axiom-catalog-hero,
+.axiom-catalog-toolbar-section,
+.axiom-catalog-grid-section,
+.axiom-catalog-bottom-disclaimer {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.axiom-catalog-hero {
+  padding-top: 18px;
+  padding-bottom: 14px;
+}
+
+.axiom-catalog-hero-inner,
+.axiom-catalog-toolbar,
+.axiom-catalog-filter-pills,
+.axiom-catalog-results-row,
+.axiom-catalog-grid,
+.axiom-catalog-bottom-disclaimer-inner {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.axiom-catalog-kicker {
+  margin: 0 0 8px;
+  color: #3c92d0;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.axiom-catalog-hero h1 {
+  margin: 0 0 10px;
+  color: #0f1734;
+  font-size: 52px;
+  line-height: 1.02;
+  font-weight: 900;
+}
+
+.axiom-catalog-subtitle {
+  margin: 0;
+  color: #667085;
+  font-size: 20px;
+  line-height: 1.55;
+  max-width: 760px;
+}
+
+.axiom-catalog-toolbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.axiom-catalog-results-row {
+  margin-bottom: 14px;
+  color: #475467;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.axiom-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.axiom-product-card.is-hidden {
+  display: none !important;
+}
+
+.axiom-catalog-empty {
+  grid-column: 1 / -1;
+  background: #fff;
+  border: 1px solid #dbe7f3;
+  border-radius: 22px;
+  padding: 28px 18px;
+  text-align: center;
+}
+
+.axiom-catalog-empty h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.axiom-catalog-empty p {
+  margin: 0;
+  color: #667085;
+  font-size: 15px;
+}
+
+@media (max-width: 1024px) {
+  .axiom-catalog-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-catalog-hero,
+  .axiom-catalog-toolbar-section,
+  .axiom-catalog-grid-section,
+  .axiom-catalog-bottom-disclaimer {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .axiom-catalog-hero {
+    padding-top: 16px;
+    padding-bottom: 12px;
+  }
+
+  .axiom-catalog-hero h1 {
+    font-size: 34px;
+    line-height: 1.04;
+  }
+
+  .axiom-catalog-subtitle {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+
+  .axiom-catalog-toolbar {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .axiom-catalog-results-row {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .axiom-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .axiom-catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px;
+  }
+}
