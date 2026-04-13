@@ -189,3 +189,21 @@
   font-size: 18px;
   color: #0f172a;
 }
+
+.axiom-checkout-main--full {
+  width: 100%;
+  max-width: 100%;
+}
+
+.axiom-checkout-form,
+.axiom-checkout-fluid,
+.axiom-checkout-shell,
+.axiom-checkout-page {
+  width: 100%;
+  max-width: 100%;
+}
+
+.axiom-checkout-grid,
+.axiom-checkout-grid--single {
+  display: block !important;
+}
