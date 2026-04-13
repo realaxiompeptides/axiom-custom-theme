@@ -26,18 +26,24 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
         </div>
       </div>
 
-      <form name="checkout" method="post" class="checkout woocommerce-checkout axiom-checkout-form" action="<?php echo esc_url(wc_get_checkout_url()); ?>" enctype="multipart/form-data">
+      <form
+        name="checkout"
+        method="post"
+        class="checkout woocommerce-checkout axiom-checkout-form"
+        action="<?php echo esc_url(wc_get_checkout_url()); ?>"
+        enctype="multipart/form-data"
+      >
         <div class="axiom-checkout-grid">
           <div class="axiom-checkout-main">
             <?php
-            $contact_shipping_template = get_template_directory() . '/checkout-page/checkout-contact-shipping.php';
+            $contact_shipping_template = get_template_directory() . '/checkout/contact-shippng.php';
             if (file_exists($contact_shipping_template)) {
               include $contact_shipping_template;
             }
             ?>
 
             <?php
-            $research_box_template = get_template_directory() . '/checkout-page/checkout-research-box.php';
+            $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
             if (file_exists($research_box_template)) {
               include $research_box_template;
             }
@@ -56,8 +62,12 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-mastercard"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-amex"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-discover"></i></span>
-                  <span class="axiom-payment-image"><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo"></span>
-                  <span class="axiom-payment-image"><img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle"></span>
+                  <span class="axiom-payment-image">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo" />
+                  </span>
+                  <span class="axiom-payment-image">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle" />
+                  </span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
 
@@ -74,7 +84,7 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 
           <aside class="axiom-checkout-sidebar">
             <?php
-            $sidebar_template = get_template_directory() . '/checkout-page/checkout-order-sidebar.php';
+            $sidebar_template = get_template_directory() . '/checkout/checkout-order-sidebar.php';
             if (file_exists($sidebar_template)) {
               include $sidebar_template;
             }
