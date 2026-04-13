@@ -151,23 +151,13 @@ if ($is_variable) {
           if (file_exists($benefits)) include $benefits;
           ?>
 
-          <div class="product-disclaimer-box">
-            <div class="product-disclaimer-icon">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-            </div>
-            <div class="product-disclaimer-copy">
-              <strong>Research Use Only</strong>
-              <p>This product is intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.</p>
-            </div>
-          </div>
-
           <p id="productStock" class="product-stock-text <?php echo esc_attr($stock_class); ?>">
             <?php echo esc_html($stock_text); ?>
           </p>
 
           <div class="product-purchase-box" id="productPurchaseBox">
             <?php if ($is_variable && !empty($variation_options)) : ?>
-              <form class="product-form ajax-product-form" data-product-type="variable">
+              <form class="product-form ajax-product-form" id="ajaxProductForm" data-product-type="variable">
                 <input type="hidden" name="product_id" value="<?php echo esc_attr($product_id); ?>">
                 <input type="hidden" name="variation_id" id="variation_id" value="">
 
@@ -184,6 +174,7 @@ if ($is_variable) {
                       <?php foreach ($variation_options as $option) : ?>
                         <option
                           value="<?php echo esc_attr($option['variation_id']); ?>"
+                          data-label="<?php echo esc_attr($option['label']); ?>"
                           data-price-html="<?php echo esc_attr(wp_strip_all_tags($option['price_html'])); ?>"
                           data-image="<?php echo esc_url($option['image']); ?>"
                           data-stock-text="<?php echo esc_attr($option['stock_text']); ?>"
@@ -213,7 +204,7 @@ if ($is_variable) {
                 </button>
               </form>
             <?php else : ?>
-              <form class="product-form ajax-product-form" data-product-type="simple">
+              <form class="product-form ajax-product-form" id="ajaxProductForm" data-product-type="simple">
                 <input type="hidden" name="product_id" value="<?php echo esc_attr($product_id); ?>">
 
                 <div class="product-option-group">
@@ -262,6 +253,16 @@ if ($is_variable) {
         <div id="productLongDescription">
           <?php echo wp_kses_post(wpautop($product_long)); ?>
         </div>
+
+        <div class="product-disclaimer-box product-disclaimer-below-description">
+          <div class="product-disclaimer-icon">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div class="product-disclaimer-copy">
+            <strong>Research Use Only</strong>
+            <p>This product is intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption. By purchasing, you confirm that the material will be used only in a controlled research setting.</p>
+          </div>
+        </div>
       </section>
 
       <?php
@@ -276,11 +277,21 @@ if ($is_variable) {
   <div class="sticky-product-bar-inner">
     <div class="sticky-product-bar-copy">
       <strong><?php echo esc_html($product_name); ?></strong>
+      <span id="stickyProductVariant"><?php echo $is_variable ? 'Select variant' : 'Ready to add' ; ?></span>
       <span id="stickyProductPrice"><?php echo wp_kses_post($product_price); ?></span>
     </div>
-    <button type="button" class="sticky-product-bar-btn" id="stickyAddToCartBtn">
-      Add To Cart
-    </button>
+
+    <div class="sticky-product-bar-actions">
+      <div class="sticky-product-bar-qty">
+        <button type="button" id="stickyQtyMinus">−</button>
+        <span id="stickyQtyValue">1</span>
+        <button type="button" id="stickyQtyPlus">+</button>
+      </div>
+
+      <button type="button" class="sticky-product-bar-btn" id="stickyAddToCartBtn">
+        Add To Cart
+      </button>
+    </div>
   </div>
 </div>
 
