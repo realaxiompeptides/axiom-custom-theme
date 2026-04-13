@@ -93,7 +93,7 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
           <span class="mobile-nav-arrow">›</span>
         </a>
 
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="mobile-nav-link">
+        <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>" class="mobile-nav-link">
           <span>Products</span>
           <span class="mobile-nav-arrow">›</span>
         </a>
@@ -117,7 +117,7 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
       <div class="mobile-menu-divider"></div>
 
       <div class="mobile-menu-secondary">
-        <a href="<?php echo esc_url(wc_get_page_permalink('myaccount')); ?>" class="mobile-nav-link secondary-link">
+        <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/')); ?>" class="mobile-nav-link secondary-link">
           <span>Account</span>
           <span class="mobile-nav-arrow">›</span>
         </a>
@@ -145,12 +145,26 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
       <div class="cart-footer">
         <div class="cart-subtotal-row">
           <span>Subtotal</span>
-          <strong id="cartSubtotal">$0.00</strong>
+          <strong id="cartSubtotal">
+            <?php echo function_exists('WC') && WC()->cart ? wp_kses_post(WC()->cart->get_cart_subtotal()) : '$0.00'; ?>
+          </strong>
         </div>
 
         <div class="cart-action-stack">
-          <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-pill-btn cart-muted-btn">View Cart</a>
-          <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-pill-btn cart-outline-btn" id="cartCheckoutLink">Checkout</a>
+          <a
+            href="<?php echo esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/')); ?>"
+            class="cart-pill-btn cart-muted-btn"
+          >
+            View Cart
+          </a>
+
+          <a
+            href="<?php echo esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/')); ?>"
+            class="cart-pill-btn cart-outline-btn"
+            id="cartCheckoutLink"
+          >
+            Checkout
+          </a>
         </div>
       </div>
     </div>
