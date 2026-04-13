@@ -1,5 +1,6 @@
 .axiom-catalog-search-wrap {
   width: 100%;
+  position: relative;
 }
 
 .axiom-catalog-search {
@@ -10,7 +11,7 @@
   background: #ffffff;
   color: #0f172a;
   font-size: 16px;
-  padding: 0 18px;
+  padding: 0 52px 0 18px;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
 }
@@ -25,11 +26,26 @@
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
 }
 
+.axiom-catalog-search-wrap::after {
+  content: "\f002";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  color: #667085;
+  font-size: 16px;
+  pointer-events: none;
+}
+
 .axiom-catalog-sort-wrap {
   width: 100%;
+  position: relative;
 }
 
 .axiom-catalog-sort {
+  appearance: none;
   width: 100%;
   min-height: 54px;
   border: 1px solid #d8e2ef;
@@ -37,9 +53,11 @@
   background: #ffffff;
   color: #0f172a;
   font-size: 16px;
-  padding: 0 18px;
+  font-weight: 700;
+  padding: 0 48px 0 18px;
   box-sizing: border-box;
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  cursor: pointer;
 }
 
 .axiom-catalog-sort:focus {
@@ -48,12 +66,38 @@
   box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
 }
 
+.axiom-catalog-sort-wrap::after {
+  content: "\f078";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  color: #0f1734;
+  font-size: 16px;
+  pointer-events: none;
+}
+
 @media (max-width: 767px) {
   .axiom-catalog-search,
   .axiom-catalog-sort {
     min-height: 48px;
     border-radius: 16px;
     font-size: 15px;
-    padding: 0 14px;
+  }
+
+  .axiom-catalog-search {
+    padding: 0 46px 0 14px;
+  }
+
+  .axiom-catalog-sort {
+    padding: 0 42px 0 14px;
+  }
+
+  .axiom-catalog-search-wrap::after,
+  .axiom-catalog-sort-wrap::after {
+    right: 14px;
+    font-size: 15px;
   }
 }
