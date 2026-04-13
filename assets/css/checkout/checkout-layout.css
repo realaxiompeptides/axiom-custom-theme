@@ -521,4 +521,24 @@ body.woocommerce-checkout .axiom-checkout-research-wrap {
   }
 }
 
-only change what I told you to change. Don’t change anything else.
+.axiom-checkout-main-title {
+  font-size: 56px !important;
+  line-height: 1 !important;
+  font-weight: 900 !important;
+  margin: 0 0 14px !important;
+  color: #0f1734 !important;
+}
+
+@media (max-width: 767px) {
+  .axiom-checkout-main-title {
+    font-size: 44px !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .axiom-checkout-main-title {
+    font-size: 38px !important;
+    margin-bottom: 10px !important;
+  }
+}
