@@ -32,12 +32,19 @@ if ( ! wp_doing_ajax() ) {
 	<?php endif; ?>
 
 	<div class="axiom-checkout-research-wrap axiom-checkout-research-wrap--payment">
-		<p class="axiom-checkout-kicker">Required acknowledgment</p>
-		<h3>Research use only</h3>
-		<p class="axiom-checkout-research-help">
-			All products are intended strictly for laboratory, analytical, and in-vitro research use only.
-			Not for human or veterinary consumption.
-		</p>
+		<div class="axiom-research-use-box">
+			<div class="axiom-research-use-icon">
+				<i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
+			</div>
+
+			<div class="axiom-research-use-copy">
+				<strong>I acknowledge this order is for research use only</strong>
+				<p>
+					All products are intended strictly for laboratory, analytical, and in-vitro
+					research use only. Not for human or veterinary consumption.
+				</p>
+			</div>
+		</div>
 
 		<?php
 		woocommerce_form_field(
@@ -46,7 +53,7 @@ if ( ! wp_doing_ajax() ) {
 				'type'     => 'checkbox',
 				'class'    => array( 'form-row-wide', 'axiom-checkout-checkbox-row' ),
 				'required' => true,
-				'label'    => 'I acknowledge this order is for research use only',
+				'label'    => 'I understand and agree',
 			),
 			WC()->checkout()->get_value( 'axiom_research_use_ack' )
 		);
@@ -96,18 +103,18 @@ if ( ! wp_doing_ajax() ) {
 		<div class="axiom-place-order-trust-icons">
 			<div class="axiom-place-order-trust-item">
 				<span class="axiom-place-order-trust-emoji">🔒</span>
-				<strong>99%+</strong>
-				<small>Purity</small>
+				<strong>256-bit SSL</strong>
+				<small>Encrypted</small>
 			</div>
 
 			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">✅</span>
-				<strong>Third-Party</strong>
-				<small>Verified</small>
+				<span class="axiom-place-order-trust-emoji">✔️</span>
+				<strong>99%+ Purity</strong>
+				<small>Third-Party Verified</small>
 			</div>
 
 			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">📍</span>
+				<span class="axiom-place-order-trust-emoji">🇺🇸</span>
 				<strong>U.S. Based</strong>
 				<small>California</small>
 			</div>
