@@ -502,22 +502,6 @@ function axiom_reorder_checkout_fields($fields) {
 add_filter('woocommerce_checkout_fields', 'axiom_reorder_checkout_fields', 999);
 
 /*
- * Move payment above order summary on checkout.
- */
-function axiom_move_payment_above_order_summary() {
-    if (!class_exists('WooCommerce')) {
-        return;
-    }
-
-    remove_action('woocommerce_checkout_order_review', 'woocommerce_order_review', 10);
-    remove_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 20);
-
-    add_action('woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 10);
-    add_action('woocommerce_checkout_order_review', 'woocommerce_order_review', 20);
-}
-add_action('init', 'axiom_move_payment_above_order_summary', 20);
-
-/*
  * Validate the custom research use checkbox that is rendered
  * inside the checkout payment template.
  */
