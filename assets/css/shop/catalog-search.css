@@ -1,0 +1,59 @@
+.axiom-catalog-search-wrap {
+  width: 100%;
+}
+
+.axiom-catalog-search {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #d8e2ef;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 16px;
+  padding: 0 18px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.axiom-catalog-search::placeholder {
+  color: #98a2b3;
+}
+
+.axiom-catalog-search:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
+}
+
+.axiom-catalog-sort-wrap {
+  width: 100%;
+}
+
+.axiom-catalog-sort {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #d8e2ef;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 16px;
+  padding: 0 18px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.axiom-catalog-sort:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
+}
+
+@media (max-width: 767px) {
+  .axiom-catalog-search,
+  .axiom-catalog-sort {
+    min-height: 48px;
+    border-radius: 16px;
+    font-size: 15px;
+    padding: 0 14px;
+  }
+}
