@@ -38,56 +38,107 @@ function axiom_custom_theme_assets() {
         '6.5.2'
     );
 
-    wp_enqueue_style('axiom-base', $theme_uri . '/assets/css/style.css', array(), '1.8');
-    wp_enqueue_style('axiom-menu', $theme_uri . '/assets/css/menu.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-cart', $theme_uri . '/assets/css/cart.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-home', $theme_uri . '/assets/css/home.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-collection', $theme_uri . '/assets/css/homepage-collection.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-faq', $theme_uri . '/assets/css/faq-section.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '1.8');
-    wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '1.8');
+    wp_enqueue_style('axiom-base', $theme_uri . '/assets/css/style.css', array(), '1.9');
+    wp_enqueue_style('axiom-menu', $theme_uri . '/assets/css/menu.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-cart', $theme_uri . '/assets/css/cart.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-home', $theme_uri . '/assets/css/home.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-collection', $theme_uri . '/assets/css/homepage-collection.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-faq', $theme_uri . '/assets/css/faq-section.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '1.9');
+    wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '1.9');
 
-    if (is_product()) {
+    if (function_exists('is_product') && is_product()) {
         wp_enqueue_style(
             'axiom-product-layout',
             $theme_uri . '/assets/css/product-page/layout.css',
             array('axiom-base'),
-            '1.0'
+            '1.1'
         );
 
         wp_enqueue_style(
             'axiom-product-purchase-box',
             $theme_uri . '/assets/css/product-page/purchase-box.css',
             array('axiom-base', 'axiom-product-layout'),
-            '1.0'
+            '1.1'
         );
 
         wp_enqueue_style(
             'axiom-product-trust-elements',
             $theme_uri . '/assets/css/product-page/trust-elements.css',
             array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
-            '1.0'
+            '1.1'
         );
 
         wp_enqueue_style(
             'axiom-product-description',
             $theme_uri . '/assets/css/product-page/description.css',
             array('axiom-base', 'axiom-product-layout'),
-            '1.0'
+            '1.1'
         );
 
         wp_enqueue_style(
             'axiom-product-sticky-bar',
             $theme_uri . '/assets/css/product-page/sticky-bar.css',
             array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
-            '1.0'
+            '1.1'
         );
 
         wp_enqueue_script(
             'axiom-product-page',
             $theme_uri . '/assets/js/product-page.js',
-            array(),
-            '1.2',
+            array('jquery'),
+            '1.3',
+            true
+        );
+    }
+
+    if (function_exists('is_checkout') && is_checkout() && !is_order_received_page()) {
+        wp_enqueue_style(
+            'axiom-checkout-layout',
+            $theme_uri . '/assets/css/checkout/checkout-layout.css',
+            array('axiom-base'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-checkout-fields',
+            $theme_uri . '/assets/css/checkout/checkout-fields.css',
+            array('axiom-base', 'axiom-checkout-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-checkout-order-summary',
+            $theme_uri . '/assets/css/checkout/checkout-order-summary.css',
+            array('axiom-base', 'axiom-checkout-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-checkout-payment',
+            $theme_uri . '/assets/css/checkout/checkout-payment.css',
+            array('axiom-base', 'axiom-checkout-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-checkout-mobile',
+            $theme_uri . '/assets/css/checkout/checkout-mobile.css',
+            array(
+                'axiom-base',
+                'axiom-checkout-layout',
+                'axiom-checkout-fields',
+                'axiom-checkout-order-summary',
+                'axiom-checkout-payment'
+            ),
+            '1.0'
+        );
+
+        wp_enqueue_script(
+            'axiom-checkout',
+            $theme_uri . '/assets/js/checkout/checkout.js',
+            array('jquery'),
+            '1.0',
             true
         );
     }
@@ -99,7 +150,7 @@ function axiom_custom_theme_assets() {
         'axiom-main',
         $theme_uri . '/assets/js/main.js',
         array('jquery', 'wc-cart-fragments'),
-        '1.8',
+        '1.9',
         true
     );
 
@@ -250,7 +301,6 @@ function axiom_get_cart_drawer_data() {
 
     wp_send_json_success(axiom_get_cart_drawer_payload());
 }
-
 add_action('wp_ajax_axiom_get_cart_drawer', 'axiom_get_cart_drawer_data');
 add_action('wp_ajax_nopriv_axiom_get_cart_drawer', 'axiom_get_cart_drawer_data');
 
@@ -278,7 +328,6 @@ function axiom_update_cart_item_quantity() {
 
     wp_send_json_success(axiom_get_cart_drawer_payload());
 }
-
 add_action('wp_ajax_axiom_update_cart_item_quantity', 'axiom_update_cart_item_quantity');
 add_action('wp_ajax_nopriv_axiom_update_cart_item_quantity', 'axiom_update_cart_item_quantity');
 
@@ -300,7 +349,6 @@ function axiom_remove_cart_item() {
 
     wp_send_json_success(axiom_get_cart_drawer_payload());
 }
-
 add_action('wp_ajax_axiom_remove_cart_item', 'axiom_remove_cart_item');
 add_action('wp_ajax_nopriv_axiom_remove_cart_item', 'axiom_remove_cart_item');
 
@@ -337,7 +385,6 @@ function axiom_add_simple_product_to_cart() {
 
     wp_send_json_success(axiom_get_cart_drawer_payload());
 }
-
 add_action('wp_ajax_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
 add_action('wp_ajax_nopriv_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
 
@@ -400,6 +447,33 @@ function axiom_add_product_from_product_page() {
         'cart'    => axiom_get_cart_drawer_payload(),
     ));
 }
-
 add_action('wp_ajax_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
 add_action('wp_ajax_nopriv_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
+
+function axiom_checkout_research_use_field($checkout) {
+    echo '<div class="axiom-checkout-research-wrap">';
+
+    woocommerce_form_field('axiom_research_use_ack', array(
+        'type'     => 'checkbox',
+        'class'    => array('form-row-wide'),
+        'required' => true,
+        'label'    => 'I acknowledge this order is for research use only',
+    ), $checkout->get_value('axiom_research_use_ack'));
+
+    echo '<p class="axiom-checkout-research-help">All products are intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.</p>';
+    echo '</div>';
+}
+add_action('woocommerce_review_order_before_submit', 'axiom_checkout_research_use_field', 9);
+
+function axiom_checkout_research_use_validation() {
+    if (!isset($_POST['axiom_research_use_ack'])) {
+        wc_add_notice('Please confirm the research use only acknowledgment before placing your order.', 'error');
+    }
+}
+add_action('woocommerce_checkout_process', 'axiom_checkout_research_use_validation');
+
+function axiom_checkout_research_use_save($order_id) {
+    $value = isset($_POST['axiom_research_use_ack']) ? 'yes' : 'no';
+    update_post_meta($order_id, '_axiom_research_use_ack', $value);
+}
+add_action('woocommerce_checkout_update_order_meta', 'axiom_checkout_research_use_save');
