@@ -275,3 +275,21 @@
     font-weight: 900;
   }
 }
+
+@media (max-width: 767px) {
+  .axiom-checkout-fluid {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+  }
+
+  .axiom-checkout-topbar,
+  .axiom-checkout-card,
+  .axiom-checkout-payment-card,
+  .axiom-checkout-research-wrap {
+    width: calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    margin-left: 8px;
+    margin-right: 8px;
+    box-sizing: border-box;
+  }
+}
