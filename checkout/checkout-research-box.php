@@ -2,7 +2,7 @@
 defined('ABSPATH') || exit;
 ?>
 
-<div class="axiom-checkout-research-wrap">
+<div class="axiom-checkout-research-wrap axiom-checkout-research-wrap--payment">
   <div class="axiom-research-use-box">
     <div class="axiom-research-use-icon">
       <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>
