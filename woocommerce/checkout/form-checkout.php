@@ -2,13 +2,18 @@
 defined('ABSPATH') || exit;
 
 /*
- * Do NOT use woocommerce_before_checkout_form here,
+ * Do not call woocommerce_before_checkout_form here,
  * because it prints the default coupon/login area above the custom layout.
  */
 wc_print_notices();
 
 if (!$checkout->is_registration_enabled() && $checkout->is_registration_required() && !is_user_logged_in()) {
-	echo esc_html(apply_filters('woocommerce_checkout_must_be_logged_in_message', __('You must be logged in to checkout.', 'woocommerce')));
+	echo esc_html(
+		apply_filters(
+			'woocommerce_checkout_must_be_logged_in_message',
+			__('You must be logged in to checkout.', 'woocommerce')
+		)
+	);
 	return;
 }
 ?>
@@ -37,19 +42,27 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
         action="<?php echo esc_url(wc_get_checkout_url()); ?>"
         enctype="multipart/form-data"
       >
-        <div class="axiom-checkout-grid">
-          <div class="axiom-checkout-main">
+        <div class="axiom-checkout-grid axiom-checkout-grid--single">
+          <div class="axiom-checkout-main axiom-checkout-main--full">
             <?php
-            $contact_shipping_template = get_template_directory() . '/checkout/contact-shippng.php';
+            $contact_shipping_template = get_template_directory() . '/checkout/checkout-contact-shipping.php';
             if (file_exists($contact_shipping_template)) {
               include $contact_shipping_template;
-            }
-            ?>
+            } else {
+              ?>
+              <section class="axiom-checkout-card axiom-checkout-contact-card">
+                <div class="axiom-checkout-card-header">
+                  <p class="axiom-checkout-kicker">Contact Information</p>
+                  <h2>Contact &amp; shipping</h2>
+                  <p>Enter your shipping details and order contact information.</p>
+                </div>
 
-            <?php
-            $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
-            if (file_exists($research_box_template)) {
-              include $research_box_template;
+                <div class="axiom-checkout-card-body">
+                  <?php do_action('woocommerce_checkout_billing'); ?>
+                  <?php do_action('woocommerce_checkout_shipping'); ?>
+                </div>
+              </section>
+              <?php
             }
             ?>
 
@@ -75,6 +88,13 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
 
+                <?php
+                $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
+                if (file_exists($research_box_template)) {
+                  include $research_box_template;
+                }
+                ?>
+
                 <?php do_action('woocommerce_checkout_before_order_review'); ?>
 
                 <div id="order_review" class="woocommerce-checkout-review-order">
@@ -85,15 +105,6 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
               </div>
             </section>
           </div>
-
-          <aside class="axiom-checkout-sidebar">
-            <?php
-            $sidebar_template = get_template_directory() . '/checkout/checkout-order-sidebar.php';
-            if (file_exists($sidebar_template)) {
-              include $sidebar_template;
-            }
-            ?>
-          </aside>
         </div>
       </form>
     </div>
