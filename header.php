@@ -15,6 +15,11 @@ $main_logo = $theme_uri . '/assets/images/axiom-logo.PNG';
 $menu_logo = $theme_uri . '/assets/images/axiom-menu-logo.PNG';
 
 $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order_received_page();
+
+$cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
+$checkout_url = function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/');
+$shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
+$account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
 ?>
 
 <?php if (!$is_checkout_page) : ?>
@@ -93,7 +98,7 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
           <span class="mobile-nav-arrow">›</span>
         </a>
 
-        <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/')); ?>" class="mobile-nav-link">
+        <a href="<?php echo esc_url($shop_url); ?>" class="mobile-nav-link">
           <span>Products</span>
           <span class="mobile-nav-arrow">›</span>
         </a>
@@ -117,7 +122,7 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
       <div class="mobile-menu-divider"></div>
 
       <div class="mobile-menu-secondary">
-        <a href="<?php echo esc_url(function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/')); ?>" class="mobile-nav-link secondary-link">
+        <a href="<?php echo esc_url($account_url); ?>" class="mobile-nav-link secondary-link">
           <span>Account</span>
           <span class="mobile-nav-arrow">›</span>
         </a>
@@ -152,19 +157,20 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
 
         <div class="cart-action-stack">
           <a
-            href="<?php echo esc_url(function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/')); ?>"
+            href="<?php echo esc_url($cart_url); ?>"
             class="cart-pill-btn cart-muted-btn"
           >
             View Cart
           </a>
 
-          <a
-            href="<?php echo esc_url(function_exists('wc_get_checkout_url') ? wc_get_checkout_url() : home_url('/checkout/')); ?>"
+          <button
+            type="button"
             class="cart-pill-btn cart-outline-btn"
-            id="cartCheckoutLink"
+            id="cartCheckoutBtn"
+            data-checkout-url="<?php echo esc_url($checkout_url); ?>"
           >
             Checkout
-          </a>
+          </button>
         </div>
       </div>
     </div>
