@@ -1,10 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
 
-/*
- * Do not use woocommerce_before_checkout_form here.
- * That hook prints the default coupon/login stuff above the custom layout.
- */
 wc_print_notices();
 
 if (
@@ -68,13 +64,6 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
         <div class="axiom-checkout-grid axiom-checkout-grid--single">
           <div class="axiom-checkout-main axiom-checkout-main--full">
 
-            <?php
-            $summary_template = get_template_directory() . '/checkout/checkout-order-summary.php';
-            if (file_exists($summary_template)) {
-              include $summary_template;
-            }
-            ?>
-
             <section class="axiom-checkout-card axiom-checkout-contact-card">
               <div class="axiom-checkout-card-header">
                 <p class="axiom-checkout-kicker">Contact Information</p>
@@ -101,25 +90,14 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-mastercard"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-amex"></i></span>
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-discover"></i></span>
-
                   <span class="axiom-payment-image">
-                    <img
-                      src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>"
-                      alt="Venmo"
-                    />
+                    <img src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>" alt="Venmo" />
                   </span>
-
                   <span class="axiom-payment-image">
-                    <img
-                      src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>"
-                      alt="Zelle"
-                    />
+                    <img src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>" alt="Zelle" />
                   </span>
-
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
-
-                <?php do_action('woocommerce_checkout_before_order_review'); ?>
 
                 <?php
                 $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
@@ -128,11 +106,21 @@ $cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_
                 }
                 ?>
 
-                <div id="order_review" class="woocommerce-checkout-review-order">
-                  <?php do_action('woocommerce_checkout_order_review'); ?>
-                </div>
+                <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
 
-                <?php do_action('woocommerce_checkout_after_order_review'); ?>
+                <div class="axiom-checkout-review-wrap">
+                  <h3 id="order_review_heading" class="axiom-order-review-heading">
+                    <?php esc_html_e('Order summary', 'woocommerce'); ?>
+                  </h3>
+
+                  <?php do_action('woocommerce_checkout_before_order_review'); ?>
+
+                  <div id="order_review" class="woocommerce-checkout-review-order">
+                    <?php do_action('woocommerce_checkout_order_review'); ?>
+                  </div>
+
+                  <?php do_action('woocommerce_checkout_after_order_review'); ?>
+                </div>
               </div>
             </section>
 
