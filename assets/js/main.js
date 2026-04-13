@@ -245,8 +245,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (cartCheckoutLink) {
-    cartCheckoutLink.addEventListener("click", function () {
+    cartCheckoutLink.addEventListener("click", function (e) {
+      e.preventDefault();
       closeCart();
+
+      const checkoutUrl =
+        (window.AXIOM_THEME && AXIOM_THEME.checkoutUrl) ? AXIOM_THEME.checkoutUrl : "/checkout/";
+
+      window.location.href = checkoutUrl;
     });
   }
 
