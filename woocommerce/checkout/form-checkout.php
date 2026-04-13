@@ -91,18 +91,16 @@ $contact_keys = array('billing_email', 'billing_phone');
                   }
                   ?>
 
-                  <?php if (isset($billing_fields['billing_email'])) : ?>
-                    <p class="form-row form-row-wide axiom-checkout-email-optin">
-                      <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
-                        <input
-                          id="axiom_email_optin_visual"
-                          class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
-                          type="checkbox"
-                        />
-                        <span>I would like to receive exclusive emails with discounts and product information</span>
-                      </label>
-                    </p>
-                  <?php endif; ?>
+                  <p class="form-row form-row-wide axiom-checkout-email-optin">
+                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                      <input
+                        id="axiom_email_optin_visual"
+                        class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox"
+                        type="checkbox"
+                      />
+                      <span>I would like to receive exclusive emails with discounts and product information</span>
+                    </label>
+                  </p>
                 </div>
 
                 <div class="axiom-checkout-billing-section">
@@ -142,31 +140,16 @@ $contact_keys = array('billing_email', 'billing_phone');
                   <span class="axiom-payment-icon"><i class="fa-brands fa-cc-discover"></i></span>
 
                   <span class="axiom-payment-image">
-                    <img
-                      src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>"
-                      alt="Venmo"
-                    />
+                    <img src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>" alt="Venmo" />
                   </span>
 
                   <span class="axiom-payment-image">
-                    <img
-                      src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>"
-                      alt="Zelle"
-                    />
+                    <img src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>" alt="Zelle" />
                   </span>
 
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
-              </div>
-            </section>
 
-            <section class="axiom-checkout-card axiom-checkout-order-card">
-              <div class="axiom-checkout-card-header">
-                <p class="axiom-checkout-kicker">Order Summary</p>
-                <h2>Review your order</h2>
-              </div>
-
-              <div class="axiom-checkout-card-body">
                 <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
 
                 <div class="axiom-checkout-review-wrap">
@@ -179,20 +162,9 @@ $contact_keys = array('billing_email', 'billing_phone');
                   <div id="order_review" class="woocommerce-checkout-review-order">
                     <?php do_action('woocommerce_checkout_order_review'); ?>
                   </div>
+
+                  <?php do_action('woocommerce_checkout_after_order_review'); ?>
                 </div>
-              </div>
-            </section>
-
-            <?php
-            $research_box_template = get_template_directory() . '/checkout/checkout-research-box.php';
-            if (file_exists($research_box_template)) {
-              include $research_box_template;
-            }
-            ?>
-
-            <section class="axiom-checkout-card axiom-checkout-place-order-card">
-              <div class="axiom-checkout-card-body">
-                <?php do_action('woocommerce_checkout_after_order_review'); ?>
               </div>
             </section>
 
