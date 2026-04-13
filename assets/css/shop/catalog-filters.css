@@ -1,0 +1,48 @@
+.axiom-catalog-filter-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.axiom-filter-pill {
+  appearance: none;
+  border: 1px solid #d8e2ef;
+  background: #ffffff;
+  color: #0f172a;
+  border-radius: 999px;
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.axiom-filter-pill:hover {
+  border-color: #b7c8db;
+  background: #f8fbff;
+}
+
+.axiom-filter-pill.is-active {
+  background: #0f1734;
+  color: #ffffff;
+  border-color: #0f1734;
+  box-shadow: 0 10px 18px rgba(15, 23, 52, 0.14);
+}
+
+@media (max-width: 767px) {
+  .axiom-catalog-filter-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    gap: 8px;
+  }
+
+  .axiom-filter-pill {
+    white-space: nowrap;
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+}
