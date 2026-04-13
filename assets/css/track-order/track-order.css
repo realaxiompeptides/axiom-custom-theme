@@ -1,0 +1,353 @@
+.axiom-track-page {
+  background: #f6f8fc;
+  color: #0f172a;
+  padding-bottom: 40px;
+}
+
+.axiom-track-hero,
+.axiom-track-form-section,
+.axiom-track-result-section {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.axiom-track-hero {
+  padding-top: 18px;
+  padding-bottom: 12px;
+}
+
+.axiom-track-hero-inner,
+.axiom-track-form-card,
+.axiom-track-summary-card,
+.axiom-track-progress-card,
+.axiom-track-shipping-card,
+.axiom-track-items-card,
+.axiom-track-message-card {
+  width: 100%;
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.axiom-track-kicker {
+  margin: 0 0 8px;
+  color: #3c92d0;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.axiom-track-hero h1 {
+  margin: 0 0 10px;
+  font-size: 42px;
+  line-height: 1.02;
+  font-weight: 900;
+  color: #0f1734;
+}
+
+.axiom-track-subtitle {
+  margin: 0;
+  color: #667085;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.axiom-track-form-card,
+.axiom-track-summary-card,
+.axiom-track-progress-card,
+.axiom-track-shipping-card,
+.axiom-track-items-card,
+.axiom-track-message-card {
+  background: #fff;
+  border: 1px solid #dbe7f3;
+  border-radius: 24px;
+  padding: 18px;
+  margin-bottom: 14px;
+}
+
+.axiom-track-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.axiom-track-field label {
+  display: block;
+  margin: 0 0 8px;
+  color: #344054;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.axiom-track-field input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid #d8e2ef;
+  border-radius: 16px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 15px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.axiom-track-field input:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.14);
+}
+
+.axiom-track-submit-btn,
+.axiom-track-link-btn {
+  min-height: 52px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 900;
+  padding: 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.axiom-track-summary-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.axiom-track-summary-kicker {
+  margin: 0 0 6px;
+  color: #667085;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-track-summary-top h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  color: #0f1734;
+}
+
+.axiom-track-status-badge {
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.axiom-track-status-badge.status-processing,
+.axiom-track-status-badge.status-completed {
+  background: #ecfdf3;
+  color: #027a48;
+}
+
+.axiom-track-status-badge.status-pending,
+.axiom-track-status-badge.status-on-hold {
+  background: #fff7e6;
+  color: #b54708;
+}
+
+.axiom-track-status-badge.status-cancelled,
+.axiom-track-status-badge.status-failed {
+  background: #fef3f2;
+  color: #b42318;
+}
+
+.axiom-track-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.axiom-track-summary-item {
+  border: 1px solid #e7eef5;
+  border-radius: 18px;
+  padding: 14px;
+  background: #fbfdff;
+}
+
+.axiom-track-summary-item span {
+  display: block;
+  margin: 0 0 6px;
+  color: #667085;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.axiom-track-summary-item strong {
+  color: #0f1734;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.axiom-track-progress-card h3,
+.axiom-track-shipping-card h3,
+.axiom-track-items-card h3 {
+  margin: 0 0 14px;
+  color: #0f1734;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.axiom-track-progress-steps {
+  display: grid;
+  gap: 12px;
+}
+
+.axiom-track-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #667085;
+  font-weight: 700;
+}
+
+.axiom-track-step-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  border: 2px solid #cbd5e1;
+  background: #fff;
+  flex: 0 0 16px;
+}
+
+.axiom-track-step.is-complete {
+  color: #0f1734;
+}
+
+.axiom-track-step.is-complete .axiom-track-step-dot {
+  border-color: #3c92d0;
+  background: #3c92d0;
+}
+
+.axiom-track-items-list {
+  display: grid;
+  gap: 12px;
+}
+
+.axiom-track-item {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid #e7eef5;
+  border-radius: 18px;
+  padding: 12px;
+  background: #fbfdff;
+}
+
+.axiom-track-item-image img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  display: block;
+}
+
+.axiom-track-item-main h4 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 900;
+  color: #0f1734;
+}
+
+.axiom-track-item-main p {
+  margin: 0;
+  color: #667085;
+  font-size: 14px;
+}
+
+.axiom-track-item-price {
+  font-size: 16px;
+  font-weight: 900;
+  color: #0f1734;
+}
+
+.axiom-track-message-card--error {
+  border-color: #fecdca;
+  background: #fffaf9;
+}
+
+.axiom-track-message-card--error h2 {
+  margin: 0 0 8px;
+  color: #b42318;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.axiom-track-message-card--error p {
+  margin: 0;
+  color: #7a271a;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+@media (max-width: 767px) {
+  .axiom-track-hero,
+  .axiom-track-form-section,
+  .axiom-track-result-section {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .axiom-track-hero h1 {
+    font-size: 32px;
+  }
+
+  .axiom-track-subtitle {
+    font-size: 16px;
+  }
+
+  .axiom-track-form {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .axiom-track-summary-top {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .axiom-track-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-track-item {
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+
+  .axiom-track-item-price {
+    grid-column: 2;
+  }
+
+  .axiom-track-item-image img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .axiom-track-form-card,
+  .axiom-track-summary-card,
+  .axiom-track-progress-card,
+  .axiom-track-shipping-card,
+  .axiom-track-items-card,
+  .axiom-track-message-card {
+    border-radius: 20px;
+    padding: 16px;
+  }
+}
