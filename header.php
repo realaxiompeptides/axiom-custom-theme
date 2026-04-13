@@ -19,8 +19,6 @@ $is_checkout_page = function_exists('is_checkout') && is_checkout() && !is_order
 $cart_url = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
 $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
 $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
-
-/* Force the drawer checkout to the actual checkout page path */
 $drawer_checkout_url = home_url('/checkout/');
 ?>
 
@@ -165,14 +163,12 @@ $drawer_checkout_url = home_url('/checkout/');
             View Cart
           </a>
 
-          <button
-            type="button"
+          <a
+            href="<?php echo esc_url($drawer_checkout_url); ?>"
             class="cart-pill-btn cart-outline-btn"
-            id="cartCheckoutBtn"
-            onclick="window.location.href='<?php echo esc_url($drawer_checkout_url); ?>';"
           >
             Checkout
-          </button>
+          </a>
         </div>
       </div>
     </div>
