@@ -30,7 +30,7 @@ $compare_html = '';
 $save_percent = '';
 
 if ($is_on_sale && $regular_price && $sale_price && (float) $regular_price > 0) {
-    $percent = round(((float) $regular_price - (float) $sale_price) / (float) $regular_price * 100);
+    $percent = round((((float) $regular_price - (float) $sale_price) / (float) $regular_price) * 100);
     $compare_html = wc_price($regular_price);
     $save_percent = $percent > 0 ? 'Save ' . $percent . '%' : '';
 }
@@ -103,22 +103,22 @@ if ($is_variable) {
         $v_save    = '';
 
         if ($variation_obj->is_on_sale() && $v_regular && $v_sale && (float) $v_regular > 0) {
-            $v_percent = round(((float) $v_regular - (float) $v_sale) / (float) $v_regular * 100);
+            $v_percent = round((((float) $v_regular - (float) $v_sale) / (float) $v_regular) * 100);
             $v_save = $v_percent > 0 ? 'Save ' . $v_percent . '%' : '';
         }
 
         $variation_options[] = array(
-            'variation_id' => $variation['variation_id'],
-            'label'        => $variation_label,
-            'price_html'   => $variation_obj->get_price_html(),
-            'image'        => !empty($variation['image']['src']) ? $variation['image']['src'] : $product_image_url,
-            'stock_text'   => $variation_stock_text,
-            'stock_class'  => $variation_stock_class,
-            'attributes'   => $variation['attributes'],
-            'purchasable'  => $variation_obj->is_purchasable() && ($variation_obj->is_in_stock() || $variation_obj->backorders_allowed()),
+            'variation_id'       => $variation['variation_id'],
+            'label'              => $variation_label,
+            'price_html'         => $variation_obj->get_price_html(),
+            'image'              => !empty($variation['image']['src']) ? $variation['image']['src'] : $product_image_url,
+            'stock_text'         => $variation_stock_text,
+            'stock_class'        => $variation_stock_class,
+            'attributes'         => $variation['attributes'],
+            'purchasable'        => $variation_obj->is_purchasable() && ($variation_obj->is_in_stock() || $variation_obj->backorders_allowed()),
             'regular_price_html' => $v_regular ? wc_price($v_regular) : '',
-            'save_percent' => $v_save,
-            'is_on_sale'   => $variation_obj->is_on_sale(),
+            'save_percent'       => $v_save,
+            'is_on_sale'         => $variation_obj->is_on_sale(),
         );
     }
 }
@@ -261,32 +261,32 @@ if ($is_variable) {
               <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
             </div>
 
-            <div class="product-meta">
-              <div class="product-meta-item">
+            <div class="product-afterpay-box">
+              <div class="product-afterpay-row">
                 <i class="fa-solid fa-truck-fast"></i>
-                <span>Same day shipping on orders before 1pm PST</span>
+                <span>Same day shipping on orders before 2pm PST</span>
               </div>
 
-              <div class="product-meta-item">
+              <div class="product-afterpay-row">
                 <i class="fa-solid fa-shield-halved"></i>
                 <span>Research use only</span>
               </div>
-            </div>
 
-            <div class="product-trust-stack">
-              <div class="product-trust-card product-trust-card-green">
-                <div class="product-trust-card-icon">🛡️</div>
-                <div class="product-trust-card-copy">
-                  <strong>30-Day Money-Back Guarantee</strong>
-                  <span>Not satisfied? Contact us and we will make it right.</span>
+              <div class="product-trust-stack">
+                <div class="product-trust-card product-trust-card-green">
+                  <div class="product-trust-card-icon">🛡️</div>
+                  <div class="product-trust-card-copy">
+                    <strong>30-Day Money-Back Guarantee</strong>
+                    <span>Not satisfied? Contact us and we will make it right.</span>
+                  </div>
                 </div>
-              </div>
 
-              <div class="product-trust-card product-trust-card-blue">
-                <div class="product-trust-card-icon">📦</div>
-                <div class="product-trust-card-copy">
-                  <strong>Shipment Protection Included</strong>
-                  <span>Lost or damaged in transit? We will help resolve it quickly.</span>
+                <div class="product-trust-card product-trust-card-blue">
+                  <div class="product-trust-card-icon">📦</div>
+                  <div class="product-trust-card-copy">
+                    <strong>Shipment Protection Included</strong>
+                    <span>Lost or damaged in transit? We will help resolve it quickly.</span>
+                  </div>
                 </div>
               </div>
             </div>
