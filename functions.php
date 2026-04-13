@@ -49,9 +49,37 @@ function axiom_custom_theme_assets() {
 
     if (function_exists('is_shop') && (is_shop() || is_product_taxonomy() || is_product_category() || is_product_tag())) {
         wp_enqueue_style(
-            'axiom-catalog',
-            $theme_uri . '/assets/css/shop/catalog.css',
+            'axiom-catalog-layout',
+            $theme_uri . '/assets/css/shop/catalog-layout.css',
             array('axiom-base'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-catalog-search',
+            $theme_uri . '/assets/css/shop/catalog-search.css',
+            array('axiom-base', 'axiom-catalog-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-catalog-filters',
+            $theme_uri . '/assets/css/shop/catalog-filters.css',
+            array('axiom-base', 'axiom-catalog-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-catalog-cards',
+            $theme_uri . '/assets/css/shop/catalog-cards.css',
+            array('axiom-base', 'axiom-catalog-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
+            'axiom-catalog-disclaimer',
+            $theme_uri . '/assets/css/shop/catalog-disclaimer.css',
+            array('axiom-base', 'axiom-catalog-layout'),
             '1.0'
         );
 
@@ -555,3 +583,5 @@ function axiom_checkout_research_use_save($order_id) {
     update_post_meta($order_id, '_axiom_research_use_ack', $value);
 }
 add_action('woocommerce_checkout_update_order_meta', 'axiom_checkout_research_use_save');
+
+Give me the full updated code. Also, I made all those css files but none of it is loading yet
