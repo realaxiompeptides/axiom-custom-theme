@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartSubtotal = document.getElementById("cartSubtotal");
   const cartItemsList = document.getElementById("cartItemsList");
   const cartEmptyState = document.getElementById("cartEmptyState");
-  const cartCheckoutLink = document.getElementById("cartCheckoutLink");
+  const cartCheckoutBtn = document.getElementById("cartCheckoutBtn");
 
   function openMenu() {
     if (!mobileMenu || !overlay) return;
@@ -166,7 +166,6 @@ document.addEventListener("DOMContentLoaded", function () {
   async function refreshCartDrawer() {
     try {
       const result = await postAjax("axiom_get_cart_drawer");
-
       if (!result || !result.success || !result.data) return;
       renderCartDrawer(result.data);
     } catch (error) {
@@ -244,15 +243,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  if (cartCheckoutLink) {
-    cartCheckoutLink.addEventListener("click", function (e) {
+  if (cartCheckoutBtn) {
+    cartCheckoutBtn.addEventListener("click", function (e) {
       e.preventDefault();
-      closeCart();
 
       const checkoutUrl =
-        (window.AXIOM_THEME && AXIOM_THEME.checkoutUrl) ? AXIOM_THEME.checkoutUrl : "/checkout/";
+        cartCheckoutBtn.getAttribute("data-checkout-url") ||
+        (window.AXIOM_THEME && AXIOM_THEME.checkoutUrl) ||
+        "/checkout/";
 
-      window.location.href = checkoutUrl;
+      closeCart();
+
+      setTimeout(function () {
+        window.location.assign(checkoutUrl);
+      }, 50);
     });
   }
 
