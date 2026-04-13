@@ -16,17 +16,35 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 	);
 	return;
 }
+
+$theme_uri  = get_template_directory_uri();
+$home_url   = home_url('/');
+$cart_url   = function_exists('wc_get_cart_url') ? wc_get_cart_url() : home_url('/cart/');
+$cart_count = function_exists('WC') && WC()->cart ? absint(WC()->cart->get_cart_contents_count()) : 0;
 ?>
 
 <main class="axiom-checkout-page">
   <section class="axiom-checkout-shell">
     <div class="axiom-checkout-fluid">
       <div class="axiom-checkout-topbar">
-        <div class="axiom-checkout-brand">
-          <img
-            src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/axiom-logo.PNG'); ?>"
-            alt="Axiom Peptides logo"
-          />
+        <div class="axiom-checkout-topbar-row">
+          <a href="<?php echo esc_url($home_url); ?>" class="axiom-checkout-brand" aria-label="Axiom Peptides home">
+            <img
+              src="<?php echo esc_url($theme_uri . '/assets/images/axiom-menu-logo.PNG'); ?>"
+              alt="Axiom Peptides logo"
+            />
+          </a>
+
+          <a
+            href="<?php echo esc_url($cart_url); ?>"
+            class="axiom-checkout-cart-link"
+            aria-label="Back to cart"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2Zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2ZM7.17 14h9.96c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1 1 0 0 0 21.58 5H6.21l-.94-2H2v2h2l3.6 7.59-1.35 2.44A1.98 1.98 0 0 0 6 16c0 1.1.9 2 2 2h12v-2H8l1.17-2Z"/>
+            </svg>
+            <span class="axiom-checkout-cart-count"><?php echo esc_html($cart_count); ?></span>
+          </a>
         </div>
 
         <div class="axiom-checkout-secure-note">
@@ -62,6 +80,7 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
                 <div class="axiom-checkout-card-header">
                   <p class="axiom-checkout-kicker">Contact Information</p>
                   <h2>Checkout</h2>
+                  <p>Enter your billing and shipping details below.</p>
                 </div>
 
                 <div class="axiom-checkout-card-body">
@@ -89,14 +108,14 @@ if (!$checkout->is_registration_enabled() && $checkout->is_registration_required
 
                   <span class="axiom-payment-image">
                     <img
-                      src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>"
+                      src="<?php echo esc_url($theme_uri . '/assets/images/venmo.jpg'); ?>"
                       alt="Venmo"
                     />
                   </span>
 
                   <span class="axiom-payment-image">
                     <img
-                      src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>"
+                      src="<?php echo esc_url($theme_uri . '/assets/images/zelle.jpg'); ?>"
                       alt="Zelle"
                     />
                   </span>
