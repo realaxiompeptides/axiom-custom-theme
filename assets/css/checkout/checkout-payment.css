@@ -554,3 +554,33 @@ button[name="woocommerce_checkout_place_order"] {
     border-radius: 20px !important;
   }
 }
+
+/* aggressive gift card styling fallback */
+#payment form input[name*="gift"],
+#payment form input[id*="gift"],
+#payment form input[placeholder*="code"],
+#payment form input[placeholder*="gift"],
+#payment form input[placeholder*="card"] {
+  width: 100% !important;
+  min-height: 54px !important;
+  padding: 0 16px !important;
+  border: 1px solid #d8e2ef !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  font-size: 16px !important;
+  box-sizing: border-box !important;
+}
+
+#payment form button[name*="gift"],
+#payment form button[id*="gift"],
+#payment form button[value*="Apply"],
+#payment form .button {
+  min-height: 54px !important;
+  border-radius: 16px !important;
+}
+
+#payment h3,
+#payment h4 {
+  color: #0f172a;
+  font-weight: 900;
+}
