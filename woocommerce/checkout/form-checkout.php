@@ -124,11 +124,6 @@ $contact_keys = array('billing_email', 'billing_phone');
                 <?php do_action('woocommerce_checkout_shipping'); ?>
 
                 <?php if (WC()->cart && WC()->cart->needs_shipping()) : ?>
-                  <?php
-                  $packages = WC()->shipping()->get_packages();
-                  $chosen_methods = WC()->session ? (array) WC()->session->get('chosen_shipping_methods', array()) : array();
-                  ?>
-
                   <section class="axiom-checkout-card axiom-checkout-shipping-methods-card">
                     <div class="axiom-checkout-card-header">
                       <p class="axiom-checkout-kicker">Shipping</p>
@@ -137,48 +132,9 @@ $contact_keys = array('billing_email', 'billing_phone');
                     </div>
 
                     <div class="axiom-checkout-card-body">
-                      <?php if (!empty($packages)) : ?>
-                        <?php foreach ($packages as $package_index => $package) : ?>
-                          <?php
-                          $available_methods = isset($package['rates']) ? $package['rates'] : array();
-                          $chosen_method = isset($chosen_methods[$package_index]) ? $chosen_methods[$package_index] : '';
-                          ?>
-
-                          <div class="axiom-checkout-shipping-package">
-                            <?php if (!empty($available_methods)) : ?>
-                              <ul class="axiom-checkout-shipping-method-list" id="shipping_method">
-                                <?php foreach ($available_methods as $method) : ?>
-                                  <?php
-                                  $method_id = 'shipping_method_' . $package_index . '_' . sanitize_title($method->id);
-                                  ?>
-                                  <li class="axiom-checkout-shipping-method-item">
-                                    <input
-                                      type="radio"
-                                      class="shipping_method"
-                                      name="shipping_method[<?php echo esc_attr($package_index); ?>]"
-                                      data-index="<?php echo esc_attr($package_index); ?>"
-                                      id="<?php echo esc_attr($method_id); ?>"
-                                      value="<?php echo esc_attr($method->id); ?>"
-                                      <?php checked($method->id, $chosen_method); ?>
-                                    />
-                                    <label for="<?php echo esc_attr($method_id); ?>">
-                                      <?php echo wp_kses_post(wc_cart_totals_shipping_method_label($method)); ?>
-                                    </label>
-                                  </li>
-                                <?php endforeach; ?>
-                              </ul>
-                            <?php else : ?>
-                              <p class="axiom-checkout-shipping-empty">
-                                Enter your full shipping address above to view available shipping methods.
-                              </p>
-                            <?php endif; ?>
-                          </div>
-                        <?php endforeach; ?>
-                      <?php else : ?>
-                        <p class="axiom-checkout-shipping-empty">
-                          Enter your full shipping address above to view available shipping methods.
-                        </p>
-                      <?php endif; ?>
+                      <div class="axiom-checkout-shipping-methods-fragment">
+                        <?php echo axiom_render_checkout_shipping_methods_fragment(); ?>
+                      </div>
                     </div>
                   </section>
                 <?php endif; ?>
