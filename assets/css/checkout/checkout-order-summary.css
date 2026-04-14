@@ -166,3 +166,56 @@
   font-size: 22px;
   font-weight: 900;
 }
+
+.axiom-checkout-payment-card .shop_table,
+.woocommerce-checkout-review-order-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f8fbff;
+  border: 1px solid #dbe4f0;
+  border-radius: 24px;
+  overflow: hidden;
+}
+
+.woocommerce-checkout-review-order-table th,
+.woocommerce-checkout-review-order-table td {
+  padding: 20px 22px;
+  border-bottom: 1px solid #e3ebf5;
+  color: #0f1734;
+  font-size: 16px;
+}
+
+.woocommerce-checkout-review-order-table tr:last-child th,
+.woocommerce-checkout-review-order-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.woocommerce-checkout-review-order-table thead th {
+  font-size: 18px;
+  font-weight: 900;
+  background: #ffffff;
+}
+
+.woocommerce-checkout-review-order-table .order-total th,
+.woocommerce-checkout-review-order-table .order-total td {
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.woocommerce-checkout-review-order-table ul#shipping_method,
+.woocommerce-checkout-review-order-table ul.woocommerce-shipping-methods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.woocommerce-checkout-review-order-table ul#shipping_method li,
+.woocommerce-checkout-review-order-table ul.woocommerce-shipping-methods li {
+  margin: 0 0 10px;
+}
+
+.woocommerce-checkout-review-order-table ul#shipping_method li:last-child,
+.woocommerce-checkout-review-order-table ul.woocommerce-shipping-methods li:last-child {
+  margin-bottom: 0;
+}
