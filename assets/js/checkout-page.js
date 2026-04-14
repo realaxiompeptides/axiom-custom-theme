@@ -87,8 +87,7 @@ jQuery(function ($) {
       .removeClass("is-error is-success")
       .addClass(type === "success" ? "is-success" : "is-error")
       .html(message)
-      .stop(true, true)
-      .fadeIn(120);
+      .show();
 
     setTimeout(function () {
       restoreScrollPosition();
@@ -99,7 +98,7 @@ jQuery(function ($) {
     var $feedback = getCouponFeedbackBox();
     if (!$feedback.length) return;
 
-    $feedback.removeClass("is-error is-success").hide().empty();
+    $feedback.removeClass("is-error is-success").empty().hide();
   }
 
   function clearTopNotices() {
@@ -109,6 +108,48 @@ jQuery(function ($) {
       ".woocommerce-message," +
       ".woocommerce-info"
     ).remove();
+  }
+
+  function extractNoticeText(html) {
+    var text = "";
+    var $response = $("<div>").html(html);
+
+    text = $.trim(
+      $response.find(".woocommerce-error li, .woocommerce-error").first().text()
+    );
+    if (text) {
+      return { type: "error", text: text };
+    }
+
+    text = $.trim(
+      $response.find(".woocommerce-message, .woocommerce-info").first().text()
+    );
+    if (text) {
+      return { type: "success", text: text };
+    }
+
+    var raw = $("<div>").html(html).text().trim().toLowerCase();
+
+    if (
+      raw.indexOf("does not exist") !== -1 ||
+      raw.indexOf("cannot be applied") !== -1 ||
+      raw.indexOf("invalid coupon") !== -1 ||
+      raw.indexOf("invalid coupon code") !== -1 ||
+      raw.indexOf("coupon is not valid") !== -1 ||
+      raw.indexOf("not valid") !== -1
+    ) {
+      return { type: "error", text: "Discount code not found." };
+    }
+
+    if (
+      raw.indexOf("coupon code applied successfully") !== -1 ||
+      raw.indexOf("applied successfully") !== -1 ||
+      raw.indexOf("coupon applied") !== -1
+    ) {
+      return { type: "success", text: "Discount applied." };
+    }
+
+    return null;
   }
 
   function bindAddressFieldEvents() {
@@ -207,30 +248,29 @@ jQuery(function ($) {
           clearTopNotices();
 
           var html = typeof response === "string" ? response : "";
-          var $response = $("<div>").html(html);
+          var notice = extractNoticeText(html);
 
-          var errorText = $.trim(
-            $response.find(".woocommerce-error li, .woocommerce-error").first().text()
-          );
-
-          var successText = $.trim(
-            $response.find(".woocommerce-message, .woocommerce-info").first().text()
-          );
-
-          if (errorText) {
-            showCouponMessage(errorText || "Discount code not found.", "error");
+          if (notice && notice.type === "error") {
+            showCouponMessage(notice.text, "error");
             couponUpdating = false;
             return;
           }
 
-          showCouponMessage(successText || "Discount applied.", "success");
-          $input.val("");
+          if (notice && notice.type === "success") {
+            showCouponMessage(notice.text || "Discount applied.", "success");
+            $input.val("");
 
-          setTimeout(function () {
-            clearTopNotices();
-            $body.trigger("update_checkout");
-            restoreScrollPosition();
-          }, 50);
+            setTimeout(function () {
+              clearTopNotices();
+              $body.trigger("update_checkout");
+              restoreScrollPosition();
+            }, 50);
+
+            return;
+          }
+
+          showCouponMessage("Could not validate discount code. Please try again.", "error");
+          couponUpdating = false;
         })
         .fail(function () {
           showCouponMessage("Could not apply discount code. Please try again.", "error");
