@@ -31,6 +31,13 @@ if ( ! wp_doing_ajax() ) {
 		</ul>
 	<?php endif; ?>
 
+	<div class="axiom-payment-subtotal-section">
+		<h3 class="axiom-order-review-heading"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
+		<div class="axiom-payment-subtotal-table">
+			<?php woocommerce_order_review(); ?>
+		</div>
+	</div>
+
 	<div class="axiom-place-order-section">
 
 		<div class="axiom-checkout-research-wrap axiom-checkout-research-wrap--payment">
