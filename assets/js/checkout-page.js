@@ -5,6 +5,8 @@ jQuery(function ($) {
   var updateTimer = null;
   var couponUpdating = false;
   var couponLockedScroll = null;
+  var COUPON_MESSAGE_KEY = "axiom_coupon_feedback_message";
+  var COUPON_MESSAGE_TYPE_KEY = "axiom_coupon_feedback_type";
 
   if (typeof $.scroll_to_notices === "function") {
     $.scroll_to_notices = function () {
@@ -79,9 +81,36 @@ jQuery(function ($) {
     return $(".axiom-inline-coupon-feedback").first();
   }
 
+  function saveCouponMessage(message, type) {
+    try {
+      sessionStorage.setItem(COUPON_MESSAGE_KEY, message || "");
+      sessionStorage.setItem(COUPON_MESSAGE_TYPE_KEY, type || "");
+    } catch (e) {}
+  }
+
+  function clearSavedCouponMessage() {
+    try {
+      sessionStorage.removeItem(COUPON_MESSAGE_KEY);
+      sessionStorage.removeItem(COUPON_MESSAGE_TYPE_KEY);
+    } catch (e) {}
+  }
+
+  function readSavedCouponMessage() {
+    try {
+      return {
+        message: sessionStorage.getItem(COUPON_MESSAGE_KEY) || "",
+        type: sessionStorage.getItem(COUPON_MESSAGE_TYPE_KEY) || ""
+      };
+    } catch (e) {
+      return { message: "", type: "" };
+    }
+  }
+
   function showCouponMessage(message, type) {
     var $feedback = getCouponFeedbackBox();
     if (!$feedback.length) return;
+
+    saveCouponMessage(message, type);
 
     $feedback
       .removeClass("is-error is-success")
@@ -94,39 +123,41 @@ jQuery(function ($) {
     }, 10);
   }
 
-  function clearCouponMessage() {
+  function restoreSavedCouponMessage() {
+    var saved = readSavedCouponMessage();
+    if (!saved.message) return;
+
     var $feedback = getCouponFeedbackBox();
     if (!$feedback.length) return;
 
+    $feedback
+      .removeClass("is-error is-success")
+      .addClass(saved.type === "success" ? "is-success" : "is-error")
+      .html(saved.message)
+      .show();
+  }
+
+  function clearCouponMessage() {
+    var $feedback = getCouponFeedbackBox();
+    clearSavedCouponMessage();
+
+    if (!$feedback.length) return;
     $feedback.removeClass("is-error is-success").empty().hide();
   }
 
   function clearTopNotices() {
-    $(
-      ".woocommerce-NoticeGroup," +
-      ".woocommerce-error," +
-      ".woocommerce-message," +
-      ".woocommerce-info"
-    ).remove();
+    $(".woocommerce-NoticeGroup, .woocommerce-error, .woocommerce-message, .woocommerce-info").remove();
   }
 
   function extractNoticeText(html) {
     var text = "";
     var $response = $("<div>").html(html);
 
-    text = $.trim(
-      $response.find(".woocommerce-error li, .woocommerce-error").first().text()
-    );
-    if (text) {
-      return { type: "error", text: text };
-    }
+    text = $.trim($response.find(".woocommerce-error li, .woocommerce-error").first().text());
+    if (text) return { type: "error", text: text };
 
-    text = $.trim(
-      $response.find(".woocommerce-message, .woocommerce-info").first().text()
-    );
-    if (text) {
-      return { type: "success", text: text };
-    }
+    text = $.trim($response.find(".woocommerce-message, .woocommerce-info").first().text());
+    if (text) return { type: "success", text: text };
 
     var raw = $("<div>").html(html).text().trim().toLowerCase();
 
@@ -138,7 +169,7 @@ jQuery(function ($) {
       raw.indexOf("coupon is not valid") !== -1 ||
       raw.indexOf("not valid") !== -1
     ) {
-      return { type: "error", text: "Discount code not found." };
+      return { type: "error", text: "Discount code not valid." };
     }
 
     if (
@@ -195,13 +226,9 @@ jQuery(function ($) {
   }
 
   function bindShippingMethodEvents() {
-    $(document).on(
-      "change",
-      '.axiom-checkout-shipping-methods-fragment input.shipping_method, input.shipping_method',
-      function () {
-        queueCheckoutUpdate(100);
-      }
-    );
+    $(document).on("change", '.axiom-checkout-shipping-methods-fragment input.shipping_method, input.shipping_method', function () {
+      queueCheckoutUpdate(100);
+    });
   }
 
   function bindCouponForm() {
@@ -210,7 +237,6 @@ jQuery(function ($) {
       e.stopPropagation();
 
       lockScrollPosition();
-      clearCouponMessage();
       clearTopNotices();
 
       var $form = $(this);
@@ -310,6 +336,7 @@ jQuery(function ($) {
     });
 
     clearTopNotices();
+    restoreSavedCouponMessage();
 
     if (couponUpdating) {
       restoreScrollPosition();
@@ -319,6 +346,7 @@ jQuery(function ($) {
 
   $body.on("checkout_error applied_coupon removed_coupon", function () {
     clearTopNotices();
+    restoreSavedCouponMessage();
     restoreScrollPosition();
   });
 
@@ -328,9 +356,11 @@ jQuery(function ($) {
 
   setTimeout(function () {
     maybeUpdateCheckout();
+    restoreSavedCouponMessage();
   }, 500);
 
   setTimeout(function () {
     maybeUpdateCheckout();
+    restoreSavedCouponMessage();
   }, 1200);
 });
