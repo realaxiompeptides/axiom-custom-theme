@@ -32,26 +32,46 @@
 
 .woocommerce-checkout #payment {
   margin-top: 18px;
-  background: #ffffff !important;
-  border: 1px solid #dbe7f3 !important;
-  border-radius: 24px !important;
-  overflow: hidden;
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+.axiom-payment-methods-section,
+.axiom-payment-coupon-section,
+.axiom-payment-subtotal-section,
+.axiom-checkout-research-wrap--payment,
+.axiom-place-order-section {
+  margin-top: 16px;
+}
+
+.axiom-payment-section-title {
+  margin: 0 0 12px !important;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.2;
 }
 
 .woocommerce-checkout #payment ul.payment_methods {
-  padding: 0 !important;
   margin: 0 !important;
-  border: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  border: 1px solid #dbe7f3 !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  overflow: hidden;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li {
   margin: 0 !important;
-  padding: 18px 22px !important;
-  border-top: 1px solid #e8eef5;
+  padding: 20px 22px !important;
+  border-top: 1px solid #e7eef5 !important;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li:first-child {
-  border-top: 0;
+  border-top: 0 !important;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li label {
@@ -73,17 +93,48 @@
   display: none !important;
 }
 
-.axiom-payment-subtotal-section {
-  margin: 18px 0 14px !important;
-  padding: 0 !important;
+.axiom-payment-coupon-box {
+  padding: 18px;
+  border: 1px solid #dbe7f3;
+  border-radius: 22px;
+  background: #f8fbff;
 }
 
-.axiom-payment-subtotal-section .axiom-order-review-heading {
-  margin: 0 0 14px !important;
-  color: #0f172a !important;
-  font-size: 18px !important;
+.axiom-payment-coupon-box .checkout_coupon,
+.axiom-payment-coupon-box .woocommerce-form-coupon {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.axiom-payment-coupon-box p {
+  margin: 0 0 12px;
+}
+
+.axiom-payment-coupon-box input.input-text {
+  width: 100%;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 1px solid #d8e2ef;
+  border-radius: 16px;
+  background: #ffffff;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.axiom-payment-coupon-box button.button {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 10px;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: #edf2f8 !important;
+  color: #334155 !important;
+  font-size: 16px !important;
   font-weight: 900 !important;
-  line-height: 1.2 !important;
+  box-shadow: none !important;
 }
 
 .axiom-payment-subtotal-table .shop_table,
@@ -108,17 +159,15 @@
   vertical-align: middle;
 }
 
-.axiom-payment-subtotal-table .shop_table tr:last-child th,
-.axiom-payment-subtotal-table .shop_table tr:last-child td,
-.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table tr:last-child th,
-.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table tr:last-child td {
-  border-bottom: 0;
-}
-
 .axiom-payment-subtotal-table thead th {
   background: #ffffff;
   font-size: 17px;
   font-weight: 900;
+}
+
+.axiom-payment-subtotal-table tr:last-child th,
+.axiom-payment-subtotal-table tr:last-child td {
+  border-bottom: 0;
 }
 
 .axiom-payment-subtotal-table .order-total th,
@@ -144,53 +193,7 @@
   margin-bottom: 0;
 }
 
-.axiom-checkout-payment-card .coupon,
-.axiom-checkout-payment-card .woocommerce-form-coupon-toggle,
-.axiom-checkout-payment-card .woocommerce-form-coupon {
-  margin-top: 16px;
-}
-
-.axiom-checkout-payment-card .woocommerce-form-coupon {
-  padding: 18px;
-  border: 1px solid #dbe7f3;
-  border-radius: 20px;
-  background: #f8fbff;
-}
-
-.axiom-checkout-payment-card .woocommerce-form-coupon p {
-  margin: 0 0 12px;
-}
-
-.axiom-checkout-payment-card .woocommerce-form-coupon input.input-text {
-  width: 100%;
-  min-height: 54px;
-  border: 1px solid #d8e2ef;
-  border-radius: 16px;
-  background: #ffffff;
-  padding: 0 16px;
-  font-size: 16px;
-}
-
-.axiom-checkout-payment-card .woocommerce-form-coupon button.button,
-.axiom-checkout-payment-card .coupon button.button {
-  width: 100%;
-  min-height: 54px;
-  border: 0 !important;
-  border-radius: 16px !important;
-  background: #eef4fa !important;
-  color: #334155 !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  box-shadow: none !important;
-}
-
-.woocommerce-checkout #payment .form-row {
-  padding: 18px !important;
-  margin: 0 !important;
-}
-
 .axiom-checkout-research-wrap--payment {
-  margin: 14px 0 12px !important;
   padding: 18px !important;
   border: 1px solid #ead56e !important;
   background: #fef9e7 !important;
@@ -265,11 +268,6 @@
   padding: 0 !important;
 }
 
-.axiom-place-order-section {
-  margin-top: 0 !important;
-  padding: 0 !important;
-}
-
 .axiom-place-order-section .form-row.place-order {
   margin: 0 !important;
   padding: 0 !important;
@@ -285,7 +283,6 @@ button[name="woocommerce_checkout_place_order"] {
   color: #ffffff !important;
   font-size: 18px !important;
   font-weight: 900 !important;
-  letter-spacing: -0.01em;
   box-shadow: 0 10px 18px rgba(47, 132, 191, 0.14) !important;
   margin: 0 !important;
 }
@@ -294,7 +291,7 @@ button[name="woocommerce_checkout_place_order"] {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 4px !important;
+  margin-top: 8px !important;
 }
 
 .axiom-place-order-trust-item {
@@ -329,6 +326,14 @@ button[name="woocommerce_checkout_place_order"] {
 }
 
 @media (max-width: 767px) {
+  .axiom-payment-methods-section,
+  .axiom-payment-coupon-section,
+  .axiom-payment-subtotal-section,
+  .axiom-checkout-research-wrap--payment,
+  .axiom-place-order-section {
+    margin-top: 14px;
+  }
+
   .axiom-payment-subtotal-table .shop_table th,
   .axiom-payment-subtotal-table .shop_table td,
   .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
@@ -370,7 +375,6 @@ button[name="woocommerce_checkout_place_order"] {
   .axiom-place-order-trust-icons {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 4px !important;
   }
 
   .axiom-place-order-trust-item {
