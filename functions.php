@@ -666,3 +666,17 @@ function axiom_checkout_shipping_methods_fragment($fragments) {
     return $fragments;
 }
 add_filter('woocommerce_update_order_review_fragments', 'axiom_checkout_shipping_methods_fragment');
+
+/* Move payment section above the order summary on checkout */
+function axiom_move_payment_before_order_review() {
+	if ( is_admin() ) {
+		return;
+	}
+
+	remove_action( 'woocommerce_checkout_order_review', 'woocommerce_order_review', 10 );
+	remove_action( 'woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 20 );
+
+	add_action( 'woocommerce_checkout_order_review', 'woocommerce_checkout_payment', 10 );
+	add_action( 'woocommerce_checkout_order_review', 'woocommerce_order_review', 20 );
+}
+add_action( 'wp', 'axiom_move_payment_before_order_review', 20 );
