@@ -380,26 +380,34 @@ button[name="woocommerce_checkout_place_order"]:disabled,
     font-size: 15px;
   }
 
-  .axiom-place-order-section .form-row.place-order {
-    margin-bottom: 6px !important;
-  }
+.axiom-place-order-section {
+  margin-top: 0 !important;
+  padding: 0 !important;
+}
 
+.axiom-place-order-section .form-row.place-order {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.axiom-place-order-section #place_order,
+.axiom-place-order-section button[name="woocommerce_checkout_place_order"] {
+  margin: 0 !important;
+}
+
+.axiom-place-order-trust-icons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 2px !important;
+  padding-top: 0 !important;
+}
+
+@media (max-width: 767px) {
   .axiom-place-order-trust-icons {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 6px !important;
-  }
-
-  .axiom-place-order-trust-item {
-    padding: 14px 8px;
-    border-radius: 16px;
-  }
-
-  .axiom-place-order-trust-item strong {
-    font-size: 15px;
-  }
-
-  .axiom-place-order-trust-item small {
-    font-size: 12px;
+    margin-top: 2px !important;
+    padding-top: 0 !important;
   }
 }
