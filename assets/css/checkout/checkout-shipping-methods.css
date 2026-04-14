@@ -30,116 +30,115 @@
   line-height: 1.55;
 }
 
-.axiom-checkout-shipping-methods-fragment {
-  width: 100%;
-}
-
+.axiom-checkout-shipping-methods-fragment,
 .axiom-checkout-shipping-package {
-  width: 100%;
+  width: 100% !important;
 }
 
 .axiom-checkout-shipping-method-list {
-  list-style: none;
-  margin: 18px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 16px;
+  list-style: none !important;
+  margin: 18px 0 0 !important;
+  padding: 0 !important;
+  display: block !important;
 }
 
 .axiom-checkout-shipping-method-item {
-  position: relative;
-  display: block;
-  margin: 0;
-  padding: 0;
-  width: 100%;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  margin: 0 0 18px 0 !important;
+  padding: 0 !important;
+}
+
+.axiom-checkout-shipping-method-item:last-child {
+  margin-bottom: 0 !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method {
-  position: absolute;
-  top: 50%;
-  left: 20px;
-  transform: translateY(-50%);
-  width: 26px;
-  height: 26px;
-  margin: 0;
-  z-index: 2;
-  appearance: none;
-  -webkit-appearance: none;
-  border: 3px solid #aeb9ca;
-  border-radius: 999px;
-  background: #ffffff;
-  box-shadow: none;
-  cursor: pointer;
+  position: absolute !important;
+  top: 50% !important;
+  left: 22px !important;
+  transform: translateY(-50%) !important;
+  width: 26px !important;
+  height: 26px !important;
+  margin: 0 !important;
+  z-index: 3 !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  border: 3px solid #aeb9ca !important;
+  border-radius: 999px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border-radius: 999px;
-  background: #2f84bf;
-  transform: scale(0);
-  transition: transform 0.18s ease;
+  content: "" !important;
+  position: absolute !important;
+  inset: 5px !important;
+  border-radius: 999px !important;
+  background: #2f84bf !important;
+  transform: scale(0) !important;
+  transition: transform 0.18s ease !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method:checked {
-  border-color: #2f84bf;
+  border-color: #2f84bf !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method:checked::before {
-  transform: scale(1);
+  transform: scale(1) !important;
 }
 
 .axiom-checkout-shipping-method-item label {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 90px;
-  margin: 0;
-  padding: 22px 22px 22px 62px;
-  border: 2px solid #cfe0ef;
-  border-radius: 26px;
-  background: #f8fbff;
-  color: #0f1734;
-  font-size: 20px;
-  line-height: 1.35;
-  font-weight: 900;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
-  overflow: hidden;
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  min-height: 92px !important;
+  margin: 0 !important;
+  padding: 22px 22px 22px 66px !important;
+  border: 2px solid #cfe0ef !important;
+  border-radius: 26px !important;
+  background: #f8fbff !important;
+  color: #0f1734 !important;
+  font-size: 19px !important;
+  line-height: 1.35 !important;
+  font-weight: 900 !important;
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease !important;
+  overflow: hidden !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method:hover + label {
-  border-color: #7ab5e2;
-  background: #f4faff;
+  border-color: #7ab5e2 !important;
+  background: #f4faff !important;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method:checked + label {
-  border-color: #4aa7e8;
-  background: #eef7ff;
-  box-shadow: 0 0 0 3px rgba(74, 167, 232, 0.12);
+  border-color: #4aa7e8 !important;
+  background: #eef7ff !important;
+  box-shadow: 0 0 0 3px rgba(74, 167, 232, 0.12) !important;
 }
 
-.axiom-checkout-shipping-method-item .amount,
 .axiom-checkout-shipping-method-item label .amount,
+.axiom-checkout-shipping-method-item .amount,
 .axiom-checkout-shipping-method-item label .woocommerce-Price-amount {
-  font-weight: 900;
-  white-space: nowrap;
+  font-weight: 900 !important;
+  white-space: nowrap !important;
 }
 
 .axiom-checkout-shipping-empty {
-  margin: 0;
-  padding: 20px 22px;
-  border: 1px solid #dbe7f3;
-  border-radius: 20px;
-  background: #f8fbff;
-  color: #69758d;
-  font-size: 16px;
-  line-height: 1.6;
+  margin: 0 !important;
+  padding: 20px 22px !important;
+  border: 1px solid #dbe7f3 !important;
+  border-radius: 20px !important;
+  background: #f8fbff !important;
+  color: #69758d !important;
+  font-size: 16px !important;
+  line-height: 1.6 !important;
 }
 
-/* Hide extra helper/package text if a plugin injects it */
 .axiom-checkout-shipping-methods-card .woocommerce-shipping-destination,
 .axiom-checkout-shipping-methods-card .shipping-calculator-button,
 .axiom-checkout-shipping-methods-card .package-name,
@@ -156,49 +155,53 @@
 
 @media (max-width: 767px) {
   .axiom-checkout-shipping-methods-card h2 {
-    font-size: 22px;
+    font-size: 22px !important;
   }
 
-  .axiom-checkout-shipping-method-list {
-    gap: 14px;
+  .axiom-checkout-shipping-method-item {
+    margin: 0 0 16px 0 !important;
   }
 
   .axiom-checkout-shipping-method-item input.shipping_method {
-    left: 16px;
-    width: 24px;
-    height: 24px;
+    left: 18px !important;
+    width: 24px !important;
+    height: 24px !important;
   }
 
   .axiom-checkout-shipping-method-item label {
-    min-height: 82px;
-    padding: 18px 18px 18px 54px;
-    border-radius: 22px;
-    font-size: 17px;
-    line-height: 1.4;
+    min-height: 84px !important;
+    padding: 18px 18px 18px 56px !important;
+    border-radius: 22px !important;
+    font-size: 17px !important;
+    line-height: 1.4 !important;
   }
 
   .axiom-checkout-shipping-empty {
-    padding: 18px;
-    font-size: 15px;
+    padding: 18px !important;
+    font-size: 15px !important;
   }
 }
 
 @media (max-width: 520px) {
+  .axiom-checkout-shipping-method-item {
+    margin: 0 0 14px 0 !important;
+  }
+
   .axiom-checkout-shipping-method-item input.shipping_method {
-    left: 14px;
-    width: 22px;
-    height: 22px;
-    border-width: 2px;
+    left: 16px !important;
+    width: 22px !important;
+    height: 22px !important;
+    border-width: 2px !important;
   }
 
   .axiom-checkout-shipping-method-item input.shipping_method::before {
-    inset: 4px;
+    inset: 4px !important;
   }
 
   .axiom-checkout-shipping-method-item label {
-    min-height: 76px;
-    padding: 16px 16px 16px 48px;
-    border-radius: 20px;
-    font-size: 15px;
+    min-height: 78px !important;
+    padding: 16px 16px 16px 50px !important;
+    border-radius: 20px !important;
+    font-size: 15px !important;
   }
 }
