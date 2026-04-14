@@ -166,20 +166,8 @@ $contact_keys = array('billing_email', 'billing_phone');
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
 
-                <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
-
-                <div class="axiom-checkout-review-wrap">
-                  <h3 id="order_review_heading" class="axiom-order-review-heading">
-                    <?php esc_html_e('Order summary', 'woocommerce'); ?>
-                  </h3>
-
-                  <?php do_action('woocommerce_checkout_before_order_review'); ?>
-
-                  <div id="order_review" class="woocommerce-checkout-review-order">
-                    <?php do_action('woocommerce_checkout_order_review'); ?>
-                  </div>
-
-                  <?php do_action('woocommerce_checkout_after_order_review'); ?>
+                <div id="order_review" class="woocommerce-checkout-review-order">
+                  <?php woocommerce_checkout_payment(); ?>
                 </div>
               </div>
             </section>
