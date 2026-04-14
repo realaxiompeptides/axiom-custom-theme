@@ -113,12 +113,126 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   color: #e25353;
 }
 
-.axiom-checkout-research-wrap--payment {
+.axiom-payment-subtotal-section {
   margin: 18px 0 16px !important;
+}
+
+.axiom-payment-subtotal-section .axiom-order-review-heading {
+  margin: 0 0 14px !important;
+  color: #0f172a !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.axiom-payment-subtotal-table .shop_table,
+.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f8fbff;
+  border: 1px solid #dbe4f0;
+  border-radius: 22px;
+  overflow: hidden;
+}
+
+.axiom-payment-subtotal-table .shop_table th,
+.axiom-payment-subtotal-table .shop_table td,
+.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
+.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
+  padding: 18px 22px;
+  border-bottom: 1px solid #dfe7f2;
+  color: #0f172a;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.axiom-payment-subtotal-table .shop_table tr:last-child th,
+.axiom-payment-subtotal-table .shop_table tr:last-child td,
+.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table tr:last-child th,
+.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.axiom-payment-subtotal-table thead th {
+  background: #ffffff;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.axiom-payment-subtotal-table .order-total th,
+.axiom-payment-subtotal-table .order-total td {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.axiom-payment-subtotal-table ul#shipping_method,
+.axiom-payment-subtotal-table ul.woocommerce-shipping-methods {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.axiom-payment-subtotal-table ul#shipping_method li,
+.axiom-payment-subtotal-table ul.woocommerce-shipping-methods li {
+  margin: 0 0 10px;
+}
+
+.axiom-payment-subtotal-table ul#shipping_method li:last-child,
+.axiom-payment-subtotal-table ul.woocommerce-shipping-methods li:last-child {
+  margin-bottom: 0;
+}
+
+.axiom-checkout-research-wrap--payment {
+  margin: 16px 0 12px !important;
   padding: 18px !important;
   border: 1px solid #ead56e !important;
   background: #fef9e7 !important;
   border-radius: 22px !important;
+}
+
+.axiom-research-use-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+  border: 2px solid #e5ce62;
+  border-radius: 20px;
+  background: rgba(255, 248, 220, 0.45);
+  margin-bottom: 16px;
+}
+
+.axiom-research-use-icon {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: 999px;
+  background: #f8e7ad;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.axiom-research-use-icon i {
+  color: #c57317;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.axiom-research-use-copy strong {
+  display: block;
+  margin: 0 0 10px;
+  color: #8a4b13;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.axiom-research-use-copy p {
+  margin: 0;
+  color: #8b6b2f;
+  font-size: 15px;
+  line-height: 1.65;
 }
 
 .axiom-checkout-research-wrap--payment .axiom-checkout-kicker {
@@ -148,8 +262,8 @@ button[name="woocommerce_checkout_place_order"]:disabled,
 
 .axiom-checkout-research-wrap--payment label.checkbox {
   display: flex !important;
-  align-items: flex-start !important;
-  gap: 12px !important;
+  align-items: center !important;
+  gap: 14px !important;
   color: #24314c !important;
   font-size: 16px !important;
   font-weight: 800 !important;
@@ -161,7 +275,7 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   height: 28px !important;
   min-width: 28px !important;
   min-height: 28px !important;
-  margin: 2px 0 0 !important;
+  margin: 0 !important;
   padding: 0 !important;
 }
 
@@ -175,11 +289,16 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   margin: 0 !important;
 }
 
+.axiom-place-order-section .form-row.place-order {
+  margin-bottom: 8px !important;
+  padding-bottom: 0 !important;
+}
+
 .axiom-place-order-trust-icons {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 8px !important;
 }
 
 .axiom-place-order-trust-item {
@@ -217,15 +336,58 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   .axiom-checkout-research-wrap--payment {
     padding: 16px !important;
     border-radius: 20px !important;
+    margin: 14px 0 10px !important;
+  }
+
+  .axiom-research-use-box {
+    gap: 14px;
+    padding: 16px;
+    border-radius: 18px;
+    margin-bottom: 14px;
+  }
+
+  .axiom-research-use-icon {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+  }
+
+  .axiom-research-use-icon i {
+    font-size: 24px;
+  }
+
+  .axiom-research-use-copy strong {
+    font-size: 17px;
+  }
+
+  .axiom-research-use-copy p {
+    font-size: 14px;
   }
 
   .axiom-checkout-research-wrap--payment h3 {
     font-size: 20px !important;
   }
 
+  .axiom-payment-subtotal-section .axiom-order-review-heading {
+    font-size: 17px !important;
+  }
+
+  .axiom-payment-subtotal-table .shop_table th,
+  .axiom-payment-subtotal-table .shop_table td,
+  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
+  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
+    padding: 16px 14px;
+    font-size: 15px;
+  }
+
+  .axiom-place-order-section .form-row.place-order {
+    margin-bottom: 6px !important;
+  }
+
   .axiom-place-order-trust-icons {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+    margin-top: 6px !important;
   }
 
   .axiom-place-order-trust-item {
