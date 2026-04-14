@@ -3,6 +3,8 @@ jQuery(function ($) {
 
   var $body = $(document.body);
   var updateTimer = null;
+  var couponScrollTop = null;
+  var couponUpdating = false;
 
   function queueCheckoutUpdate(delay) {
     clearTimeout(updateTimer);
@@ -96,7 +98,7 @@ jQuery(function ($) {
   function bindShippingMethodEvents() {
     $(document).on(
       "change",
-      '.axiom-checkout-shipping-methods-fragment input.shipping_method, #payment input.shipping_method, input.shipping_method',
+      '.axiom-checkout-shipping-methods-fragment input.shipping_method, input.shipping_method',
       function () {
         queueCheckoutUpdate(100);
       }
@@ -126,35 +128,39 @@ jQuery(function ($) {
   }
 
   function clearTopCouponNotices() {
-    $(".woocommerce-NoticeGroup, .woocommerce-error, .woocommerce-message, .woocommerce-info").remove();
+    $(
+      ".woocommerce-NoticeGroup, .woocommerce-error, .woocommerce-message, .woocommerce-info"
+    ).remove();
   }
 
-  function syncShippingRadios() {
-    $(".axiom-checkout-shipping-methods-fragment input.shipping_method").each(function () {
-      var $input = $(this);
-      var name = $input.attr("name");
-      var value = $input.val();
+  function preserveCouponScroll() {
+    couponScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+  }
 
-      if ($input.is(":checked")) {
-        $('input[name="' + name + '"][value="' + value + '"]').prop("checked", true);
-      }
-    });
+  function restoreCouponScroll() {
+    if (couponScrollTop !== null) {
+      window.scrollTo(0, couponScrollTop);
+      couponScrollTop = null;
+    }
   }
 
   function bindCouponForm() {
     $(document).on("submit", ".axiom-inline-coupon-form", function (e) {
       e.preventDefault();
+      e.stopPropagation();
 
       clearCouponMessage();
       clearTopCouponNotices();
+      preserveCouponScroll();
 
       var $form = $(this);
       var $input = $form.find('input[name="coupon_code"]');
       var couponCode = String($input.val() || "").trim();
 
       if (!couponCode) {
-        showCouponMessage("Please enter a code.", "error");
-        return;
+        showCouponMessage("Please enter a discount code.", "error");
+        restoreCouponScroll();
+        return false;
       }
 
       if (
@@ -163,9 +169,11 @@ jQuery(function ($) {
         !wc_checkout_params.apply_coupon_nonce
       ) {
         showCouponMessage("Coupon system unavailable.", "error");
-        return;
+        restoreCouponScroll();
+        return false;
       }
 
+      couponUpdating = true;
       $form.addClass("is-loading");
 
       $.ajax({
@@ -177,6 +185,8 @@ jQuery(function ($) {
         }
       })
         .done(function (response) {
+          clearTopCouponNotices();
+
           var html = typeof response === "string" ? response : "";
           var $response = $("<div>").html(html);
 
@@ -189,33 +199,62 @@ jQuery(function ($) {
           );
 
           if (errorText) {
-            showCouponMessage(errorText, "error");
-            clearTopCouponNotices();
+            showCouponMessage(errorText || "Discount code not found.", "error");
+            restoreCouponScroll();
+            couponUpdating = false;
             return;
           }
 
-          showCouponMessage(successText || "Code applied successfully.", "success");
+          showCouponMessage(successText || "Discount applied.", "success");
           $input.val("");
-          $body.trigger("update_checkout");
+
+          setTimeout(function () {
+            clearTopCouponNotices();
+            $body.trigger("update_checkout");
+          }, 50);
         })
         .fail(function () {
-          showCouponMessage("Could not apply code. Please try again.", "error");
-          clearTopCouponNotices();
+          showCouponMessage("Could not apply discount code. Please try again.", "error");
+          restoreCouponScroll();
+          couponUpdating = false;
         })
         .always(function () {
           $form.removeClass("is-loading");
         });
+
+      return false;
+    });
+
+    $(document).on("click", ".axiom-inline-coupon-button", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      $(this).closest(".axiom-inline-coupon-form").trigger("submit");
+      return false;
     });
   }
 
   $body.on("updated_checkout", function () {
-    syncShippingRadios();
+    $(".axiom-checkout-shipping-methods-fragment input.shipping_method").each(function () {
+      var $input = $(this);
+      var name = $input.attr("name");
+      var value = $input.val();
+
+      if ($input.is(":checked")) {
+        $('input[name="' + name + '"][value="' + value + '"]').prop("checked", true);
+      }
+    });
+
     clearTopCouponNotices();
+
+    if (couponUpdating) {
+      restoreCouponScroll();
+      couponUpdating = false;
+    }
   });
 
-  $body.on("applied_coupon_in_checkout removed_coupon_in_checkout", function () {
+  $body.on("checkout_error applied_coupon removed_coupon", function () {
     clearTopCouponNotices();
-    queueCheckoutUpdate(100);
+    restoreCouponScroll();
   });
 
   bindAddressFieldEvents();
@@ -224,11 +263,9 @@ jQuery(function ($) {
 
   setTimeout(function () {
     maybeUpdateCheckout();
-    clearTopCouponNotices();
   }, 500);
 
   setTimeout(function () {
     maybeUpdateCheckout();
-    clearTopCouponNotices();
   }, 1200);
 });
