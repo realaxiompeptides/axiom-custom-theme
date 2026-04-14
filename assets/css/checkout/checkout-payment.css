@@ -584,3 +584,86 @@ button[name="woocommerce_checkout_place_order"] {
   color: #0f172a;
   font-weight: 900;
 }
+
+.axiom-payment-coupon-box {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.axiom-inline-coupon-feedback {
+  display: none;
+  margin: 0 0 14px !important;
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  font-weight: 700 !important;
+}
+
+.axiom-inline-coupon-feedback.is-error {
+  display: block;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #b42318;
+}
+
+.axiom-inline-coupon-feedback.is-success {
+  display: block;
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+  color: #067647;
+}
+
+.axiom-inline-coupon-row {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.axiom-inline-coupon-input {
+  flex: 1 1 auto;
+  min-height: 56px;
+  padding: 0 18px;
+  border: 1px solid #d8e2ef;
+  border-radius: 18px;
+  background: #ffffff;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.axiom-inline-coupon-button {
+  flex: 0 0 170px;
+  min-height: 56px;
+  padding: 0 22px;
+  border: 0 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
+  color: #ffffff !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 18px rgba(47, 132, 191, 0.14) !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.axiom-inline-coupon-form.is-loading .axiom-inline-coupon-button,
+.axiom-inline-coupon-button:disabled {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .axiom-inline-coupon-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .axiom-inline-coupon-button {
+    flex: 1 1 auto;
+    width: 100%;
+    margin-top: 0;
+  }
+}
