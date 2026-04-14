@@ -40,16 +40,18 @@
 
 .axiom-checkout-shipping-method-list {
   list-style: none;
-  margin: 0;
+  margin: 18px 0 0;
   padding: 0;
   display: grid;
-  gap: 14px;
+  gap: 16px;
 }
 
 .axiom-checkout-shipping-method-item {
   position: relative;
+  display: block;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method {
@@ -89,11 +91,12 @@
 }
 
 .axiom-checkout-shipping-method-item label {
-  display: block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  min-height: 104px;
+  min-height: 90px;
   margin: 0;
-  padding: 24px 22px 24px 62px;
+  padding: 22px 22px 22px 62px;
   border: 2px solid #cfe0ef;
   border-radius: 26px;
   background: #f8fbff;
@@ -104,6 +107,7 @@
   box-sizing: border-box;
   cursor: pointer;
   transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  overflow: hidden;
 }
 
 .axiom-checkout-shipping-method-item input.shipping_method:hover + label {
@@ -115,6 +119,13 @@
   border-color: #4aa7e8;
   background: #eef7ff;
   box-shadow: 0 0 0 3px rgba(74, 167, 232, 0.12);
+}
+
+.axiom-checkout-shipping-method-item .amount,
+.axiom-checkout-shipping-method-item label .amount,
+.axiom-checkout-shipping-method-item label .woocommerce-Price-amount {
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .axiom-checkout-shipping-empty {
@@ -148,6 +159,10 @@
     font-size: 22px;
   }
 
+  .axiom-checkout-shipping-method-list {
+    gap: 14px;
+  }
+
   .axiom-checkout-shipping-method-item input.shipping_method {
     left: 16px;
     width: 24px;
@@ -155,8 +170,8 @@
   }
 
   .axiom-checkout-shipping-method-item label {
-    min-height: 92px;
-    padding: 20px 18px 20px 54px;
+    min-height: 82px;
+    padding: 18px 18px 18px 54px;
     border-radius: 22px;
     font-size: 17px;
     line-height: 1.4;
@@ -181,8 +196,8 @@
   }
 
   .axiom-checkout-shipping-method-item label {
-    min-height: 84px;
-    padding: 18px 16px 18px 48px;
+    min-height: 76px;
+    padding: 16px 16px 16px 48px;
     border-radius: 20px;
     font-size: 15px;
   }
