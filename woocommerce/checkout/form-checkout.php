@@ -1,8 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
 
-wc_print_notices();
-
 if (
 	!$checkout->is_registration_enabled() &&
 	$checkout->is_registration_required() &&
@@ -166,9 +164,14 @@ $contact_keys = array('billing_email', 'billing_phone');
                   <span class="axiom-payment-icon"><i class="fa-brands fa-bitcoin"></i></span>
                 </div>
 
+                <?php do_action('woocommerce_checkout_before_order_review_heading'); ?>
+                <?php do_action('woocommerce_checkout_before_order_review'); ?>
+
                 <div id="order_review" class="woocommerce-checkout-review-order">
                   <?php woocommerce_checkout_payment(); ?>
                 </div>
+
+                <?php do_action('woocommerce_checkout_after_order_review'); ?>
               </div>
             </section>
 
