@@ -240,6 +240,15 @@ function axiom_custom_theme_assets() {
         }
     }
 
+    if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
+        wp_enqueue_style(
+            'axiom-thankyou',
+            $theme_uri . '/assets/css/order-received/thankyou.css',
+            array('axiom-base'),
+            '1.0'
+        );
+    }
+
     wp_enqueue_script('jquery');
     wp_enqueue_script('wc-cart-fragments');
 
