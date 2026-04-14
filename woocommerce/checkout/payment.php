@@ -1,10 +1,6 @@
 <?php
 defined('ABSPATH') || exit;
 
-if ( ! wp_doing_ajax() ) {
-	do_action( 'woocommerce_review_order_before_payment' );
-}
-
 $cart_items        = WC()->cart ? WC()->cart->get_cart() : array();
 $applied_coupons   = WC()->cart ? WC()->cart->get_coupons() : array();
 $chosen_methods    = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
@@ -35,6 +31,45 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 			</ul>
 		</div>
 	<?php endif; ?>
+
+	<div class="axiom-payment-coupon-section">
+		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Have a discount code?', 'woocommerce' ); ?></h3>
+
+		<div class="axiom-payment-coupon-box">
+			<div class="axiom-inline-coupon-feedback" style="display:none;"></div>
+
+			<form class="axiom-inline-coupon-form" method="post" action="">
+				<div class="axiom-inline-coupon-row">
+					<input
+						type="text"
+						name="coupon_code"
+						class="input-text axiom-inline-coupon-input"
+						placeholder="<?php echo esc_attr__( 'Enter your code…', 'woocommerce' ); ?>"
+						value=""
+						autocomplete="off"
+					/>
+					<button
+						type="submit"
+						class="button axiom-inline-coupon-button"
+						name="apply_coupon"
+						value="<?php echo esc_attr__( 'Apply', 'woocommerce' ); ?>"
+					>
+						<?php esc_html_e( 'Apply', 'woocommerce' ); ?>
+					</button>
+				</div>
+			</form>
+
+			<?php if ( ! empty( $applied_coupons ) ) : ?>
+				<div class="axiom-applied-coupons">
+					<?php foreach ( $applied_coupons as $coupon_code => $coupon ) : ?>
+						<span class="axiom-applied-coupon-chip">
+							<?php echo esc_html( wc_format_coupon_code( $coupon_code ) ); ?>
+						</span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
+		</div>
+	</div>
 
 	<div class="axiom-payment-subtotal-section">
 		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
@@ -137,12 +172,6 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 					<span><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
 					<strong><?php echo wp_kses_post( WC()->cart->get_total() ); ?></strong>
 				</div>
-			</div>
-
-			<div class="axiom-summary-benefits">
-				<div class="axiom-summary-benefit">🔒 <span><?php esc_html_e( 'SSL encrypted checkout', 'woocommerce' ); ?></span></div>
-				<div class="axiom-summary-benefit">🧪 <span><?php esc_html_e( 'Third-party verified quality', 'woocommerce' ); ?></span></div>
-				<div class="axiom-summary-benefit">📄 <span><?php esc_html_e( 'COA included with applicable products', 'woocommerce' ); ?></span></div>
 			</div>
 		</div>
 	</div>
