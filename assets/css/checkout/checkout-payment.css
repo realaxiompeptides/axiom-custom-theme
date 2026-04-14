@@ -4,7 +4,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .axiom-payment-icon,
@@ -34,87 +34,48 @@
   margin-top: 18px;
   background: #ffffff !important;
   border: 1px solid #dbe7f3 !important;
-  border-radius: 22px !important;
+  border-radius: 24px !important;
   overflow: hidden;
 }
 
 .woocommerce-checkout #payment ul.payment_methods {
-  padding: 16px !important;
-  border-bottom: 1px solid #e7eef5 !important;
+  padding: 0 !important;
   margin: 0 !important;
+  border: 0 !important;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li {
-  margin: 0 0 12px !important;
-  padding: 0 !important;
+  margin: 0 !important;
+  padding: 18px 22px !important;
+  border-top: 1px solid #e8eef5;
 }
 
-.woocommerce-checkout #payment ul.payment_methods li:last-child {
-  margin-bottom: 0 !important;
+.woocommerce-checkout #payment ul.payment_methods li:first-child {
+  border-top: 0;
 }
 
 .woocommerce-checkout #payment ul.payment_methods li label {
   color: #0f172a;
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 900;
 }
 
 .woocommerce-checkout #payment div.payment_box {
-  margin: 10px 0 0 !important;
+  margin: 12px 0 0 !important;
+  padding: 16px 18px !important;
   background: #f8fbff !important;
   border: 1px solid #dbe7f3 !important;
-  color: #42566f !important;
-  border-radius: 16px !important;
+  color: #5f6f84 !important;
+  border-radius: 18px !important;
 }
 
 .woocommerce-checkout #payment div.payment_box::before {
   display: none !important;
 }
 
-.woocommerce-checkout #payment .form-row {
-  padding: 18px !important;
-  margin: 0 !important;
-}
-
-button[name="woocommerce_checkout_place_order"],
-#place_order {
-  width: 100%;
-  min-height: 62px;
-  border: 0 !important;
-  border-radius: 999px !important;
-  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
-  color: #ffffff !important;
-  font-size: 18px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.01em;
-  box-shadow: 0 16px 28px rgba(47, 132, 191, 0.18);
-}
-
-button[name="woocommerce_checkout_place_order"]:hover,
-#place_order:hover {
-  filter: brightness(1.03);
-}
-
-button[name="woocommerce_checkout_place_order"]:disabled,
-#place_order:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.woocommerce-privacy-policy-text,
-.woocommerce-terms-and-conditions-wrapper,
-.woocommerce-terms-and-conditions-wrapper p {
-  color: #64748b;
-  font-size: 13px;
-  line-height: 1.65;
-}
-
-.woocommerce form .woocommerce-terms-and-conditions-wrapper .required {
-  color: #e25353;
-}
-
 .axiom-payment-subtotal-section {
-  margin: 18px 0 16px !important;
+  margin: 18px 0 14px !important;
+  padding: 0 !important;
 }
 
 .axiom-payment-subtotal-section .axiom-order-review-heading {
@@ -140,7 +101,7 @@ button[name="woocommerce_checkout_place_order"]:disabled,
 .axiom-payment-subtotal-table .shop_table td,
 .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
 .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
-  padding: 18px 22px;
+  padding: 18px 20px;
   border-bottom: 1px solid #dfe7f2;
   color: #0f172a;
   font-size: 16px;
@@ -162,7 +123,7 @@ button[name="woocommerce_checkout_place_order"]:disabled,
 
 .axiom-payment-subtotal-table .order-total th,
 .axiom-payment-subtotal-table .order-total td {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 900;
 }
 
@@ -183,8 +144,53 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   margin-bottom: 0;
 }
 
+.axiom-checkout-payment-card .coupon,
+.axiom-checkout-payment-card .woocommerce-form-coupon-toggle,
+.axiom-checkout-payment-card .woocommerce-form-coupon {
+  margin-top: 16px;
+}
+
+.axiom-checkout-payment-card .woocommerce-form-coupon {
+  padding: 18px;
+  border: 1px solid #dbe7f3;
+  border-radius: 20px;
+  background: #f8fbff;
+}
+
+.axiom-checkout-payment-card .woocommerce-form-coupon p {
+  margin: 0 0 12px;
+}
+
+.axiom-checkout-payment-card .woocommerce-form-coupon input.input-text {
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid #d8e2ef;
+  border-radius: 16px;
+  background: #ffffff;
+  padding: 0 16px;
+  font-size: 16px;
+}
+
+.axiom-checkout-payment-card .woocommerce-form-coupon button.button,
+.axiom-checkout-payment-card .coupon button.button {
+  width: 100%;
+  min-height: 54px;
+  border: 0 !important;
+  border-radius: 16px !important;
+  background: #eef4fa !important;
+  color: #334155 !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+.woocommerce-checkout #payment .form-row {
+  padding: 18px !important;
+  margin: 0 !important;
+}
+
 .axiom-checkout-research-wrap--payment {
-  margin: 16px 0 12px !important;
+  margin: 14px 0 12px !important;
   padding: 18px !important;
   border: 1px solid #ead56e !important;
   background: #fef9e7 !important;
@@ -235,26 +241,6 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   line-height: 1.65;
 }
 
-.axiom-checkout-research-wrap--payment .axiom-checkout-kicker {
-  margin: 0 0 8px !important;
-  color: #a16207 !important;
-}
-
-.axiom-checkout-research-wrap--payment h3 {
-  margin: 0 0 8px !important;
-  color: #7c4a18 !important;
-  font-size: 22px !important;
-  font-weight: 900 !important;
-  line-height: 1.2 !important;
-}
-
-.axiom-checkout-research-help {
-  margin: 0 0 14px !important;
-  color: #8b6b2f !important;
-  font-size: 15px !important;
-  line-height: 1.65 !important;
-}
-
 .axiom-checkout-research-wrap--payment .form-row {
   padding: 0 !important;
   margin: 0 !important;
@@ -284,21 +270,31 @@ button[name="woocommerce_checkout_place_order"]:disabled,
   padding: 0 !important;
 }
 
-.axiom-place-order-section .place-order {
-  padding: 0 !important;
+.axiom-place-order-section .form-row.place-order {
   margin: 0 !important;
+  padding: 0 !important;
 }
 
-.axiom-place-order-section .form-row.place-order {
-  margin-bottom: 8px !important;
-  padding-bottom: 0 !important;
+#place_order,
+button[name="woocommerce_checkout_place_order"] {
+  width: 100%;
+  min-height: 62px;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
+  color: #ffffff !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 18px rgba(47, 132, 191, 0.14) !important;
+  margin: 0 !important;
 }
 
 .axiom-place-order-trust-icons {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 8px !important;
+  margin-top: 4px !important;
 }
 
 .axiom-place-order-trust-item {
@@ -333,10 +329,17 @@ button[name="woocommerce_checkout_place_order"]:disabled,
 }
 
 @media (max-width: 767px) {
+  .axiom-payment-subtotal-table .shop_table th,
+  .axiom-payment-subtotal-table .shop_table td,
+  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
+  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
+    padding: 16px 14px;
+    font-size: 15px;
+  }
+
   .axiom-checkout-research-wrap--payment {
     padding: 16px !important;
     border-radius: 20px !important;
-    margin: 14px 0 10px !important;
   }
 
   .axiom-research-use-box {
@@ -364,50 +367,22 @@ button[name="woocommerce_checkout_place_order"]:disabled,
     font-size: 14px;
   }
 
-  .axiom-checkout-research-wrap--payment h3 {
-    font-size: 20px !important;
-  }
-
-  .axiom-payment-subtotal-section .axiom-order-review-heading {
-    font-size: 17px !important;
-  }
-
-  .axiom-payment-subtotal-table .shop_table th,
-  .axiom-payment-subtotal-table .shop_table td,
-  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
-  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
-    padding: 16px 14px;
-    font-size: 15px;
-  }
-
-.axiom-place-order-section {
-  margin-top: 0 !important;
-  padding: 0 !important;
-}
-
-.axiom-place-order-section .form-row.place-order {
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-.axiom-place-order-section #place_order,
-.axiom-place-order-section button[name="woocommerce_checkout_place_order"] {
-  margin: 0 !important;
-}
-
-.axiom-place-order-trust-icons {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 2px !important;
-  padding-top: 0 !important;
-}
-
-@media (max-width: 767px) {
   .axiom-place-order-trust-icons {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
-    margin-top: 2px !important;
-    padding-top: 0 !important;
+    margin-top: 4px !important;
+  }
+
+  .axiom-place-order-trust-item {
+    padding: 14px 8px;
+    border-radius: 16px;
+  }
+
+  .axiom-place-order-trust-item strong {
+    font-size: 15px;
+  }
+
+  .axiom-place-order-trust-item small {
+    font-size: 12px;
   }
 }
