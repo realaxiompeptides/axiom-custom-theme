@@ -38,6 +38,15 @@
   overflow: visible !important;
 }
 
+.woocommerce-checkout #payment .woocommerce-NoticeGroup,
+.woocommerce-checkout #payment .woocommerce-error,
+.woocommerce-checkout #payment .woocommerce-message,
+.woocommerce-checkout #payment .woocommerce-info,
+.axiom-payment-coupon-box .woocommerce-form-coupon-toggle,
+.axiom-payment-coupon-box .checkout_coupon.woocommerce-form-coupon {
+  display: none !important;
+}
+
 .axiom-payment-methods-section,
 .axiom-payment-coupon-section,
 .axiom-payment-subtotal-section,
@@ -100,23 +109,37 @@
   background: #f8fbff;
 }
 
-.axiom-payment-coupon-box .checkout_coupon,
-.axiom-payment-coupon-box .woocommerce-form-coupon {
-  display: block !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: 0 !important;
-  background: transparent !important;
+.axiom-inline-coupon-feedback {
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
 }
 
-.axiom-payment-coupon-box p {
-  margin: 0 0 12px;
+.axiom-inline-coupon-feedback.is-error {
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  color: #b42318;
 }
 
-.axiom-payment-coupon-box input.input-text {
-  width: 100%;
-  min-height: 56px;
-  padding: 0 18px;
+.axiom-inline-coupon-feedback.is-success {
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+  color: #067647;
+}
+
+.axiom-inline-coupon-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.axiom-inline-coupon-input {
+  flex: 1 1 auto;
+  min-height: 54px;
+  padding: 0 16px;
   border: 1px solid #d8e2ef;
   border-radius: 16px;
   background: #ffffff;
@@ -124,73 +147,170 @@
   box-sizing: border-box;
 }
 
-.axiom-payment-coupon-box button.button {
-  width: 100%;
-  min-height: 56px;
-  margin-top: 10px;
+.axiom-inline-coupon-button {
+  min-width: 130px;
+  min-height: 54px;
+  padding: 0 18px;
   border: 0 !important;
   border-radius: 16px !important;
-  background: #edf2f8 !important;
-  color: #334155 !important;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
+  color: #ffffff !important;
   font-size: 16px !important;
   font-weight: 900 !important;
   box-shadow: none !important;
 }
 
-.axiom-payment-subtotal-table .shop_table,
-.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+.axiom-applied-coupons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.axiom-applied-coupon-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #eaf4ff;
+  color: #1666a9;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.axiom-summary-card {
   background: #f8fbff;
   border: 1px solid #dbe4f0;
-  border-radius: 22px;
+  border-radius: 28px;
   overflow: hidden;
 }
 
-.axiom-payment-subtotal-table .shop_table th,
-.axiom-payment-subtotal-table .shop_table td,
-.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
-.axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
-  padding: 18px 20px;
-  border-bottom: 1px solid #dfe7f2;
+.axiom-summary-items {
+  padding: 18px 18px 8px;
+  display: grid;
+  gap: 14px;
+}
+
+.axiom-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #dfe7f2;
+  border-radius: 22px;
+  padding: 16px;
+}
+
+.axiom-summary-item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.axiom-summary-thumb {
+  width: 68px;
+  height: 68px;
+  flex: 0 0 68px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e6edf5;
+}
+
+.axiom-summary-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.axiom-summary-copy {
+  min-width: 0;
+}
+
+.axiom-summary-copy strong {
+  display: block;
+  color: #0f172a;
+  font-size: 17px;
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+.axiom-summary-copy span {
+  display: block;
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.axiom-summary-price {
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 900;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.axiom-summary-totals {
+  padding: 6px 18px 18px;
+  border-top: 1px solid #e3ebf5;
+}
+
+.axiom-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+}
+
+.axiom-summary-row span {
+  color: #5b6778;
+  font-size: 16px;
+}
+
+.axiom-summary-row strong {
   color: #0f172a;
   font-size: 16px;
-  vertical-align: middle;
+  font-weight: 800;
+  text-align: right;
 }
 
-.axiom-payment-subtotal-table thead th {
-  background: #ffffff;
-  font-size: 17px;
+.axiom-summary-row--discount span,
+.axiom-summary-row--discount strong {
+  color: #15803d;
+}
+
+.axiom-summary-row.axiom-summary-total {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid #e3ebf5;
+}
+
+.axiom-summary-row.axiom-summary-total span,
+.axiom-summary-row.axiom-summary-total strong {
+  color: #0f172a;
+  font-size: 22px;
   font-weight: 900;
 }
 
-.axiom-payment-subtotal-table tr:last-child th,
-.axiom-payment-subtotal-table tr:last-child td {
-  border-bottom: 0;
+.axiom-summary-benefits {
+  padding: 16px 18px 20px;
+  border-top: 1px solid #e3ebf5;
+  display: grid;
+  gap: 10px;
 }
 
-.axiom-payment-subtotal-table .order-total th,
-.axiom-payment-subtotal-table .order-total td {
-  font-size: 19px;
-  font-weight: 900;
-}
-
-.axiom-payment-subtotal-table ul#shipping_method,
-.axiom-payment-subtotal-table ul.woocommerce-shipping-methods {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.axiom-payment-subtotal-table ul#shipping_method li,
-.axiom-payment-subtotal-table ul.woocommerce-shipping-methods li {
-  margin: 0 0 10px;
-}
-
-.axiom-payment-subtotal-table ul#shipping_method li:last-child,
-.axiom-payment-subtotal-table ul.woocommerce-shipping-methods li:last-child {
-  margin-bottom: 0;
+.axiom-summary-benefit {
+  color: #5f6f84;
+  font-size: 15px;
+  line-height: 1.45;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .axiom-checkout-research-wrap--payment {
@@ -326,49 +446,60 @@ button[name="woocommerce_checkout_place_order"] {
 }
 
 @media (max-width: 767px) {
-  .axiom-payment-methods-section,
-  .axiom-payment-coupon-section,
-  .axiom-payment-subtotal-section,
-  .axiom-checkout-research-wrap--payment,
-  .axiom-place-order-section {
-    margin-top: 14px;
+  .axiom-inline-coupon-row {
+    flex-direction: column;
   }
 
-  .axiom-payment-subtotal-table .shop_table th,
-  .axiom-payment-subtotal-table .shop_table td,
-  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table th,
-  .axiom-payment-subtotal-table .woocommerce-checkout-review-order-table td {
-    padding: 16px 14px;
-    font-size: 15px;
+  .axiom-inline-coupon-button {
+    width: 100%;
   }
 
-  .axiom-checkout-research-wrap--payment {
-    padding: 16px !important;
-    border-radius: 20px !important;
+  .axiom-summary-items {
+    padding: 16px 16px 8px;
+    gap: 12px;
   }
 
-  .axiom-research-use-box {
-    gap: 14px;
-    padding: 16px;
-    border-radius: 18px;
-    margin-bottom: 14px;
+  .axiom-summary-item {
+    padding: 14px;
+    border-radius: 20px;
   }
 
-  .axiom-research-use-icon {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
+  .axiom-summary-thumb {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    border-radius: 16px;
   }
 
-  .axiom-research-use-icon i {
-    font-size: 24px;
+  .axiom-summary-copy strong {
+    font-size: 16px;
   }
 
-  .axiom-research-use-copy strong {
+  .axiom-summary-copy span {
+    font-size: 13px;
+  }
+
+  .axiom-summary-price {
     font-size: 17px;
   }
 
-  .axiom-research-use-copy p {
+  .axiom-summary-totals,
+  .axiom-summary-benefits {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .axiom-summary-row span,
+  .axiom-summary-row strong {
+    font-size: 15px;
+  }
+
+  .axiom-summary-row.axiom-summary-total span,
+  .axiom-summary-row.axiom-summary-total strong {
+    font-size: 20px;
+  }
+
+  .axiom-summary-benefit {
     font-size: 14px;
   }
 
