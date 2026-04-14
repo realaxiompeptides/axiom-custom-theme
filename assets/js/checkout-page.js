@@ -4,99 +4,128 @@ jQuery(function ($) {
   var $body = $(document.body);
   var updateTimer = null;
 
-  function triggerCheckoutUpdate() {
+  function queueCheckoutUpdate(delay) {
     clearTimeout(updateTimer);
     updateTimer = setTimeout(function () {
       $body.trigger("update_checkout");
-    }, 250);
+    }, delay || 250);
   }
 
-  function requiredAddressLooksComplete() {
-    var country = $("#billing_country").val() || "";
-    var address1 = $("#billing_address_1").val() || "";
-    var city = $("#billing_city").val() || "";
-    var state = $("#billing_state").val() || "";
-    var postcode = $("#billing_postcode").val() || "";
+  function getFieldValue(selector) {
+    var $field = $(selector);
+    if (!$field.length) return "";
+    return String($field.val() || "").trim();
+  }
 
+  function usingSeparateShippingAddress() {
+    return $("#ship-to-different-address-checkbox").is(":checked");
+  }
+
+  function billingAddressComplete() {
     return (
-      country.trim() !== "" &&
-      address1.trim() !== "" &&
-      city.trim() !== "" &&
-      state.trim() !== "" &&
-      postcode.trim() !== ""
+      getFieldValue("#billing_country") !== "" &&
+      getFieldValue("#billing_address_1") !== "" &&
+      getFieldValue("#billing_city") !== "" &&
+      getFieldValue("#billing_state") !== "" &&
+      getFieldValue("#billing_postcode") !== ""
     );
   }
 
-  function maybeTriggerAddressUpdate() {
-    if (requiredAddressLooksComplete()) {
-      triggerCheckoutUpdate();
+  function shippingAddressComplete() {
+    return (
+      getFieldValue("#shipping_country") !== "" &&
+      getFieldValue("#shipping_address_1") !== "" &&
+      getFieldValue("#shipping_city") !== "" &&
+      getFieldValue("#shipping_state") !== "" &&
+      getFieldValue("#shipping_postcode") !== ""
+    );
+  }
+
+  function addressIsCompleteEnough() {
+    if (usingSeparateShippingAddress()) {
+      return shippingAddressComplete();
+    }
+    return billingAddressComplete();
+  }
+
+  function maybeUpdateCheckout() {
+    if (addressIsCompleteEnough()) {
+      queueCheckoutUpdate(250);
     }
   }
 
-  function bindCheckoutRefresh() {
+  function bindAddressFieldEvents() {
     var selectors = [
-      "#billing_first_name",
-      "#billing_last_name",
-      "#billing_company",
       "#billing_country",
       "#billing_address_1",
       "#billing_address_2",
       "#billing_city",
       "#billing_state",
       "#billing_postcode",
+      "#billing_first_name",
+      "#billing_last_name",
       "#billing_phone",
       "#billing_email",
-      "#ship-to-different-address-checkbox",
-      "#shipping_first_name",
-      "#shipping_last_name",
-      "#shipping_company",
       "#shipping_country",
       "#shipping_address_1",
       "#shipping_address_2",
       "#shipping_city",
       "#shipping_state",
-      "#shipping_postcode"
+      "#shipping_postcode",
+      "#shipping_first_name",
+      "#shipping_last_name",
+      "#ship-to-different-address-checkbox"
     ].join(",");
 
     $(document).on("change", selectors, function () {
-      maybeTriggerAddressUpdate();
+      maybeUpdateCheckout();
     });
 
-    $(document).on("input blur", selectors, function () {
-      maybeTriggerAddressUpdate();
+    $(document).on("blur", selectors, function () {
+      maybeUpdateCheckout();
     });
 
-    $(document).on("change", 'input[name^="shipping_method["]', function () {
-      triggerCheckoutUpdate();
-    });
-  }
-
-  function keepCustomShippingBlockFresh() {
-    $body.on("updated_checkout", function () {
-      $(".axiom-checkout-shipping-methods-fragment input.shipping_method").off("change.axiomShipping");
-
-      $(".axiom-checkout-shipping-methods-fragment input.shipping_method").on("change.axiomShipping", function () {
-        var $input = $(this);
-        var methodName = $input.attr("name");
-        var methodValue = $input.val();
-
-        $('input[name="' + methodName + '"]').prop("checked", false);
-        $('input[name="' + methodName + '"][value="' + methodValue + '"]').prop("checked", true);
-
-        triggerCheckoutUpdate();
-      });
+    $(document).on("input", selectors, function () {
+      var id = this.id || "";
+      if (
+        id === "billing_postcode" ||
+        id === "billing_city" ||
+        id === "billing_address_1" ||
+        id === "shipping_postcode" ||
+        id === "shipping_city" ||
+        id === "shipping_address_1"
+      ) {
+        maybeUpdateCheckout();
+      }
     });
   }
 
-  bindCheckoutRefresh();
-  keepCustomShippingBlockFresh();
+  function bindShippingMethodEvents() {
+    $(document).on("change", '.axiom-checkout-shipping-methods-fragment input.shipping_method, input.shipping_method', function () {
+      queueCheckoutUpdate(100);
+    });
+  }
 
-  // Initial check in case fields are prefilled by browser/autofill
-  setTimeout(function () {
-    maybeTriggerAddressUpdate();
-  }, 400);
+  $body.on("updated_checkout", function () {
+    $(".axiom-checkout-shipping-methods-fragment input.shipping_method").each(function () {
+      var $input = $(this);
+      var name = $input.attr("name");
+      var value = $input.val();
+
+      if ($input.is(":checked")) {
+        $('input[name="' + name + '"][value="' + value + '"]').prop("checked", true);
+      }
+    });
+  });
+
+  bindAddressFieldEvents();
+  bindShippingMethodEvents();
 
   setTimeout(function () {
-    maybeTriggerAddressUpdate();
+    maybeUpdateCheckout();
+  }, 500);
+
+  setTimeout(function () {
+    maybeUpdateCheckout();
   }, 1200);
 });
