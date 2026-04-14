@@ -221,8 +221,8 @@ jQuery(function ($) {
     );
   }
 
-  function bindCouponForm() {
-    $(document).on("submit", ".axiom-inline-coupon-form", function (e) {
+  function bindCouponButton() {
+    $(document).on("click", ".axiom-inline-coupon-button", function (e) {
       e.preventDefault();
       e.stopPropagation();
 
@@ -230,9 +230,9 @@ jQuery(function ($) {
       clearTopNotices();
       clearCouponMessage();
 
-      var $form = $(this);
-      var $input = $form.find('input[name="coupon_code"]');
-      var $button = $form.find(".axiom-inline-coupon-button");
+      var $button = $(this);
+      var $couponBox = $(".axiom-payment-coupon-box").first();
+      var $input = $couponBox.find('input[name="coupon_code"]').first();
       var couponCode = String($input.val() || "").trim();
 
       if (!couponCode) {
@@ -250,8 +250,7 @@ jQuery(function ($) {
         return false;
       }
 
-      $form.addClass("is-loading");
-      $button.prop("disabled", true);
+      $button.prop("disabled", true).addClass("is-loading");
 
       $.ajax({
         type: "POST",
@@ -273,36 +272,30 @@ jQuery(function ($) {
 
           if (response.success) {
             showCouponMessage(
-              response.data && response.data.message ? response.data.message : "Discount applied.",
+              response.data && response.data.message
+                ? response.data.message
+                : "Discount applied.",
               "success"
             );
             $input.val("");
-            restoreScrollPosition();
           } else {
             showCouponMessage(
-              response.data && response.data.message ? response.data.message : "Discount code not valid.",
+              response.data && response.data.message
+                ? response.data.message
+                : "Discount code not valid.",
               "error"
             );
-            restoreScrollPosition();
           }
         })
         .fail(function () {
           showCouponMessage("Could not apply discount code. Please try again.", "error");
         })
         .always(function () {
-          $form.removeClass("is-loading");
-          $button.prop("disabled", false);
+          $button.prop("disabled", false).removeClass("is-loading");
           restoreScrollPosition();
           clearTopNotices();
         });
 
-      return false;
-    });
-
-    $(document).on("click", ".axiom-inline-coupon-button", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      $(this).closest(".axiom-inline-coupon-form").trigger("submit");
       return false;
     });
 
@@ -326,7 +319,7 @@ jQuery(function ($) {
 
   bindAddressFieldEvents();
   bindShippingMethodEvents();
-  bindCouponForm();
+  bindCouponButton();
 
   setTimeout(function () {
     maybeUpdateCheckout();
