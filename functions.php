@@ -202,6 +202,13 @@ function axiom_custom_theme_assets() {
         );
 
         wp_enqueue_style(
+            'axiom-checkout-research-box',
+            $theme_uri . '/assets/css/checkout/checkout-research-box.css',
+            array('axiom-base', 'axiom-checkout-layout', 'axiom-checkout-payment'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
             'axiom-checkout-mobile',
             $theme_uri . '/assets/css/checkout/checkout-mobile.css',
             array(
@@ -211,6 +218,7 @@ function axiom_custom_theme_assets() {
                 'axiom-checkout-order-summary',
                 'axiom-checkout-payment',
                 'axiom-checkout-shipping-methods',
+                'axiom-checkout-research-box',
             ),
             '1.1'
         );
