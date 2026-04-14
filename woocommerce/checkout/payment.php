@@ -38,7 +38,7 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 		<div class="axiom-payment-coupon-box">
 			<div class="axiom-inline-coupon-feedback" style="display:none;"></div>
 
-			<form class="axiom-inline-coupon-form" method="post" action="">
+			<form class="axiom-inline-coupon-form" method="post" action="" onsubmit="return false;">
 				<div class="axiom-inline-coupon-row">
 					<input
 						type="text"
@@ -49,10 +49,8 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 						autocomplete="off"
 					/>
 					<button
-						type="submit"
+						type="button"
 						class="button axiom-inline-coupon-button"
-						name="apply_coupon"
-						value="<?php echo esc_attr__( 'Apply', 'woocommerce' ); ?>"
 					>
 						<?php esc_html_e( 'Apply', 'woocommerce' ); ?>
 					</button>
