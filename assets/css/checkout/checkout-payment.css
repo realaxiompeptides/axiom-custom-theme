@@ -41,14 +41,11 @@
 .woocommerce-checkout #payment .woocommerce-NoticeGroup,
 .woocommerce-checkout #payment .woocommerce-error,
 .woocommerce-checkout #payment .woocommerce-message,
-.woocommerce-checkout #payment .woocommerce-info,
-.axiom-payment-coupon-box .woocommerce-form-coupon-toggle,
-.axiom-payment-coupon-box .checkout_coupon.woocommerce-form-coupon {
+.woocommerce-checkout #payment .woocommerce-info {
   display: none !important;
 }
 
 .axiom-payment-methods-section,
-.axiom-payment-coupon-section,
 .axiom-payment-subtotal-section,
 .axiom-place-order-section {
   margin-top: 16px;
@@ -101,55 +98,110 @@
   display: none !important;
 }
 
-.axiom-payment-coupon-box {
-  padding: 18px;
-  border: 1px solid #dbe7f3;
-  border-radius: 22px;
-  background: #f8fbff;
-}
-
-.axiom-inline-coupon-feedback {
-  margin-bottom: 12px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  font-size: 14px;
-  line-height: 1.5;
-  font-weight: 700;
-}
-
-.axiom-inline-coupon-feedback.is-error {
-  background: #fff1f2;
-  border: 1px solid #fecdd3;
-  color: #b42318;
-}
-
-.axiom-inline-coupon-feedback.is-success {
-  background: #ecfdf3;
-  border: 1px solid #abefc6;
-  color: #067647;
-}
-
-.axiom-inline-coupon-row {
-  display: flex;
-  gap: 10px;
-  align-items: stretch;
-}
-
-.axiom-inline-coupon-input {
-  flex: 1 1 auto;
-  min-height: 54px;
-  padding: 0 16px;
-  border: 1px solid #d8e2ef;
-  border-radius: 16px;
-  background: #ffffff;
-  font-size: 16px;
+/* Gift card plugin styling */
+.wc_gc_cart_redeem_form,
+.wc_gc_checkout_redeem_form,
+.wc_gc_redeem_form,
+.woocommerce-gift-cards-form,
+.giftcard-section,
+.giftcard_form,
+.wc-gift-card-form {
+  margin: 16px 0 0 !important;
+  padding: 18px !important;
+  border: 1px solid #dbe7f3 !important;
+  border-radius: 22px !important;
+  background: #f8fbff !important;
   box-sizing: border-box;
 }
 
-.axiom-inline-coupon-button {
-  min-width: 130px;
-  min-height: 54px;
-  padding: 0 18px;
+.wc_gc_cart_redeem_form h3,
+.wc_gc_checkout_redeem_form h3,
+.wc_gc_redeem_form h3,
+.woocommerce-gift-cards-form h3,
+.giftcard-section h3,
+.giftcard_form h3,
+.wc-gift-card-form h3 {
+  margin: 0 0 12px !important;
+  color: #0f172a !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+.wc_gc_cart_redeem_form p,
+.wc_gc_checkout_redeem_form p,
+.wc_gc_redeem_form p,
+.woocommerce-gift-cards-form p,
+.giftcard-section p,
+.giftcard_form p,
+.wc-gift-card-form p {
+  color: #5f6f84;
+  line-height: 1.55;
+}
+
+.wc_gc_cart_redeem_form form,
+.wc_gc_checkout_redeem_form form,
+.wc_gc_redeem_form form,
+.woocommerce-gift-cards-form form,
+.giftcard-section form,
+.giftcard_form form,
+.wc-gift-card-form form {
+  margin: 0 !important;
+}
+
+.wc_gc_cart_redeem_form .form-row,
+.wc_gc_checkout_redeem_form .form-row,
+.wc_gc_redeem_form .form-row,
+.woocommerce-gift-cards-form .form-row,
+.giftcard-section .form-row,
+.giftcard_form .form-row,
+.wc-gift-card-form .form-row {
+  margin: 0 0 12px !important;
+  padding: 0 !important;
+}
+
+.wc_gc_cart_redeem_form input[type="text"],
+.wc_gc_cart_redeem_form input[type="search"],
+.wc_gc_cart_redeem_form input[type="email"],
+.wc_gc_checkout_redeem_form input[type="text"],
+.wc_gc_checkout_redeem_form input[type="search"],
+.wc_gc_checkout_redeem_form input[type="email"],
+.wc_gc_redeem_form input[type="text"],
+.wc_gc_redeem_form input[type="search"],
+.wc_gc_redeem_form input[type="email"],
+.woocommerce-gift-cards-form input[type="text"],
+.giftcard-section input[type="text"],
+.giftcard_form input[type="text"],
+.wc-gift-card-form input[type="text"] {
+  width: 100% !important;
+  min-height: 54px !important;
+  padding: 0 16px !important;
+  border: 1px solid #d8e2ef !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  box-sizing: border-box !important;
+  box-shadow: none !important;
+}
+
+.wc_gc_cart_redeem_form button,
+.wc_gc_cart_redeem_form .button,
+.wc_gc_checkout_redeem_form button,
+.wc_gc_checkout_redeem_form .button,
+.wc_gc_redeem_form button,
+.wc_gc_redeem_form .button,
+.woocommerce-gift-cards-form button,
+.woocommerce-gift-cards-form .button,
+.giftcard-section button,
+.giftcard-section .button,
+.giftcard_form button,
+.giftcard_form .button,
+.wc-gift-card-form button,
+.wc-gift-card-form .button {
+  width: 100% !important;
+  min-height: 54px !important;
+  padding: 0 18px !important;
   border: 0 !important;
   border-radius: 16px !important;
   background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
@@ -159,23 +211,77 @@
   box-shadow: none !important;
 }
 
-.axiom-applied-coupons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+.wc_gc_cart_redeem_form .woocommerce-error,
+.wc_gc_cart_redeem_form .woocommerce-message,
+.wc_gc_cart_redeem_form .woocommerce-info,
+.wc_gc_checkout_redeem_form .woocommerce-error,
+.wc_gc_checkout_redeem_form .woocommerce-message,
+.wc_gc_checkout_redeem_form .woocommerce-info,
+.wc_gc_redeem_form .woocommerce-error,
+.wc_gc_redeem_form .woocommerce-message,
+.wc_gc_redeem_form .woocommerce-info,
+.woocommerce-gift-cards-form .woocommerce-error,
+.woocommerce-gift-cards-form .woocommerce-message,
+.woocommerce-gift-cards-form .woocommerce-info,
+.giftcard-section .woocommerce-error,
+.giftcard-section .woocommerce-message,
+.giftcard-section .woocommerce-info,
+.giftcard_form .woocommerce-error,
+.giftcard_form .woocommerce-message,
+.giftcard_form .woocommerce-info,
+.wc-gift-card-form .woocommerce-error,
+.wc-gift-card-form .woocommerce-message,
+.wc-gift-card-form .woocommerce-info {
+  display: block !important;
+  margin: 0 0 12px !important;
+  padding: 12px 14px !important;
+  border-radius: 14px !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  font-weight: 700 !important;
+  list-style: none !important;
 }
 
-.axiom-applied-coupon-chip {
-  display: inline-flex;
-  align-items: center;
-  min-height: 34px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #eaf4ff;
-  color: #1666a9;
-  font-size: 13px;
-  font-weight: 800;
+.wc_gc_cart_redeem_form .woocommerce-error,
+.wc_gc_checkout_redeem_form .woocommerce-error,
+.wc_gc_redeem_form .woocommerce-error,
+.woocommerce-gift-cards-form .woocommerce-error,
+.giftcard-section .woocommerce-error,
+.giftcard_form .woocommerce-error,
+.wc-gift-card-form .woocommerce-error {
+  background: #fff1f2 !important;
+  border: 1px solid #fecdd3 !important;
+  color: #b42318 !important;
+}
+
+.wc_gc_cart_redeem_form .woocommerce-message,
+.wc_gc_cart_redeem_form .woocommerce-info,
+.wc_gc_checkout_redeem_form .woocommerce-message,
+.wc_gc_checkout_redeem_form .woocommerce-info,
+.wc_gc_redeem_form .woocommerce-message,
+.wc_gc_redeem_form .woocommerce-info,
+.woocommerce-gift-cards-form .woocommerce-message,
+.woocommerce-gift-cards-form .woocommerce-info,
+.giftcard-section .woocommerce-message,
+.giftcard-section .woocommerce-info,
+.giftcard_form .woocommerce-message,
+.giftcard_form .woocommerce-info,
+.wc-gift-card-form .woocommerce-message,
+.wc-gift-card-form .woocommerce-info {
+  background: #ecfdf3 !important;
+  border: 1px solid #abefc6 !important;
+  color: #067647 !important;
+}
+
+.wc_gc_cart_redeem_form ul,
+.wc_gc_checkout_redeem_form ul,
+.wc_gc_redeem_form ul,
+.woocommerce-gift-cards-form ul,
+.giftcard-section ul,
+.giftcard_form ul,
+.wc-gift-card-form ul {
+  margin: 0 !important;
+  padding-left: 18px !important;
 }
 
 .axiom-summary-card {
@@ -370,14 +476,6 @@ button[name="woocommerce_checkout_place_order"] {
 }
 
 @media (max-width: 767px) {
-  .axiom-inline-coupon-row {
-    flex-direction: column;
-  }
-
-  .axiom-inline-coupon-button {
-    width: 100%;
-  }
-
   .axiom-summary-items {
     padding: 16px 16px 8px;
     gap: 12px;
@@ -443,5 +541,16 @@ button[name="woocommerce_checkout_place_order"] {
 
   .axiom-place-order-trust-item small {
     font-size: 12px;
+  }
+
+  .wc_gc_cart_redeem_form,
+  .wc_gc_checkout_redeem_form,
+  .wc_gc_redeem_form,
+  .woocommerce-gift-cards-form,
+  .giftcard-section,
+  .giftcard_form,
+  .wc-gift-card-form {
+    padding: 16px !important;
+    border-radius: 20px !important;
   }
 }
