@@ -36,45 +36,6 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 		</div>
 	<?php endif; ?>
 
-	<div class="axiom-payment-coupon-section">
-		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Have a gift card?', 'woocommerce' ); ?></h3>
-
-		<div class="axiom-payment-coupon-box">
-			<div class="axiom-inline-coupon-feedback" style="display:none;"></div>
-
-			<form class="axiom-inline-coupon-form" method="post" action="">
-				<div class="axiom-inline-coupon-row">
-					<input
-						type="text"
-						name="coupon_code"
-						class="input-text axiom-inline-coupon-input"
-						placeholder="<?php echo esc_attr__( 'Enter your code…', 'woocommerce' ); ?>"
-						value=""
-						autocomplete="off"
-					/>
-					<button
-						type="submit"
-						class="button axiom-inline-coupon-button"
-						name="apply_coupon"
-						value="<?php echo esc_attr__( 'Apply', 'woocommerce' ); ?>"
-					>
-						<?php esc_html_e( 'Apply', 'woocommerce' ); ?>
-					</button>
-				</div>
-			</form>
-
-			<?php if ( ! empty( $applied_coupons ) ) : ?>
-				<div class="axiom-applied-coupons">
-					<?php foreach ( $applied_coupons as $coupon_code => $coupon ) : ?>
-						<span class="axiom-applied-coupon-chip">
-							<?php echo esc_html( wc_format_coupon_code( $coupon_code ) ); ?>
-						</span>
-					<?php endforeach; ?>
-				</div>
-			<?php endif; ?>
-		</div>
-	</div>
-
 	<div class="axiom-payment-subtotal-section">
 		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
 
