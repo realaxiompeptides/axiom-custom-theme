@@ -1,0 +1,189 @@
+.axiom-checkout-shipping-methods-card {
+  margin-top: 18px;
+}
+
+.axiom-checkout-shipping-methods-card .axiom-checkout-card-header {
+  margin-bottom: 18px;
+}
+
+.axiom-checkout-shipping-methods-card .axiom-checkout-kicker {
+  margin: 0 0 8px;
+  color: #6d7991;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.axiom-checkout-shipping-methods-card h2 {
+  margin: 0 0 8px;
+  color: #0f1734;
+  font-size: 26px;
+  line-height: 1.08;
+  font-weight: 900;
+}
+
+.axiom-checkout-shipping-methods-card .axiom-checkout-card-header p:last-child {
+  margin: 0;
+  color: #69758d;
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.axiom-checkout-shipping-methods-fragment {
+  width: 100%;
+}
+
+.axiom-checkout-shipping-package {
+  width: 100%;
+}
+
+.axiom-checkout-shipping-method-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.axiom-checkout-shipping-method-item {
+  position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  margin: 0;
+  z-index: 2;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 3px solid #aeb9ca;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 999px;
+  background: #2f84bf;
+  transform: scale(0);
+  transition: transform 0.18s ease;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method:checked {
+  border-color: #2f84bf;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method:checked::before {
+  transform: scale(1);
+}
+
+.axiom-checkout-shipping-method-item label {
+  display: block;
+  width: 100%;
+  min-height: 104px;
+  margin: 0;
+  padding: 24px 22px 24px 62px;
+  border: 2px solid #cfe0ef;
+  border-radius: 26px;
+  background: #f8fbff;
+  color: #0f1734;
+  font-size: 20px;
+  line-height: 1.35;
+  font-weight: 900;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method:hover + label {
+  border-color: #7ab5e2;
+  background: #f4faff;
+}
+
+.axiom-checkout-shipping-method-item input.shipping_method:checked + label {
+  border-color: #4aa7e8;
+  background: #eef7ff;
+  box-shadow: 0 0 0 3px rgba(74, 167, 232, 0.12);
+}
+
+.axiom-checkout-shipping-empty {
+  margin: 0;
+  padding: 20px 22px;
+  border: 1px solid #dbe7f3;
+  border-radius: 20px;
+  background: #f8fbff;
+  color: #69758d;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Hide extra helper/package text if a plugin injects it */
+.axiom-checkout-shipping-methods-card .woocommerce-shipping-destination,
+.axiom-checkout-shipping-methods-card .shipping-calculator-button,
+.axiom-checkout-shipping-methods-card .package-name,
+.axiom-checkout-shipping-methods-card .package-details,
+.axiom-checkout-shipping-methods-card .woocommerce-shipping-contents,
+.axiom-checkout-shipping-methods-card .shipping_weight,
+.axiom-checkout-shipping-methods-card .order-weight,
+.axiom-checkout-shipping-methods-card .wcsbs-package-weight,
+.axiom-checkout-shipping-methods-card .wcsbs-order-weight,
+.axiom-checkout-shipping-methods-card small,
+.axiom-checkout-shipping-methods-card .amount + small {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .axiom-checkout-shipping-methods-card h2 {
+    font-size: 22px;
+  }
+
+  .axiom-checkout-shipping-method-item input.shipping_method {
+    left: 16px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .axiom-checkout-shipping-method-item label {
+    min-height: 92px;
+    padding: 20px 18px 20px 54px;
+    border-radius: 22px;
+    font-size: 17px;
+    line-height: 1.4;
+  }
+
+  .axiom-checkout-shipping-empty {
+    padding: 18px;
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 520px) {
+  .axiom-checkout-shipping-method-item input.shipping_method {
+    left: 14px;
+    width: 22px;
+    height: 22px;
+    border-width: 2px;
+  }
+
+  .axiom-checkout-shipping-method-item input.shipping_method::before {
+    inset: 4px;
+  }
+
+  .axiom-checkout-shipping-method-item label {
+    min-height: 84px;
+    padding: 18px 16px 18px 48px;
+    border-radius: 20px;
+    font-size: 15px;
+  }
+}
