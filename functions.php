@@ -228,9 +228,15 @@ function axiom_custom_theme_assets() {
                 'axiom-checkout',
                 $theme_uri . '/assets/js/checkout-page.js',
                 array('jquery', 'wc-checkout'),
-                '1.2',
+                '1.3',
                 true
             );
+
+            wp_localize_script('axiom-checkout', 'AXIOM_CHECKOUT', array(
+                'ajaxUrl'           => admin_url('admin-ajax.php'),
+                'applyCouponAction' => 'axiom_apply_coupon',
+                'applyCouponNonce'  => wp_create_nonce('axiom_apply_coupon'),
+            ));
         }
     }
 
