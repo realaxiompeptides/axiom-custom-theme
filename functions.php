@@ -195,6 +195,13 @@ function axiom_custom_theme_assets() {
         );
 
         wp_enqueue_style(
+            'axiom-checkout-shipping-methods',
+            $theme_uri . '/assets/css/checkout/checkout-shipping-methods.css',
+            array('axiom-base', 'axiom-checkout-layout'),
+            '1.0'
+        );
+
+        wp_enqueue_style(
             'axiom-checkout-mobile',
             $theme_uri . '/assets/css/checkout/checkout-mobile.css',
             array(
@@ -203,16 +210,17 @@ function axiom_custom_theme_assets() {
                 'axiom-checkout-fields',
                 'axiom-checkout-order-summary',
                 'axiom-checkout-payment',
+                'axiom-checkout-shipping-methods',
             ),
             '1.1'
         );
 
-        if (file_exists(get_template_directory() . '/assets/js/checkout/checkout.js')) {
+        if (file_exists(get_template_directory() . '/assets/js/checkout-page.js')) {
             wp_enqueue_script(
                 'axiom-checkout',
-                $theme_uri . '/assets/js/checkout/checkout.js',
-                array('jquery'),
-                '1.1',
+                $theme_uri . '/assets/js/checkout-page.js',
+                array('jquery', 'wc-checkout'),
+                '1.2',
                 true
             );
         }
