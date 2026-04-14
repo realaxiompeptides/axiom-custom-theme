@@ -41,8 +41,39 @@ $shipping_packages = WC()->shipping()->get_packages();
 
 	<div class="axiom-payment-coupon-section">
 		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Have a gift card?', 'woocommerce' ); ?></h3>
+
 		<div class="axiom-payment-coupon-box">
-			<?php woocommerce_checkout_coupon_form(); ?>
+			<div class="axiom-inline-coupon-feedback" style="display:none;"></div>
+
+			<form class="axiom-inline-coupon-form" method="post" action="">
+				<div class="axiom-inline-coupon-row">
+					<input
+						type="text"
+						name="coupon_code"
+						class="input-text axiom-inline-coupon-input"
+						placeholder="<?php echo esc_attr__( 'Enter your code…', 'woocommerce' ); ?>"
+						value=""
+					/>
+					<button
+						type="submit"
+						class="button axiom-inline-coupon-button"
+						name="apply_coupon"
+						value="<?php echo esc_attr__( 'Apply', 'woocommerce' ); ?>"
+					>
+						<?php esc_html_e( 'Apply', 'woocommerce' ); ?>
+					</button>
+				</div>
+			</form>
+
+			<?php if ( ! empty( $applied_coupons ) ) : ?>
+				<div class="axiom-applied-coupons">
+					<?php foreach ( $applied_coupons as $coupon_code => $coupon ) : ?>
+						<span class="axiom-applied-coupon-chip">
+							<?php echo esc_html( wc_format_coupon_code( $coupon_code ) ); ?>
+						</span>
+					<?php endforeach; ?>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 
@@ -50,7 +81,6 @@ $shipping_packages = WC()->shipping()->get_packages();
 		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
 
 		<div class="axiom-summary-card">
-
 			<div class="axiom-summary-items">
 				<?php foreach ( $cart_items as $cart_item_key => $cart_item ) : ?>
 					<?php
@@ -155,7 +185,6 @@ $shipping_packages = WC()->shipping()->get_packages();
 				<div class="axiom-summary-benefit">🧪 <span><?php esc_html_e( 'Third-party verified quality', 'woocommerce' ); ?></span></div>
 				<div class="axiom-summary-benefit">📄 <span><?php esc_html_e( 'COA included with applicable products', 'woocommerce' ); ?></span></div>
 			</div>
-
 		</div>
 	</div>
 
@@ -167,9 +196,7 @@ $shipping_packages = WC()->shipping()->get_packages();
 
 			<div class="axiom-research-use-copy">
 				<strong><?php esc_html_e( 'I acknowledge this order is for research use only', 'woocommerce' ); ?></strong>
-				<p>
-					<?php esc_html_e( 'All products are intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.', 'woocommerce' ); ?>
-				</p>
+				<p><?php esc_html_e( 'All products are intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.', 'woocommerce' ); ?></p>
 			</div>
 		</div>
 
