@@ -50,7 +50,6 @@
 .axiom-payment-methods-section,
 .axiom-payment-coupon-section,
 .axiom-payment-subtotal-section,
-.axiom-checkout-research-wrap--payment,
 .axiom-place-order-section {
   margin-top: 16px;
 }
@@ -311,81 +310,6 @@
   display: flex;
   align-items: center;
   gap: 10px;
-}
-
-.axiom-checkout-research-wrap--payment {
-  padding: 18px !important;
-  border: 1px solid #ead56e !important;
-  background: #fef9e7 !important;
-  border-radius: 22px !important;
-}
-
-.axiom-research-use-box {
-  display: flex;
-  align-items: flex-start;
-  gap: 16px;
-  padding: 18px;
-  border: 2px solid #e5ce62;
-  border-radius: 20px;
-  background: rgba(255, 248, 220, 0.45);
-  margin-bottom: 16px;
-}
-
-.axiom-research-use-icon {
-  width: 58px;
-  height: 58px;
-  min-width: 58px;
-  border-radius: 999px;
-  background: #f8e7ad;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.axiom-research-use-icon i {
-  color: #c57317;
-  font-size: 28px;
-  line-height: 1;
-}
-
-.axiom-research-use-copy strong {
-  display: block;
-  margin: 0 0 10px;
-  color: #8a4b13;
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1.25;
-}
-
-.axiom-research-use-copy p {
-  margin: 0;
-  color: #8b6b2f;
-  font-size: 15px;
-  line-height: 1.65;
-}
-
-.axiom-checkout-research-wrap--payment .form-row {
-  padding: 0 !important;
-  margin: 0 !important;
-}
-
-.axiom-checkout-research-wrap--payment label.checkbox {
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  color: #24314c !important;
-  font-size: 16px !important;
-  font-weight: 800 !important;
-  line-height: 1.45 !important;
-}
-
-.axiom-checkout-research-wrap--payment input[type="checkbox"] {
-  width: 28px !important;
-  height: 28px !important;
-  min-width: 28px !important;
-  min-height: 28px !important;
-  margin: 0 !important;
-  padding: 0 !important;
 }
 
 .axiom-place-order-section .form-row.place-order {
