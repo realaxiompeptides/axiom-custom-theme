@@ -8,31 +8,40 @@ if ( ! wp_doing_ajax() ) {
 
 <div id="payment" class="woocommerce-checkout-payment axiom-payment-wrap">
 	<?php if ( WC()->cart && WC()->cart->needs_payment() ) : ?>
-		<ul class="wc_payment_methods payment_methods methods">
-			<?php
-			if ( ! empty( $available_gateways ) ) {
-				foreach ( $available_gateways as $gateway ) {
-					wc_get_template( 'checkout/payment-method.php', array( 'gateway' => $gateway ) );
+		<div class="axiom-payment-methods-section">
+			<ul class="wc_payment_methods payment_methods methods">
+				<?php
+				if ( ! empty( $available_gateways ) ) {
+					foreach ( $available_gateways as $gateway ) {
+						wc_get_template( 'checkout/payment-method.php', array( 'gateway' => $gateway ) );
+					}
+				} else {
+					echo '<li>';
+					wc_print_notice(
+						apply_filters(
+							'woocommerce_no_available_payment_methods_message',
+							WC()->customer && WC()->customer->get_billing_country()
+								? esc_html__( 'Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce' )
+								: esc_html__( 'Please fill in your details above to see available payment methods.', 'woocommerce' )
+						),
+						'notice'
+					);
+					echo '</li>';
 				}
-			} else {
-				echo '<li>';
-				wc_print_notice(
-					apply_filters(
-						'woocommerce_no_available_payment_methods_message',
-						WC()->customer && WC()->customer->get_billing_country()
-							? esc_html__( 'Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce' )
-							: esc_html__( 'Please fill in your details above to see available payment methods.', 'woocommerce' )
-					),
-					'notice'
-				);
-				echo '</li>';
-			}
-			?>
-		</ul>
+				?>
+			</ul>
+		</div>
 	<?php endif; ?>
 
+	<div class="axiom-payment-coupon-section">
+		<h3 class="axiom-payment-section-title">Have a gift card?</h3>
+		<div class="axiom-payment-coupon-box">
+			<?php woocommerce_checkout_coupon_form(); ?>
+		</div>
+	</div>
+
 	<div class="axiom-payment-subtotal-section">
-		<h3 class="axiom-order-review-heading"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
+		<h3 class="axiom-payment-section-title">Order summary</h3>
 		<div class="axiom-payment-subtotal-table">
 			<?php woocommerce_order_review(); ?>
 		</div>
