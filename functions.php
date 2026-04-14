@@ -228,7 +228,7 @@ function axiom_custom_theme_assets() {
                 'axiom-checkout',
                 $theme_uri . '/assets/js/checkout-page.js',
                 array('jquery', 'wc-checkout'),
-                '1.3',
+                '1.5',
                 true
             );
 
