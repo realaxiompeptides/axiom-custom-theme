@@ -277,16 +277,13 @@ jQuery(function ($) {
               "success"
             );
             $input.val("");
-
-            setTimeout(function () {
-              $body.trigger("update_checkout");
-              restoreScrollPosition();
-            }, 50);
+            restoreScrollPosition();
           } else {
             showCouponMessage(
               response.data && response.data.message ? response.data.message : "Discount code not valid.",
               "error"
             );
+            restoreScrollPosition();
           }
         })
         .fail(function () {
