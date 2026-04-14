@@ -8,7 +8,7 @@ if ( ! wp_doing_ajax() ) {
 $cart_items        = WC()->cart ? WC()->cart->get_cart() : array();
 $applied_coupons   = WC()->cart ? WC()->cart->get_coupons() : array();
 $chosen_methods    = WC()->session ? (array) WC()->session->get( 'chosen_shipping_methods', array() ) : array();
-$shipping_packages = WC()->shipping()->get_packages();
+$shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->shipping()->get_packages() : array();
 ?>
 
 <div id="payment" class="woocommerce-checkout-payment axiom-payment-wrap">
@@ -23,15 +23,12 @@ $shipping_packages = WC()->shipping()->get_packages();
 					}
 				} else {
 					echo '<li>';
-					wc_print_notice(
-						apply_filters(
-							'woocommerce_no_available_payment_methods_message',
-							WC()->customer && WC()->customer->get_billing_country()
-								? esc_html__( 'Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce' )
-								: esc_html__( 'Please fill in your details above to see available payment methods.', 'woocommerce' )
-						),
-						'notice'
+					echo '<div class="axiom-inline-coupon-feedback is-error" style="display:block;">';
+					echo esc_html__(
+						'Sorry, it seems that there are no available payment methods. Please contact us if you require assistance or wish to make alternate arrangements.',
+						'woocommerce'
 					);
+					echo '</div>';
 					echo '</li>';
 				}
 				?>
@@ -53,6 +50,7 @@ $shipping_packages = WC()->shipping()->get_packages();
 						class="input-text axiom-inline-coupon-input"
 						placeholder="<?php echo esc_attr__( 'Enter your code…', 'woocommerce' ); ?>"
 						value=""
+						autocomplete="off"
 					/>
 					<button
 						type="submit"
