@@ -79,7 +79,7 @@ jQuery(function ($) {
   }
 
   function getCouponFeedbackBox() {
-    return $(".axiom-inline-coupon-feedback").first();
+    return $(".axiom-payment-coupon-box .axiom-inline-coupon-feedback").first();
   }
 
   function saveCouponMessage(message, type) {
@@ -143,6 +143,7 @@ jQuery(function ($) {
 
   function clearCouponMessage() {
     var $feedback = getCouponFeedbackBox();
+
     clearSavedCouponMessage();
 
     if (!$feedback.length) {
@@ -153,12 +154,7 @@ jQuery(function ($) {
   }
 
   function clearTopNotices() {
-    $(
-      ".woocommerce-NoticeGroup," +
-      ".woocommerce-error," +
-      ".woocommerce-message," +
-      ".woocommerce-info"
-    ).remove();
+    $(".woocommerce-NoticeGroup, .woocommerce-error, .woocommerce-message, .woocommerce-info").remove();
   }
 
   function syncShippingMethods() {
@@ -277,21 +273,21 @@ jQuery(function ($) {
 
           if (response.success) {
             showCouponMessage(
-              (response.data && response.data.message) ? response.data.message : "Discount applied.",
+              response.data && response.data.message ? response.data.message : "Discount applied.",
               "success"
             );
             $input.val("");
+
+            setTimeout(function () {
+              $body.trigger("update_checkout");
+              restoreScrollPosition();
+            }, 50);
           } else {
             showCouponMessage(
-              (response.data && response.data.message) ? response.data.message : "Discount code not valid.",
+              response.data && response.data.message ? response.data.message : "Discount code not valid.",
               "error"
             );
           }
-
-          setTimeout(function () {
-            $body.trigger("update_checkout");
-            restoreScrollPosition();
-          }, 50);
         })
         .fail(function () {
           showCouponMessage("Could not apply discount code. Please try again.", "error");
@@ -340,10 +336,4 @@ jQuery(function ($) {
     restoreSavedCouponMessage();
     clearTopNotices();
   }, 500);
-
-  setTimeout(function () {
-    maybeUpdateCheckout();
-    restoreSavedCouponMessage();
-    clearTopNotices();
-  }, 1200);
 });
