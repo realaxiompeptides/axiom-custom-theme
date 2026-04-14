@@ -94,13 +94,17 @@ jQuery(function ($) {
   }
 
   function bindShippingMethodEvents() {
-    $(document).on("change", '.axiom-checkout-shipping-methods-fragment input.shipping_method, input.shipping_method', function () {
-      queueCheckoutUpdate(100);
-    });
+    $(document).on(
+      "change",
+      '.axiom-checkout-shipping-methods-fragment input.shipping_method, #payment input.shipping_method, input.shipping_method',
+      function () {
+        queueCheckoutUpdate(100);
+      }
+    );
   }
 
   function getCouponFeedbackBox() {
-    return $(".axiom-inline-coupon-feedback");
+    return $(".axiom-inline-coupon-feedback").first();
   }
 
   function showCouponMessage(message, type) {
@@ -123,6 +127,18 @@ jQuery(function ($) {
 
   function clearTopCouponNotices() {
     $(".woocommerce-NoticeGroup, .woocommerce-error, .woocommerce-message, .woocommerce-info").remove();
+  }
+
+  function syncShippingRadios() {
+    $(".axiom-checkout-shipping-methods-fragment input.shipping_method").each(function () {
+      var $input = $(this);
+      var name = $input.attr("name");
+      var value = $input.val();
+
+      if ($input.is(":checked")) {
+        $('input[name="' + name + '"][value="' + value + '"]').prop("checked", true);
+      }
+    });
   }
 
   function bindCouponForm() {
@@ -174,6 +190,7 @@ jQuery(function ($) {
 
           if (errorText) {
             showCouponMessage(errorText, "error");
+            clearTopCouponNotices();
             return;
           }
 
@@ -183,6 +200,7 @@ jQuery(function ($) {
         })
         .fail(function () {
           showCouponMessage("Could not apply code. Please try again.", "error");
+          clearTopCouponNotices();
         })
         .always(function () {
           $form.removeClass("is-loading");
@@ -191,17 +209,13 @@ jQuery(function ($) {
   }
 
   $body.on("updated_checkout", function () {
-    $(".axiom-checkout-shipping-methods-fragment input.shipping_method").each(function () {
-      var $input = $(this);
-      var name = $input.attr("name");
-      var value = $input.val();
-
-      if ($input.is(":checked")) {
-        $('input[name="' + name + '"][value="' + value + '"]').prop("checked", true);
-      }
-    });
-
+    syncShippingRadios();
     clearTopCouponNotices();
+  });
+
+  $body.on("applied_coupon_in_checkout removed_coupon_in_checkout", function () {
+    clearTopCouponNotices();
+    queueCheckoutUpdate(100);
   });
 
   bindAddressFieldEvents();
@@ -210,9 +224,11 @@ jQuery(function ($) {
 
   setTimeout(function () {
     maybeUpdateCheckout();
+    clearTopCouponNotices();
   }, 500);
 
   setTimeout(function () {
     maybeUpdateCheckout();
+    clearTopCouponNotices();
   }, 1200);
 });
