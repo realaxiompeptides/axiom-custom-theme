@@ -7,7 +7,7 @@
   max-width: 1200px;
 }
 
-.axiom-coa-hero {
+.axiom-coa-page .axiom-coa-hero {
   margin-bottom: 24px;
   padding: 36px 28px;
   border: 1px solid #dbe5ef;
@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-.axiom-coa-kicker {
+.axiom-coa-page .axiom-coa-kicker {
   margin: 0 0 10px;
   color: #5aa8df;
   font-size: 13px;
@@ -25,7 +25,7 @@
   text-transform: uppercase;
 }
 
-.axiom-coa-hero h1 {
+.axiom-coa-page .axiom-coa-hero h1 {
   margin: 0 0 12px;
   color: #0f172a;
   font-size: 52px;
@@ -34,7 +34,7 @@
   letter-spacing: -0.04em;
 }
 
-.axiom-coa-subtitle {
+.axiom-coa-page .axiom-coa-subtitle {
   max-width: 760px;
   margin: 0 auto;
   color: #64748b;
@@ -42,11 +42,11 @@
   line-height: 1.75;
 }
 
-.axiom-coa-toolbar {
+.axiom-coa-page .axiom-coa-toolbar {
   margin-bottom: 22px;
 }
 
-.axiom-coa-search-wrap input {
+.axiom-coa-page .axiom-coa-search-wrap input {
   width: 100%;
   min-height: 56px;
   padding: 16px 18px;
@@ -59,17 +59,17 @@
   outline: none;
 }
 
-.axiom-coa-search-wrap input:focus {
+.axiom-coa-page .axiom-coa-search-wrap input:focus {
   border-color: #5aa8df;
   background: #ffffff;
 }
 
-.axiom-coa-grid {
+.axiom-coa-page .axiom-coa-grid {
   display: grid;
   gap: 20px;
 }
 
-.axiom-coa-card {
+.axiom-coa-page .axiom-coa-card {
   padding: 24px;
   border: 1px solid #dbe5ef;
   border-radius: 28px;
@@ -77,7 +77,7 @@
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
-.axiom-coa-card-head {
+.axiom-coa-page .axiom-coa-card-head {
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
   gap: 18px;
@@ -85,7 +85,7 @@
   margin-bottom: 18px;
 }
 
-.axiom-coa-product-media {
+.axiom-coa-page .axiom-coa-product-media {
   width: 120px;
   height: 120px;
   border: 1px solid #e7eef5;
@@ -97,8 +97,8 @@
   overflow: hidden;
 }
 
-.axiom-coa-product-image,
-.axiom-coa-product-media img {
+.axiom-coa-page .axiom-coa-product-image,
+.axiom-coa-page .axiom-coa-product-media img {
   display: block;
   width: 100%;
   height: 100%;
@@ -106,7 +106,7 @@
   padding: 8px;
 }
 
-.axiom-coa-tested-badge {
+.axiom-coa-page .axiom-coa-tested-badge {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
@@ -121,7 +121,7 @@
   text-transform: uppercase;
 }
 
-.axiom-coa-product-meta h2 {
+.axiom-coa-page .axiom-coa-product-meta h2 {
   margin: 0 0 10px;
   color: #0f172a;
   font-size: 30px;
@@ -130,13 +130,13 @@
   text-transform: uppercase;
 }
 
-.axiom-coa-status-row {
+.axiom-coa-page .axiom-coa-status-row {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.axiom-coa-status {
+.axiom-coa-page .axiom-coa-status {
   display: inline-flex;
   align-items: center;
   min-height: 34px;
@@ -148,17 +148,17 @@
   letter-spacing: 0.06em;
 }
 
-.axiom-coa-status-ready {
+.axiom-coa-page .axiom-coa-status-ready {
   background: #eaf8ef;
   color: #1d7a38;
 }
 
-.axiom-coa-status-not-ready {
+.axiom-coa-page .axiom-coa-status-not-ready {
   background: #fff3f2;
   color: #c0392b;
 }
 
-.axiom-coa-actions {
+.axiom-coa-page .axiom-coa-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -166,7 +166,7 @@
   margin-bottom: 8px;
 }
 
-.axiom-coa-btn {
+.axiom-coa-page .axiom-coa-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -181,26 +181,26 @@
   border: 0;
 }
 
-.axiom-coa-btn:hover {
+.axiom-coa-page .axiom-coa-btn:hover {
   background: #4798d5;
   color: #ffffff;
 }
 
-.axiom-coa-btn-secondary {
+.axiom-coa-page .axiom-coa-btn-secondary {
   background: #0f172a;
 }
 
-.axiom-coa-btn-secondary:hover {
+.axiom-coa-page .axiom-coa-btn-secondary:hover {
   background: #1e293b;
 }
 
-.axiom-coa-variant-list {
+.axiom-coa-page .axiom-coa-variant-list {
   display: grid;
   gap: 12px;
   margin-top: 18px;
 }
 
-.axiom-coa-variant-row {
+.axiom-coa-page .axiom-coa-variant-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 14px;
@@ -211,32 +211,32 @@
   background: #f8fbff;
 }
 
-.axiom-coa-variant-copy {
+.axiom-coa-page .axiom-coa-variant-copy {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.axiom-coa-variant-copy strong {
+.axiom-coa-page .axiom-coa-variant-copy strong {
   color: #0f172a;
   font-size: 16px;
   font-weight: 900;
 }
 
-.axiom-coa-variant-actions {
+.axiom-coa-page .axiom-coa-variant-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
 }
 
-.axiom-coa-btn-small {
+.axiom-coa-page .axiom-coa-btn-small {
   min-height: 40px;
   padding: 0 14px;
   font-size: 14px;
 }
 
-.axiom-coa-empty {
+.axiom-coa-page .axiom-coa-empty {
   color: #64748b;
   font-size: 14px;
   font-weight: 700;
@@ -247,43 +247,43 @@
     padding: 18px 0 42px;
   }
 
-  .axiom-coa-hero {
+  .axiom-coa-page .axiom-coa-hero {
     padding: 24px 18px;
     border-radius: 24px;
   }
 
-  .axiom-coa-hero h1 {
+  .axiom-coa-page .axiom-coa-hero h1 {
     font-size: 34px;
   }
 
-  .axiom-coa-subtitle {
+  .axiom-coa-page .axiom-coa-subtitle {
     font-size: 16px;
   }
 
-  .axiom-coa-card {
+  .axiom-coa-page .axiom-coa-card {
     padding: 18px;
     border-radius: 24px;
   }
 
-  .axiom-coa-card-head {
+  .axiom-coa-page .axiom-coa-card-head {
     grid-template-columns: 1fr;
     align-items: start;
   }
 
-  .axiom-coa-product-media {
+  .axiom-coa-page .axiom-coa-product-media {
     width: 100px;
     height: 100px;
   }
 
-  .axiom-coa-product-meta h2 {
+  .axiom-coa-page .axiom-coa-product-meta h2 {
     font-size: 26px;
   }
 
-  .axiom-coa-variant-row {
+  .axiom-coa-page .axiom-coa-variant-row {
     grid-template-columns: 1fr;
   }
 
-  .axiom-coa-variant-actions {
+  .axiom-coa-page .axiom-coa-variant-actions {
     justify-content: flex-start;
   }
 }
