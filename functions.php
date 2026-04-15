@@ -29,6 +29,8 @@ $axiom_function_files = array(
     '/functions/account/default-endpoint.php',
 
     '/functions/coa/coa.php',
+
+    '/functions/calculator/peptide-calculator.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
