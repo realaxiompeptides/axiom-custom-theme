@@ -1,221 +1,165 @@
-.axiom-affiliate-page {
-  padding: 28px 0 72px;
-  background: #ffffff;
-}
-
-.axiom-affiliate-hero {
-  margin-bottom: 28px;
-}
-
-.axiom-affiliate-hero-card {
-  padding: 36px 28px;
-  border: 1px solid #dce7f2;
-  border-radius: 32px;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
-  text-align: center;
-}
-
-.axiom-affiliate-kicker,
-.axiom-affiliate-section-kicker {
-  margin: 0 0 10px;
-  color: #4fa2dc;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.axiom-affiliate-hero-card h1 {
-  margin: 0 0 14px;
-  color: #0f172a;
-  font-size: 52px;
-  line-height: 1.02;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-}
-
-.axiom-affiliate-subtitle {
-  max-width: 780px;
-  margin: 0 auto;
-  color: #64748b;
-  font-size: 19px;
-  line-height: 1.7;
-}
-
-.axiom-affiliate-hero-badges {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 22px;
-}
-
-.axiom-affiliate-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border: 1px solid #dbe7f3;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #0f172a;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.axiom-affiliate-main .container {
-  max-width: 1220px;
-}
-
+/* Better overall layout */
 .axiom-affiliate-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.8fr);
-  gap: 24px;
   align-items: start;
 }
 
 .axiom-affiliate-content,
 .axiom-affiliate-sidebar {
-  display: grid;
-  gap: 22px;
+  min-width: 0;
 }
 
-.axiom-affiliate-info-card,
 .axiom-affiliate-signup-card,
+.axiom-affiliate-info-card,
 .axiom-affiliate-side-card {
-  padding: 28px;
-  border: 1px solid #dce7f2;
-  border-radius: 30px;
-  background: #ffffff;
+  overflow: hidden;
 }
 
-.axiom-affiliate-info-card h2,
-.axiom-affiliate-signup-card h3,
-.axiom-affiliate-side-card h3 {
-  margin: 0 0 10px;
-  color: #0f172a;
-  font-size: 34px;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-}
-
-.axiom-affiliate-info-card p,
-.axiom-affiliate-side-card p,
-.axiom-affiliate-signup-copy {
-  margin: 0;
-  color: #64748b;
-  font-size: 17px;
-  line-height: 1.7;
-}
-
-.axiom-affiliate-feature-list,
-.axiom-affiliate-rules {
-  display: grid;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.axiom-affiliate-feature,
-.axiom-affiliate-rule {
-  display: flex;
-  gap: 14px;
-  padding: 16px 18px;
-  border: 1px solid #e4edf5;
-  border-radius: 20px;
-  background: #f8fbff;
-}
-
-.axiom-affiliate-rule {
-  display: block;
-}
-
-.axiom-affiliate-feature-icon {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  border-radius: 999px;
-  background: #dff0fb;
-  color: #4fa2dc;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-}
-
-.axiom-affiliate-feature-copy strong,
-.axiom-affiliate-rule strong {
-  display: block;
-  margin-bottom: 5px;
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.axiom-affiliate-feature-copy span,
-.axiom-affiliate-rule span {
-  display: block;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.axiom-affiliate-signup-form {
-  margin-top: 18px;
-}
-
-/* SliceWP form styling */
-.axiom-affiliate-signup-form form {
-  margin: 0;
-}
-
-.axiom-affiliate-signup-form p,
-.axiom-affiliate-signup-form label {
-  color: #0f172a;
+/* SliceWP form cleanup */
+.axiom-affiliate-signup-form .slicewp-form-field,
+.axiom-affiliate-signup-form .slicewp-field-wrapper,
+.axiom-affiliate-signup-form p {
+  margin-bottom: 16px !important;
 }
 
 .axiom-affiliate-signup-form label {
   display: block;
-  margin-bottom: 8px;
-  font-size: 15px;
-  font-weight: 800;
+  margin-bottom: 8px !important;
+  color: #0f172a !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
 }
 
 .axiom-affiliate-signup-form input[type="text"],
 .axiom-affiliate-signup-form input[type="email"],
 .axiom-affiliate-signup-form input[type="password"],
 .axiom-affiliate-signup-form input[type="url"],
+.axiom-affiliate-signup-form input[type="tel"],
 .axiom-affiliate-signup-form textarea,
 .axiom-affiliate-signup-form select {
-  width: 100%;
-  min-height: 56px;
-  padding: 16px 18px;
-  border: 1px solid #d6e2ee;
-  border-radius: 18px;
-  background: #fbfdff;
-  color: #0f172a;
-  font-size: 16px;
-  box-shadow: none;
-  outline: none;
+  width: 100% !important;
+  min-height: 56px !important;
+  padding: 16px 18px !important;
+  border: 1px solid #d6e2ee !important;
+  border-radius: 18px !important;
+  background: #fbfdff !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
 .axiom-affiliate-signup-form textarea {
-  min-height: 140px;
-  resize: vertical;
+  min-height: 140px !important;
+  resize: vertical !important;
 }
 
 .axiom-affiliate-signup-form input:focus,
 .axiom-affiliate-signup-form textarea:focus,
 .axiom-affiliate-signup-form select:focus {
-  border-color: #4fa2dc;
-  background: #ffffff;
+  border-color: #4fa2dc !important;
+  background: #ffffff !important;
+}
+
+.axiom-affiliate-signup-form .show-password-input,
+.axiom-affiliate-signup-form button.show-password-input {
+  right: 16px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
 }
 
 .axiom-affiliate-signup-form button,
 .axiom-affiliate-signup-form input[type="submit"],
-.axiom-affiliate-contact-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0 26px
+.axiom-affiliate-signup-form .button,
+.axiom-affiliate-signup-form .slicewp-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  min-height: 56px !important;
+  padding: 0 24px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #4fa2dc !important;
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+}
+
+/* Make the side cards cleaner */
+.axiom-affiliate-rule {
+  padding: 18px !important;
+}
+
+/* Mobile stacking fix */
+@media (max-width: 991px) {
+  .axiom-affiliate-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  .axiom-affiliate-content,
+  .axiom-affiliate-sidebar {
+    display: grid;
+    gap: 18px;
+  }
+
+  .axiom-affiliate-signup-card,
+  .axiom-affiliate-info-card,
+  .axiom-affiliate-side-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-affiliate-page {
+    padding: 18px 0 44px;
+  }
+
+  .axiom-affiliate-hero-card,
+  .axiom-affiliate-info-card,
+  .axiom-affiliate-signup-card,
+  .axiom-affiliate-side-card {
+    padding: 22px 18px !important;
+    border-radius: 24px !important;
+  }
+
+  .axiom-affiliate-hero-card h1 {
+    font-size: 34px !important;
+    line-height: 1.02 !important;
+  }
+
+  .axiom-affiliate-subtitle {
+    font-size: 16px !important;
+    line-height: 1.7 !important;
+  }
+
+  .axiom-affiliate-info-card h2,
+  .axiom-affiliate-signup-card h3,
+  .axiom-affiliate-side-card h3 {
+    font-size: 28px !important;
+    line-height: 1.06 !important;
+  }
+
+  .axiom-affiliate-feature,
+  .axiom-affiliate-rule {
+    padding: 16px !important;
+    border-radius: 18px !important;
+  }
+
+  .axiom-affiliate-signup-form input[type="text"],
+  .axiom-affiliate-signup-form input[type="email"],
+  .axiom-affiliate-signup-form input[type="password"],
+  .axiom-affiliate-signup-form input[type="url"],
+  .axiom-affiliate-signup-form input[type="tel"],
+  .axiom-affiliate-signup-form textarea,
+  .axiom-affiliate-signup-form select {
+    min-height: 54px !important;
+    font-size: 16px !important;
+  }
+
+  .axiom-affiliate-signup-form textarea {
+    min-height: 130px !important;
+  }
+}
