@@ -86,7 +86,7 @@
   padding: 0 16px;
   border: 0 !important;
   border-radius: 14px !important;
-  background: #69afe0 !important;
+  background: #5ea9de !important;
   color: #ffffff !important;
   font-size: 15px !important;
   font-weight: 900 !important;
@@ -94,8 +94,16 @@
   opacity: 1 !important;
 }
 
+.axiom-copy-button:hover,
+.axiom-thankyou-pay-button:hover,
+.axiom-copy-button:focus,
+.axiom-thankyou-pay-button:focus {
+  background: #4fa2dc !important;
+  color: #ffffff !important;
+}
+
 .axiom-copy-button.is-copied {
-  background: #4c9ed8 !important;
+  background: #3f96d5 !important;
   color: #ffffff !important;
   opacity: 1 !important;
 }
