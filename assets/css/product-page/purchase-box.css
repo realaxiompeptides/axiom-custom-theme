@@ -246,3 +246,87 @@
     font-size: 18px;
   }
 }
+
+/* Hide WooCommerce accessibility helper text visually, but keep it for screen readers */
+.screen-reader-text,
+.woocommerce .screen-reader-text {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Variation price wrapper */
+.single-product .woocommerce-variation-price,
+.single-product .woocommerce-variation .price,
+.single-product div.product .summary .price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0 18px;
+  line-height: 1.1;
+}
+
+/* Regular current price */
+.single-product .woocommerce-variation-price .price,
+.single-product .woocommerce-variation .price,
+.single-product div.product .summary .price {
+  color: #0f172a;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+/* Old crossed-out price */
+.single-product .woocommerce-variation-price del,
+.single-product .woocommerce-variation .price del,
+.single-product div.product .summary .price del {
+  color: #7b8798;
+  opacity: 1;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+}
+
+/* New sale price */
+.single-product .woocommerce-variation-price ins,
+.single-product .woocommerce-variation .price ins,
+.single-product div.product .summary .price ins {
+  color: #0f172a;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+/* Make the amount pieces stay clean */
+.single-product .woocommerce-variation-price .amount,
+.single-product .woocommerce-variation .price .amount,
+.single-product div.product .summary .price .amount {
+  white-space: nowrap;
+}
+
+/* Prevent weird stacked text on mobile */
+.single-product .woocommerce-variation-price .price,
+.single-product .woocommerce-variation .price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Optional: sale badge cleaner on product image */
+.single-product span.onsale {
+  min-height: auto;
+  min-width: auto;
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: #4fa2dc;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1;
+}
