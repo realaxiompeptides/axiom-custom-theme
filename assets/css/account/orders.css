@@ -1,0 +1,44 @@
+.woocommerce-account table.shop_table {
+  width: 100%;
+  border-collapse: collapse;
+  padding: 22px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+}
+
+.woocommerce-account table.shop_table th,
+.woocommerce-account table.shop_table td {
+  padding: 14px 10px;
+  border-bottom: 1px solid #e7eef5;
+  text-align: left;
+}
+
+.woocommerce-account table.shop_table th {
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.woocommerce-account table.shop_table td {
+  color: #64748b;
+  font-size: 15px;
+}
+
+.woocommerce-account .woocommerce-button.button,
+.woocommerce-account a.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #5aa8df;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  border: 0;
+}
