@@ -1,93 +1,217 @@
-/* =========================
-   THANK YOU PAGE
-========================= */
-
-.woocommerce-order {
-  width: min(100%, 1120px);
-  margin: 0 auto;
-  padding: 20px 16px 56px;
-}
-
-.woocommerce-order > * + * {
-  margin-top: 22px;
-}
-
-/* =========================
-   TOP THANK YOU BLOCK
-========================= */
-
+.woocommerce-order,
+.woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received,
 .woocommerce-order-overview,
-.woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received,
-.woocommerce-thankyou-order-details {
+.woocommerce-thankyou-order-details,
+.woocommerce-order-details,
+.woocommerce-customer-details,
+.woocommerce-table.woocommerce-table--order-details,
+.woocommerce-order-details__title,
+.woocommerce-column__title {
   margin: 0 !important;
 }
 
 .woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received,
-.woocommerce-order > p:first-of-type {
-  display: block;
-  padding: 22px 22px !important;
-  border: 1px solid #dbe7f3 !important;
-  border-radius: 26px !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05) !important;
-  color: #0f172a !important;
-  font-size: 31px !important;
-  font-weight: 900 !important;
-  line-height: 1.15 !important;
-  letter-spacing: -0.02em;
-  text-align: left !important;
-}
-
-/* order meta row */
-.woocommerce-order-overview.woocommerce-thankyou-order-details,
-ul.woocommerce-order-overview {
-  list-style: none !important;
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px !important;
-  padding: 0 !important;
-  margin-top: 14px !important;
-  border: 0 !important;
-}
-
-.woocommerce-order-overview li {
-  margin: 0 !important;
-  padding: 16px 14px !important;
-  background: #f8fbff !important;
-  border: 1px solid #dbe7f3 !important;
-  border-radius: 20px !important;
-  color: #64748b !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  line-height: 1.4 !important;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  min-width: 0;
-}
-
-.woocommerce-order-overview li strong,
-.woocommerce-order-overview li span,
-.woocommerce-order-overview li .amount,
-.woocommerce-order-overview li time {
-  display: block;
-  margin-top: 6px;
-  color: #0f172a !important;
-  font-size: 18px !important;
-  line-height: 1.35 !important;
-  font-weight: 900 !important;
-  text-transform: none;
-  letter-spacing: normal;
-  word-break: break-word;
-}
-
-.woocommerce-order-overview li::after,
-.woocommerce-order-overview li::before {
+ul.woocommerce-order-overview.woocommerce-thankyou-order-details {
   display: none !important;
 }
 
-/* =========================
-   SECTION HEADERS
-========================= */
+.axiom-thankyou-page {
+  padding: 18px 0 48px;
+}
+
+.axiom-thankyou-shell {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  padding: 0 14px;
+}
+
+.axiom-thankyou-shell > * + * {
+  margin-top: 22px;
+}
+
+.axiom-thankyou-brand-row {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.axiom-thankyou-brand-logo {
+  width: 84px;
+  height: auto;
+  display: block;
+}
+
+.axiom-payment-confirmation-hero {
+  padding: 26px 20px 22px;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+  text-align: center;
+}
+
+.axiom-payment-confirmation-kicker {
+  margin: 0 0 10px;
+  color: #56a2dd;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.axiom-payment-confirmation-hero h1 {
+  margin: 0 0 14px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.axiom-payment-confirmation-copy {
+  margin: 0 auto;
+  max-width: 760px;
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.axiom-payment-status-card {
+  padding: 18px;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
+}
+
+.axiom-payment-status-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 16px;
+}
+
+.axiom-payment-status-icon-wrap {
+  flex: 0 0 auto;
+}
+
+.axiom-payment-status-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #5daee9, #2f84bf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 24px rgba(47, 132, 191, 0.18);
+}
+
+.axiom-payment-status-icon i {
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1;
+}
+
+.axiom-payment-status-heading span {
+  display: block;
+  margin-bottom: 6px;
+  color: #6b7a90;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.axiom-payment-status-heading h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 56px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-payment-status-rows {
+  border-top: 1px solid #e5edf6;
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+.axiom-payment-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e7eef5;
+}
+
+.axiom-payment-status-row:last-child {
+  border-bottom: 0;
+}
+
+.axiom-payment-status-row span {
+  color: #6b7280;
+  font-size: 18px;
+  line-height: 1.35;
+}
+
+.axiom-payment-status-row strong {
+  color: #0f172a;
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 900;
+  text-align: right;
+}
+
+.axiom-payment-status-row--total strong {
+  color: #2f84bf;
+  font-size: 26px;
+}
+
+.axiom-payment-estimates {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.axiom-payment-estimate-card {
+  padding: 22px 20px;
+  border: 1px solid #dbe7f3;
+  border-radius: 24px;
+  background: #f8fbff;
+}
+
+.axiom-payment-estimate-card span {
+  display: block;
+  margin-bottom: 10px;
+  color: #6b7a90;
+  font-size: 13px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.axiom-payment-estimate-card strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #0f172a;
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.axiom-payment-estimate-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Lower custom sections */
 
 .axiom-thankyou-section {
   margin-top: 24px;
@@ -97,20 +221,14 @@ ul.woocommerce-order-overview {
   margin-bottom: 14px;
 }
 
-.axiom-thankyou-section-header h2,
-.woocommerce-order-details__title,
-.woocommerce-column__title {
-  margin: 0 0 12px !important;
-  color: #0f172a !important;
-  font-size: 22px !important;
-  line-height: 1.15 !important;
-  font-weight: 900 !important;
+.axiom-thankyou-section-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 900;
   letter-spacing: -0.02em;
 }
-
-/* =========================
-   ORDER SUMMARY CARD
-========================= */
 
 .axiom-thankyou-summary-card {
   background: #f8fbff;
@@ -152,7 +270,6 @@ ul.woocommerce-order-overview {
   overflow: hidden;
   background: #ffffff;
   border: 1px solid #e5edf6;
-  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
 }
 
 .axiom-thankyou-summary-thumb img {
@@ -162,10 +279,6 @@ ul.woocommerce-order-overview {
   display: block;
 }
 
-.axiom-thankyou-summary-copy {
-  min-width: 0;
-}
-
 .axiom-thankyou-summary-copy strong {
   display: block;
   margin: 0 0 5px;
@@ -173,7 +286,6 @@ ul.woocommerce-order-overview {
   font-size: 18px;
   line-height: 1.2;
   font-weight: 900;
-  letter-spacing: -0.01em;
 }
 
 .axiom-thankyou-summary-copy span,
@@ -246,14 +358,6 @@ ul.woocommerce-order-overview {
   line-height: 1.2;
 }
 
-/* =========================
-   ADDRESS CARDS
-========================= */
-
-.axiom-thankyou-addresses {
-  margin-top: 24px;
-}
-
 .axiom-thankyou-address-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -278,10 +382,6 @@ ul.woocommerce-order-overview {
 
 .axiom-thankyou-address-meta {
   margin: 16px 0 0;
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  flex-wrap: wrap;
 }
 
 .axiom-thankyou-address-meta strong {
@@ -297,139 +397,107 @@ ul.woocommerce-order-overview {
   line-height: 1.5;
 }
 
-/* =========================
-   FAILED ORDER STATE
-========================= */
-
-.axiom-thankyou-status-card {
-  background: #ffffff;
-  border: 1px solid #fecaca;
-  border-radius: 28px;
-  padding: 24px 22px;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.05);
-}
-
-.axiom-thankyou-status-card h2 {
-  margin: 0 0 10px;
-  color: #991b1b;
-  font-size: 24px;
-  line-height: 1.25;
-  font-weight: 900;
-}
-
-.axiom-thankyou-status-card p {
-  margin: 0 0 16px;
-  color: #7f1d1d;
-  font-size: 16px;
-  line-height: 1.6;
-}
-
-.axiom-thankyou-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.axiom-thankyou-actions .button {
-  min-height: 50px;
-  padding: 0 20px;
-  border: 0 !important;
-  border-radius: 999px !important;
-  font-size: 15px;
-  font-weight: 900;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none !important;
-  box-shadow: none !important;
-}
-
-.axiom-thankyou-actions .pay {
-  background: linear-gradient(135deg, #4aa7e8, #2f84bf) !important;
-  color: #ffffff !important;
-}
-
-.axiom-thankyou-actions .account {
-  background: #eef6ff !important;
-  color: #1666a9 !important;
-}
-
-/* =========================
-   HIDE OLD WOOCOMMERCE TABLE/COLUMNS
-========================= */
-
-.woocommerce-table.woocommerce-table--order-details,
-.woocommerce-order-details table,
-.woocommerce-customer-details,
-address {
-  box-shadow: none;
-}
-
-.woocommerce-order-details table.woocommerce-table,
-.woocommerce-customer-details address {
-  border-radius: 0;
-}
-
-.woocommerce-order-details {
-  margin-top: 0 !important;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 991px) {
-  ul.woocommerce-order-overview {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  }
-
+  .axiom-payment-estimates,
   .axiom-thankyou-address-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 767px) {
-  .woocommerce-order {
-    padding: 14px 14px 40px;
+  .axiom-thankyou-page {
+    padding: 14px 0 40px;
   }
 
-  .woocommerce-order > p:first-of-type,
-  .woocommerce-notice.woocommerce-notice--success.woocommerce-thankyou-order-received {
-    padding: 18px 16px !important;
-    border-radius: 22px !important;
-    font-size: 22px !important;
-    line-height: 1.2 !important;
+  .axiom-thankyou-shell {
+    padding: 0 14px;
   }
 
-  ul.woocommerce-order-overview {
-    grid-template-columns: 1fr !important;
-    gap: 10px !important;
-    margin-top: 12px !important;
+  .axiom-thankyou-brand-logo {
+    width: 78px;
   }
 
-  .woocommerce-order-overview li {
-    padding: 14px 12px !important;
-    border-radius: 18px !important;
+  .axiom-payment-confirmation-hero {
+    padding: 22px 16px 20px;
+    border-radius: 24px;
   }
 
-  .woocommerce-order-overview li strong,
-  .woocommerce-order-overview li span,
-  .woocommerce-order-overview li .amount,
-  .woocommerce-order-overview li time {
-    font-size: 17px !important;
+  .axiom-payment-confirmation-kicker {
+    font-size: 12px;
   }
 
-  .woocommerce-order-details__title,
-  .woocommerce-column__title,
+  .axiom-payment-confirmation-hero h1 {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .axiom-payment-confirmation-copy {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .axiom-payment-status-card {
+    padding: 16px;
+    border-radius: 24px;
+  }
+
+  .axiom-payment-status-top {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .axiom-payment-status-icon {
+    width: 72px;
+    height: 72px;
+  }
+
+  .axiom-payment-status-icon i {
+    font-size: 28px;
+  }
+
+  .axiom-payment-status-heading span {
+    font-size: 13px;
+  }
+
+  .axiom-payment-status-heading h2 {
+    font-size: 34px;
+  }
+
+  .axiom-payment-status-row {
+    padding: 14px 0;
+  }
+
+  .axiom-payment-status-row span {
+    font-size: 16px;
+  }
+
+  .axiom-payment-status-row strong {
+    font-size: 18px;
+  }
+
+  .axiom-payment-status-row--total strong {
+    font-size: 22px;
+  }
+
+  .axiom-payment-estimate-card {
+    padding: 18px 16px;
+    border-radius: 20px;
+  }
+
+  .axiom-payment-estimate-card strong {
+    font-size: 20px;
+  }
+
+  .axiom-payment-estimate-card p {
+    font-size: 15px;
+  }
+
   .axiom-thankyou-section-header h2 {
-    font-size: 20px !important;
-    margin-bottom: 10px !important;
+    font-size: 20px;
   }
 
   .axiom-thankyou-summary-card,
-  .axiom-thankyou-address-card,
-  .axiom-thankyou-status-card {
+  .axiom-thankyou-address-card {
     border-radius: 24px;
   }
 
