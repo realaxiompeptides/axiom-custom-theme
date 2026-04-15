@@ -1,14 +1,14 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-if ( ! isset( $order ) || ! $order ) {
+if ( ! isset( $order ) || ! $order instanceof WC_Order ) {
 	return;
 }
 
 $theme_uri      = get_template_directory_uri();
 $order_id       = $order->get_id();
 $order_number   = $order->get_order_number();
-$order_date     = wc_format_datetime( $order->get_date_created() );
+$order_date     = $order->get_date_created() ? wc_format_datetime( $order->get_date_created() ) : '';
 $order_total    = $order->get_formatted_order_total();
 $payment_method = $order->get_payment_method_title();
 $order_email    = $order->get_billing_email();
@@ -31,32 +31,36 @@ $order_email    = $order->get_billing_email();
 				<p><?php esc_html_e( 'Please review your order details below.', 'woocommerce' ); ?></p>
 			</div>
 
-			<div class="axiom-thankyou-meta-grid">
-				<div class="axiom-thankyou-meta-card">
+			<ul class="axiom-thankyou-order-overview">
+				<li class="axiom-thankyou-meta-card">
 					<span><?php esc_html_e( 'Order number', 'woocommerce' ); ?></span>
 					<strong><?php echo esc_html( $order_number ); ?></strong>
-				</div>
+				</li>
 
-				<div class="axiom-thankyou-meta-card">
+				<li class="axiom-thankyou-meta-card">
 					<span><?php esc_html_e( 'Date', 'woocommerce' ); ?></span>
 					<strong><?php echo esc_html( $order_date ); ?></strong>
-				</div>
+				</li>
 
-				<div class="axiom-thankyou-meta-card">
-					<span><?php esc_html_e( 'Email', 'woocommerce' ); ?></span>
-					<strong><?php echo esc_html( $order_email ); ?></strong>
-				</div>
+				<?php if ( $order_email ) : ?>
+					<li class="axiom-thankyou-meta-card">
+						<span><?php esc_html_e( 'Email', 'woocommerce' ); ?></span>
+						<strong><?php echo esc_html( $order_email ); ?></strong>
+					</li>
+				<?php endif; ?>
 
-				<div class="axiom-thankyou-meta-card">
+				<li class="axiom-thankyou-meta-card">
 					<span><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
 					<strong><?php echo wp_kses_post( $order_total ); ?></strong>
-				</div>
+				</li>
 
-				<div class="axiom-thankyou-meta-card">
-					<span><?php esc_html_e( 'Payment method', 'woocommerce' ); ?></span>
-					<strong><?php echo esc_html( $payment_method ); ?></strong>
-				</div>
-			</div>
+				<?php if ( $payment_method ) : ?>
+					<li class="axiom-thankyou-meta-card">
+						<span><?php esc_html_e( 'Payment method', 'woocommerce' ); ?></span>
+						<strong><?php echo esc_html( $payment_method ); ?></strong>
+					</li>
+				<?php endif; ?>
+			</ul>
 		</div>
 
 		<?php do_action( 'woocommerce_before_thankyou', $order->get_id() ); ?>
@@ -64,11 +68,10 @@ $order_email    = $order->get_billing_email();
 		<?php if ( $order->has_status( 'failed' ) ) : ?>
 
 			<div class="axiom-thankyou-status-card axiom-thankyou-status-card--failed">
-				<h2><?php esc_html_e( 'Unfortunately your order cannot be processed as the originating bank/merchant has declined your transaction.', 'woocommerce' ); ?></h2>
-
+				<h2><?php esc_html_e( 'Unfortunately your order cannot be processed as the originating bank or merchant has declined your transaction.', 'woocommerce' ); ?></h2>
 				<p><?php esc_html_e( 'Please attempt your purchase again.', 'woocommerce' ); ?></p>
 
-				<p class="axiom-thankyou-actions">
+				<div class="axiom-thankyou-actions">
 					<a href="<?php echo esc_url( $order->get_checkout_payment_url() ); ?>" class="button pay">
 						<?php esc_html_e( 'Pay', 'woocommerce' ); ?>
 					</a>
@@ -78,7 +81,7 @@ $order_email    = $order->get_billing_email();
 							<?php esc_html_e( 'My account', 'woocommerce' ); ?>
 						</a>
 					<?php endif; ?>
-				</p>
+				</div>
 			</div>
 
 		<?php else : ?>
