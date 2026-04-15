@@ -1,0 +1,442 @@
+.axiom-thankyou-page {
+  padding: 24px 0 56px;
+}
+
+.axiom-thankyou-shell {
+  width: min(100%, 1100px);
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.axiom-thankyou-header-card,
+.axiom-thankyou-summary-card,
+.axiom-thankyou-address-card,
+.axiom-thankyou-status-card {
+  background: #ffffff;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.axiom-thankyou-header-card {
+  padding: 28px 22px;
+  margin-bottom: 20px;
+}
+
+.axiom-thankyou-brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.axiom-thankyou-brand img {
+  width: 84px;
+  height: auto;
+  display: block;
+}
+
+.axiom-thankyou-intro {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.axiom-thankyou-kicker {
+  margin: 0 0 8px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.axiom-thankyou-intro h1 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.axiom-thankyou-intro p {
+  margin: 0;
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.axiom-thankyou-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.axiom-thankyou-meta-card {
+  padding: 16px 14px;
+  border: 1px solid #e2ebf4;
+  border-radius: 20px;
+  background: #f8fbff;
+}
+
+.axiom-thankyou-meta-card span {
+  display: block;
+  margin-bottom: 6px;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.axiom-thankyou-meta-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 900;
+  word-break: break-word;
+}
+
+.axiom-thankyou-section {
+  margin-top: 20px;
+}
+
+.axiom-thankyou-section-header {
+  margin-bottom: 14px;
+}
+
+.axiom-thankyou-section-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.axiom-thankyou-summary-card {
+  overflow: hidden;
+}
+
+.axiom-thankyou-summary-items {
+  padding: 18px;
+  display: grid;
+  gap: 14px;
+  background: #f8fbff;
+}
+
+.axiom-thankyou-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #dfe7f2;
+  border-radius: 22px;
+}
+
+.axiom-thankyou-summary-item-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.axiom-thankyou-summary-thumb {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e6edf5;
+}
+
+.axiom-thankyou-summary-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.axiom-thankyou-summary-copy {
+  min-width: 0;
+}
+
+.axiom-thankyou-summary-copy strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.axiom-thankyou-summary-copy span,
+.axiom-thankyou-item-meta,
+.axiom-thankyou-item-meta * {
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.axiom-thankyou-summary-price {
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 900;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.axiom-thankyou-purchase-note {
+  margin: 0 18px 18px;
+  padding: 14px 16px;
+  border: 1px solid #e2ebf4;
+  border-radius: 18px;
+  background: #ffffff;
+  color: #5b6778;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.axiom-thankyou-summary-totals {
+  padding: 18px;
+  border-top: 1px solid #e3ebf5;
+  background: #ffffff;
+}
+
+.axiom-thankyou-summary-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 0;
+}
+
+.axiom-thankyou-summary-row span {
+  color: #5b6778;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.axiom-thankyou-summary-row strong {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1.5;
+  text-align: right;
+}
+
+.axiom-thankyou-summary-row strong small {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.axiom-thankyou-summary-row--discount span,
+.axiom-thankyou-summary-row--discount strong {
+  color: #15803d;
+}
+
+.axiom-thankyou-summary-row--total {
+  margin-top: 4px;
+  padding-top: 18px;
+  border-top: 1px solid #e3ebf5;
+}
+
+.axiom-thankyou-summary-row--total span,
+.axiom-thankyou-summary-row--total strong {
+  color: #0f172a;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.axiom-thankyou-address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.axiom-thankyou-address-card {
+  padding: 22px;
+}
+
+.axiom-thankyou-address-content address {
+  margin: 0;
+  color: #334155;
+  font-style: normal;
+  font-size: 16px;
+  line-height: 1.75;
+}
+
+.axiom-thankyou-address-meta {
+  margin: 14px 0 0;
+}
+
+.axiom-thankyou-address-meta strong {
+  color: #0f172a;
+  font-weight: 800;
+  margin-right: 6px;
+}
+
+.axiom-thankyou-status-card {
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.axiom-thankyou-status-card--failed {
+  border-color: #fecaca;
+  background: #fff7f7;
+}
+
+.axiom-thankyou-status-card h2 {
+  margin: 0 0 12px;
+  color: #991b1b;
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 900;
+}
+
+.axiom-thankyou-status-card p {
+  margin: 0 0 14px;
+  color: #7f1d1d;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.axiom-thankyou-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.axiom-thankyou-actions .button {
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 0;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.axiom-thankyou-actions .pay {
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf);
+  color: #ffffff;
+}
+
+.axiom-thankyou-actions .account {
+  background: #eef6ff;
+  color: #1666a9;
+}
+
+@media (max-width: 991px) {
+  .axiom-thankyou-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .axiom-thankyou-address-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-thankyou-page {
+    padding: 18px 0 44px;
+  }
+
+  .axiom-thankyou-shell {
+    padding: 0 14px;
+  }
+
+  .axiom-thankyou-header-card {
+    padding: 20px 16px;
+    border-radius: 24px;
+  }
+
+  .axiom-thankyou-brand img {
+    width: 74px;
+  }
+
+  .axiom-thankyou-intro h1 {
+    font-size: 28px;
+  }
+
+  .axiom-thankyou-intro p {
+    font-size: 15px;
+  }
+
+  .axiom-thankyou-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .axiom-thankyou-meta-card {
+    padding: 14px 12px;
+    border-radius: 18px;
+  }
+
+  .axiom-thankyou-meta-card strong {
+    font-size: 17px;
+  }
+
+  .axiom-thankyou-section-header h2 {
+    font-size: 20px;
+  }
+
+  .axiom-thankyou-summary-items,
+  .axiom-thankyou-summary-totals {
+    padding: 14px;
+  }
+
+  .axiom-thankyou-summary-item {
+    padding: 14px;
+    border-radius: 20px;
+    align-items: flex-start;
+  }
+
+  .axiom-thankyou-summary-item-left {
+    gap: 12px;
+  }
+
+  .axiom-thankyou-summary-thumb {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    border-radius: 16px;
+  }
+
+  .axiom-thankyou-summary-copy strong {
+    font-size: 16px;
+  }
+
+  .axiom-thankyou-summary-copy span,
+  .axiom-thankyou-item-meta,
+  .axiom-thankyou-item-meta * {
+    font-size: 13px;
+  }
+
+  .axiom-thankyou-summary-price {
+    font-size: 18px;
+  }
+
+  .axiom-thankyou-summary-row span,
+  .axiom-thankyou-summary-row strong {
+    font-size: 15px;
+  }
+
+  .axiom-thankyou-summary-row--total span,
+  .axiom-thankyou-summary-row--total strong {
+    font-size: 21px;
+  }
+
+  .axiom-thankyou-address-card {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .axiom-thankyou-address-content address {
+    font-size: 15px;
+  }
+}
