@@ -1,0 +1,256 @@
+.axiom-account-page {
+  padding: 28px 0 64px;
+  background: #ffffff;
+}
+
+.axiom-account-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.axiom-account-hero {
+  margin-bottom: 24px;
+  padding: 34px 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  text-align: center;
+}
+
+.axiom-account-kicker {
+  margin: 0 0 10px;
+  color: #5aa8df;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-account-hero h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-account-subtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.axiom-account-login-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.axiom-account-card {
+  padding: 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.axiom-account-card-header {
+  margin-bottom: 18px;
+}
+
+.axiom-account-card-header h2 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.axiom-account-card-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.axiom-account-card form {
+  margin: 0;
+}
+
+.axiom-account-card .form-row,
+.axiom-account-card p.form-row,
+.axiom-account-card .woocommerce-form-row {
+  margin-bottom: 16px;
+}
+
+.axiom-account-card label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.axiom-account-card input[type="text"],
+.axiom-account-card input[type="email"],
+.axiom-account-card input[type="password"],
+.axiom-account-card input[type="tel"],
+.axiom-account-card select,
+.axiom-account-card textarea {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 18px;
+  border: 1px solid #d5e1ec;
+  border-radius: 18px;
+  background: #fbfdff;
+  color: #0f172a;
+  font-size: 16px;
+  box-shadow: none;
+  outline: none;
+}
+
+.axiom-account-card input:focus,
+.axiom-account-card select:focus,
+.axiom-account-card textarea:focus {
+  border-color: #5aa8df;
+  background: #ffffff;
+}
+
+.axiom-account-card .password-input {
+  position: relative;
+  display: block;
+}
+
+.axiom-account-card .show-password-input {
+  right: 16px;
+}
+
+.axiom-account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.axiom-account-card .woocommerce-form-login__rememberme,
+.axiom-account-card .woocommerce-form__label-for-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.axiom-account-card input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  margin: 0;
+}
+
+.axiom-account-card button,
+.axiom-account-card .button,
+.axiom-account-card input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #5aa8df;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.axiom-account-card button:hover,
+.axiom-account-card .button:hover,
+.axiom-account-card input[type="submit"]:hover {
+  background: #4798d5;
+  color: #ffffff;
+}
+
+.axiom-account-card .lost_password {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+.axiom-account-card .lost_password a {
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.axiom-account-card .lost_password a:hover {
+  color: #5aa8df;
+}
+
+.woocommerce-account .woocommerce-notices-wrapper {
+  margin-bottom: 18px;
+}
+
+.woocommerce-account .woocommerce-error,
+.woocommerce-account .woocommerce-info,
+.woocommerce-account .woocommerce-message {
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid #dbe5ef;
+  background: #f8fbff;
+  color: #0f172a;
+}
+
+@media (max-width: 991px) {
+  .axiom-account-login-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-account-hero h1 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-account-page {
+    padding: 18px 0 42px;
+  }
+
+  .axiom-account-hero,
+  .axiom-account-card {
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+
+  .axiom-account-hero h1 {
+    font-size: 34px;
+  }
+
+  .axiom-account-subtitle {
+    font-size: 16px;
+  }
+
+  .axiom-account-card-header h2 {
+    font-size: 28px;
+  }
+
+  .axiom-account-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axiom-account-card button,
+  .axiom-account-card .button,
+  .axiom-account-card input[type="submit"] {
+    width: 100%;
+  }
+}
