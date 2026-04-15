@@ -82,26 +82,59 @@
 .woocommerce-account .woocommerce-ResetPassword .password-input {
   position: relative;
   display: block;
+  width: 100%;
+}
+
+.woocommerce-account .u-column1 .password-input input,
+.woocommerce-account .u-column2 .password-input input,
+.woocommerce-account .woocommerce-MyAccount-content .password-input input,
+.woocommerce-account .woocommerce-ResetPassword .password-input input {
+  padding-right: 52px;
 }
 
 .woocommerce-account .u-column1 .show-password-input,
 .woocommerce-account .u-column2 .show-password-input,
 .woocommerce-account .woocommerce-MyAccount-content .show-password-input,
 .woocommerce-account .woocommerce-ResetPassword .show-password-input {
+  position: absolute;
+  top: 50%;
   right: 16px;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  color: #64748b;
+  min-height: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: none;
+  border-radius: 0;
 }
 
-.woocommerce-account .u-column1 button,
-.woocommerce-account .u-column1 .button,
+.woocommerce-account .u-column1 .show-password-input:hover,
+.woocommerce-account .u-column2 .show-password-input:hover,
+.woocommerce-account .woocommerce-MyAccount-content .show-password-input:hover,
+.woocommerce-account .woocommerce-ResetPassword .show-password-input:hover {
+  background: transparent !important;
+  color: #0f172a;
+}
+
+.woocommerce-account .u-column1 button:not(.show-password-input),
+.woocommerce-account .u-column1 .button:not(.show-password-input),
 .woocommerce-account .u-column1 input[type="submit"],
-.woocommerce-account .u-column2 button,
-.woocommerce-account .u-column2 .button,
+.woocommerce-account .u-column2 button:not(.show-password-input),
+.woocommerce-account .u-column2 .button:not(.show-password-input),
 .woocommerce-account .u-column2 input[type="submit"],
-.woocommerce-account .woocommerce-MyAccount-content button,
-.woocommerce-account .woocommerce-MyAccount-content .button,
+.woocommerce-account .woocommerce-MyAccount-content button:not(.show-password-input),
+.woocommerce-account .woocommerce-MyAccount-content .button:not(.show-password-input),
 .woocommerce-account .woocommerce-MyAccount-content input[type="submit"],
-.woocommerce-account .woocommerce-ResetPassword button,
-.woocommerce-account .woocommerce-ResetPassword .button,
+.woocommerce-account .woocommerce-ResetPassword button:not(.show-password-input),
+.woocommerce-account .woocommerce-ResetPassword .button:not(.show-password-input),
 .woocommerce-account .woocommerce-ResetPassword input[type="submit"] {
   display: inline-flex;
   align-items: center;
@@ -118,17 +151,17 @@
   text-decoration: none;
 }
 
-.woocommerce-account .u-column1 button:hover,
-.woocommerce-account .u-column1 .button:hover,
+.woocommerce-account .u-column1 button:not(.show-password-input):hover,
+.woocommerce-account .u-column1 .button:not(.show-password-input):hover,
 .woocommerce-account .u-column1 input[type="submit"]:hover,
-.woocommerce-account .u-column2 button:hover,
-.woocommerce-account .u-column2 .button:hover,
+.woocommerce-account .u-column2 button:not(.show-password-input):hover,
+.woocommerce-account .u-column2 .button:not(.show-password-input):hover,
 .woocommerce-account .u-column2 input[type="submit"]:hover,
-.woocommerce-account .woocommerce-MyAccount-content button:hover,
-.woocommerce-account .woocommerce-MyAccount-content .button:hover,
+.woocommerce-account .woocommerce-MyAccount-content button:not(.show-password-input):hover,
+.woocommerce-account .woocommerce-MyAccount-content .button:not(.show-password-input):hover,
 .woocommerce-account .woocommerce-MyAccount-content input[type="submit"]:hover,
-.woocommerce-account .woocommerce-ResetPassword button:hover,
-.woocommerce-account .woocommerce-ResetPassword .button:hover,
+.woocommerce-account .woocommerce-ResetPassword button:not(.show-password-input):hover,
+.woocommerce-account .woocommerce-ResetPassword .button:not(.show-password-input):hover,
 .woocommerce-account .woocommerce-ResetPassword input[type="submit"]:hover {
   background: #4798d5;
   color: #ffffff;
