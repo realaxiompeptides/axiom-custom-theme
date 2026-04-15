@@ -64,6 +64,8 @@ if (file_exists($coa_css_path)) {
           $product_coa    = function_exists('axiom_get_product_coa_data') ? axiom_get_product_coa_data($product) : array();
           $product_status = !empty($product_coa['status']) ? $product_coa['status'] : 'not_ready';
           $product_label  = !empty($product_coa['label']) ? $product_coa['label'] : 'Janoshik Tested';
+          $product_image  = !empty($product_coa['image']) ? $product_coa['image'] : '';
+          $product_pdf    = !empty($product_coa['pdf']) ? $product_coa['pdf'] : '';
           ?>
           <article class="axiom-coa-card" data-search="<?php echo esc_attr(strtolower($product_name)); ?>">
             <div class="axiom-coa-card-head">
@@ -77,22 +79,33 @@ if (file_exists($coa_css_path)) {
 
                 <div class="axiom-coa-status-row">
                   <?php if ($product_status === 'ready') : ?>
-                    <span class="axiom-coa-status axiom-coa-status-ready">COA Ready</span>
+                    <span class="axiom-coa-status axiom-coa-status-ready">COA READY</span>
                   <?php else : ?>
-                    <span class="axiom-coa-status axiom-coa-status-not-ready">COA Not Ready</span>
+                    <span class="axiom-coa-status axiom-coa-status-not-ready">COA NOT READY</span>
                   <?php endif; ?>
                 </div>
               </div>
             </div>
 
-            <?php if (!empty($product_coa['image']) || !empty($product_coa['pdf'])) : ?>
+            <?php if (!empty($product_image) || !empty($product_pdf)) : ?>
               <div class="axiom-coa-actions">
-                <?php if (!empty($product_coa['image'])) : ?>
-                  <a class="axiom-coa-btn" href="<?php echo esc_url($product_coa['image']); ?>" target="_blank" rel="noopener noreferrer">View Product COA</a>
+                <?php if (!empty($product_image)) : ?>
+                  <button
+                    type="button"
+                    class="axiom-coa-btn axiom-coa-open-modal"
+                    data-coa-title="<?php echo esc_attr($product_name . ' COA'); ?>"
+                    data-coa-image="<?php echo esc_url($product_image); ?>"
+                  >
+                    View COA
+                  </button>
                 <?php endif; ?>
 
-                <?php if (!empty($product_coa['pdf'])) : ?>
-                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($product_coa['pdf']); ?>" target="_blank" rel="noopener noreferrer">Download PDF</a>
+                <?php if (!empty($product_image)) : ?>
+                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($product_image); ?>" target="_blank" rel="noopener noreferrer">Open Image</a>
+                <?php endif; ?>
+
+                <?php if (!empty($product_pdf)) : ?>
+                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($product_pdf); ?>" target="_blank" rel="noopener noreferrer">Open PDF</a>
                 <?php endif; ?>
               </div>
             <?php endif; ?>
@@ -113,29 +126,42 @@ if (file_exists($coa_css_path)) {
                     $variation_coa    = function_exists('axiom_get_variation_coa_data') ? axiom_get_variation_coa_data($variation_id) : array();
                     $variation_status = !empty($variation_coa['status']) ? $variation_coa['status'] : 'not_ready';
                     $variation_label  = function_exists('axiom_get_variation_display_label') ? axiom_get_variation_display_label($variation) : 'Variant';
+                    $variation_image  = !empty($variation_coa['image']) ? $variation_coa['image'] : '';
+                    $variation_pdf    = !empty($variation_coa['pdf']) ? $variation_coa['pdf'] : '';
                     ?>
                     <div class="axiom-coa-variant-row" data-search="<?php echo esc_attr(strtolower($product_name . ' ' . $variation_label)); ?>">
                       <div class="axiom-coa-variant-copy">
-                        <strong><?php echo esc_html($variation_label ?: 'Variant'); ?></strong>
+                        <strong><?php echo esc_html(strtoupper($variation_label ?: 'VARIANT')); ?></strong>
 
                         <?php if ($variation_status === 'ready') : ?>
-                          <span class="axiom-coa-status axiom-coa-status-ready">COA Ready</span>
+                          <span class="axiom-coa-status axiom-coa-status-ready">COA READY</span>
                         <?php else : ?>
-                          <span class="axiom-coa-status axiom-coa-status-not-ready">COA Not Ready</span>
+                          <span class="axiom-coa-status axiom-coa-status-not-ready">COA NOT READY</span>
+                        <?php endif; ?>
+
+                        <?php if (empty($variation_image) && empty($variation_pdf)) : ?>
+                          <span class="axiom-coa-empty">No file yet</span>
                         <?php endif; ?>
                       </div>
 
                       <div class="axiom-coa-variant-actions">
-                        <?php if (!empty($variation_coa['image'])) : ?>
-                          <a class="axiom-coa-btn axiom-coa-btn-small" href="<?php echo esc_url($variation_coa['image']); ?>" target="_blank" rel="noopener noreferrer">View</a>
+                        <?php if (!empty($variation_image)) : ?>
+                          <button
+                            type="button"
+                            class="axiom-coa-btn axiom-coa-btn-small axiom-coa-open-modal"
+                            data-coa-title="<?php echo esc_attr($product_name . ' - ' . $variation_label); ?>"
+                            data-coa-image="<?php echo esc_url($variation_image); ?>"
+                          >
+                            View COA
+                          </button>
                         <?php endif; ?>
 
-                        <?php if (!empty($variation_coa['pdf'])) : ?>
-                          <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($variation_coa['pdf']); ?>" target="_blank" rel="noopener noreferrer">PDF</a>
+                        <?php if (!empty($variation_image)) : ?>
+                          <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($variation_image); ?>" target="_blank" rel="noopener noreferrer">Open Image</a>
                         <?php endif; ?>
 
-                        <?php if (empty($variation_coa['image']) && empty($variation_coa['pdf'])) : ?>
-                          <span class="axiom-coa-empty">No file yet</span>
+                        <?php if (!empty($variation_pdf)) : ?>
+                          <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($variation_pdf); ?>" target="_blank" rel="noopener noreferrer">Open PDF</a>
                         <?php endif; ?>
                       </div>
                     </div>
@@ -154,5 +180,25 @@ if (file_exists($coa_css_path)) {
     </section>
   </div>
 </main>
+
+<div class="axiom-coa-modal" id="axiomCoaModal" aria-hidden="true">
+  <div class="axiom-coa-modal-backdrop" data-close-coa-modal></div>
+  <div class="axiom-coa-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="axiomCoaModalTitle">
+    <button type="button" class="axiom-coa-modal-close" data-close-coa-modal aria-label="Close COA preview">×</button>
+    <h3 id="axiomCoaModalTitle">COA Preview</h3>
+    <div class="axiom-coa-modal-body">
+      <img id="axiomCoaModalImage" src="" alt="COA Preview">
+    </div>
+  </div>
+</div>
+
+<?php
+$coa_js_path = get_template_directory() . '/assets/js/coa/coa.js';
+if (file_exists($coa_js_path)) {
+    echo '<script id="axiom-coa-inline-script">';
+    readfile($coa_js_path);
+    echo '</script>';
+}
+?>
 
 <?php get_footer(); ?>
