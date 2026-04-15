@@ -21,7 +21,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const stickyBar = document.getElementById("stickyProductBar");
   const productForm = document.getElementById("ajaxProductForm");
 
-  const variationData = window.AXIOM_PRODUCT_PAGE || { isVariable: false, productId: 0, variations: [] };
+  const productCompareRow = document.getElementById("productCompareRow");
+  const productComparePrice = document.getElementById("productComparePrice");
+  const productSavePill = document.getElementById("productSavePill");
+
+  const variationData = window.AXIOM_PRODUCT_PAGE || {
+    isVariable: false,
+    productId: 0,
+    variations: []
+  };
 
   function syncQtyDisplays(value) {
     const safeValue = Math.max(1, parseInt(value || "1", 10) || 1);
@@ -119,6 +127,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function updateCompareRow(regularPriceHtml, savePercent, isOnSale) {
+    if (!productCompareRow || !productComparePrice || !productSavePill) {
+      return;
+    }
+
+    if (isOnSale && regularPriceHtml) {
+      productComparePrice.innerHTML = regularPriceHtml;
+      productSavePill.textContent = savePercent || "";
+      productCompareRow.style.display = "";
+      productSavePill.style.display = savePercent ? "" : "none";
+    } else {
+      productComparePrice.innerHTML = "";
+      productSavePill.textContent = "";
+      productCompareRow.style.display = "none";
+      productSavePill.style.display = "none";
+    }
+  }
+
   if (qtyMinus) qtyMinus.addEventListener("click", decreaseQty);
   if (qtyPlus) qtyPlus.addEventListener("click", increaseQty);
   if (stickyQtyMinus) stickyQtyMinus.addEventListener("click", decreaseQty);
@@ -138,6 +164,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const variationId = selected.value || "";
       const variationLabel = selected.getAttribute("data-label") || "Select variant";
       const priceHtml = selected.getAttribute("data-price-html") || "";
+      const regularPriceHtml = selected.getAttribute("data-regular-price-html") || "";
+      const savePercent = selected.getAttribute("data-save-percent") || "";
+      const isOnSale = selected.getAttribute("data-is-on-sale") === "1";
       const image = selected.getAttribute("data-image") || "";
       const stockText = selected.getAttribute("data-stock-text") || "";
       const stockClass = selected.getAttribute("data-stock-class") || "";
@@ -173,14 +202,20 @@ document.addEventListener("DOMContentLoaded", function () {
         productStock.className = "product-stock-text " + stockClass;
       }
 
+      updateCompareRow(regularPriceHtml, savePercent, isOnSale);
+
       if (addToCartBtn) {
         addToCartBtn.disabled = !variationId || !purchasable;
-        addToCartBtn.textContent = variationId ? (purchasable ? "Add To Cart" : "Unavailable") : "Select Variant";
+        addToCartBtn.textContent = variationId
+          ? (purchasable ? "Add To Cart" : "Unavailable")
+          : "Select Variant";
       }
 
       if (stickyAddToCartBtn) {
         stickyAddToCartBtn.disabled = !variationId || !purchasable;
-        stickyAddToCartBtn.textContent = variationId ? (purchasable ? "Add To Cart" : "Select Variant") : "Select Variant";
+        stickyAddToCartBtn.textContent = variationId
+          ? (purchasable ? "Add To Cart" : "Unavailable")
+          : "Select Variant";
       }
 
       try {
@@ -195,8 +230,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Failed to parse variation attributes", error);
       }
     });
-  } else if (stickyProductVariant) {
-    stickyProductVariant.textContent = "Ready to add";
+  } else {
+    if (stickyProductVariant) {
+      stickyProductVariant.textContent = "Ready to add";
+    }
   }
 
   async function handleProductSubmit() {
