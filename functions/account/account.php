@@ -4,19 +4,16 @@ if (!defined('ABSPATH')) {
 }
 
 function axiom_account_assets() {
-    if (!function_exists('is_account_page')) {
-        return;
-    }
-
-    if (is_account_page()) {
-        error_log('AXIOM TEMPLATE DIR: ' . get_template_directory());
-        error_log('AXIOM TEMPLATE URI: ' . get_template_directory_uri());
-
+    if (
+        (function_exists('is_account_page') && is_account_page()) ||
+        (function_exists('is_page_template') && is_page_template('my-account/my-account-template.php')) ||
+        is_page('my-account')
+    ) {
         wp_enqueue_style(
             'axiom-account',
             get_template_directory_uri() . '/assets/css/account/account.css',
             array('axiom-base'),
-            '1.0'
+            '1.1'
         );
     }
 }
