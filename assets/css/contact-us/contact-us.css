@@ -1,0 +1,156 @@
+.axiom-contact-page {
+  padding: 28px 0 72px;
+  background: #ffffff;
+}
+
+.axiom-contact-hero {
+  margin-bottom: 28px;
+}
+
+.axiom-contact-hero-card {
+  padding: 34px 28px;
+  border: 1px solid #dce7f2;
+  border-radius: 32px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  text-align: center;
+}
+
+.axiom-contact-kicker,
+.axiom-contact-section-kicker {
+  margin: 0 0 10px;
+  color: #4fa2dc;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.axiom-contact-hero-card h1 {
+  margin: 0 0 14px;
+  color: #0f172a;
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-contact-subtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+.axiom-contact-hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.axiom-contact-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid #dbe7f3;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.axiom-contact-main .container {
+  max-width: 1200px;
+}
+
+.axiom-contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.85fr);
+  gap: 22px;
+  align-items: start;
+}
+
+.axiom-contact-form-card,
+.axiom-contact-info-card,
+.axiom-contact-help-card,
+.axiom-contact-policy-card {
+  padding: 28px;
+  border: 1px solid #dce7f2;
+  border-radius: 30px;
+  background: #ffffff;
+}
+
+.axiom-contact-section-head h2,
+.axiom-contact-info-card h3,
+.axiom-contact-help-card h3,
+.axiom-contact-policy-card h3 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.axiom-contact-section-head p,
+.axiom-contact-policy-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.axiom-contact-sidebar {
+  display: grid;
+  gap: 22px;
+}
+
+.axiom-contact-info-list,
+.axiom-contact-help-list {
+  display: grid;
+  gap: 14px;
+}
+
+.axiom-contact-info-item,
+.axiom-contact-help-item {
+  padding: 16px 18px;
+  border: 1px solid #e4edf5;
+  border-radius: 20px;
+  background: #f8fbff;
+}
+
+.axiom-contact-info-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.axiom-contact-info-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 999px;
+  background: #dff0fb;
+  color: #4fa2dc;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+}
+
+.axiom-contact-info-copy span {
+  display: block;
+  margin-bottom: 4px;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.axiom-contact-info-copy strong,
+.axiom-contact-info-copy strong
