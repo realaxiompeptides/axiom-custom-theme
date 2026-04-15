@@ -245,7 +245,7 @@ function axiom_custom_theme_assets() {
             'axiom-thankyou',
             $theme_uri . '/assets/css/order-received/thankyou.css',
             array('axiom-base'),
-            '1.0'
+            '1.1'
         );
     }
 
@@ -628,9 +628,6 @@ function axiom_checkout_research_use_save($order_id) {
 }
 add_action('woocommerce_checkout_update_order_meta', 'axiom_checkout_research_use_save');
 
-/*
- * Render shipping methods for the custom checkout block.
- */
 function axiom_render_checkout_shipping_methods_fragment() {
     if (!function_exists('WC') || !WC()->cart) {
         return '<p class="axiom-checkout-shipping-empty">Shipping is currently unavailable.</p>';
@@ -760,13 +757,10 @@ function axiom_apply_coupon() {
 add_action('wp_ajax_axiom_apply_coupon', 'axiom_apply_coupon');
 add_action('wp_ajax_nopriv_axiom_apply_coupon', 'axiom_apply_coupon');
 
-/**
- * Force WooCommerce to use our custom thank-you templates.
- */
-function axiom_force_woocommerce_templates( $template, $template_name, $template_path ) {
+function axiom_force_woocommerce_templates($template, $template_name, $template_path) {
     $theme_template = '';
 
-    switch ( $template_name ) {
+    switch ($template_name) {
         case 'checkout/thankyou.php':
             $theme_template = get_stylesheet_directory() . '/woocommerce/checkout/thankyou.php';
             break;
@@ -780,43 +774,153 @@ function axiom_force_woocommerce_templates( $template, $template_name, $template
             break;
     }
 
-    if ( $theme_template && file_exists( $theme_template ) ) {
+    if ($theme_template && file_exists($theme_template)) {
         return $theme_template;
     }
 
     return $template;
 }
-add_filter( 'woocommerce_locate_template', 'axiom_force_woocommerce_templates', 20, 3 );
+add_filter('woocommerce_locate_template', 'axiom_force_woocommerce_templates', 20, 3);
 
 function axiom_force_custom_thankyou_sections() {
-    if ( is_admin() ) {
+    if (is_admin()) {
         return;
     }
 
-    remove_action( 'woocommerce_thankyou', 'woocommerce_order_details_table', 10 );
-    add_action( 'woocommerce_thankyou', 'axiom_render_custom_thankyou_sections', 10 );
+    remove_action('woocommerce_thankyou', 'woocommerce_order_details_table', 10);
+    add_action('woocommerce_thankyou', 'axiom_render_custom_thankyou_sections', 10);
 }
-add_action( 'wp', 'axiom_force_custom_thankyou_sections', 20 );
+add_action('wp', 'axiom_force_custom_thankyou_sections', 20);
 
-function axiom_render_custom_thankyou_sections( $order_id ) {
-    if ( ! $order_id ) {
+function axiom_render_custom_thankyou_header($order_id) {
+    if (!$order_id) {
         return;
     }
 
-    $order = wc_get_order( $order_id );
+    $order = wc_get_order($order_id);
 
-    if ( ! $order ) {
+    if (!$order) {
         return;
     }
+
+    $order_number     = $order->get_order_number();
+    $order_total      = (float) $order->get_total();
+    $order_subtotal   = (float) $order->get_subtotal();
+    $order_shipping   = (float) $order->get_shipping_total();
+    $order_tax        = (float) $order->get_total_tax();
+    $payment_method   = $order->get_payment_method_title();
+    $order_status     = wc_get_order_status_name($order->get_status());
+    $shipping_methods = $order->get_shipping_methods();
+    $shipping_label   = '';
+
+    if (!empty($shipping_methods)) {
+        $first_shipping = reset($shipping_methods);
+        $shipping_label = $first_shipping ? $first_shipping->get_name() : '';
+    }
+
+    $created = $order->get_date_created();
+    $timezone = wp_timezone();
+    $base_date = $created ? $created->setTimezone($timezone) : new WC_DateTime('now', $timezone);
+
+    $ship_timestamp = $base_date->getTimestamp();
+    $ship_day_num = (int) wp_date('N', $ship_timestamp, $timezone);
+
+    if (6 === $ship_day_num) {
+        $ship_timestamp = strtotime('+2 days', $ship_timestamp);
+    } elseif (7 === $ship_day_num) {
+        $ship_timestamp = strtotime('+1 day', $ship_timestamp);
+    }
+
+    $estimated_ship_date = wp_date('l, F j', $ship_timestamp, $timezone);
+
+    $delivery_days = 5;
+
+    if ($shipping_label) {
+        $shipping_label_lower = strtolower($shipping_label);
+
+        if (false !== strpos($shipping_label_lower, 'ground')) {
+            $delivery_days = 6;
+        } elseif (false !== strpos($shipping_label_lower, 'priority')) {
+            $delivery_days = 3;
+        }
+    }
+
+    $delivery_timestamp = $ship_timestamp;
+    $days_added = 0;
+
+    while ($days_added < $delivery_days) {
+        $delivery_timestamp = strtotime('+1 day', $delivery_timestamp);
+        $days_added++;
+    }
+
+    $estimated_delivery_date = wp_date('l, F j', $delivery_timestamp, $timezone);
+
+    echo '<section class="axiom-payment-confirmation-hero">';
+    echo '<p class="axiom-payment-confirmation-kicker">ORDER SUBMITTED</p>';
+    echo '<h1>Complete Your Payment</h1>';
+    echo '<p class="axiom-payment-confirmation-copy">Your order has been created successfully, but it is not complete until payment is sent and confirmed. Please use the payment section below and include your order number with your payment.</p>';
+    echo '</section>';
+
+    echo '<section class="axiom-payment-status-card">';
+    echo '  <div class="axiom-payment-status-top">';
+    echo '      <div class="axiom-payment-status-icon-wrap">';
+    echo '          <div class="axiom-payment-status-icon"><i class="fa-solid fa-check"></i></div>';
+    echo '      </div>';
+    echo '      <div class="axiom-payment-status-heading">';
+    echo '          <span>Order Number</span>';
+    echo '          <h2>#' . esc_html($order_number) . '</h2>';
+    echo '      </div>';
+    echo '  </div>';
+
+    echo '  <div class="axiom-payment-status-rows">';
+    echo '      <div class="axiom-payment-status-row"><span>Status</span><strong>' . esc_html($order_status) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Subtotal</span><strong>' . wp_kses_post(wc_price($order_subtotal)) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Shipping</span><strong>' . wp_kses_post(wc_price($order_shipping)) . '</strong></div>';
+
+    if ($order_tax > 0) {
+        echo '  <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
+    }
+
+    echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Payment method</span><strong>' . esc_html($payment_method) . '</strong></div>';
+    echo '  </div>';
+
+    echo '  <div class="axiom-payment-estimates">';
+    echo '      <div class="axiom-payment-estimate-card">';
+    echo '          <span>Estimated Ship Date</span>';
+    echo '          <strong>' . esc_html($estimated_ship_date) . '</strong>';
+    echo '          <p>We ship same day Monday through Friday. Weekend orders ship the next business day.</p>';
+    echo '      </div>';
+    echo '      <div class="axiom-payment-estimate-card">';
+    echo '          <span>Estimated Delivery</span>';
+    echo '          <strong>' . esc_html($estimated_delivery_date) . '</strong>';
+    echo '          <p>' . esc_html($shipping_label ? $shipping_label : 'Selected shipping method') . '</p>';
+    echo '      </div>';
+    echo '  </div>';
+    echo '</section>';
+}
+
+function axiom_render_custom_thankyou_sections($order_id) {
+    if (!$order_id) {
+        return;
+    }
+
+    $order = wc_get_order($order_id);
+
+    if (!$order) {
+        return;
+    }
+
+    axiom_render_custom_thankyou_header($order_id);
 
     $order_details_template = get_stylesheet_directory() . '/woocommerce/order/order-details.php';
     $customer_details_template = get_stylesheet_directory() . '/woocommerce/order/order-details-customer.php';
 
-    if ( file_exists( $order_details_template ) ) {
+    if (file_exists($order_details_template)) {
         include $order_details_template;
     }
 
-    if ( file_exists( $customer_details_template ) ) {
+    if (file_exists($customer_details_template)) {
         include $customer_details_template;
     }
 }
