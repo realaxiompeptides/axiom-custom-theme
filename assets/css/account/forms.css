@@ -1,0 +1,72 @@
+.woocommerce-account .form-row,
+.woocommerce-account p.form-row,
+.woocommerce-account .woocommerce-form-row {
+  margin-bottom: 16px;
+}
+
+.woocommerce-account label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.woocommerce-account input[type="text"],
+.woocommerce-account input[type="email"],
+.woocommerce-account input[type="password"],
+.woocommerce-account input[type="tel"],
+.woocommerce-account select,
+.woocommerce-account textarea {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 18px;
+  border: 1px solid #d5e1ec;
+  border-radius: 18px;
+  background: #fbfdff;
+  color: #0f172a;
+  font-size: 16px;
+  box-shadow: none;
+  outline: none;
+}
+
+.woocommerce-account input:focus,
+.woocommerce-account select:focus,
+.woocommerce-account textarea:focus {
+  border-color: #5aa8df;
+  background: #ffffff;
+}
+
+.woocommerce-account .password-input {
+  position: relative;
+  display: block;
+}
+
+.woocommerce-account .show-password-input {
+  right: 16px;
+}
+
+.woocommerce-account button,
+.woocommerce-account .button,
+.woocommerce-account input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 54px;
+  padding: 0 24px;
+  border: 0;
+  border-radius: 999px;
+  background: #5aa8df;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+.woocommerce-account button:hover,
+.woocommerce-account .button:hover,
+.woocommerce-account input[type="submit"]:hover {
+  background: #4798d5;
+  color: #ffffff;
+}
