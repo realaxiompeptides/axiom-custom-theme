@@ -1,0 +1,238 @@
+.axiom-coa-page {
+  padding: 24px 0 64px;
+  background: #ffffff;
+}
+
+.axiom-coa-page .container {
+  max-width: 1200px;
+}
+
+.axiom-coa-hero {
+  margin-bottom: 24px;
+  padding: 36px 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  text-align: center;
+}
+
+.axiom-coa-kicker {
+  margin: 0 0 10px;
+  color: #5aa8df;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-coa-hero h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-coa-subtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.axiom-coa-toolbar {
+  margin-bottom: 20px;
+}
+
+.axiom-coa-search-wrap input {
+  width: 100%;
+  min-height: 56px;
+  padding: 16px 18px;
+  border: 1px solid #d5e1ec;
+  border-radius: 18px;
+  background: #fbfdff;
+  color: #0f172a;
+  font-size: 16px;
+}
+
+.axiom-coa-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.axiom-coa-card {
+  padding: 24px;
+  border: 1px solid #dbe5ef;
+  border-radius: 28px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.axiom-coa-card-head {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.axiom-coa-product-media img {
+  width: 100%;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.axiom-coa-tested-badge {
+  display: inline-block;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #edf7ff;
+  color: #5aa8df;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.axiom-coa-product-meta h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.axiom-coa-status-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.axiom-coa-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.axiom-coa-status-ready {
+  background: #eaf8ef;
+  color: #1d7a38;
+}
+
+.axiom-coa-status-not-ready {
+  background: #fff3f2;
+  color: #c0392b;
+}
+
+.axiom-coa-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.axiom-coa-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #5aa8df;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.axiom-coa-btn:hover {
+  background: #4798d5;
+  color: #ffffff;
+}
+
+.axiom-coa-btn-secondary {
+  background: #0f172a;
+}
+
+.axiom-coa-btn-secondary:hover {
+  background: #1e293b;
+}
+
+.axiom-coa-variant-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.axiom-coa-variant-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid #e7eef5;
+  border-radius: 20px;
+  background: #f8fbff;
+}
+
+.axiom-coa-variant-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.axiom-coa-variant-copy strong {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.axiom-coa-variant-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.axiom-coa-btn-small {
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.axiom-coa-empty {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  .axiom-coa-hero {
+    padding: 24px 18px;
+    border-radius: 24px;
+  }
+
+  .axiom-coa-hero h1 {
+    font-size: 34px;
+  }
+
+  .axiom-coa-card {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .axiom-coa-card-head {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-coa-variant-row {
+    grid-template-columns: 1fr;
+  }
+}
