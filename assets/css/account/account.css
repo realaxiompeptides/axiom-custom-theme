@@ -1,5 +1,5 @@
 .axiom-account-page {
-  padding: 28px 0 64px;
+  padding: 24px 0 64px;
   background: #ffffff;
 }
 
@@ -43,27 +43,46 @@
   line-height: 1.75;
 }
 
-.axiom-account-login-wrap {
+.axiom-account-wrapper {
+  display: block;
+}
+
+.axiom-account-wrapper > *:first-child {
+  margin-top: 0;
+}
+
+/* Logged-out login/register */
+.woocommerce-account .u-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
-  align-items: start;
 }
 
-.axiom-account-card {
-  padding: 28px;
+.woocommerce-account .u-column1,
+.woocommerce-account .u-column2,
+.woocommerce-account .woocommerce-ResetPassword,
+.woocommerce-account .woocommerce-notices-wrapper,
+.woocommerce-account .woocommerce-message,
+.woocommerce-account .woocommerce-info,
+.woocommerce-account .woocommerce-error,
+.woocommerce-account .woocommerce form.login,
+.woocommerce-account .woocommerce form.register {
   border: 1px solid #dbe5ef;
   border-radius: 30px;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
-.axiom-account-card-header {
-  margin-bottom: 18px;
+.woocommerce-account .u-column1,
+.woocommerce-account .u-column2,
+.woocommerce-account .woocommerce form.login,
+.woocommerce-account .woocommerce form.register,
+.woocommerce-account .woocommerce-ResetPassword {
+  padding: 28px;
 }
 
-.axiom-account-card-header h2 {
-  margin: 0 0 8px;
+.woocommerce-account h2 {
+  margin: 0 0 12px;
   color: #0f172a;
   font-size: 34px;
   line-height: 1.05;
@@ -71,24 +90,13 @@
   letter-spacing: -0.03em;
 }
 
-.axiom-account-card-header p {
-  margin: 0;
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-.axiom-account-card form {
-  margin: 0;
-}
-
-.axiom-account-card .form-row,
-.axiom-account-card p.form-row,
-.axiom-account-card .woocommerce-form-row {
+.woocommerce-account .form-row,
+.woocommerce-account p.form-row,
+.woocommerce-account .woocommerce-form-row {
   margin-bottom: 16px;
 }
 
-.axiom-account-card label {
+.woocommerce-account label {
   display: block;
   margin-bottom: 8px;
   color: #0f172a;
@@ -96,12 +104,12 @@
   font-weight: 800;
 }
 
-.axiom-account-card input[type="text"],
-.axiom-account-card input[type="email"],
-.axiom-account-card input[type="password"],
-.axiom-account-card input[type="tel"],
-.axiom-account-card select,
-.axiom-account-card textarea {
+.woocommerce-account input[type="text"],
+.woocommerce-account input[type="email"],
+.woocommerce-account input[type="password"],
+.woocommerce-account input[type="tel"],
+.woocommerce-account select,
+.woocommerce-account textarea {
   width: 100%;
   min-height: 56px;
   padding: 16px 18px;
@@ -114,51 +122,25 @@
   outline: none;
 }
 
-.axiom-account-card input:focus,
-.axiom-account-card select:focus,
-.axiom-account-card textarea:focus {
+.woocommerce-account input:focus,
+.woocommerce-account select:focus,
+.woocommerce-account textarea:focus {
   border-color: #5aa8df;
   background: #ffffff;
 }
 
-.axiom-account-card .password-input {
+.woocommerce-account .password-input {
   position: relative;
   display: block;
 }
 
-.axiom-account-card .show-password-input {
+.woocommerce-account .show-password-input {
   right: 16px;
 }
 
-.axiom-account-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 14px;
-  margin-top: 8px;
-}
-
-.axiom-account-card .woocommerce-form-login__rememberme,
-.axiom-account-card .woocommerce-form__label-for-checkbox {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin: 0;
-  color: #0f172a;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.axiom-account-card input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  min-height: 20px;
-  margin: 0;
-}
-
-.axiom-account-card button,
-.axiom-account-card .button,
-.axiom-account-card input[type="submit"] {
+.woocommerce-account button,
+.woocommerce-account .button,
+.woocommerce-account input[type="submit"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -174,170 +156,64 @@
   text-decoration: none;
 }
 
-.axiom-account-card button:hover,
-.axiom-account-card .button:hover,
-.axiom-account-card input[type="submit"]:hover {
+.woocommerce-account button:hover,
+.woocommerce-account .button:hover,
+.woocommerce-account input[type="submit"]:hover {
   background: #4798d5;
   color: #ffffff;
 }
 
-.axiom-account-card .lost_password {
+.woocommerce-account .lost_password {
   margin-top: 18px;
   margin-bottom: 0;
 }
 
-.axiom-account-card .lost_password a {
+.woocommerce-account .lost_password a {
   color: #0f172a;
   font-weight: 700;
   text-decoration: none;
 }
 
-.axiom-account-card .lost_password a:hover {
+.woocommerce-account .lost_password a:hover {
   color: #5aa8df;
 }
 
-.woocommerce-account .woocommerce-notices-wrapper {
-  margin-bottom: 18px;
-}
-
-.woocommerce-account .woocommerce-error,
-.woocommerce-account .woocommerce-info,
-.woocommerce-account .woocommerce-message {
-  padding: 16px 18px;
-  border-radius: 18px;
-  border: 1px solid #dbe5ef;
-  background: #f8fbff;
-  color: #0f172a;
-}
-
-@media (max-width: 991px) {
-  .axiom-account-login-wrap {
-    grid-template-columns: 1fr;
-  }
-
-  .axiom-account-hero h1 {
-    font-size: 42px;
-  }
-}
-
-@media (max-width: 767px) {
-  .axiom-account-page {
-    padding: 18px 0 42px;
-  }
-
-  .axiom-account-hero,
-  .axiom-account-card {
-    padding: 22px 18px;
-    border-radius: 24px;
-  }
-
-  .axiom-account-hero h1 {
-    font-size: 34px;
-  }
-
-  .axiom-account-subtitle {
-    font-size: 16px;
-  }
-
-  .axiom-account-card-header h2 {
-    font-size: 28px;
-  }
-
-  .axiom-account-actions {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .axiom-account-card button,
-  .axiom-account-card .button,
-  .axiom-account-card input[type="submit"] {
-    width: 100%;
-  }
-}
-
-/* Logged-in account layout */
+/* Logged-in layout */
 .woocommerce-account .woocommerce {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr);
+  grid-template-columns: 300px minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 
-.axiom-account-nav-card,
-.axiom-account-dashboard-hero,
-.axiom-account-dashboard-card,
-.axiom-account-stat-card,
-.woocommerce-Addresses .woocommerce-Address,
-.woocommerce-orders-table,
-.woocommerce-MyAccount-content form,
-.woocommerce-form-edit-account,
-.woocommerce-EditAccountForm,
-.woocommerce-account .addresses,
-.woocommerce-account .woocommerce-message,
-.woocommerce-account .woocommerce-info,
-.woocommerce-account .woocommerce-error {
+.woocommerce-account .woocommerce-MyAccount-navigation,
+.woocommerce-account .woocommerce-MyAccount-content,
+.woocommerce-account .woocommerce-Addresses .woocommerce-Address,
+.woocommerce-account table.shop_table,
+.woocommerce-account .woocommerce-form-edit-account,
+.woocommerce-account .woocommerce form {
+  min-width: 0;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation {
+  padding: 22px 18px;
   border: 1px solid #dbe5ef;
-  border-radius: 28px;
+  border-radius: 30px;
   background: #ffffff;
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
 }
 
-.axiom-account-nav-card {
-  padding: 22px 18px;
-}
-
-.axiom-account-user {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding-bottom: 18px;
-  margin-bottom: 18px;
-  border-bottom: 1px solid #e7eef5;
-}
-
-.axiom-account-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  background: #5aa8df;
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.axiom-account-user-kicker {
-  margin: 0 0 4px;
-  color: #7a8aa0;
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.axiom-account-user-meta strong {
-  color: #0f172a;
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.axiom-account-nav ul {
+.woocommerce-account .woocommerce-MyAccount-navigation ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.axiom-account-nav li {
-  margin: 0;
-}
-
-.axiom-account-nav li + li {
+.woocommerce-account .woocommerce-MyAccount-navigation li + li {
   margin-top: 8px;
 }
 
-.axiom-account-nav a {
+.woocommerce-account .woocommerce-MyAccount-navigation a {
   display: block;
   padding: 14px 16px;
   border-radius: 16px;
@@ -347,111 +223,27 @@
   text-decoration: none;
 }
 
-.axiom-account-nav li.is-active a,
-.axiom-account-nav a:hover {
+.woocommerce-account .woocommerce-MyAccount-navigation .is-active a,
+.woocommerce-account .woocommerce-MyAccount-navigation a:hover {
   background: #edf7ff;
   color: #5aa8df;
 }
 
-.woocommerce-MyAccount-content {
-  min-width: 0;
-}
-
-.axiom-account-dashboard {
-  display: grid;
-  gap: 20px;
-}
-
-.axiom-account-dashboard-hero,
-.axiom-account-dashboard-card {
-  padding: 26px 24px;
-}
-
-.axiom-account-dashboard-hero h2,
-.axiom-account-dashboard-card h3 {
-  margin: 0 0 10px;
-  color: #0f172a;
-  font-size: 34px;
-  line-height: 1.05;
-  font-weight: 900;
-}
-
-.axiom-account-dashboard-hero p,
-.axiom-account-dashboard-card p {
-  margin: 0;
-  color: #64748b;
-  font-size: 16px;
-  line-height: 1.75;
-}
-
-.axiom-account-dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-}
-
-.axiom-account-stat-card {
-  padding: 22px 20px;
-}
-
-.axiom-account-stat-card span {
-  display: block;
-  margin-bottom: 8px;
-  color: #7a8aa0;
-  font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.axiom-account-stat-card strong {
-  color: #0f172a;
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.axiom-account-quick-links {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.axiom-account-quick-links a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 52px;
-  padding: 0 18px;
-  border-radius: 999px;
-  background: #5aa8df;
-  color: #ffffff;
-  font-size: 15px;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.axiom-account-quick-links a:hover {
-  background: #4798d5;
-  color: #ffffff;
+.woocommerce-account .woocommerce-MyAccount-content > * {
+  margin-top: 0;
 }
 
 .woocommerce-account .woocommerce-MyAccount-content > p,
-.woocommerce-account .woocommerce-MyAccount-content .woocommerce-notices-wrapper {
-  margin-bottom: 18px;
-}
-
-.woocommerce-account .woocommerce-message,
-.woocommerce-account .woocommerce-info,
-.woocommerce-account .woocommerce-error {
-  padding: 16px 18px;
-}
-
-.woocommerce-orders-table,
-.woocommerce-MyAccount-content form,
-.woocommerce-form-edit-account,
-.woocommerce-EditAccountForm {
-  padding: 22px;
+.woocommerce-account .woocommerce-MyAccount-content > div,
+.woocommerce-account .woocommerce-MyAccount-content form,
+.woocommerce-account .woocommerce-orders-table,
+.woocommerce-account .woocommerce-Addresses .woocommerce-Address {
+  padding: 24px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  margin-bottom: 20px;
 }
 
 .woocommerce-account table.shop_table {
@@ -477,137 +269,63 @@
   font-size: 15px;
 }
 
-.woocommerce-account .woocommerce-Addresses .woocommerce-Address {
-  padding: 22px;
-}
-
-.woocommerce-account .woocommerce-Address-title h3 {
-  margin: 0 0 12px;
+.woocommerce-account .woocommerce-message,
+.woocommerce-account .woocommerce-info,
+.woocommerce-account .woocommerce-error {
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid #dbe5ef;
+  background: #f8fbff;
   color: #0f172a;
-  font-size: 24px;
-  font-weight: 900;
 }
 
 @media (max-width: 991px) {
+  .woocommerce-account .u-columns,
   .woocommerce-account .woocommerce {
     grid-template-columns: 1fr;
   }
 
-  .axiom-account-dashboard-grid,
-  .axiom-account-quick-links {
-    grid-template-columns: 1fr;
+  .axiom-account-hero h1 {
+    font-size: 42px;
   }
-}
-
-.axiom-account-section {
-  display: grid;
-  gap: 20px;
-}
-
-.axiom-account-orders-card {
-  padding: 22px 20px;
-}
-
-.axiom-account-orders-list {
-  display: grid;
-  gap: 14px;
-}
-
-.axiom-account-order-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  padding: 18px;
-  border: 1px solid #e7eef5;
-  border-radius: 20px;
-  background: #f8fbff;
-}
-
-.axiom-account-order-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.axiom-account-order-number {
-  color: #0f172a;
-  font-size: 22px;
-  font-weight: 900;
-}
-
-.axiom-account-order-status {
-  display: inline-flex;
-  align-items: center;
-  min-height: 32px;
-  padding: 0 12px;
-  border-radius: 999px;
-  background: #e8f3fb;
-  color: #3c8fcf;
-  font-size: 13px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.axiom-account-order-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 14px 18px;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.axiom-account-order-meta strong {
-  color: #0f172a;
-}
-
-.axiom-account-order-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.axiom-account-order-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: #5aa8df;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 900;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.axiom-account-order-btn:hover {
-  background: #4798d5;
-  color: #ffffff;
-}
-
-.axiom-account-pagination {
-  display: flex;
-  gap: 10px;
-  margin-top: 18px;
 }
 
 @media (max-width: 767px) {
-  .axiom-account-order-row {
-    grid-template-columns: 1fr;
+  .axiom-account-page {
+    padding: 18px 0 42px;
   }
 
-  .axiom-account-order-actions {
-    justify-content: stretch;
+  .axiom-account-hero,
+  .woocommerce-account .u-column1,
+  .woocommerce-account .u-column2,
+  .woocommerce-account .woocommerce form.login,
+  .woocommerce-account .woocommerce form.register,
+  .woocommerce-account .woocommerce-ResetPassword,
+  .woocommerce-account .woocommerce-MyAccount-navigation,
+  .woocommerce-account .woocommerce-MyAccount-content > p,
+  .woocommerce-account .woocommerce-MyAccount-content > div,
+  .woocommerce-account .woocommerce-MyAccount-content form,
+  .woocommerce-account .woocommerce-orders-table,
+  .woocommerce-account .woocommerce-Addresses .woocommerce-Address {
+    padding: 22px 18px;
+    border-radius: 24px;
   }
 
-  .axiom-account-order-btn {
+  .axiom-account-hero h1 {
+    font-size: 34px;
+  }
+
+  .axiom-account-subtitle {
+    font-size: 16px;
+  }
+
+  .woocommerce-account h2 {
+    font-size: 28px;
+  }
+
+  .woocommerce-account button,
+  .woocommerce-account .button,
+  .woocommerce-account input[type="submit"] {
     width: 100%;
   }
 }
