@@ -14,17 +14,18 @@ function axiom_render_custom_thankyou_header($order_id) {
         return;
     }
 
-    $order_number     = $order->get_order_number();
-    $order_total      = (float) $order->get_total();
-    $order_subtotal   = (float) $order->get_subtotal();
-    $order_shipping   = (float) $order->get_shipping_total();
-    $order_tax        = (float) $order->get_total_tax();
-    $payment_method   = $order->get_payment_method_title();
-    $order_status_slug = $order->get_status();
-    $order_status     = wc_get_order_status_name($order_status_slug);
-    $shipping_methods = $order->get_shipping_methods();
-    $shipping_label   = '';
-    $needs_payment    = $order->needs_payment();
+    $order_number       = $order->get_order_number();
+    $order_total        = (float) $order->get_total();
+    $order_subtotal     = (float) $order->get_subtotal();
+    $order_shipping     = (float) $order->get_shipping_total();
+    $order_tax          = (float) $order->get_total_tax();
+    $payment_method     = $order->get_payment_method_title();
+    $payment_method_id  = $order->get_payment_method();
+    $order_status_slug  = $order->get_status();
+    $order_status       = wc_get_order_status_name($order_status_slug);
+    $shipping_methods   = $order->get_shipping_methods();
+    $shipping_label     = '';
+    $needs_payment      = $order->needs_payment();
 
     if (!empty($shipping_methods)) {
         $first_shipping = reset($shipping_methods);
@@ -32,11 +33,11 @@ function axiom_render_custom_thankyou_header($order_id) {
     }
 
     /*
-     * Shipping logic:
-     * - timezone = America/Los_Angeles
-     * - Mon-Fri before 2:00 PM PT = ships same day
-     * - Mon-Fri at/after 2:00 PM PT = next business day
-     * - Sat/Sun = next Monday
+     * Shipping logic
+     * Timezone: America/Los_Angeles
+     * Mon-Fri before 2:00 PM PT = same day
+     * Mon-Fri at/after 2:00 PM PT = next business day
+     * Sat/Sun = next Monday
      */
     $la_timezone = new DateTimeZone('America/Los_Angeles');
 
@@ -53,14 +54,12 @@ function axiom_render_custom_thankyou_header($order_id) {
     $hour    = (int) $ship_dt->format('G');
     $minute  = (int) $ship_dt->format('i');
 
-    $is_before_cutoff = ($hour < 14);
-
     if ($day_num === 6) {
         $ship_dt->modify('next monday');
     } elseif ($day_num === 7) {
         $ship_dt->modify('next monday');
     } else {
-        if (!$is_before_cutoff || ($hour === 14 && $minute >= 0)) {
+        if ($hour > 14 || ($hour === 14 && $minute >= 0)) {
             if ($day_num === 5) {
                 $ship_dt->modify('next monday');
             } else {
@@ -93,17 +92,17 @@ function axiom_render_custom_thankyou_header($order_id) {
     $estimated_delivery_date = $delivery_dt->format('l, F j');
 
     /*
-     * Better universal copy
+     * Universal thank-you copy
      */
     $hero_title = 'Thank you for your order';
     $hero_copy  = 'We’ve received your order and you can review the full details below.';
 
     if (in_array($order_status_slug, array('pending', 'on-hold'), true)) {
-        $hero_copy = 'We’ve received your order. Please review your order details and complete any remaining payment steps below if needed.';
+        $hero_copy = 'We’ve received your order. Please review your order details below and complete any remaining payment steps if needed.';
     } elseif (in_array($order_status_slug, array('processing', 'completed'), true)) {
         $hero_copy = 'Your order has been received and payment has been confirmed. You can review the full order details below.';
     } elseif (in_array($order_status_slug, array('cancelled', 'failed'), true)) {
-        $hero_copy = 'You can review the order details and current order status below. If you need help, please contact us.';
+        $hero_copy = 'You can review the order details and current status below. If you need help, please contact us.';
     }
 
     echo '<section class="axiom-payment-confirmation-hero">';
@@ -128,7 +127,7 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      <div class="axiom-payment-status-row"><span>Shipping</span><strong>' . wp_kses_post(wc_price($order_shipping)) . '</strong></div>';
 
     if ($order_tax > 0) {
-        echo '  <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
+        echo '      <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
     }
 
     echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
@@ -148,6 +147,48 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '          <p>' . esc_html($shipping_label ? $shipping_label : 'Selected shipping method') . '</p>';
     echo '      </div>';
     echo '  </div>';
+
+    /*
+     * Zelle instructions
+     */
+    if ($payment_method_id === 'zelle' || stripos($payment_method, 'zelle') !== false) {
+        echo '  <div class="axiom-payment-instructions-card">';
+        echo '      <div class="axiom-payment-instructions-header">';
+        echo '          <h3>Zelle Payment Instructions</h3>';
+        echo '      </div>';
+        echo '      <div class="axiom-payment-instructions-body">';
+        echo '          <p>Please complete your payment through Zelle after placing your order.</p>';
+        echo '          <div class="axiom-payment-instruction-row"><span>Zelle phone</span><strong>916-233-5312</strong></div>';
+        echo '          <div class="axiom-payment-instruction-row"><span>Zelle email</span><strong>jaxferone@gmail.com</strong></div>';
+        echo '          <ul class="axiom-payment-instruction-list">';
+        echo '              <li>Use your order number only in the payment note.</li>';
+        echo '              <li>Do not include product names or order contents.</li>';
+        echo '              <li>Your order will be processed after payment is received and confirmed.</li>';
+        echo '          </ul>';
+        echo '      </div>';
+        echo '  </div>';
+    }
+
+    /*
+     * Venmo instructions
+     */
+    if ($payment_method_id === 'venmo' || stripos($payment_method, 'venmo') !== false) {
+        echo '  <div class="axiom-payment-instructions-card">';
+        echo '      <div class="axiom-payment-instructions-header">';
+        echo '          <h3>Venmo Payment Instructions</h3>';
+        echo '      </div>';
+        echo '      <div class="axiom-payment-instructions-body">';
+        echo '          <p>Please send your payment after placing your order.</p>';
+        echo '          <div class="axiom-payment-instruction-row"><span>Venmo username</span><strong>@thomas-harris-axiom</strong></div>';
+        echo '          <div class="axiom-payment-instruction-row"><span>Venmo link</span><strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong></div>';
+        echo '          <ul class="axiom-payment-instruction-list">';
+        echo '              <li>Use your order number only in the payment note.</li>';
+        echo '              <li>Do not include product names or order contents.</li>';
+        echo '              <li>Your order will be processed after payment is received and confirmed.</li>';
+        echo '          </ul>';
+        echo '      </div>';
+        echo '  </div>';
+    }
 
     if ($needs_payment) {
         echo '  <div class="axiom-thankyou-pay-actions">';
