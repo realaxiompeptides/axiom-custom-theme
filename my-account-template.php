@@ -1,23 +1,35 @@
 <?php
+/*
+Template Name: My Account Template
+*/
 if (!defined('ABSPATH')) {
     exit;
 }
 
-function axiom_account_assets() {
-    if (!function_exists('is_account_page')) {
-        return;
-    }
+get_header();
+?>
 
-    if (is_account_page()) {
-        error_log('AXIOM TEMPLATE DIR: ' . get_template_directory());
-        error_log('AXIOM TEMPLATE URI: ' . get_template_directory_uri());
+<main class="axiom-account-page">
+  <div class="container">
+    <div class="axiom-account-shell">
+      <section class="axiom-account-hero">
+        <p class="axiom-account-kicker">My Account</p>
+        <h1>Account Center</h1>
+        <p class="axiom-account-subtitle">
+          Log in, manage your orders, update your details, and review your account activity in one place.
+        </p>
+      </section>
 
-        wp_enqueue_style(
-            'axiom-account',
-            get_template_directory_uri() . '/assets/css/account/account.css',
-            array('axiom-base'),
-            '1.0'
-        );
-    }
-}
-add_action('wp_enqueue_scripts', 'axiom_account_assets', 20);
+      <section class="axiom-account-wrapper">
+        <?php
+        while (have_posts()) :
+            the_post();
+            the_content();
+        endwhile;
+        ?>
+      </section>
+    </div>
+  </div>
+</main>
+
+<?php get_footer(); ?>
