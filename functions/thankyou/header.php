@@ -50,7 +50,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         $ship_dt = new DateTime('now', $la_timezone);
     }
 
-    $day_num = (int) $ship_dt->format('N'); // 1=Mon, 7=Sun
+    $day_num = (int) $ship_dt->format('N');
     $hour    = (int) $ship_dt->format('G');
     $minute  = (int) $ship_dt->format('i');
 
@@ -70,9 +70,6 @@ function axiom_render_custom_thankyou_header($order_id) {
 
     $estimated_ship_date = $ship_dt->format('l, F j');
 
-    /*
-     * Delivery estimate
-     */
     $delivery_days = 5;
 
     if ($shipping_label) {
@@ -91,16 +88,11 @@ function axiom_render_custom_thankyou_header($order_id) {
     $delivery_dt->modify('+' . absint($delivery_days) . ' days');
     $estimated_delivery_date = $delivery_dt->format('l, F j');
 
-    /*
-     * Universal thank-you copy
-     */
     $hero_title = 'Thank you for your order';
-    $hero_copy  = 'We’ve received your order and you can review the full details below.';
+    $hero_copy  = 'You can review your order details, shipping timeline, and payment information below.';
 
-    if (in_array($order_status_slug, array('pending', 'on-hold'), true)) {
-        $hero_copy = 'We’ve received your order. Please review your order details below and complete any remaining payment steps if needed.';
-    } elseif (in_array($order_status_slug, array('processing', 'completed'), true)) {
-        $hero_copy = 'Your order has been received and payment has been confirmed. You can review the full order details below.';
+    if (in_array($order_status_slug, array('processing', 'completed'), true)) {
+        $hero_copy = 'Your order has been received and payment has been confirmed. You can review the order details and shipping timeline below.';
     } elseif (in_array($order_status_slug, array('cancelled', 'failed'), true)) {
         $hero_copy = 'You can review the order details and current status below. If you need help, please contact us.';
     }
@@ -134,61 +126,114 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      <div class="axiom-payment-status-row"><span>Payment method</span><strong>' . esc_html($payment_method) . '</strong></div>';
     echo '  </div>';
 
-    echo '  <div class="axiom-payment-estimates">';
-    echo '      <div class="axiom-payment-estimate-card">';
-    echo '          <span>Estimated Ship Date</span>';
-    echo '          <strong>' . esc_html($estimated_ship_date) . '</strong>';
-    echo '          <p>Orders placed before 2:00 PM Pacific Time, Monday through Friday, usually ship the same day. Orders placed after cutoff or on weekends ship the next business day.</p>';
-    echo '      </div>';
+    if (($payment_method_id === 'zelle' || stripos($payment_method, 'zelle') !== false) && $needs_payment) {
+        echo '  <div class="axiom-payment-alert-card">';
+        echo '      <div class="axiom-payment-alert-title">⚠️ Send Payment Now</div>';
+        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> as the payment note: <strong>#' . esc_html($order_number) . '</strong></p>';
+        echo '      <p>Do not mention any product names or order contents.</p>';
+        echo '  </div>';
 
-    echo '      <div class="axiom-payment-estimate-card">';
-    echo '          <span>Estimated Delivery</span>';
-    echo '          <strong>' . esc_html($estimated_delivery_date) . '</strong>';
-    echo '          <p>' . esc_html($shipping_label ? $shipping_label : 'Selected shipping method') . '</p>';
-    echo '      </div>';
-    echo '  </div>';
-
-    /*
-     * Zelle instructions
-     */
-    if ($payment_method_id === 'zelle' || stripos($payment_method, 'zelle') !== false) {
         echo '  <div class="axiom-payment-instructions-card">';
         echo '      <div class="axiom-payment-instructions-header">';
         echo '          <h3>Zelle Payment Instructions</h3>';
         echo '      </div>';
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Please complete your payment through Zelle after placing your order.</p>';
-        echo '          <div class="axiom-payment-instruction-row"><span>Zelle phone</span><strong>916-233-5312</strong></div>';
-        echo '          <div class="axiom-payment-instruction-row"><span>Zelle email</span><strong>jaxferone@gmail.com</strong></div>';
-        echo '          <ul class="axiom-payment-instruction-list">';
-        echo '              <li>Use your order number only in the payment note.</li>';
-        echo '              <li>Do not include product names or order contents.</li>';
-        echo '              <li>Your order will be processed after payment is received and confirmed.</li>';
-        echo '          </ul>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Zelle phone</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong id="axiom-zelle-phone">916-233-5312</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'916-233-5312\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Zelle email</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong id="axiom-zelle-email">jaxferone@gmail.com</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'jaxferone@gmail.com\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Payment note</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong id="axiom-zelle-note">#' . esc_html($order_number) . '</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
         echo '      </div>';
         echo '  </div>';
     }
 
-    /*
-     * Venmo instructions
-     */
-    if ($payment_method_id === 'venmo' || stripos($payment_method, 'venmo') !== false) {
+    if (($payment_method_id === 'venmo' || stripos($payment_method, 'venmo') !== false) && $needs_payment) {
+        echo '  <div class="axiom-payment-alert-card">';
+        echo '      <div class="axiom-payment-alert-title">⚠️ Send Payment Now</div>';
+        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> as the payment note: <strong>#' . esc_html($order_number) . '</strong></p>';
+        echo '      <p>Do not mention any product names or order contents.</p>';
+        echo '  </div>';
+
         echo '  <div class="axiom-payment-instructions-card">';
         echo '      <div class="axiom-payment-instructions-header">';
         echo '          <h3>Venmo Payment Instructions</h3>';
         echo '      </div>';
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Please send your payment after placing your order.</p>';
-        echo '          <div class="axiom-payment-instruction-row"><span>Venmo username</span><strong>@thomas-harris-axiom</strong></div>';
-        echo '          <div class="axiom-payment-instruction-row"><span>Venmo link</span><strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong></div>';
-        echo '          <ul class="axiom-payment-instruction-list">';
-        echo '              <li>Use your order number only in the payment note.</li>';
-        echo '              <li>Do not include product names or order contents.</li>';
-        echo '              <li>Your order will be processed after payment is received and confirmed.</li>';
-        echo '          </ul>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Venmo username</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong id="axiom-venmo-user">@thomas-harris-axiom</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'@thomas-harris-axiom\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Venmo link</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'https://venmo.com/thomas-harris-axiom\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Payment note</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong id="axiom-venmo-note">#' . esc_html($order_number) . '</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
         echo '      </div>';
         echo '  </div>';
     }
+
+    echo '  <div class="axiom-payment-next-steps">';
+    echo '      <h3>What happens next?</h3>';
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">1</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Order Processing</strong>';
+    echo '              <p>Your order is prepared for shipment. Orders placed before 2:00 PM Pacific Time, Monday through Friday, usually ship the same business day.</p>';
+    echo '          </div>';
+    echo '      </div>';
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">2</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Shipping Confirmation</strong>';
+    echo '              <p>You will receive tracking information once your order ships.</p>';
+    echo '          </div>';
+    echo '      </div>';
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">3</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Delivery</strong>';
+    echo '              <p>Estimated ship date: <strong>' . esc_html($estimated_ship_date) . '</strong>. Estimated delivery: <strong>' . esc_html($estimated_delivery_date) . '</strong>.</p>';
+    echo '          </div>';
+    echo '      </div>';
+    echo '  </div>';
 
     if ($needs_payment) {
         echo '  <div class="axiom-thankyou-pay-actions">';
