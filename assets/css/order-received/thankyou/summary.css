@@ -1,3 +1,4 @@
+.axiom-summary-card,
 .axiom-thankyou-summary-card {
   background: #f8fbff;
   border: 1px solid #dbe4f0;
@@ -5,12 +6,14 @@
   overflow: hidden;
 }
 
+.axiom-summary-items,
 .axiom-thankyou-summary-items {
   padding: 18px 18px 8px;
   display: grid;
   gap: 14px;
 }
 
+.axiom-summary-item,
 .axiom-thankyou-summary-item {
   display: flex;
   align-items: center;
@@ -22,6 +25,7 @@
   padding: 16px;
 }
 
+.axiom-summary-item-left,
 .axiom-thankyou-summary-item-left {
   display: flex;
   align-items: center;
@@ -29,6 +33,7 @@
   min-width: 0;
 }
 
+.axiom-summary-thumb,
 .axiom-thankyou-summary-thumb {
   width: 68px;
   height: 68px;
@@ -39,6 +44,7 @@
   border: 1px solid #e6edf5;
 }
 
+.axiom-summary-thumb img,
 .axiom-thankyou-summary-thumb img {
   width: 100%;
   height: 100%;
@@ -46,10 +52,12 @@
   display: block;
 }
 
+.axiom-summary-copy,
 .axiom-thankyou-summary-copy {
   min-width: 0;
 }
 
+.axiom-summary-copy strong,
 .axiom-thankyou-summary-copy strong {
   display: block;
   color: #0f172a;
@@ -58,6 +66,7 @@
   margin-bottom: 4px;
 }
 
+.axiom-summary-copy span,
 .axiom-thankyou-summary-copy span {
   display: block;
   color: #6b7280;
@@ -72,6 +81,7 @@
   line-height: 1.4;
 }
 
+.axiom-summary-price,
 .axiom-thankyou-summary-price {
   color: #0f172a;
   font-size: 18px;
@@ -80,11 +90,13 @@
   white-space: nowrap;
 }
 
+.axiom-summary-totals,
 .axiom-thankyou-summary-totals {
   padding: 6px 18px 18px;
   border-top: 1px solid #e3ebf5;
 }
 
+.axiom-summary-row,
 .axiom-thankyou-summary-row {
   display: flex;
   align-items: center;
@@ -93,11 +105,13 @@
   padding: 10px 0;
 }
 
+.axiom-summary-row span,
 .axiom-thankyou-summary-row span {
   color: #5b6778;
   font-size: 16px;
 }
 
+.axiom-summary-row strong,
 .axiom-thankyou-summary-row strong {
   color: #0f172a;
   font-size: 16px;
@@ -105,18 +119,22 @@
   text-align: right;
 }
 
+.axiom-summary-row strong small,
 .axiom-thankyou-summary-row strong small {
   color: #6b7280;
   font-size: 13px;
   font-weight: 700;
 }
 
+.axiom-summary-total,
 .axiom-thankyou-summary-row--total {
   margin-top: 4px;
   padding-top: 16px;
   border-top: 1px solid #e3ebf5;
 }
 
+.axiom-summary-total span,
+.axiom-summary-total strong,
 .axiom-thankyou-summary-row--total span,
 .axiom-thankyou-summary-row--total strong {
   color: #0f172a;
