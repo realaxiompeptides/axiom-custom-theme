@@ -1,10 +1,22 @@
-.woocommerce-account .form-row,
-.woocommerce-account p.form-row,
-.woocommerce-account .woocommerce-form-row {
+.woocommerce-account .u-column1 .form-row,
+.woocommerce-account .u-column1 p.form-row,
+.woocommerce-account .u-column1 .woocommerce-form-row,
+.woocommerce-account .u-column2 .form-row,
+.woocommerce-account .u-column2 p.form-row,
+.woocommerce-account .u-column2 .woocommerce-form-row,
+.woocommerce-account .woocommerce-MyAccount-content .form-row,
+.woocommerce-account .woocommerce-MyAccount-content p.form-row,
+.woocommerce-account .woocommerce-MyAccount-content .woocommerce-form-row,
+.woocommerce-account .woocommerce-ResetPassword .form-row,
+.woocommerce-account .woocommerce-ResetPassword p.form-row,
+.woocommerce-account .woocommerce-ResetPassword .woocommerce-form-row {
   margin-bottom: 16px;
 }
 
-.woocommerce-account label {
+.woocommerce-account .u-column1 label,
+.woocommerce-account .u-column2 label,
+.woocommerce-account .woocommerce-MyAccount-content label,
+.woocommerce-account .woocommerce-ResetPassword label {
   display: block;
   margin-bottom: 8px;
   color: #0f172a;
@@ -12,12 +24,30 @@
   font-weight: 800;
 }
 
-.woocommerce-account input[type="text"],
-.woocommerce-account input[type="email"],
-.woocommerce-account input[type="password"],
-.woocommerce-account input[type="tel"],
-.woocommerce-account select,
-.woocommerce-account textarea {
+.woocommerce-account .u-column1 input[type="text"],
+.woocommerce-account .u-column1 input[type="email"],
+.woocommerce-account .u-column1 input[type="password"],
+.woocommerce-account .u-column1 input[type="tel"],
+.woocommerce-account .u-column1 select,
+.woocommerce-account .u-column1 textarea,
+.woocommerce-account .u-column2 input[type="text"],
+.woocommerce-account .u-column2 input[type="email"],
+.woocommerce-account .u-column2 input[type="password"],
+.woocommerce-account .u-column2 input[type="tel"],
+.woocommerce-account .u-column2 select,
+.woocommerce-account .u-column2 textarea,
+.woocommerce-account .woocommerce-MyAccount-content input[type="text"],
+.woocommerce-account .woocommerce-MyAccount-content input[type="email"],
+.woocommerce-account .woocommerce-MyAccount-content input[type="password"],
+.woocommerce-account .woocommerce-MyAccount-content input[type="tel"],
+.woocommerce-account .woocommerce-MyAccount-content select,
+.woocommerce-account .woocommerce-MyAccount-content textarea,
+.woocommerce-account .woocommerce-ResetPassword input[type="text"],
+.woocommerce-account .woocommerce-ResetPassword input[type="email"],
+.woocommerce-account .woocommerce-ResetPassword input[type="password"],
+.woocommerce-account .woocommerce-ResetPassword input[type="tel"],
+.woocommerce-account .woocommerce-ResetPassword select,
+.woocommerce-account .woocommerce-ResetPassword textarea {
   width: 100%;
   min-height: 56px;
   padding: 16px 18px;
@@ -30,25 +60,49 @@
   outline: none;
 }
 
-.woocommerce-account input:focus,
-.woocommerce-account select:focus,
-.woocommerce-account textarea:focus {
+.woocommerce-account .u-column1 input:focus,
+.woocommerce-account .u-column1 select:focus,
+.woocommerce-account .u-column1 textarea:focus,
+.woocommerce-account .u-column2 input:focus,
+.woocommerce-account .u-column2 select:focus,
+.woocommerce-account .u-column2 textarea:focus,
+.woocommerce-account .woocommerce-MyAccount-content input:focus,
+.woocommerce-account .woocommerce-MyAccount-content select:focus,
+.woocommerce-account .woocommerce-MyAccount-content textarea:focus,
+.woocommerce-account .woocommerce-ResetPassword input:focus,
+.woocommerce-account .woocommerce-ResetPassword select:focus,
+.woocommerce-account .woocommerce-ResetPassword textarea:focus {
   border-color: #5aa8df;
   background: #ffffff;
 }
 
-.woocommerce-account .password-input {
+.woocommerce-account .u-column1 .password-input,
+.woocommerce-account .u-column2 .password-input,
+.woocommerce-account .woocommerce-MyAccount-content .password-input,
+.woocommerce-account .woocommerce-ResetPassword .password-input {
   position: relative;
   display: block;
 }
 
-.woocommerce-account .show-password-input {
+.woocommerce-account .u-column1 .show-password-input,
+.woocommerce-account .u-column2 .show-password-input,
+.woocommerce-account .woocommerce-MyAccount-content .show-password-input,
+.woocommerce-account .woocommerce-ResetPassword .show-password-input {
   right: 16px;
 }
 
-.woocommerce-account button,
-.woocommerce-account .button,
-.woocommerce-account input[type="submit"] {
+.woocommerce-account .u-column1 button,
+.woocommerce-account .u-column1 .button,
+.woocommerce-account .u-column1 input[type="submit"],
+.woocommerce-account .u-column2 button,
+.woocommerce-account .u-column2 .button,
+.woocommerce-account .u-column2 input[type="submit"],
+.woocommerce-account .woocommerce-MyAccount-content button,
+.woocommerce-account .woocommerce-MyAccount-content .button,
+.woocommerce-account .woocommerce-MyAccount-content input[type="submit"],
+.woocommerce-account .woocommerce-ResetPassword button,
+.woocommerce-account .woocommerce-ResetPassword .button,
+.woocommerce-account .woocommerce-ResetPassword input[type="submit"] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -64,9 +118,18 @@
   text-decoration: none;
 }
 
-.woocommerce-account button:hover,
-.woocommerce-account .button:hover,
-.woocommerce-account input[type="submit"]:hover {
+.woocommerce-account .u-column1 button:hover,
+.woocommerce-account .u-column1 .button:hover,
+.woocommerce-account .u-column1 input[type="submit"]:hover,
+.woocommerce-account .u-column2 button:hover,
+.woocommerce-account .u-column2 .button:hover,
+.woocommerce-account .u-column2 input[type="submit"]:hover,
+.woocommerce-account .woocommerce-MyAccount-content button:hover,
+.woocommerce-account .woocommerce-MyAccount-content .button:hover,
+.woocommerce-account .woocommerce-MyAccount-content input[type="submit"]:hover,
+.woocommerce-account .woocommerce-ResetPassword button:hover,
+.woocommerce-account .woocommerce-ResetPassword .button:hover,
+.woocommerce-account .woocommerce-ResetPassword input[type="submit"]:hover {
   background: #4798d5;
   color: #ffffff;
 }
