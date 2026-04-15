@@ -643,63 +643,63 @@ ul.woocommerce-order-overview.woocommerce-thankyou-order-details {
 }
 
 .axiom-payment-alert-card {
-  margin-top: 22px;
-  padding: 18px 18px;
-  border: 3px solid #dc2626;
-  border-radius: 22px;
-  background: #fff7f7;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 2px solid #d94b45;
+  border-radius: 18px;
+  background: #fff6f5;
 }
 
 .axiom-payment-alert-title {
-  margin-bottom: 12px;
-  color: #b91c1c;
-  font-size: 24px;
+  margin-bottom: 8px;
+  color: #c3312d;
+  font-size: 22px;
   line-height: 1.2;
   font-weight: 900;
 }
 
 .axiom-payment-alert-card p {
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   color: #7f1d1d;
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.5;
   font-weight: 700;
 }
 
 .axiom-payment-instructions-card {
-  margin-top: 22px;
-  padding: 22px 20px;
+  margin-top: 14px;
+  padding: 18px 18px;
   border: 1px solid #dbe7f3;
-  border-radius: 24px;
+  border-radius: 18px;
   background: #f8fbff;
 }
 
 .axiom-payment-instructions-header h3 {
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   color: #0f172a;
-  font-size: 26px;
+  font-size: 22px;
   line-height: 1.2;
   font-weight: 900;
 }
 
 .axiom-payment-instructions-body p {
-  margin: 0 0 16px;
+  margin: 0 0 10px;
   color: #64748b;
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .axiom-payment-copy-field {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: 12px;
+  padding-top: 12px;
   border-top: 1px solid #e6edf5;
 }
 
 .axiom-payment-copy-field span {
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #6b7280;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -709,112 +709,107 @@ ul.woocommerce-order-overview.woocommerce-thankyou-order-details {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
 }
 
 .axiom-payment-copy-row strong,
 .axiom-payment-copy-row strong a {
   color: #0f172a;
-  font-size: 19px;
+  font-size: 17px;
   font-weight: 900;
   text-decoration: none;
   word-break: break-word;
 }
 
-.axiom-copy-button {
-  min-width: 96px;
-  min-height: 48px;
+.axiom-copy-button,
+.axiom-thankyou-pay-button {
+  min-width: 90px;
+  min-height: 44px;
   padding: 0 16px;
-  border: 0;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #4aa7e8, #2f84bf);
-  color: #fff;
-  font-size: 15px;
-  font-weight: 900;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #6fb7ea !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
 }
 
 .axiom-payment-next-steps {
-  margin-top: 24px;
-  padding: 22px 20px;
+  margin-top: 18px;
+  padding: 18px 18px;
   border: 1px solid #dbe7f3;
-  border-radius: 24px;
+  border-radius: 18px;
   background: #ffffff;
 }
 
 .axiom-payment-next-steps h3 {
-  margin: 0 0 18px;
+  margin: 0 0 14px;
   color: #0f172a;
-  font-size: 28px;
+  font-size: 22px;
   line-height: 1.2;
   font-weight: 900;
 }
 
 .axiom-payment-next-step {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   align-items: flex-start;
-  margin-top: 18px;
+  margin-top: 14px;
 }
 
 .axiom-payment-next-step-number {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
   border-radius: 999px;
-  background: #166534;
   color: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 900;
 }
 
-.axiom-payment-next-step:nth-child(3) .axiom-payment-next-step-number {
-  background: #2563eb;
+.axiom-payment-next-step:nth-of-type(2) .axiom-payment-next-step-number {
+  background: #1f7a3b;
 }
 
-.axiom-payment-next-step:nth-child(4) .axiom-payment-next-step-number {
-  background: #7c3aed;
+.axiom-payment-next-step:nth-of-type(3) .axiom-payment-next-step-number {
+  background: #2f6ff2;
+}
+
+.axiom-payment-next-step:nth-of-type(4) .axiom-payment-next-step-number {
+  background: #8b42f5;
 }
 
 .axiom-payment-next-step-copy strong {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #0f172a;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 900;
 }
 
 .axiom-payment-next-step-copy p {
   margin: 0;
   color: #64748b;
-  font-size: 17px;
-  line-height: 1.7;
-}
-
-.axiom-thankyou-address-grid--single {
-  grid-template-columns: 1fr;
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 @media (max-width: 767px) {
-  .axiom-payment-alert-title {
-    font-size: 21px;
-  }
-
-  .axiom-payment-alert-card p {
-    font-size: 15px;
-  }
-
+  .axiom-payment-alert-card,
   .axiom-payment-instructions-card,
   .axiom-payment-next-steps {
-    padding: 18px 16px;
-    border-radius: 20px;
+    padding: 16px 14px;
+    border-radius: 16px;
   }
 
+  .axiom-payment-alert-title,
   .axiom-payment-instructions-header h3,
   .axiom-payment-next-steps h3 {
-    font-size: 22px;
+    font-size: 20px;
   }
 
   .axiom-payment-copy-row {
@@ -822,20 +817,21 @@ ul.woocommerce-order-overview.woocommerce-thankyou-order-details {
     align-items: stretch;
   }
 
-  .axiom-copy-button {
+  .axiom-copy-button,
+  .axiom-thankyou-pay-button {
     width: 100%;
   }
 
   .axiom-payment-copy-row strong,
   .axiom-payment-copy-row strong a {
-    font-size: 17px;
+    font-size: 16px;
   }
 
   .axiom-payment-next-step-copy strong {
-    font-size: 20px;
+    font-size: 17px;
   }
 
   .axiom-payment-next-step-copy p {
-    font-size: 15px;
+    font-size: 14px;
   }
 }
