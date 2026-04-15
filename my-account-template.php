@@ -9,26 +9,24 @@ if (!defined('ABSPATH')) {
 get_header();
 ?>
 
-<main class="axiom-account-page">
+<main id="primary" class="site-main axiom-account-page">
   <div class="container">
-    <div class="axiom-account-shell">
-      <section class="axiom-account-hero">
-        <p class="axiom-account-kicker">My Account</p>
-        <h1>Account Center</h1>
-        <p class="axiom-account-subtitle">
-          Log in, manage your orders, update your details, and review your account activity in one place.
-        </p>
-      </section>
+    <section class="axiom-account-hero">
+      <p class="axiom-account-kicker">My Account</p>
+      <h1>Account Center</h1>
+      <p class="axiom-account-subtitle">
+        Log in, manage your orders, update your details, and review your account activity in one place.
+      </p>
+    </section>
 
-      <section class="axiom-account-wrapper">
-        <?php
-        while (have_posts()) :
-            the_post();
-            the_content();
-        endwhile;
-        ?>
-      </section>
-    </div>
+    <section class="axiom-account-wrapper">
+      <?php
+      while (have_posts()) :
+          the_post();
+          the_content();
+      endwhile;
+      ?>
+    </section>
   </div>
 </main>
 
