@@ -1,0 +1,62 @@
+.axiom-account-page {
+  padding: 24px 0 64px;
+  background: #ffffff;
+}
+
+.axiom-account-page .container {
+  max-width: 1180px;
+}
+
+.axiom-account-hero {
+  margin-bottom: 24px;
+  padding: 34px 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  text-align: center;
+}
+
+.axiom-account-kicker {
+  margin: 0 0 10px;
+  color: #5aa8df;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-account-hero h1 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-account-subtitle {
+  max-width: 760px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.axiom-account-wrapper {
+  display: block;
+}
+
+.woocommerce-account .woocommerce-notices-wrapper {
+  margin-bottom: 18px;
+}
+
+.woocommerce-account .woocommerce-message,
+.woocommerce-account .woocommerce-info,
+.woocommerce-account .woocommerce-error {
+  padding: 16px 18px;
+  border-radius: 18px;
+  border: 1px solid #dbe5ef;
+  background: #f8fbff;
+  color: #0f172a;
+  list-style: none;
+}
