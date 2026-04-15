@@ -35,23 +35,23 @@ if ($is_on_sale && $regular_price && $sale_price && (float) $regular_price > 0) 
     $save_percent = $percent > 0 ? 'Save ' . $percent . '%' : '';
 }
 
-$stock_text = $product->is_in_stock() ? 'In stock' : 'Out of stock';
+$stock_text  = $product->is_in_stock() ? 'In stock' : 'Out of stock';
 $stock_class = $product->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
 if ($product->managing_stock()) {
     $qty = (int) $product->get_stock_quantity();
 
     if ($qty > 5) {
-        $stock_text = $qty . ' available';
+        $stock_text  = $qty . ' available';
         $stock_class = 'stock-high';
     } elseif ($qty > 0) {
-        $stock_text = $qty . ' available';
+        $stock_text  = $qty . ' available';
         $stock_class = 'stock-low';
     } elseif ($product->backorders_allowed()) {
-        $stock_text = 'Available on backorder';
+        $stock_text  = 'Available on backorder';
         $stock_class = 'stock-backorder';
     } else {
-        $stock_text = 'Out of stock';
+        $stock_text  = 'Out of stock';
         $stock_class = 'stock-unavailable';
     }
 }
@@ -77,23 +77,23 @@ if ($is_variable) {
 
         $variation_label = implode(' / ', $label_parts);
 
-        $variation_stock_text = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
+        $variation_stock_text  = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
         $variation_stock_class = $variation_obj->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
         if ($variation_obj->managing_stock()) {
             $vqty = (int) $variation_obj->get_stock_quantity();
 
             if ($vqty > 5) {
-                $variation_stock_text = $vqty . ' available';
+                $variation_stock_text  = $vqty . ' available';
                 $variation_stock_class = 'stock-high';
             } elseif ($vqty > 0) {
-                $variation_stock_text = $vqty . ' available';
+                $variation_stock_text  = $vqty . ' available';
                 $variation_stock_class = 'stock-low';
             } elseif ($variation_obj->backorders_allowed()) {
-                $variation_stock_text = 'Available on backorder';
+                $variation_stock_text  = 'Available on backorder';
                 $variation_stock_class = 'stock-backorder';
             } else {
-                $variation_stock_text = 'Out of stock';
+                $variation_stock_text  = 'Out of stock';
                 $variation_stock_class = 'stock-unavailable';
             }
         }
@@ -197,13 +197,13 @@ if ($is_variable) {
                         <option
                           value="<?php echo esc_attr($option['variation_id']); ?>"
                           data-label="<?php echo esc_attr($option['label']); ?>"
-                          data-price-html="<?php echo esc_attr(wp_strip_all_tags($option['price_html'])); ?>"
+                          data-price-html="<?php echo esc_attr($option['price_html']); ?>"
                           data-image="<?php echo esc_url($option['image']); ?>"
                           data-stock-text="<?php echo esc_attr($option['stock_text']); ?>"
                           data-stock-class="<?php echo esc_attr($option['stock_class']); ?>"
                           data-purchasable="<?php echo $option['purchasable'] ? '1' : '0'; ?>"
                           data-attributes="<?php echo esc_attr(wp_json_encode($option['attributes'])); ?>"
-                          data-regular-price-html="<?php echo esc_attr(wp_strip_all_tags($option['regular_price_html'])); ?>"
+                          data-regular-price-html="<?php echo esc_attr($option['regular_price_html']); ?>"
                           data-save-percent="<?php echo esc_attr($option['save_percent']); ?>"
                           data-is-on-sale="<?php echo $option['is_on_sale'] ? '1' : '0'; ?>"
                         >
