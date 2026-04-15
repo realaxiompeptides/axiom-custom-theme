@@ -70,33 +70,6 @@ get_header();
             </div>
           </div>
 
-          <div class="axiom-affiliate-card">
-            <p class="axiom-affiliate-section-kicker">Program guidelines</p>
-            <h2>Important rules</h2>
-
-            <div class="axiom-affiliate-rules-grid">
-              <div class="axiom-affiliate-rule-box">
-                <strong>Use compliant marketing</strong>
-                <span>Do not make medical, therapeutic, disease, or human-use claims.</span>
-              </div>
-
-              <div class="axiom-affiliate-rule-box">
-                <strong>No misleading promotion</strong>
-                <span>Do not misrepresent pricing, policies, product use, or brand identity.</span>
-              </div>
-
-              <div class="axiom-affiliate-rule-box">
-                <strong>Research use only messaging</strong>
-                <span>Products must be promoted within appropriate research-use-only boundaries.</span>
-              </div>
-
-              <div class="axiom-affiliate-rule-box">
-                <strong>Approval required</strong>
-                <span>All applications are reviewed before affiliate access is granted.</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <aside class="axiom-affiliate-right">
           <div class="axiom-affiliate-card axiom-affiliate-apply-card" id="affiliate-apply">
