@@ -20,15 +20,24 @@ function axiom_render_custom_thankyou_header($order_id) {
     $order_shipping   = (float) $order->get_shipping_total();
     $order_tax        = (float) $order->get_total_tax();
     $payment_method   = $order->get_payment_method_title();
-    $order_status     = wc_get_order_status_name($order->get_status());
+    $order_status_slug = $order->get_status();
+    $order_status     = wc_get_order_status_name($order_status_slug);
     $shipping_methods = $order->get_shipping_methods();
     $shipping_label   = '';
+    $needs_payment    = $order->needs_payment();
 
     if (!empty($shipping_methods)) {
         $first_shipping = reset($shipping_methods);
         $shipping_label = $first_shipping ? $first_shipping->get_name() : '';
     }
 
+    /*
+     * Shipping logic:
+     * - timezone = America/Los_Angeles
+     * - Mon-Fri before 2:00 PM PT = ships same day
+     * - Mon-Fri at/after 2:00 PM PT = next business day
+     * - Sat/Sun = next Monday
+     */
     $la_timezone = new DateTimeZone('America/Los_Angeles');
 
     if ($order->get_date_created()) {
@@ -40,17 +49,18 @@ function axiom_render_custom_thankyou_header($order_id) {
         $ship_dt = new DateTime('now', $la_timezone);
     }
 
-    $day_num = (int) $ship_dt->format('N');
+    $day_num = (int) $ship_dt->format('N'); // 1=Mon, 7=Sun
     $hour    = (int) $ship_dt->format('G');
     $minute  = (int) $ship_dt->format('i');
-    $before_cutoff = ($hour < 14);
+
+    $is_before_cutoff = ($hour < 14);
 
     if ($day_num === 6) {
         $ship_dt->modify('next monday');
     } elseif ($day_num === 7) {
         $ship_dt->modify('next monday');
     } else {
-        if (!$before_cutoff || ($hour === 14 && $minute > 0)) {
+        if (!$is_before_cutoff || ($hour === 14 && $minute >= 0)) {
             if ($day_num === 5) {
                 $ship_dt->modify('next monday');
             } else {
@@ -61,6 +71,9 @@ function axiom_render_custom_thankyou_header($order_id) {
 
     $estimated_ship_date = $ship_dt->format('l, F j');
 
+    /*
+     * Delivery estimate
+     */
     $delivery_days = 5;
 
     if ($shipping_label) {
@@ -79,21 +92,23 @@ function axiom_render_custom_thankyou_header($order_id) {
     $delivery_dt->modify('+' . absint($delivery_days) . ' days');
     $estimated_delivery_date = $delivery_dt->format('l, F j');
 
-    $status_slug = $order->get_status();
+    /*
+     * Better universal copy
+     */
     $hero_title = 'Thank you for your order';
-    $hero_copy = 'We’ve received your order and are processing it now. You can review your order details, shipping timeline, and payment information below.';
+    $hero_copy  = 'We’ve received your order and you can review the full details below.';
 
-    if (in_array($status_slug, array('pending', 'on-hold'), true)) {
-        $hero_copy = 'We’ve received your order. You can review your order details, shipping timeline, and payment information below.';
-    } elseif (in_array($status_slug, array('processing', 'completed'), true)) {
-        $hero_copy = 'Your order has been successfully received and payment has been confirmed. You can review the full order details below.';
-    } elseif (in_array($status_slug, array('cancelled', 'failed'), true)) {
-        $hero_copy = 'You can review the order details and status below. If you need help with this order, please contact us.';
+    if (in_array($order_status_slug, array('pending', 'on-hold'), true)) {
+        $hero_copy = 'We’ve received your order. Please review your order details and complete any remaining payment steps below if needed.';
+    } elseif (in_array($order_status_slug, array('processing', 'completed'), true)) {
+        $hero_copy = 'Your order has been received and payment has been confirmed. You can review the full order details below.';
+    } elseif (in_array($order_status_slug, array('cancelled', 'failed'), true)) {
+        $hero_copy = 'You can review the order details and current order status below. If you need help, please contact us.';
     }
 
     echo '<section class="axiom-payment-confirmation-hero">';
-    echo '<h1>' . esc_html($hero_title) . '</h1>';
-    echo '<p class="axiom-payment-confirmation-copy">' . esc_html($hero_copy) . '</p>';
+    echo '  <h1>' . esc_html($hero_title) . '</h1>';
+    echo '  <p class="axiom-payment-confirmation-copy">' . esc_html($hero_copy) . '</p>';
     echo '</section>';
 
     echo '<section class="axiom-payment-status-card">';
@@ -113,7 +128,7 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      <div class="axiom-payment-status-row"><span>Shipping</span><strong>' . wp_kses_post(wc_price($order_shipping)) . '</strong></div>';
 
     if ($order_tax > 0) {
-        echo '      <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
+        echo '  <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
     }
 
     echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
@@ -126,11 +141,19 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '          <strong>' . esc_html($estimated_ship_date) . '</strong>';
     echo '          <p>Orders placed before 2:00 PM Pacific Time, Monday through Friday, usually ship the same day. Orders placed after cutoff or on weekends ship the next business day.</p>';
     echo '      </div>';
+
     echo '      <div class="axiom-payment-estimate-card">';
     echo '          <span>Estimated Delivery</span>';
     echo '          <strong>' . esc_html($estimated_delivery_date) . '</strong>';
     echo '          <p>' . esc_html($shipping_label ? $shipping_label : 'Selected shipping method') . '</p>';
     echo '      </div>';
     echo '  </div>';
+
+    if ($needs_payment) {
+        echo '  <div class="axiom-thankyou-pay-actions">';
+        echo '      <a class="button alt axiom-thankyou-pay-button" href="' . esc_url($order->get_checkout_payment_url()) . '">Pay now</a>';
+        echo '  </div>';
+    }
+
     echo '</section>';
 }
