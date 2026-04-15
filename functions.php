@@ -24,6 +24,8 @@ $axiom_function_files = array(
     '/functions/contact/contact-us.php',
 
     '/functions/affiliate-program/affiliate-program.php',
+
+    '/functions/account/account.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
