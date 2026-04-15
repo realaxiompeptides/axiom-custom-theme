@@ -9,6 +9,9 @@ function axiom_account_assets() {
     }
 
     if (is_account_page()) {
+        error_log('AXIOM TEMPLATE DIR: ' . get_template_directory());
+        error_log('AXIOM TEMPLATE URI: ' . get_template_directory_uri());
+
         wp_enqueue_style(
             'axiom-account',
             get_template_directory_uri() . '/assets/css/account/account.css',
