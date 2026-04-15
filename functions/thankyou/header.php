@@ -37,13 +37,6 @@ function axiom_render_custom_thankyou_header($order_id) {
     $is_zelle = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
     $is_venmo = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
 
-    /*
-     * Shipping logic
-     * America/Los_Angeles
-     * Mon-Fri before 2 PM PT = same day
-     * Mon-Fri 2 PM or later = next business day
-     * Sat/Sun = next Monday
-     */
     $la_timezone = new DateTimeZone('America/Los_Angeles');
 
     if ($order->get_date_created()) {
@@ -146,7 +139,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Zelle phone</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong>916-233-5312</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'916-233-5312\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'916-233-5312\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
 
@@ -154,7 +147,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Zelle email</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong>jaxferone@gmail.com</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'jaxferone@gmail.com\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'jaxferone@gmail.com\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
 
@@ -162,7 +155,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Payment note</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong>#' . esc_html($order_number) . '</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
         echo '      </div>';
@@ -185,7 +178,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Venmo username</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong>@thomas-harris-axiom</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'@thomas-harris-axiom\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'@thomas-harris-axiom\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
 
@@ -193,7 +186,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Venmo link</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'https://venmo.com/thomas-harris-axiom\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'https://venmo.com/thomas-harris-axiom\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
 
@@ -201,7 +194,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Payment note</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong>#' . esc_html($order_number) . '</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="navigator.clipboard.writeText(\'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
         echo '      </div>';
@@ -231,10 +224,29 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '          <div class="axiom-payment-next-step-number">3</div>';
     echo '          <div class="axiom-payment-next-step-copy">';
     echo '              <strong>Delivery</strong>';
-    echo '              <p><strong>Estimated ship date:</strong> ' . esc_html($estimated_ship_date) . '<br><strong>Estimated delivery:</strong> ' . esc_html($estimated_delivery_date) . '</p>';
+    echo '              <p>Estimated ship date is <strong>' . esc_html($estimated_ship_date) . '</strong> and estimated delivery is <strong>' . esc_html($estimated_delivery_date) . '</strong>.</p>';
     echo '          </div>';
     echo '      </div>';
 
     echo '  </div>';
     echo '</section>';
+
+    echo '<script>
+    function axiomCopyValue(button, value) {
+        if (!navigator.clipboard) {
+            return;
+        }
+
+        navigator.clipboard.writeText(value).then(function() {
+            var originalText = button.innerText;
+            button.innerText = "Copied!";
+            button.classList.add("is-copied");
+
+            setTimeout(function() {
+                button.innerText = originalText;
+                button.classList.remove("is-copied");
+            }, 1400);
+        });
+    }
+    </script>';
 }
