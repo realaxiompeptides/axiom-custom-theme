@@ -1,0 +1,125 @@
+@media (max-width: 767px) {
+  .axiom-payment-confirmation-hero,
+  .axiom-payment-status-card,
+  .axiom-thankyou-address-card {
+    padding: 18px 16px;
+    border-radius: 22px;
+  }
+
+  .axiom-payment-confirmation-hero h1 {
+    font-size: 28px;
+  }
+
+  .axiom-payment-confirmation-copy {
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .axiom-payment-status-top {
+    align-items: center;
+    gap: 14px;
+  }
+
+  .axiom-payment-status-icon {
+    width: 72px;
+    height: 72px;
+    font-size: 30px;
+  }
+
+  .axiom-payment-status-heading h2 {
+    font-size: 40px;
+  }
+
+  .axiom-payment-status-row span {
+    font-size: 15px;
+  }
+
+  .axiom-payment-status-row strong {
+    font-size: 16px;
+  }
+
+  .axiom-payment-alert-card,
+  .axiom-payment-instructions-card,
+  .axiom-payment-next-steps {
+    padding: 16px 14px;
+    border-radius: 16px;
+  }
+
+  .axiom-payment-alert-title,
+  .axiom-payment-instructions-header h3,
+  .axiom-payment-next-steps h3 {
+    font-size: 20px;
+  }
+
+  .axiom-payment-copy-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axiom-copy-button,
+  .axiom-thankyou-pay-button {
+    width: 100%;
+  }
+
+  .axiom-payment-copy-row strong,
+  .axiom-payment-copy-row strong a {
+    font-size: 16px;
+  }
+
+  .axiom-payment-next-step-copy strong {
+    font-size: 17px;
+  }
+
+  .axiom-payment-next-step-copy p {
+    font-size: 14px;
+  }
+
+  .axiom-summary-items {
+    padding: 16px 16px 8px;
+    gap: 12px;
+  }
+
+  .axiom-summary-item {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .axiom-summary-thumb {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    border-radius: 16px;
+  }
+
+  .axiom-summary-copy strong {
+    font-size: 16px;
+  }
+
+  .axiom-summary-copy span {
+    font-size: 13px;
+  }
+
+  .axiom-summary-price {
+    font-size: 17px;
+  }
+
+  .axiom-summary-totals {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .axiom-summary-row span,
+  .axiom-summary-row strong {
+    font-size: 15px;
+  }
+
+  .axiom-summary-row.axiom-summary-total span,
+  .axiom-summary-row.axiom-summary-total strong {
+    font-size: 20px;
+  }
+
+  .axiom-thankyou-address-content {
+    font-size: 15px;
+    line-height: 1.7;
+  }
+}
