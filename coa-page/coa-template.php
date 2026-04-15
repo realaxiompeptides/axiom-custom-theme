@@ -13,6 +13,13 @@ $products = function_exists('wc_get_products') ? wc_get_products(array(
     'limit'  => -1,
     'return' => 'objects',
 )) : array();
+
+$coa_css_path = get_template_directory() . '/assets/css/coa/coa.css';
+if (file_exists($coa_css_path)) {
+    echo '<style id="axiom-coa-inline-styles">';
+    readfile($coa_css_path);
+    echo '</style>';
+}
 ?>
 
 <main class="axiom-coa-page">
