@@ -1,0 +1,68 @@
+.axiom-payment-next-steps {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid #c6dced;
+  border-radius: 18px;
+  background: #ffffff;
+  opacity: 1 !important;
+}
+
+.axiom-payment-next-steps h3 {
+  margin: 0 0 14px;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.axiom-payment-next-step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 14px;
+}
+
+.axiom-payment-next-step-number {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.axiom-payment-next-step:first-of-type .axiom-payment-next-step-number {
+  background: #1f7a3b;
+}
+
+.axiom-payment-next-step:nth-of-type(2) .axiom-payment-next-step-number {
+  background: #2f6ff2;
+}
+
+.axiom-payment-next-step:nth-of-type(3) .axiom-payment-next-step-number {
+  background: #8b42f5;
+}
+
+.axiom-payment-next-step-copy strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.axiom-payment-next-step-copy p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.axiom-payment-next-step-copy p strong {
+  color: #0f172a;
+  font-weight: 900;
+}
