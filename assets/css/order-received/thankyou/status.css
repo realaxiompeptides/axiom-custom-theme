@@ -1,0 +1,79 @@
+.axiom-payment-status-card {
+  padding: 20px;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.axiom-payment-status-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+.axiom-payment-status-icon {
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #4aa7e8, #2f84bf);
+  color: #ffffff;
+  font-size: 38px;
+  box-shadow: 0 16px 30px rgba(47, 132, 191, 0.18);
+}
+
+.axiom-payment-status-heading span {
+  display: block;
+  margin-bottom: 4px;
+  color: #697586;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.axiom-payment-status-heading h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 54px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.axiom-payment-status-rows {
+  border-top: 1px solid #e5edf5;
+}
+
+.axiom-payment-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 0;
+  border-top: 1px solid #e5edf5;
+}
+
+.axiom-payment-status-row:first-child {
+  border-top: 0;
+}
+
+.axiom-payment-status-row span {
+  color: #697586;
+  font-size: 17px;
+  line-height: 1.4;
+}
+
+.axiom-payment-status-row strong {
+  color: #0f172a;
+  font-size: 18px;
+  line-height: 1.4;
+  font-weight: 900;
+  text-align: right;
+}
+
+.axiom-payment-status-row--total span,
+.axiom-payment-status-row--total strong {
+  font-size: 20px;
+}
