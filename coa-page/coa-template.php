@@ -39,10 +39,20 @@ $products = function_exists('wc_get_products') ? wc_get_products(array(
               continue;
           }
 
-          $product_name  = $product->get_name();
-          $product_image = $product->get_image_id()
-              ? wp_get_attachment_image_url($product->get_image_id(), 'medium')
-              : wc_placeholder_img_src();
+          $product_name = $product->get_name();
+
+          $product_image_html = $product->get_image(
+              'woocommerce_thumbnail',
+              array(
+                  'class'   => 'axiom-coa-product-image',
+                  'loading' => 'lazy',
+                  'alt'     => $product_name,
+              )
+          );
+
+          if (empty($product_image_html)) {
+              $product_image_html = '<img class="axiom-coa-product-image" src="' . esc_url(wc_placeholder_img_src()) . '" alt="' . esc_attr($product_name) . '">';
+          }
 
           $product_coa    = function_exists('axiom_get_product_coa_data') ? axiom_get_product_coa_data($product) : array();
           $product_status = !empty($product_coa['status']) ? $product_coa['status'] : 'not_ready';
@@ -51,7 +61,7 @@ $products = function_exists('wc_get_products') ? wc_get_products(array(
           <article class="axiom-coa-card" data-search="<?php echo esc_attr(strtolower($product_name)); ?>">
             <div class="axiom-coa-card-head">
               <div class="axiom-coa-product-media">
-                <img src="<?php echo esc_url($product_image); ?>" alt="<?php echo esc_attr($product_name); ?>">
+                <?php echo $product_image_html; ?>
               </div>
 
               <div class="axiom-coa-product-meta">
