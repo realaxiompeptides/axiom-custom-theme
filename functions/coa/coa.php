@@ -5,13 +5,14 @@ if (!defined('ABSPATH')) {
 
 function axiom_coa_assets() {
     if (
+        is_page('coa-page') ||
         is_page('coa') ||
         is_page('coas') ||
         is_page('certificate-of-analysis') ||
         is_page('certificates-of-analysis') ||
         (function_exists('is_page_template') && (
-            is_page_template('coa-template.php') ||
-            is_page_template('coa-page/coa-template.php')
+            is_page_template('coa-page/coa-template.php') ||
+            is_page_template('coa-template.php')
         ))
     ) {
         $theme_uri = get_template_directory_uri();
@@ -20,7 +21,7 @@ function axiom_coa_assets() {
             'axiom-coa',
             $theme_uri . '/assets/css/coa/coa.css',
             array(),
-            '1.3'
+            '1.4'
         );
 
         wp_enqueue_script(
