@@ -498,3 +498,116 @@
     grid-template-columns: 1fr;
   }
 }
+
+.axiom-account-section {
+  display: grid;
+  gap: 20px;
+}
+
+.axiom-account-orders-card {
+  padding: 22px 20px;
+}
+
+.axiom-account-orders-list {
+  display: grid;
+  gap: 14px;
+}
+
+.axiom-account-order-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  padding: 18px;
+  border: 1px solid #e7eef5;
+  border-radius: 20px;
+  background: #f8fbff;
+}
+
+.axiom-account-order-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.axiom-account-order-number {
+  color: #0f172a;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.axiom-account-order-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #e8f3fb;
+  color: #3c8fcf;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.axiom-account-order-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 18px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.axiom-account-order-meta strong {
+  color: #0f172a;
+}
+
+.axiom-account-order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.axiom-account-order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #5aa8df;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.axiom-account-order-btn:hover {
+  background: #4798d5;
+  color: #ffffff;
+}
+
+.axiom-account-pagination {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+@media (max-width: 767px) {
+  .axiom-account-order-row {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-account-order-actions {
+    justify-content: stretch;
+  }
+
+  .axiom-account-order-btn {
+    width: 100%;
+  }
+}
