@@ -3,35 +3,18 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Load modular function files.
- */
-$axiom_function_files = array(
-    '/functions/core/setup.php',
-    '/functions/core/assets.php',
+function axiom_account_assets() {
+    if (!function_exists('is_account_page')) {
+        return;
+    }
 
-    '/functions/shop/catalog.php',
-
-    '/functions/cart/ajax-cart.php',
-
-    '/functions/checkout/fields.php',
-    '/functions/checkout/shipping.php',
-    '/functions/checkout/coupons.php',
-
-    '/functions/thankyou/templates.php',
-    '/functions/thankyou/header.php',
-
-    '/functions/contact/contact-us.php',
-
-    '/functions/affiliate-program/affiliate-program.php',
-
-    '/functions/account/account.php',
-);
-
-foreach ($axiom_function_files as $axiom_file) {
-    $axiom_path = get_template_directory() . $axiom_file;
-
-    if (file_exists($axiom_path)) {
-        require_once $axiom_path;
+    if (is_account_page()) {
+        wp_enqueue_style(
+            'axiom-account',
+            get_template_directory_uri() . '/assets/css/account/account.css',
+            array('axiom-base'),
+            '1.0'
+        );
     }
 }
+add_action('wp_enqueue_scripts', 'axiom_account_assets', 20);
