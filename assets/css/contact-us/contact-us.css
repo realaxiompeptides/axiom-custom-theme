@@ -153,4 +153,158 @@
 }
 
 .axiom-contact-info-copy strong,
-.axiom-contact-info-copy strong
+.axiom-contact-info-copy strong a {
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 900;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.axiom-contact-help-item strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.axiom-contact-help-item span {
+  display: block;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Form styling */
+.axiom-contact-form-wrap form,
+.axiom-contact-form-wrap .contact-form {
+  margin-top: 18px;
+}
+
+.axiom-contact-form-wrap p {
+  margin-bottom: 18px;
+  color: #0f172a;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.axiom-contact-form-wrap label {
+  display: block;
+  margin-bottom: 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.axiom-contact-form-wrap input[type="text"],
+.axiom-contact-form-wrap input[type="email"],
+.axiom-contact-form-wrap input[type="tel"],
+.axiom-contact-form-wrap input[type="url"],
+.axiom-contact-form-wrap textarea,
+.axiom-contact-form-wrap select {
+  width: 100%;
+  min-height: 58px;
+  padding: 16px 18px;
+  border: 1px solid #d6e2ee;
+  border-radius: 18px;
+  background: #fbfdff;
+  color: #0f172a;
+  font-size: 16px;
+  box-shadow: none;
+  outline: none;
+}
+
+.axiom-contact-form-wrap textarea {
+  min-height: 180px;
+  resize: vertical;
+}
+
+.axiom-contact-form-wrap input:focus,
+.axiom-contact-form-wrap textarea:focus,
+.axiom-contact-form-wrap select:focus {
+  border-color: #4fa2dc;
+  background: #ffffff;
+}
+
+.axiom-contact-form-wrap button,
+.axiom-contact-form-wrap input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 999px;
+  background: #4fa2dc;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.axiom-contact-form-wrap button:hover,
+.axiom-contact-form-wrap input[type="submit"]:hover {
+  background: #3f96d5;
+}
+
+@media (max-width: 991px) {
+  .axiom-contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-contact-hero-card h1 {
+    font-size: 42px;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-contact-page {
+    padding: 18px 0 48px;
+  }
+
+  .axiom-contact-hero-card,
+  .axiom-contact-form-card,
+  .axiom-contact-info-card,
+  .axiom-contact-help-card,
+  .axiom-contact-policy-card {
+    padding: 22px 18px;
+    border-radius: 24px;
+  }
+
+  .axiom-contact-hero-card h1 {
+    font-size: 34px;
+  }
+
+  .axiom-contact-subtitle {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .axiom-contact-section-head h2,
+  .axiom-contact-info-card h3,
+  .axiom-contact-help-card h3,
+  .axiom-contact-policy-card h3 {
+    font-size: 28px;
+  }
+
+  .axiom-contact-form-wrap input[type="text"],
+  .axiom-contact-form-wrap input[type="email"],
+  .axiom-contact-form-wrap input[type="tel"],
+  .axiom-contact-form-wrap input[type="url"],
+  .axiom-contact-form-wrap textarea,
+  .axiom-contact-form-wrap select {
+    min-height: 54px;
+    font-size: 16px;
+  }
+
+  .axiom-contact-form-wrap textarea {
+    min-height: 160px;
+  }
+
+  .axiom-contact-form-wrap button,
+  .axiom-contact-form-wrap input[type="submit"] {
+    width: 100%;
+  }
+}
