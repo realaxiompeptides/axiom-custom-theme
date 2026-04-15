@@ -835,3 +835,25 @@ ul.woocommerce-order-overview.woocommerce-thankyou-order-details {
     font-size: 14px;
   }
 }
+
+.axiom-copy-button.is-copied {
+  background: #4aa7e8 !important;
+  opacity: 0.9;
+}
+
+.axiom-payment-next-step:first-of-type .axiom-payment-next-step-number {
+  background: #1f7a3b;
+}
+
+.axiom-payment-next-step:nth-of-type(2) .axiom-payment-next-step-number {
+  background: #2f6ff2;
+}
+
+.axiom-payment-next-step:nth-of-type(3) .axiom-payment-next-step-number {
+  background: #8b42f5;
+}
+
+.axiom-payment-next-step-copy p strong {
+  color: #0f172a;
+  font-weight: 900;
+}
