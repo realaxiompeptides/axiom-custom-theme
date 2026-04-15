@@ -1,0 +1,22 @@
+.axiom-thankyou-address-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+.axiom-thankyou-address-card {
+  padding: 22px 20px;
+  border: 1px solid #dbe7f3;
+  border-radius: 28px;
+  background: #ffffff;
+}
+
+.axiom-thankyou-address-content {
+  color: #475569;
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.axiom-thankyou-address-content strong {
+  color: #0f172a;
+}
