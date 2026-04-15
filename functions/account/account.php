@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) {
 function axiom_account_assets() {
     if (
         (function_exists('is_account_page') && is_account_page()) ||
-        (function_exists('is_page_template') && is_page_template('my-account/my-account-template.php')) ||
+        (function_exists('is_page_template') && is_page_template('my-account-template.php')) ||
         is_page('my-account')
     ) {
         wp_enqueue_style(
