@@ -26,6 +26,9 @@ $axiom_function_files = array(
     '/functions/affiliate-program/affiliate-program.php',
 
     '/functions/account/account.php',
+    '/functions/account/default-endpoint.php',
+
+    '/functions/coa/coa.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
