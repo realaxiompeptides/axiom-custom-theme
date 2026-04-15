@@ -1,0 +1,101 @@
+.axiom-payment-alert-card {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 2px solid #d43f3a;
+  border-radius: 18px;
+  background: #fff3f2;
+  opacity: 1 !important;
+}
+
+.axiom-payment-alert-title {
+  margin-bottom: 8px;
+  color: #cc2f2a;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.axiom-payment-alert-card p {
+  margin: 0 0 8px;
+  color: #7f1d1d;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 800;
+}
+
+.axiom-payment-instructions-card {
+  margin-top: 14px;
+  padding: 18px;
+  border: 1px solid #b9d8ee;
+  border-radius: 18px;
+  background: #edf7ff;
+  opacity: 1 !important;
+}
+
+.axiom-payment-instructions-header h3 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 900;
+}
+
+.axiom-payment-instructions-body p {
+  margin: 0 0 10px;
+  color: #5f6f84;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.axiom-payment-copy-field {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #cfe2f1;
+}
+
+.axiom-payment-copy-field span {
+  display: block;
+  margin-bottom: 8px;
+  color: #697586;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.axiom-payment-copy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.axiom-payment-copy-row strong,
+.axiom-payment-copy-row strong a {
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 900;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.axiom-copy-button,
+.axiom-thankyou-pay-button {
+  min-width: 90px;
+  min-height: 46px;
+  padding: 0 16px;
+  border: 0 !important;
+  border-radius: 14px !important;
+  background: #69afe0 !important;
+  color: #ffffff !important;
+  font-size: 15px !important;
+  font-weight: 900 !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+.axiom-copy-button.is-copied {
+  background: #4c9ed8 !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
