@@ -181,3 +181,58 @@ main {
     font-size: 15px;
   }
 }
+
+.screen-reader-text,
+.woocommerce .screen-reader-text,
+.single-product .screen-reader-text,
+.single-product .price .screen-reader-text,
+.single-product .woocommerce-variation-price .screen-reader-text,
+.single-product .woocommerce-variation .price .screen-reader-text {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Clean variable/sale price layout */
+.single-product div.product .summary .price,
+.single-product .woocommerce-variation-price,
+.single-product .woocommerce-variation .price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 10px;
+  margin: 8px 0 18px;
+  line-height: 1.1;
+}
+
+.single-product div.product .summary .price del,
+.single-product .woocommerce-variation-price del,
+.single-product .woocommerce-variation .price del {
+  color: #7b8798;
+  opacity: 1;
+  font-size: 22px;
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+}
+
+.single-product div.product .summary .price ins,
+.single-product .woocommerce-variation-price ins,
+.single-product .woocommerce-variation .price ins {
+  color: #0f172a;
+  text-decoration: none;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.single-product div.product .summary .price .amount,
+.single-product .woocommerce-variation-price .amount,
+.single-product .woocommerce-variation .price .amount {
+  white-space: nowrap;
+}
