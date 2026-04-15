@@ -1,0 +1,41 @@
+.woocommerce-account .u-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.woocommerce-account .u-column1,
+.woocommerce-account .u-column2,
+.woocommerce-account .woocommerce form.login,
+.woocommerce-account .woocommerce form.register,
+.woocommerce-account .woocommerce-ResetPassword {
+  padding: 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 30px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+}
+
+.woocommerce-account h2 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 34px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.woocommerce-account .lost_password {
+  margin-top: 18px;
+  margin-bottom: 0;
+}
+
+.woocommerce-account .lost_password a {
+  color: #0f172a;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.woocommerce-account .lost_password a:hover {
+  color: #5aa8df;
+}
