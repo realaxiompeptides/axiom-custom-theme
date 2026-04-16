@@ -3,7 +3,7 @@
   border: 1px solid #ead56e !important;
   background: #fef9e7 !important;
   border-radius: 20px !important;
-  margin: 14px 0 16px !important;
+  margin: 22px 0 16px !important;
 }
 
 .axiom-research-use-box {
@@ -85,7 +85,7 @@
 @media (max-width: 767px) {
   .axiom-checkout-research-wrap--payment {
     padding: 7px 9px !important;
-    margin: 12px 0 14px !important;
+    margin: 18px 0 14px !important;
     border-radius: 18px !important;
   }
 
