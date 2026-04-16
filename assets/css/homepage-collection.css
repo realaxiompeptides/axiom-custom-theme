@@ -27,31 +27,30 @@
 
 .homepage-product-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 20px 42px rgba(15, 23, 42, 0.10);
 }
 
 .homepage-product-image-wrap {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   aspect-ratio: 1 / 1;
   padding: 26px 18px 18px;
   background: linear-gradient(180deg, #f9fbff 0%, #f2f7fc 100%);
 }
 
 .homepage-product-image-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  place-items: center;
   width: 100%;
   height: 100%;
+  min-height: 100%;
 }
 
 .homepage-product-image-link img {
   display: block;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   max-width: 86%;
   max-height: 285px;
   object-fit: contain;
@@ -113,41 +112,47 @@
 }
 
 .homepage-product-old-price {
-  color: #97a4b5;
-  text-decoration: line-through;
-  text-decoration-color: #97a4b5;
-  text-decoration-thickness: 2px;
+  color: #97a4b5 !important;
   font-size: 14px;
   font-weight: 700;
   line-height: 1;
+  text-decoration: line-through !important;
+  text-decoration-color: #97a4b5 !important;
+  text-decoration-thickness: 2px !important;
+}
+
+.homepage-product-old-price .amount {
+  color: #97a4b5 !important;
+  text-decoration: line-through !important;
+  text-decoration-color: #97a4b5 !important;
+  text-decoration-thickness: 2px !important;
 }
 
 .homepage-product-current-price {
-  color: #46a2eb;
+  color: #46a2eb !important;
   font-size: 20px;
   font-weight: 900;
   line-height: 1;
   text-decoration: none !important;
 }
 
-.homepage-product-current-price,
-.homepage-product-current-price *,
-.homepage-product-price,
-.homepage-product-price *,
-.homepage-product-price .amount {
+.homepage-product-current-price .amount {
   color: #46a2eb !important;
   text-decoration: none !important;
 }
 
-.homepage-product-price del,
-.homepage-product-price del .amount {
+/* Safety overrides in case WooCommerce injects del/ins somewhere */
+.homepage-product-price-block del,
+.homepage-product-price-block del .amount {
   color: #97a4b5 !important;
   text-decoration: line-through !important;
   text-decoration-color: #97a4b5 !important;
+  text-decoration-thickness: 2px !important;
+  opacity: 1 !important;
 }
 
-.homepage-product-price ins,
-.homepage-product-price ins .amount {
+.homepage-product-price-block ins,
+.homepage-product-price-block ins .amount {
   color: #46a2eb !important;
   text-decoration: none !important;
 }
@@ -235,8 +240,7 @@
   }
 
   .homepage-product-current-price,
-  .homepage-product-price,
-  .homepage-product-price .amount {
+  .homepage-product-current-price .amount {
     font-size: 17px !important;
   }
 
