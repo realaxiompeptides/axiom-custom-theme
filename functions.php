@@ -30,6 +30,7 @@ $axiom_function_files = array(
     '/functions/account/default-endpoint.php',
 
     '/functions/coa/coa.php',
+    '/functions/coa/coa-map.php',
 
     '/functions/calculator/peptide-calculator.php',
 );
