@@ -18,47 +18,6 @@ function axiom_coa_normalize_text($text) {
 }
 
 /**
- * Manual exact attachment overrides by product name.
- * KEY = exact WooCommerce product name
- * VALUE = attachment title/file tokens to match first
- */
-function axiom_coa_manual_attachment_map() {
-    return array(
-        'NAD+' => array(
-            'axiom-nad-plus-500mg-coa',
-        ),
-    );
-}
-
-/**
- * Manual alias map.
- * KEY = product display name as it exists in WooCommerce
- * VALUE = array of keywords/tokens that may appear in COA filenames/titles.
- */
-function axiom_coa_manual_alias_map() {
-    return array(
-        'BAC WATER' => array('bac-water', 'bac-water-10ml'),
-        'GHK-CU' => array('ghk-cu', 'ghk-cu-100mg', 'ghk-cu-100mg-3ml'),
-        'GLP-3 RT' => array('glp-3-rt', 'glp-3-rt-10mg', 'glp-3-rt-20mg', 'glp-3-rt-10mg-3ml', 'glp-3-rt-20mg-3ml'),
-        'SELANK' => array('selank', 'selank-10mg'),
-        'SEMAX' => array('semax', 'semax-10mg', 'semax-10mg-3ml'),
-        'NAD+' => array('nad-plus', 'nad', 'nad-plus-500mg', 'nad-500mg'),
-        'TB-500' => array('tb-500', 'tb-500-10mg', 'tb500'),
-        'SS-31' => array('ss-31', 'ss31', 'ss-31-10mg'),
-        'GLOW' => array('glow', 'glow-50mg'),
-        'BPC-157' => array('bpc-157', 'bpc157', 'bpc-157-5mg', 'bpc-157-10mg'),
-        'MOTS-C' => array('mots-c', 'motsc'),
-        'MT-1' => array('mt-1', 'mt1'),
-        'MT-2' => array('mt-2', 'mt2'),
-        'IPAMORELIN' => array('ipamorelin'),
-        'CJC-1295' => array('cjc-1295', 'cjc1295'),
-        'CJC-1295 NO DAC' => array('cjc-1295', 'cjc1295', 'no-dac'),
-        'CJC-1295 WITH DAC' => array('cjc-1295', 'cjc1295', 'with-dac', 'dac'),
-        'NAD PLUS' => array('nad-plus', 'nad', 'nad-plus-500mg', 'nad-500mg'),
-    );
-}
-
-/**
  * Get product image HTML.
  */
 function axiom_coa_get_product_image_html($product) {
@@ -77,61 +36,6 @@ function axiom_coa_get_product_image_html($product) {
     }
 
     return wc_placeholder_img('woocommerce_thumbnail');
-}
-
-/**
- * Build matching keys for a product.
- * This version prefers manual aliases over slugs.
- */
-function axiom_coa_get_product_match_keys($product) {
-    if (!$product || !is_a($product, 'WC_Product')) {
-        return array();
-    }
-
-    $keys = array();
-
-    $product_name = $product->get_name();
-    $product_name_upper = strtoupper(trim($product_name));
-    $product_name_norm  = axiom_coa_normalize_text($product_name);
-
-    $keys[] = $product_name_norm;
-
-    $alias_map = axiom_coa_manual_alias_map();
-
-    if (isset($alias_map[$product_name_upper]) && is_array($alias_map[$product_name_upper])) {
-        foreach ($alias_map[$product_name_upper] as $alias) {
-            $keys[] = axiom_coa_normalize_text($alias);
-        }
-    }
-
-    $keys[] = str_replace('plus', '', $product_name_norm);
-    $keys[] = str_replace('-with-dac', '', $product_name_norm);
-    $keys[] = str_replace('-no-dac', '', $product_name_norm);
-    $keys[] = str_replace(' ', '-', strtolower(trim($product_name)));
-
-    $keys = array_filter(array_unique(array_map('trim', $keys)));
-
-    return array_values($keys);
-}
-
-/**
- * Get attachment search text from title + actual file basename.
- */
-function axiom_coa_get_attachment_search_string($attachment_id) {
-    $title = get_the_title($attachment_id);
-    $file  = get_attached_file($attachment_id);
-    $base  = $file ? pathinfo($file, PATHINFO_FILENAME) : '';
-
-    $title_norm = axiom_coa_normalize_text($title);
-    $base_norm  = axiom_coa_normalize_text($base);
-
-    $search = trim($title_norm . ' ' . $base_norm);
-    $search = str_replace('axiom-', '', $search);
-    $search = str_replace('-coa', '', $search);
-    $search = str_replace(' coa', '', $search);
-    $search = preg_replace('/\s+/', ' ', trim($search));
-
-    return $search;
 }
 
 /**
@@ -163,14 +67,18 @@ function axiom_coa_get_all_attachments() {
 }
 
 /**
- * Manual attachment lookup first.
+ * Match only from the separate COA map file.
  */
-function axiom_coa_get_manual_attachments_for_product($product) {
-    if (!$product || !is_a($product, 'WC_Product')) {
+function axiom_coa_get_matching_attachments_for_product($product) {
+    if (
+        !$product ||
+        !is_a($product, 'WC_Product') ||
+        !function_exists('axiom_coa_file_map')
+    ) {
         return array();
     }
 
-    $map = axiom_coa_manual_attachment_map();
+    $map = axiom_coa_file_map();
     $product_name = trim($product->get_name());
 
     if (empty($map[$product_name]) || !is_array($map[$product_name])) {
@@ -185,7 +93,6 @@ function axiom_coa_get_manual_attachments_for_product($product) {
         $title = axiom_coa_normalize_text(get_the_title($attachment->ID));
         $file  = get_attached_file($attachment->ID);
         $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
-        $full  = axiom_coa_get_attachment_search_string($attachment->ID);
 
         foreach ($wanted_keys as $wanted) {
             if (
@@ -193,10 +100,8 @@ function axiom_coa_get_manual_attachments_for_product($product) {
                 (
                     $title === $wanted ||
                     $base === $wanted ||
-                    $full === $wanted ||
                     strpos($title, $wanted) !== false ||
-                    strpos($base, $wanted) !== false ||
-                    strpos($full, $wanted) !== false
+                    strpos($base, $wanted) !== false
                 )
             ) {
                 $matches[] = $attachment->ID;
@@ -209,102 +114,14 @@ function axiom_coa_get_manual_attachments_for_product($product) {
 }
 
 /**
- * Score one attachment against one product.
+ * Build a nice variant label from the filename.
  */
-function axiom_coa_score_attachment_for_product($attachment_id, $product) {
-    $keys = axiom_coa_get_product_match_keys($product);
-
-    if (empty($keys)) {
-        return 0;
-    }
-
-    $title = axiom_coa_normalize_text(get_the_title($attachment_id));
-    $file  = get_attached_file($attachment_id);
-    $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
-    $full  = axiom_coa_get_attachment_search_string($attachment_id);
-
-    $score = 0;
-
-    foreach ($keys as $key) {
-        if (!$key) {
-            continue;
-        }
-
-        if ($title === $key || $base === $key || $full === $key) {
-            $score += 120;
-        }
-
-        if (strpos($title, $key) !== false) {
-            $score += 45;
-        }
-
-        if (strpos($base, $key) !== false) {
-            $score += 75;
-        }
-
-        if (strpos($full, $key) !== false) {
-            $score += 55;
-        }
-
-        $short_key = str_replace(array('-plus', 'plus-'), '', $key);
-        if ($short_key && strpos($base, $short_key) !== false) {
-            $score += 25;
-        }
-    }
-
-    if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
-        $score += 20;
-    }
-
-    return $score;
-}
-
-/**
- * Get matching attachments for product.
- */
-function axiom_coa_get_matching_attachments_for_product($product) {
-    if (!$product || !is_a($product, 'WC_Product')) {
-        return array();
-    }
-
-    $manual_matches = axiom_coa_get_manual_attachments_for_product($product);
-    if (!empty($manual_matches)) {
-        return $manual_matches;
-    }
-
-    $attachments = axiom_coa_get_all_attachments();
-    $matches     = array();
-
-    foreach ($attachments as $attachment) {
-        $score = axiom_coa_score_attachment_for_product($attachment->ID, $product);
-
-        if ($score > 0) {
-            $matches[$attachment->ID] = $score;
-        }
-    }
-
-    arsort($matches);
-
-    return array_keys($matches);
-}
-
-/**
- * Label from filename remainder.
- */
-function axiom_coa_get_attachment_variant_label($attachment_id, $product) {
+function axiom_coa_get_attachment_variant_label($attachment_id) {
     $file = get_attached_file($attachment_id);
     $base = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
-    $keys = axiom_coa_get_product_match_keys($product);
 
     $base = str_replace('axiom-', '', $base);
     $base = str_replace('-coa', '', $base);
-
-    foreach ($keys as $key) {
-        if ($key) {
-            $base = str_replace($key, '', $base);
-        }
-    }
-
     $base = trim($base, '- ');
 
     if (!$base) {
@@ -335,13 +152,19 @@ function axiom_coa_page_shortcode() {
       <div class="container">
         <div class="axiom-coa-hero">
           <p class="axiom-coa-kicker">Batch Documentation</p>
-          <h1>Certificates of Analysis</h1>
+          <h1>Janoshik Tested COAs</h1>
           <p class="axiom-coa-subtitle">
-            Browse product COAs and open the corresponding certificate for each research compound.
+            Browse product and variant-specific certificates of analysis. COAs are listed by product and variant when available.
           </p>
         </div>
 
-        <div class="axiom-coa-grid">
+        <div class="axiom-coa-toolbar">
+          <div class="axiom-coa-search-wrap">
+            <input type="text" id="axiomCoaSearch" placeholder="Search products..." />
+          </div>
+        </div>
+
+        <div class="axiom-coa-grid" id="axiomCoaGrid">
           <?php foreach ($all_products as $product) :
               if (!$product || !is_a($product, 'WC_Product')) {
                   continue;
@@ -350,7 +173,7 @@ function axiom_coa_page_shortcode() {
               $matches = axiom_coa_get_matching_attachments_for_product($product);
               $has_coa = !empty($matches);
               ?>
-              <article class="axiom-coa-card">
+              <article class="axiom-coa-card" data-product-name="<?php echo esc_attr(strtolower($product->get_name())); ?>">
                 <div class="axiom-coa-card-head">
                   <div class="axiom-coa-product-media">
                     <?php echo axiom_coa_get_product_image_html($product); ?>
@@ -374,7 +197,7 @@ function axiom_coa_page_shortcode() {
                   <?php if ($has_coa) : ?>
                     <?php foreach ($matches as $attachment_id) :
                         $file_url = wp_get_attachment_url($attachment_id);
-                        $label    = axiom_coa_get_attachment_variant_label($attachment_id, $product);
+                        $label    = axiom_coa_get_attachment_variant_label($attachment_id);
                         ?>
                         <div class="axiom-coa-variant-row">
                           <div class="axiom-coa-variant-copy">
@@ -403,6 +226,24 @@ function axiom_coa_page_shortcode() {
         </div>
       </div>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const searchInput = document.getElementById('axiomCoaSearch');
+      const cards = document.querySelectorAll('.axiom-coa-card');
+
+      if (!searchInput || !cards.length) return;
+
+      searchInput.addEventListener('input', function () {
+        const query = (searchInput.value || '').toLowerCase().trim();
+
+        cards.forEach((card) => {
+          const name = (card.getAttribute('data-product-name') || '').toLowerCase();
+          card.style.display = !query || name.includes(query) ? '' : 'none';
+        });
+      });
+    });
+    </script>
     <?php
 
     return ob_get_clean();
@@ -428,7 +269,7 @@ function axiom_enqueue_coa_assets() {
             'axiom-coa-page',
             get_template_directory_uri() . '/assets/css/coa-page.css',
             array(),
-            '1.0.3'
+            '1.0.4'
         );
     }
 }
