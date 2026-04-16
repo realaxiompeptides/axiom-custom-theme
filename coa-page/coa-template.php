@@ -101,16 +101,27 @@ if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
 }
 
 if (!function_exists('axiom_coa_template_get_variant_label')) {
-    function axiom_coa_template_get_variant_label($attachment_id) {
+    function axiom_coa_template_get_variant_label($attachment_id, $product_name = '') {
         $file = get_attached_file($attachment_id);
         $base = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
 
         $base = str_replace('axiom-', '', $base);
         $base = str_replace('-coa', '', $base);
+
+        if ($product_name) {
+            $product_norm = axiom_coa_template_normalize_text($product_name);
+            $product_norm = str_replace('plus', 'plus', $product_norm);
+            $base = str_replace($product_norm, '', $base);
+
+            if ($product_norm === 'nad-plus') {
+                $base = str_replace('nad', '', $base);
+            }
+        }
+
         $base = trim($base, '- ');
 
         if (!$base) {
-            return 'COA FILE';
+            return 'COA';
         }
 
         return strtoupper(str_replace('-', ' ', $base));
@@ -118,11 +129,11 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 }
 
 $products = function_exists('wc_get_products') ? wc_get_products(array(
-    'status' => 'publish',
-    'limit'  => -1,
-    'return' => 'objects',
-    'orderby'=> 'menu_order',
-    'order'  => 'ASC',
+    'status'  => 'publish',
+    'limit'   => -1,
+    'return'  => 'objects',
+    'orderby' => 'menu_order',
+    'order'   => 'ASC',
 )) : array();
 
 $coa_css_path = get_template_directory() . '/assets/css/coa/coa.css';
@@ -196,36 +207,6 @@ if (file_exists($coa_css_path)) {
               </div>
             </div>
 
-            <?php if (!empty($product_matches)) : ?>
-              <div class="axiom-coa-actions">
-                <?php
-                $first_attachment_id = $product_matches[0];
-                $first_file_url      = wp_get_attachment_url($first_attachment_id);
-                $first_mime_type     = get_post_mime_type($first_attachment_id);
-                $first_is_image      = strpos((string) $first_mime_type, 'image/') === 0;
-                ?>
-
-                <?php if ($first_is_image && !empty($first_file_url)) : ?>
-                  <button
-                    type="button"
-                    class="axiom-coa-btn axiom-coa-open-modal"
-                    data-coa-title="<?php echo esc_attr($product_name . ' COA'); ?>"
-                    data-coa-image="<?php echo esc_url($first_file_url); ?>"
-                  >
-                    View COA
-                  </button>
-
-                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($first_file_url); ?>" target="_blank" rel="noopener noreferrer">
-                    Open Image
-                  </a>
-                <?php elseif (!empty($first_file_url)) : ?>
-                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($first_file_url); ?>" target="_blank" rel="noopener noreferrer">
-                    Open PDF
-                  </a>
-                <?php endif; ?>
-              </div>
-            <?php endif; ?>
-
             <div class="axiom-coa-variant-list">
               <?php if (!empty($product_matches)) : ?>
                 <?php foreach ($product_matches as $attachment_id) : ?>
@@ -233,7 +214,8 @@ if (file_exists($coa_css_path)) {
                   $file_url  = wp_get_attachment_url($attachment_id);
                   $mime_type = get_post_mime_type($attachment_id);
                   $is_image  = strpos((string) $mime_type, 'image/') === 0;
-                  $label     = axiom_coa_template_get_variant_label($attachment_id);
+                  $label     = axiom_coa_template_get_variant_label($attachment_id, $product_name);
+                  $modal_title = $product_name . ($label && $label !== 'COA' ? ' — ' . $label : '');
                   ?>
                   <div class="axiom-coa-variant-row" data-search="<?php echo esc_attr(strtolower($product_name . ' ' . $label)); ?>">
                     <div class="axiom-coa-variant-copy">
@@ -246,18 +228,14 @@ if (file_exists($coa_css_path)) {
                         <button
                           type="button"
                           class="axiom-coa-btn axiom-coa-btn-small axiom-coa-open-modal"
-                          data-coa-title="<?php echo esc_attr($product_name . ' - ' . $label); ?>"
+                          data-coa-title="<?php echo esc_attr($modal_title); ?>"
                           data-coa-image="<?php echo esc_url($file_url); ?>"
                         >
                           View COA
                         </button>
-
-                        <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
-                          Open Image
-                        </a>
                       <?php elseif (!empty($file_url)) : ?>
-                        <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
-                          Open PDF
+                        <a class="axiom-coa-btn axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
+                          View COA
                         </a>
                       <?php endif; ?>
                     </div>
