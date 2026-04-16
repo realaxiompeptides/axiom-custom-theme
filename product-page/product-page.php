@@ -19,7 +19,6 @@ $product_image_url = $product_image_id ? wp_get_attachment_image_url($product_im
 $product_short     = $product->get_short_description();
 $product_long      = $product->get_description();
 $product_price     = $product->get_price_html();
-$product_sku       = $product->get_sku();
 $is_variable       = $product->is_type('variable');
 $is_on_sale        = $product->is_on_sale();
 
@@ -38,8 +37,14 @@ if ($is_on_sale && $regular_price && $sale_price && (float) $regular_price > 0) 
 $stock_text  = $product->is_in_stock() ? 'In stock' : 'Out of stock';
 $stock_class = $product->is_in_stock() ? 'stock-high' : 'stock-unavailable';
 
+$simple_max_qty = '';
+$simple_manage_stock = false;
+$simple_backorders_allowed = $product->backorders_allowed();
+
 if ($product->managing_stock()) {
+    $simple_manage_stock = true;
     $qty = (int) $product->get_stock_quantity();
+    $simple_max_qty = $qty > 0 ? $qty : '';
 
     if ($qty > 5) {
         $stock_text  = $qty . ' available';
@@ -54,6 +59,9 @@ if ($product->managing_stock()) {
         $stock_text  = 'Out of stock';
         $stock_class = 'stock-unavailable';
     }
+} elseif ($product->backorders_allowed()) {
+    $stock_text  = 'Available on backorder';
+    $stock_class = 'stock-backorder';
 }
 
 $variation_options = array();
@@ -79,9 +87,13 @@ if ($is_variable) {
 
         $variation_stock_text  = $variation_obj->is_in_stock() ? 'In stock' : 'Out of stock';
         $variation_stock_class = $variation_obj->is_in_stock() ? 'stock-high' : 'stock-unavailable';
+        $variation_manage_stock = $variation_obj->managing_stock();
+        $variation_backorders_allowed = $variation_obj->backorders_allowed();
+        $variation_max_qty = '';
 
-        if ($variation_obj->managing_stock()) {
+        if ($variation_manage_stock) {
             $vqty = (int) $variation_obj->get_stock_quantity();
+            $variation_max_qty = $vqty > 0 ? $vqty : '';
 
             if ($vqty > 5) {
                 $variation_stock_text  = $vqty . ' available';
@@ -89,13 +101,16 @@ if ($is_variable) {
             } elseif ($vqty > 0) {
                 $variation_stock_text  = $vqty . ' available';
                 $variation_stock_class = 'stock-low';
-            } elseif ($variation_obj->backorders_allowed()) {
+            } elseif ($variation_backorders_allowed) {
                 $variation_stock_text  = 'Available on backorder';
                 $variation_stock_class = 'stock-backorder';
             } else {
                 $variation_stock_text  = 'Out of stock';
                 $variation_stock_class = 'stock-unavailable';
             }
+        } elseif ($variation_backorders_allowed) {
+            $variation_stock_text  = 'Available on backorder';
+            $variation_stock_class = 'stock-backorder';
         }
 
         $v_regular = $variation_obj->get_regular_price();
@@ -108,17 +123,21 @@ if ($is_variable) {
         }
 
         $variation_options[] = array(
-            'variation_id'       => $variation['variation_id'],
-            'label'              => $variation_label,
-            'price_html'         => $variation_obj->get_price_html(),
-            'image'              => !empty($variation['image']['src']) ? $variation['image']['src'] : $product_image_url,
-            'stock_text'         => $variation_stock_text,
-            'stock_class'        => $variation_stock_class,
-            'attributes'         => $variation['attributes'],
-            'purchasable'        => $variation_obj->is_purchasable() && ($variation_obj->is_in_stock() || $variation_obj->backorders_allowed()),
-            'regular_price_html' => $v_regular ? wc_price($v_regular) : '',
-            'save_percent'       => $v_save,
-            'is_on_sale'         => $variation_obj->is_on_sale(),
+            'variation_id'         => $variation['variation_id'],
+            'label'                => $variation_label,
+            'price_html'           => $variation_obj->get_price_html(),
+            'image'                => !empty($variation['image']['src']) ? $variation['image']['src'] : $product_image_url,
+            'stock_text'           => $variation_stock_text,
+            'stock_class'          => $variation_stock_class,
+            'attributes'           => $variation['attributes'],
+            'purchasable'          => $variation_obj->is_purchasable() && ($variation_obj->is_in_stock() || $variation_backorders_allowed),
+            'regular_price_html'   => $v_regular ? wc_price($v_regular) : '',
+            'save_percent'         => $v_save,
+            'is_on_sale'           => $variation_obj->is_on_sale(),
+            'managing_stock'       => $variation_manage_stock,
+            'stock_quantity'       => $variation_manage_stock ? (int) $variation_obj->get_stock_quantity() : null,
+            'max_qty'              => $variation_max_qty,
+            'backorders_allowed'   => $variation_backorders_allowed,
         );
     }
 }
@@ -127,12 +146,14 @@ if ($is_variable) {
 <main class="product-main">
   <section class="product-shell">
     <div class="container">
-      <div class="product-breadcrumbs">
-        <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
-        <span>/</span>
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>">Products</a>
-        <span>/</span>
-        <strong><?php echo esc_html($product_name); ?></strong>
+      <div class="product-breadcrumbs-wrap">
+        <div class="product-breadcrumbs">
+          <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
+          <span>/</span>
+          <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>">Products</a>
+          <span>/</span>
+          <strong><?php echo esc_html($product_name); ?></strong>
+        </div>
       </div>
 
       <div class="product-layout">
@@ -206,6 +227,10 @@ if ($is_variable) {
                           data-regular-price-html="<?php echo esc_attr($option['regular_price_html']); ?>"
                           data-save-percent="<?php echo esc_attr($option['save_percent']); ?>"
                           data-is-on-sale="<?php echo $option['is_on_sale'] ? '1' : '0'; ?>"
+                          data-managing-stock="<?php echo $option['managing_stock'] ? '1' : '0'; ?>"
+                          data-stock-quantity="<?php echo esc_attr($option['stock_quantity'] !== null ? $option['stock_quantity'] : ''); ?>"
+                          data-max-qty="<?php echo esc_attr($option['max_qty']); ?>"
+                          data-backorders-allowed="<?php echo $option['backorders_allowed'] ? '1' : '0'; ?>"
                         >
                           <?php echo esc_html($option['label']); ?>
                         </option>
@@ -219,9 +244,20 @@ if ($is_variable) {
                   <label class="product-option-label" for="productQty">Quantity</label>
                   <div class="product-qty-wrap">
                     <button type="button" class="product-qty-btn" id="qtyMinus">−</button>
-                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1">
+                    <input
+                      id="productQty"
+                      class="product-qty-input"
+                      type="number"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      step="1"
+                      inputmode="numeric"
+                      autocomplete="off"
+                    >
                     <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
+                  <p class="product-qty-note" id="productQtyNote" style="display:none;"></p>
                 </div>
 
                 <button id="productAddToCart" class="product-add-to-cart-btn" type="submit" disabled>
@@ -236,9 +272,23 @@ if ($is_variable) {
                   <label class="product-option-label" for="productQty">Quantity</label>
                   <div class="product-qty-wrap">
                     <button type="button" class="product-qty-btn" id="qtyMinus">−</button>
-                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1">
+                    <input
+                      id="productQty"
+                      class="product-qty-input"
+                      type="number"
+                      name="quantity"
+                      value="1"
+                      min="1"
+                      step="1"
+                      inputmode="numeric"
+                      autocomplete="off"
+                      <?php echo $simple_max_qty !== '' ? 'max="' . esc_attr($simple_max_qty) . '"' : ''; ?>
+                    >
                     <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
+                  <p class="product-qty-note" id="productQtyNote" <?php echo $simple_manage_stock && !$simple_backorders_allowed && $simple_max_qty !== '' ? '' : 'style="display:none;"'; ?>>
+                    <?php echo $simple_manage_stock && !$simple_backorders_allowed && $simple_max_qty !== '' ? esc_html('Max available: ' . $simple_max_qty) : ''; ?>
+                  </p>
                 </div>
 
                 <button id="productAddToCart" class="product-add-to-cart-btn" type="submit" <?php disabled(!$product->is_purchasable()); ?>>
@@ -353,8 +403,14 @@ if ($is_variable) {
 
 <script>
 window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
-    'isVariable' => $is_variable,
-    'productId' => $product_id,
-    'variations' => $variation_options,
+    'isVariable'             => $is_variable,
+    'productId'              => $product_id,
+    'variations'             => $variation_options,
+    'simpleProduct'          => array(
+        'managingStock'      => $simple_manage_stock,
+        'stockQuantity'      => $simple_manage_stock ? (int) $product->get_stock_quantity() : null,
+        'maxQty'             => $simple_max_qty,
+        'backordersAllowed'  => $simple_backorders_allowed,
+    ),
 )); ?>;
 </script>
