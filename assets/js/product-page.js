@@ -39,6 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const qtyState = {
     maxQty: "",
+    stockQuantity: null,
     backordersAllowed: false,
     managingStock: false
   };
@@ -50,34 +51,58 @@ document.addEventListener("DOMContentLoaded", function () {
     return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
   }
 
-  function updateQtyNote() {
-    if (!qtyNote) return;
-
-    const numericMax = getNumericMax();
-
-    if (qtyState.managingStock && !qtyState.backordersAllowed && numericMax) {
-      qtyNote.textContent = `Max available: ${numericMax}`;
-      qtyNote.style.display = "";
-    } else {
-      qtyNote.textContent = "";
-      qtyNote.style.display = "none";
-    }
+  function getStockQuantity() {
+    const raw = qtyState.stockQuantity;
+    if (raw === "" || raw === null || typeof raw === "undefined") return 0;
+    const parsed = parseInt(raw, 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   }
 
-  function applyQtyLimits(requestedValue) {
+  function getSafeQtyValue(requestedValue) {
     let safeValue = parseInt(requestedValue || "1", 10);
     if (!Number.isFinite(safeValue) || safeValue < 1) {
       safeValue = 1;
     }
 
     const numericMax = getNumericMax();
+
     if (numericMax && !qtyState.backordersAllowed) {
       safeValue = Math.min(safeValue, numericMax);
     }
 
+    return safeValue;
+  }
+
+  function updateQtyNote() {
+    if (!qtyNote) return;
+
+    const currentQuantity = getSafeQtyValue(qtyInput ? qtyInput.value : "1");
+    const stockQty = getStockQuantity();
+
+    qtyNote.textContent = "";
+    qtyNote.style.display = "none";
+
+    if (qtyState.backordersAllowed) {
+      if (currentQuantity > stockQty) {
+        const backorderCount = currentQuantity - stockQty;
+        qtyNote.textContent =
+          backorderCount === 1
+            ? "1 item will be placed on backorder."
+            : `${backorderCount} items will be placed on backorder.`;
+        qtyNote.style.display = "";
+      }
+      return;
+    }
+  }
+
+  function applyQtyLimits(requestedValue) {
+    const safeValue = getSafeQtyValue(requestedValue);
+
     if (qtyInput) {
       qtyInput.value = safeValue;
       qtyInput.setAttribute("min", "1");
+
+      const numericMax = getNumericMax();
 
       if (numericMax && !qtyState.backordersAllowed) {
         qtyInput.setAttribute("max", String(numericMax));
@@ -90,6 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
       stickyQtyValue.textContent = safeValue;
     }
 
+    updateQtyNote();
     return safeValue;
   }
 
@@ -115,10 +141,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function setQtyRules(config) {
     qtyState.maxQty = config && typeof config.maxQty !== "undefined" ? config.maxQty : "";
+    qtyState.stockQuantity = config && typeof config.stockQuantity !== "undefined" ? config.stockQuantity : null;
     qtyState.backordersAllowed = !!(config && config.backordersAllowed);
     qtyState.managingStock = !!(config && config.managingStock);
 
-    updateQtyNote();
     applyQtyLimits(currentQty());
   }
 
@@ -240,6 +266,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (variationSelect && variationData.isVariable) {
     setQtyRules({
       managingStock: false,
+      stockQuantity: 0,
       maxQty: "",
       backordersAllowed: false
     });
@@ -258,6 +285,8 @@ document.addEventListener("DOMContentLoaded", function () {
       const purchasable = selected.getAttribute("data-purchasable") === "1";
       const attributesJson = selected.getAttribute("data-attributes") || "{}";
       const managingStock = selected.getAttribute("data-managing-stock") === "1";
+      const stockQuantityRaw = selected.getAttribute("data-stock-quantity");
+      const stockQuantity = stockQuantityRaw === "" ? 0 : parseInt(stockQuantityRaw, 10) || 0;
       const maxQty = selected.getAttribute("data-max-qty") || "";
       const backordersAllowed = selected.getAttribute("data-backorders-allowed") === "1";
 
@@ -294,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       setQtyRules({
         managingStock,
+        stockQuantity,
         maxQty,
         backordersAllowed
       });
@@ -327,6 +357,7 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     setQtyRules({
       managingStock: !!variationData.simpleProduct.managingStock,
+      stockQuantity: variationData.simpleProduct.stockQuantity,
       maxQty: variationData.simpleProduct.maxQty,
       backordersAllowed: !!variationData.simpleProduct.backordersAllowed
     });
