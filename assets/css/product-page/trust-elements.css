@@ -64,7 +64,7 @@
 
 .product-trust-stack {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   margin-top: 14px;
 }
 
@@ -124,18 +124,18 @@
 
 .product-icon-benefit {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr);
+  grid-template-columns: 48px minmax(0, 1fr);
   align-items: center;
-  gap: 10px;
-  padding: 11px 12px;
+  gap: 12px;
+  padding: 12px 14px;
   border-radius: 18px;
   background: #f8fbff;
   border: 1px solid #dbe7f3;
 }
 
 .product-icon-benefit-icon {
-  width: 46px;
-  height: 46px;
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   background: #eaf3fb;
   color: #4b97d1;
@@ -147,18 +147,14 @@
 
 .product-icon-benefit-copy {
   min-width: 0;
-  color: #445469;
-  font-size: 14px;
-  line-height: 1.45;
 }
 
-.product-icon-benefit-copy strong,
-.product-icon-benefit-copy b {
-  display: block;
-  margin-bottom: 2px;
-  color: #0f172a;
+.product-icon-benefit-copy p {
+  margin: 0;
+  color: #334155;
   font-size: 15px;
-  font-weight: 800;
+  line-height: 1.5;
+  font-weight: 500;
 }
 
 @media (min-width: 768px) {
@@ -201,7 +197,7 @@
   }
 
   .product-trust-stack {
-    gap: 14px;
+    gap: 12px;
     margin-top: 16px;
   }
 
@@ -234,7 +230,7 @@
   .product-icon-benefit {
     grid-template-columns: 56px minmax(0, 1fr);
     gap: 14px;
-    padding: 14px;
+    padding: 14px 16px;
     border-radius: 20px;
   }
 
@@ -244,12 +240,7 @@
     font-size: 24px;
   }
 
-  .product-icon-benefit-copy {
+  .product-icon-benefit-copy p {
     font-size: 16px;
-  }
-
-  .product-icon-benefit-copy strong,
-  .product-icon-benefit-copy b {
-    font-size: 17px;
   }
 }
