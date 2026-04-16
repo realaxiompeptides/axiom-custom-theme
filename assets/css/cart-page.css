@@ -1,0 +1,565 @@
+.axiom-cart-page {
+  background: linear-gradient(180deg, #f6f9fd 0%, #ffffff 100%);
+  padding: 24px 0 52px;
+}
+
+.axiom-cart-header {
+  text-align: center;
+  margin: 0 0 28px;
+}
+
+.axiom-cart-kicker {
+  margin: 0 0 10px;
+  color: #3f98dc;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.axiom-cart-header h1 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.02;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.axiom-cart-header p {
+  margin: 0;
+  color: #64748b;
+  font-size: 17px;
+}
+
+.axiom-cart-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.8fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.axiom-cart-card,
+.axiom-cart-empty-card {
+  background: #ffffff;
+  border: 1px solid #dbe6f2;
+  border-radius: 28px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+}
+
+.axiom-cart-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 22px 22px 0;
+}
+
+.axiom-cart-card-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.axiom-cart-count-pill {
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #eaf5ff;
+  color: #277fc7;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.axiom-cart-items {
+  padding: 20px 22px 22px;
+}
+
+.axiom-cart-item {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 18px;
+  padding: 18px 0;
+  border-bottom: 1px solid #e7eef6;
+}
+
+.axiom-cart-item:last-child {
+  border-bottom: 0;
+}
+
+.axiom-cart-item-media a,
+.axiom-cart-item-media img {
+  display: block;
+}
+
+.axiom-cart-item-media img {
+  width: 110px;
+  height: 110px;
+  object-fit: contain;
+  border-radius: 20px;
+  background: #f8fbff;
+  padding: 12px;
+}
+
+.axiom-cart-item-content {
+  min-width: 0;
+}
+
+.axiom-cart-item-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.axiom-cart-item-title {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.axiom-cart-item-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.axiom-cart-item-meta,
+.axiom-cart-item-meta p,
+.axiom-cart-item-meta dl,
+.axiom-cart-item-meta dd {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.axiom-cart-item-meta dt {
+  display: none;
+}
+
+.axiom-cart-item-meta dd {
+  margin-left: 0;
+}
+
+.axiom-cart-item-unit-price {
+  margin-top: 8px;
+  color: #3f98dc;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.axiom-cart-item-remove .remove {
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: #fff1f1;
+  color: #dc2626 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.axiom-cart-item-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.axiom-cart-item-subtotal {
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.axiom-cart-item-qty .quantity {
+  display: inline-flex;
+  align-items: center;
+}
+
+.axiom-cart-item-qty .qty,
+.axiom-cart-item-qty input.qty {
+  width: 88px;
+  min-height: 52px;
+  border-radius: 999px;
+  border: 2px solid #d9e4ef;
+  background: #ffffff;
+  text-align: center;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.axiom-qty-static {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 88px;
+  min-height: 52px;
+  border-radius: 999px;
+  border: 2px solid #d9e4ef;
+  font-weight: 800;
+}
+
+.axiom-cart-actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px 22px;
+}
+
+.axiom-cart-coupon {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.axiom-cart-coupon input {
+  min-width: 220px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 2px solid #d9e4ef;
+  background: #ffffff;
+}
+
+.axiom-cart-coupon-btn,
+.axiom-cart-update-btn {
+  min-height: 52px;
+  padding: 0 18px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #eaf4ff !important;
+  color: #247ec5 !important;
+  font-weight: 800 !important;
+  box-shadow: none !important;
+}
+
+.axiom-cart-summary-card {
+  padding: 22px;
+  position: sticky;
+  top: 24px;
+}
+
+.axiom-cart-summary-lines {
+  margin-top: 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.axiom-summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #334155;
+  font-size: 16px;
+}
+
+.axiom-summary-line strong {
+  color: #0f172a;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.axiom-summary-discount strong {
+  color: #16a34a;
+}
+
+.axiom-summary-total {
+  padding-top: 12px;
+  border-top: 1px solid #e7eef6;
+}
+
+.axiom-summary-total span,
+.axiom-summary-total strong {
+  font-size: 21px;
+}
+
+.axiom-cart-checkout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 66px;
+  margin-top: 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4db2ff 0%, #2f8df3 100%);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 14px 28px rgba(47, 141, 243, 0.18);
+}
+
+.axiom-cart-continue-link {
+  display: block;
+  margin-top: 12px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.axiom-cart-empty-card {
+  padding: 42px 26px;
+  text-align: center;
+}
+
+.axiom-cart-empty-icon {
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 18px;
+  border-radius: 999px;
+  background: #eef6ff;
+  color: #2f8df3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+}
+
+.axiom-cart-empty-card h2 {
+  margin: 0 0 10px;
+  color: #0f172a;
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.axiom-cart-empty-card p {
+  max-width: 560px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.axiom-cart-empty-btn {
+  max-width: 280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.axiom-cart-recommendations {
+  margin-top: 34px;
+}
+
+.axiom-cart-recommendations-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.axiom-cart-recommendations-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.06;
+  font-weight: 900;
+}
+
+.axiom-cart-recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.axiom-cart-rec-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid #dbe6f2;
+  background: #ffffff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.04);
+}
+
+.axiom-cart-rec-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 18px;
+  background: linear-gradient(180deg, #f9fbff 0%, #f3f8fc 100%);
+}
+
+.axiom-cart-rec-image a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.axiom-cart-rec-image img {
+  max-width: 82%;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+.axiom-cart-rec-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: #111827;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.axiom-cart-rec-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.axiom-cart-rec-body h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+.axiom-cart-rec-body h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.axiom-cart-rec-price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.axiom-cart-rec-old-price {
+  color: #94a3b8;
+  text-decoration: line-through;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.axiom-cart-rec-current-price {
+  color: #46a2eb;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.axiom-cart-rec-btn {
+  margin-top: auto;
+  min-height: 52px;
+  border-radius: 999px;
+  background: #2f8df3;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+@media (max-width: 991px) {
+  .axiom-cart-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-cart-summary-card {
+    position: static;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-cart-page {
+    padding: 18px 0 42px;
+  }
+
+  .axiom-cart-item {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .axiom-cart-item-media img {
+    width: 88px;
+    height: 88px;
+    border-radius: 16px;
+  }
+
+  .axiom-cart-item-title {
+    font-size: 17px;
+  }
+
+  .axiom-cart-item-subtotal {
+    font-size: 18px;
+  }
+
+  .axiom-cart-actions-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axiom-cart-coupon {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axiom-cart-coupon input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .axiom-cart-recommendations-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .axiom-cart-rec-image {
+    min-height: 200px;
+  }
+
+  .axiom-cart-rec-image img {
+    max-height: 160px;
+  }
+
+  .axiom-cart-rec-body {
+    padding: 14px;
+  }
+
+  .axiom-cart-rec-body h3 {
+    font-size: 15px;
+  }
+
+  .axiom-cart-rec-current-price {
+    font-size: 16px;
+  }
+
+  .axiom-cart-rec-btn {
+    min-height: 46px;
+    font-size: 14px;
+  }
+}
