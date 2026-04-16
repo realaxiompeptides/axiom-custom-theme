@@ -130,6 +130,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .product-qty-input {
@@ -142,6 +143,14 @@
   font-size: 22px;
   font-weight: 900;
   outline: none;
+}
+
+.product-qty-note {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .product-qty-input::-webkit-outer-spin-button,
@@ -160,10 +169,12 @@
   font-size: 20px;
   font-weight: 900;
   box-shadow: 0 16px 26px rgba(47, 111, 208, 0.18);
+  cursor: pointer;
 }
 
 .product-add-to-cart-btn:disabled {
   opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (min-width: 768px) {
@@ -190,22 +201,26 @@
 
   .product-qty-wrap {
     max-width: 352px;
-    min-height: 84px;
+    min-height: 72px;
   }
 
   .product-qty-btn {
-    width: 72px;
-    height: 84px;
-    font-size: 46px;
+    width: 68px;
+    height: 72px;
+    font-size: 42px;
   }
 
   .product-qty-input {
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .product-qty-note {
+    font-size: 14px;
   }
 
   .product-add-to-cart-btn {
-    min-height: 82px;
-    font-size: 24px;
+    min-height: 76px;
+    font-size: 22px;
   }
 }
 
@@ -239,6 +254,10 @@
 
   .product-qty-input {
     font-size: 20px;
+  }
+
+  .product-qty-note {
+    font-size: 12px;
   }
 
   .product-add-to-cart-btn {
@@ -316,17 +335,4 @@
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-}
-
-/* Optional: sale badge cleaner on product image */
-.single-product span.onsale {
-  min-height: auto;
-  min-width: auto;
-  padding: 12px 18px;
-  border-radius: 999px;
-  background: #4fa2dc;
-  color: #fff;
-  font-size: 16px;
-  font-weight: 900;
-  line-height: 1;
 }
