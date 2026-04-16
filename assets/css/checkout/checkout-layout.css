@@ -48,6 +48,18 @@
   border: 1px solid #d9e4f0;
   border-radius: 22px;
   padding: 18px;
+}
+
+.axiom-checkout-card,
+.axiom-checkout-payment-card {
+  margin: 0 0 14px;
+}
+
+.axiom-checkout-summary-card {
+  margin: 0 0 28px;
+}
+
+.axiom-checkout-research-wrap {
   margin: 0 0 14px;
 }
 
@@ -284,8 +296,18 @@
   }
 
   .axiom-checkout-card,
-  .axiom-checkout-payment-card,
-  .axiom-checkout-summary-card,
+  .axiom-checkout-payment-card {
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+
+  .axiom-checkout-summary-card {
+    border-radius: 20px;
+    padding: 16px;
+    margin-bottom: 26px;
+  }
+
   .axiom-checkout-research-wrap {
     border-radius: 20px;
     padding: 16px;
@@ -353,8 +375,17 @@
   }
 
   .axiom-checkout-card,
-  .axiom-checkout-payment-card,
-  .axiom-checkout-summary-card,
+  .axiom-checkout-payment-card {
+    border-radius: 18px;
+    padding: 14px;
+  }
+
+  .axiom-checkout-summary-card {
+    border-radius: 18px;
+    padding: 14px;
+    margin-bottom: 24px;
+  }
+
   .axiom-checkout-research-wrap {
     border-radius: 18px;
     padding: 14px;
@@ -499,8 +530,22 @@ body.woocommerce-checkout .axiom-checkout-secure-note span {
 }
 
 body.woocommerce-checkout .axiom-checkout-card,
-body.woocommerce-checkout .axiom-checkout-payment-card,
-body.woocommerce-checkout .axiom-checkout-summary-card,
+body.woocommerce-checkout .axiom-checkout-payment-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 12px !important;
+  padding: 14px !important;
+  box-sizing: border-box !important;
+}
+
+body.woocommerce-checkout .axiom-checkout-summary-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 0 28px !important;
+  padding: 14px !important;
+  box-sizing: border-box !important;
+}
+
 body.woocommerce-checkout .axiom-checkout-research-wrap {
   width: 100% !important;
   max-width: 100% !important;
@@ -518,5 +563,9 @@ body.woocommerce-checkout .axiom-checkout-research-wrap {
   body.woocommerce-checkout .axiom-checkout-topbar {
     margin-top: 0 !important;
     padding-top: 6px !important;
+  }
+
+  body.woocommerce-checkout .axiom-checkout-summary-card {
+    margin: 0 0 24px !important;
   }
 }
