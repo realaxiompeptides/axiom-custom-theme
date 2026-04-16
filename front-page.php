@@ -78,64 +78,116 @@
 
       <div id="homepageCollectionGrid">
         <?php
-        $featured_query = new WP_Query(array(
-          'post_type'      => 'product',
-          'post_status'    => 'publish',
-          'posts_per_page' => 8,
-          'orderby'        => 'date',
-          'order'          => 'DESC',
-        ));
+        /*
+         * Exact homepage order.
+         * These are product slugs. If any item does not appear,
+         * check the actual WooCommerce product slug and update it here.
+         */
+        $homepage_product_slugs = array(
+          'glp-3-rt',
+          'ghk-cu',
+          'mots-c',
+          'nad',
+          'mt-1',
+          'mt-2',
+          'semax',
+          'selank',
+          'cjc-1295',
+          'ipamorelin',
+          'bpc-157',
+          'tb-500',
+        );
 
-        if ($featured_query->have_posts()) :
-          while ($featured_query->have_posts()) :
-            $featured_query->the_post();
-            global $product;
+        $homepage_product_ids = array();
 
+        foreach ($homepage_product_slugs as $slug) {
+          $product_post = get_page_by_path($slug, OBJECT, 'product');
+          if ($product_post) {
+            $homepage_product_ids[] = (int) $product_post->ID;
+          }
+        }
+
+        $homepage_products = array();
+
+        if (!empty($homepage_product_ids)) {
+          $homepage_products = wc_get_products(array(
+            'include' => $homepage_product_ids,
+            'limit'   => -1,
+            'status'  => 'publish',
+            'orderby' => 'include',
+          ));
+        }
+
+        if (!empty($homepage_products)) :
+          foreach ($homepage_products as $product) :
             if (!$product || !is_a($product, 'WC_Product')) {
               continue;
             }
 
-            $image_id   = $product->get_image_id();
-            $image_html = $image_id
-              ? wp_get_attachment_image($image_id, 'woocommerce_thumbnail', false, array('alt' => $product->get_name()))
-              : wc_placeholder_img('woocommerce_thumbnail');
+            $product_id    = $product->get_id();
+            $product_name  = $product->get_name();
+            $product_link  = get_permalink($product_id);
+            $image_id      = $product->get_image_id();
+            $image_html    = $image_id
+              ? wp_get_attachment_image($image_id, 'large', false, array('alt' => $product_name))
+              : wc_placeholder_img('large');
+
+            $is_on_sale    = $product->is_on_sale();
+            $regular_price = $product->get_regular_price();
+            $sale_price    = $product->get_sale_price();
+            $display_price = $product->get_price();
             ?>
             <article class="homepage-product-card">
               <div class="homepage-product-image-wrap">
-                <?php if ($product->is_on_sale()) : ?>
+                <?php if ($is_on_sale) : ?>
                   <span class="homepage-product-badge">SALE</span>
                 <?php endif; ?>
 
-                <a href="<?php the_permalink(); ?>" class="homepage-product-image-link">
+                <a href="<?php echo esc_url($product_link); ?>" class="homepage-product-image-link">
                   <?php echo $image_html; ?>
                 </a>
               </div>
 
               <div class="homepage-product-card-body">
                 <h3 class="homepage-product-title">
-                  <a href="<?php the_permalink(); ?>"><?php echo esc_html($product->get_name()); ?></a>
+                  <a href="<?php echo esc_url($product_link); ?>"><?php echo esc_html($product_name); ?></a>
                 </h3>
 
                 <div class="homepage-product-price-block">
-                  <?php if ($product->is_on_sale() && $product->get_regular_price()) : ?>
-                    <span class="homepage-product-old-price"><?php echo wp_kses_post(wc_price($product->get_regular_price())); ?></span>
+                  <?php if ($is_on_sale && $regular_price) : ?>
+                    <span class="homepage-product-old-price">
+                      <?php echo wp_kses_post(wc_price($regular_price)); ?>
+                    </span>
                   <?php endif; ?>
 
-                  <span class="homepage-product-price"><?php echo wp_kses_post($product->get_price_html()); ?></span>
+                  <span class="homepage-product-current-price">
+                    <?php echo wp_kses_post(wc_price($sale_price ? $sale_price : $display_price)); ?>
+                  </span>
                 </div>
 
-                <a href="<?php the_permalink(); ?>" class="homepage-product-button">View Product</a>
+                <a href="<?php echo esc_url($product_link); ?>" class="homepage-product-button">View Product</a>
               </div>
             </article>
             <?php
-          endwhile;
-          wp_reset_postdata();
+          endforeach;
         endif;
         ?>
       </div>
 
+      <?php
+      $all_published_products_count = wp_count_posts('product')->publish;
+      $homepage_products_count      = count($homepage_product_ids);
+      $remaining_products_count     = max(0, (int) $all_published_products_count - (int) $homepage_products_count);
+
+      $catalog_button_text = $remaining_products_count > 0
+        ? 'View ' . $remaining_products_count . ' More Products'
+        : 'View Full Catalog';
+      ?>
+
       <div class="section-cta homepage-collection-cta">
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-primary-home">View Full Catalog</a>
+        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-primary-home">
+          <?php echo esc_html($catalog_button_text); ?>
+        </a>
       </div>
     </div>
   </section>
