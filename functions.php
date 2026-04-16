@@ -13,6 +13,7 @@ $axiom_function_files = array(
     '/functions/shop/catalog.php',
 
     '/functions/cart/ajax-cart.php',
+    '/functions/cart/cart-page.php',
 
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
