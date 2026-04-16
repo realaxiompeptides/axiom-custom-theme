@@ -18,6 +18,7 @@ $axiom_function_files = array(
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
     '/functions/checkout/coupons.php',
+    '/functions/checkout/payment-discounts.php',
 
     '/functions/thankyou/templates.php',
     '/functions/thankyou/header.php',
