@@ -77,5 +77,54 @@ if (!$cart) {
       <span>Subtotal</span>
       <strong><?php echo wp_kses_post($cart->get_cart_subtotal()); ?></strong>
     </div>
+
+    <?php if ($cart->get_coupons()) : ?>
+      <?php foreach ($cart->get_coupons() as $code => $coupon) : ?>
+        <div class="axiom-summary-row axiom-summary-row-discount">
+          <span>Promo Code Discount</span>
+          <strong><?php echo wp_kses_post(wc_cart_totals_coupon_html($coupon, false)); ?></strong>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($cart->get_fees()) : ?>
+      <?php foreach ($cart->get_fees() as $fee) : ?>
+        <div class="axiom-summary-row <?php echo $fee->amount < 0 ? 'axiom-summary-row-discount' : ''; ?>">
+          <span><?php echo esc_html($fee->name); ?></span>
+          <strong>
+            <?php
+            echo wp_kses_post(
+                wc_price($fee->total)
+            );
+            ?>
+          </strong>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <div class="axiom-summary-row">
+      <span>Shipping</span>
+      <strong>
+        <?php
+        if ($cart->show_shipping()) {
+            echo wp_kses_post(wc_price($cart->get_shipping_total()));
+        } else {
+            echo 'Calculated at checkout';
+        }
+        ?>
+      </strong>
+    </div>
+
+    <?php if ((float) $cart->get_total_tax() > 0) : ?>
+      <div class="axiom-summary-row">
+        <span>Tax</span>
+        <strong><?php echo wp_kses_post(wc_price($cart->get_total_tax())); ?></strong>
+      </div>
+    <?php endif; ?>
+
+    <div class="axiom-summary-row axiom-summary-row-total">
+      <span>Total</span>
+      <strong><?php echo wp_kses_post($cart->get_total()); ?></strong>
+    </div>
   </div>
 </section>
