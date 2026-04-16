@@ -138,8 +138,8 @@ $drawer_checkout_url = home_url('/checkout/');
         <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
       </div>
 
-      <button class="cart-close" id="cartClose" aria-label="Close cart">
-        <i class="fa-solid fa-xmark"></i>
+      <button class="cart-close" id="cartClose" aria-label="Close cart" type="button">
+        &times;
       </button>
     </div>
 
