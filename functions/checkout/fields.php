@@ -7,26 +7,36 @@ function axiom_reorder_checkout_fields($fields) {
     if (isset($fields['billing']['billing_email'])) {
         $fields['billing']['billing_email']['priority'] = 10;
         $fields['billing']['billing_email']['required'] = true;
+        $fields['billing']['billing_email']['label'] = 'Email address';
     }
 
     if (isset($fields['billing']['billing_phone'])) {
         $fields['billing']['billing_phone']['priority'] = 20;
+        $fields['billing']['billing_phone']['required'] = true;
+        $fields['billing']['billing_phone']['label'] = 'Phone';
+        $fields['billing']['billing_phone']['placeholder'] = 'Enter your phone number';
+        $fields['billing']['billing_phone']['class'] = array('form-row-wide');
+        $fields['billing']['billing_phone']['validate'] = array('phone');
     }
 
     if (isset($fields['billing']['billing_first_name'])) {
         $fields['billing']['billing_first_name']['priority'] = 30;
+        $fields['billing']['billing_first_name']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_last_name'])) {
         $fields['billing']['billing_last_name']['priority'] = 40;
+        $fields['billing']['billing_last_name']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_country'])) {
         $fields['billing']['billing_country']['priority'] = 50;
+        $fields['billing']['billing_country']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_address_1'])) {
         $fields['billing']['billing_address_1']['priority'] = 60;
+        $fields['billing']['billing_address_1']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_address_2'])) {
@@ -35,14 +45,17 @@ function axiom_reorder_checkout_fields($fields) {
 
     if (isset($fields['billing']['billing_city'])) {
         $fields['billing']['billing_city']['priority'] = 80;
+        $fields['billing']['billing_city']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_state'])) {
         $fields['billing']['billing_state']['priority'] = 90;
+        $fields['billing']['billing_state']['required'] = true;
     }
 
     if (isset($fields['billing']['billing_postcode'])) {
         $fields['billing']['billing_postcode']['priority'] = 100;
+        $fields['billing']['billing_postcode']['required'] = true;
     }
 
     return $fields;
