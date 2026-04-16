@@ -110,9 +110,9 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 
         if ($product_name) {
             $product_norm = axiom_coa_template_normalize_text($product_name);
-            $product_norm = str_replace('plus', 'plus', $product_norm);
             $base = str_replace($product_norm, '', $base);
 
+            // Extra cleanup for NAD+
             if ($product_norm === 'nad-plus') {
                 $base = str_replace('nad', '', $base);
             }
@@ -124,7 +124,26 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
             return 'COA';
         }
 
-        return strtoupper(str_replace('-', ' ', $base));
+        $label = strtoupper(str_replace('-', ' ', $base));
+
+        /*
+         * Only liquid products should keep ML in the label.
+         * Everything else should remove ML amounts.
+         */
+        $liquid_products = array(
+            'BAC WATER',
+            'LEMON BOTTLE',
+        );
+
+        $product_name_upper = strtoupper(trim((string) $product_name));
+        $keep_ml = in_array($product_name_upper, $liquid_products, true);
+
+        if (!$keep_ml) {
+            $label = preg_replace('/\b\d+\s*ML\b/i', '', $label);
+            $label = preg_replace('/\s+/', ' ', trim($label));
+        }
+
+        return $label ?: 'COA';
     }
 }
 
@@ -211,10 +230,10 @@ if (file_exists($coa_css_path)) {
               <?php if (!empty($product_matches)) : ?>
                 <?php foreach ($product_matches as $attachment_id) : ?>
                   <?php
-                  $file_url  = wp_get_attachment_url($attachment_id);
-                  $mime_type = get_post_mime_type($attachment_id);
-                  $is_image  = strpos((string) $mime_type, 'image/') === 0;
-                  $label     = axiom_coa_template_get_variant_label($attachment_id, $product_name);
+                  $file_url    = wp_get_attachment_url($attachment_id);
+                  $mime_type   = get_post_mime_type($attachment_id);
+                  $is_image    = strpos((string) $mime_type, 'image/') === 0;
+                  $label       = axiom_coa_template_get_variant_label($attachment_id, $product_name);
                   $modal_title = $product_name . ($label && $label !== 'COA' ? ' — ' . $label : '');
                   ?>
                   <div class="axiom-coa-variant-row" data-search="<?php echo esc_attr(strtolower($product_name . ' ' . $label)); ?>">
@@ -234,7 +253,12 @@ if (file_exists($coa_css_path)) {
                           View COA
                         </button>
                       <?php elseif (!empty($file_url)) : ?>
-                        <a class="axiom-coa-btn axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
+                        <a
+                          class="axiom-coa-btn axiom-coa-btn-small"
+                          href="<?php echo esc_url($file_url); ?>"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
                           View COA
                         </a>
                       <?php endif; ?>
