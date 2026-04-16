@@ -135,8 +135,8 @@ if ($is_variable) {
             'save_percent'         => $v_save,
             'is_on_sale'           => $variation_obj->is_on_sale(),
             'managing_stock'       => $variation_manage_stock,
-            'stock_quantity'       => $variation_manage_stock ? (int) $variation_obj->get_stock_quantity() : null,
-            'max_qty'              => $variation_max_qty,
+            'stock_quantity'       => $variation_manage_stock ? (int) $variation_obj->get_stock_quantity() : 0,
+            'max_qty'              => $variation_backorders_allowed ? '' : $variation_max_qty,
             'backorders_allowed'   => $variation_backorders_allowed,
         );
     }
@@ -228,7 +228,7 @@ if ($is_variable) {
                           data-save-percent="<?php echo esc_attr($option['save_percent']); ?>"
                           data-is-on-sale="<?php echo $option['is_on_sale'] ? '1' : '0'; ?>"
                           data-managing-stock="<?php echo $option['managing_stock'] ? '1' : '0'; ?>"
-                          data-stock-quantity="<?php echo esc_attr($option['stock_quantity'] !== null ? $option['stock_quantity'] : ''); ?>"
+                          data-stock-quantity="<?php echo esc_attr($option['stock_quantity']); ?>"
                           data-max-qty="<?php echo esc_attr($option['max_qty']); ?>"
                           data-backorders-allowed="<?php echo $option['backorders_allowed'] ? '1' : '0'; ?>"
                         >
@@ -282,13 +282,11 @@ if ($is_variable) {
                       step="1"
                       inputmode="numeric"
                       autocomplete="off"
-                      <?php echo $simple_max_qty !== '' ? 'max="' . esc_attr($simple_max_qty) . '"' : ''; ?>
+                      <?php echo (!$simple_backorders_allowed && $simple_max_qty !== '') ? 'max="' . esc_attr($simple_max_qty) . '"' : ''; ?>
                     >
                     <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
-                  <p class="product-qty-note" id="productQtyNote" <?php echo $simple_manage_stock && !$simple_backorders_allowed && $simple_max_qty !== '' ? '' : 'style="display:none;"'; ?>>
-                    <?php echo $simple_manage_stock && !$simple_backorders_allowed && $simple_max_qty !== '' ? esc_html('Max available: ' . $simple_max_qty) : ''; ?>
-                  </p>
+                  <p class="product-qty-note" id="productQtyNote" style="display:none;"></p>
                 </div>
 
                 <button id="productAddToCart" class="product-add-to-cart-btn" type="submit" <?php disabled(!$product->is_purchasable()); ?>>
@@ -408,8 +406,8 @@ window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
     'variations'             => $variation_options,
     'simpleProduct'          => array(
         'managingStock'      => $simple_manage_stock,
-        'stockQuantity'      => $simple_manage_stock ? (int) $product->get_stock_quantity() : null,
-        'maxQty'             => $simple_max_qty,
+        'stockQuantity'      => $simple_manage_stock ? (int) $product->get_stock_quantity() : 0,
+        'maxQty'             => $simple_backorders_allowed ? '' : $simple_max_qty,
         'backordersAllowed'  => $simple_backorders_allowed,
     ),
 )); ?>;
