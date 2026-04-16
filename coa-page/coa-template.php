@@ -8,6 +8,14 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
+/*
+ * Make sure the COA map file is available even if functions.php load order is wrong.
+ */
+$coa_map_file = get_template_directory() . '/functions/coa/coa-map.php';
+if (file_exists($coa_map_file)) {
+    require_once $coa_map_file;
+}
+
 /**
  * Helpers local to this template.
  */
@@ -113,8 +121,8 @@ $products = function_exists('wc_get_products') ? wc_get_products(array(
     'status' => 'publish',
     'limit'  => -1,
     'return' => 'objects',
-    'orderby' => 'menu_order',
-    'order' => 'ASC',
+    'orderby'=> 'menu_order',
+    'order'  => 'ASC',
 )) : array();
 
 $coa_css_path = get_template_directory() . '/assets/css/coa/coa.css';
