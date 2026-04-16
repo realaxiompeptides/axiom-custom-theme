@@ -11,8 +11,10 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartDrawer = document.getElementById("cartDrawer");
   const cartCount = document.getElementById("cartCount");
   const cartSubtotal = document.getElementById("cartSubtotal");
+  const cartShippingValue = document.getElementById("cartShippingValue");
   const cartItemsList = document.getElementById("cartItemsList");
   const cartEmptyState = document.getElementById("cartEmptyState");
+  const cartItemCountBadge = document.getElementById("cartItemCountBadge");
 
   function openMenu() {
     if (!mobileMenu || !overlay) return;
@@ -67,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!upsell) return "";
 
     return `
-      <div class="cart-upsell-card">
+      <div class="cart-upsell-card" id="cartUpsellCard">
         <div class="cart-upsell-image-wrap">
           <img src="${upsell.image}" alt="${upsell.name}">
         </div>
@@ -83,6 +85,8 @@ document.addEventListener("DOMContentLoaded", function () {
             class="cart-upsell-btn"
             type="button"
             data-add-product-id="${upsell.productId}"
+            data-add-variation-id="${upsell.variationId || ""}"
+            data-add-attributes='${upsell.attributes ? JSON.stringify(upsell.attributes) : "{}"}'
           >
             Add
           </button>
@@ -133,13 +137,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderCartDrawer(data) {
     const items = Array.isArray(data.items) ? data.items : [];
+    const count = Number(data.count || 0);
 
     if (cartCount) {
-      cartCount.textContent = String(data.count || 0);
+      cartCount.textContent = String(count);
     }
 
     if (cartSubtotal) {
       cartSubtotal.innerHTML = data.subtotal || "$0.00";
+    }
+
+    if (cartShippingValue) {
+      cartShippingValue.textContent = data.shippingLabel || "Calculated at checkout";
+    }
+
+    if (cartItemCountBadge) {
+      if (count > 0) {
+        cartItemCountBadge.hidden = false;
+        cartItemCountBadge.textContent = `${count} item${count === 1 ? "" : "s"}`;
+      } else {
+        cartItemCountBadge.hidden = true;
+        cartItemCountBadge.textContent = "";
+      }
     }
 
     if (!cartItemsList || !cartEmptyState) return;
@@ -200,17 +219,54 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function addSimpleProduct(productId) {
+  async function addUpsellProduct(button) {
+    if (!button) return;
+
+    const productId = button.getAttribute("data-add-product-id");
+    const variationId = button.getAttribute("data-add-variation-id") || "";
+    const attributesRaw = button.getAttribute("data-add-attributes") || "{}";
+
+    let attributes = {};
     try {
-      const result = await postAjax("axiom_add_simple_product_to_cart", {
+      attributes = JSON.parse(attributesRaw);
+    } catch (error) {
+      console.error("Failed to parse upsell attributes:", error);
+    }
+
+    const originalText = button.textContent;
+
+    try {
+      button.disabled = true;
+      button.textContent = "Adding...";
+
+      const payload = {
         product_id: productId,
+      };
+
+      if (variationId) {
+        payload.variation_id = variationId;
+      }
+
+      Object.keys(attributes).forEach((key) => {
+        payload[key] = attributes[key];
       });
 
-      if (!result || !result.success || !result.data) return;
+      const result = await postAjax("axiom_add_simple_product_to_cart", payload);
+
+      if (!result || !result.success || !result.data) {
+        if (result && result.data && result.data.message) {
+          alert(result.data.message);
+        }
+        return;
+      }
+
       renderCartDrawer(result.data);
       openCart();
     } catch (error) {
       console.error("Upsell add failed:", error);
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
     }
   }
 
@@ -282,9 +338,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (addBtn) {
         e.preventDefault();
-        const productId = addBtn.getAttribute("data-add-product-id");
-        await addSimpleProduct(productId);
-        return;
+        await addUpsellProduct(addBtn);
       }
     });
   }
