@@ -13,7 +13,7 @@ defined('ABSPATH') || exit;
 
   <div class="axiom-place-order-trust-item">
     <span class="axiom-place-order-trust-icon" aria-hidden="true">
-      <i class="fa-solid fa-badge-check"></i>
+      <i class="fa-solid fa-circle-check"></i>
     </span>
     <strong>99%+ Purity</strong>
     <small>Third-Party Verified</small>
