@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const vialMgInput = document.getElementById("axiomCalcVialMg");
   const reconMlInput = document.getElementById("axiomCalcReconMl");
   const targetMgInput = document.getElementById("axiomCalcTargetMg");
-  const syringeUnitsSelect = document.getElementById("axiomCalcSyringeUnits");
+  const syringeUnitsInput = document.getElementById("axiomCalcSyringeUnits");
   const runBtn = document.getElementById("axiomCalcRun");
   const resetBtn = document.getElementById("axiomCalcReset");
 
@@ -16,9 +16,25 @@ document.addEventListener("DOMContentLoaded", function () {
   const resultTotalDoses = document.getElementById("axiomResultTotalDoses");
   const tableBody = document.getElementById("axiomCalcTableBody");
 
+  const needleButtons = Array.from(document.querySelectorAll("[data-units]"));
+  const vialButtons = Array.from(document.querySelectorAll("[data-vial-ml]"));
+
   function formatNumber(value, decimals = 3) {
     if (!isFinite(value)) return "—";
     return Number(value).toFixed(decimals).replace(/\.?0+$/, "");
+  }
+
+  function setActiveButton(buttons, activeButton) {
+    buttons.forEach((btn) => btn.classList.remove("is-active"));
+    if (activeButton) activeButton.classList.add("is-active");
+  }
+
+  function currentUnitsPerMl() {
+    return parseFloat(syringeUnitsInput.value || "30");
+  }
+
+  function currentReconMl() {
+    return parseFloat(reconMlInput.value || "3");
   }
 
   function setVariantOptions(productIndex) {
@@ -45,9 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!variant) return;
 
     vialMgInput.value = variant.mg || "";
-    if (variant.ml && !reconMlInput.value) {
-      reconMlInput.value = variant.ml;
-    }
   }
 
   function buildQuickTable(mgPerMl, unitsPerMl) {
@@ -72,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const vialMg = parseFloat(vialMgInput.value || "0");
     const reconMl = parseFloat(reconMlInput.value || "0");
     const targetMg = parseFloat(targetMgInput.value || "0");
-    const unitsPerMl = parseFloat(syringeUnitsSelect.value || "100");
+    const unitsPerMl = parseFloat(syringeUnitsInput.value || "30");
 
     if (!vialMg || !reconMl || !unitsPerMl) {
       resultMgPerMl.textContent = "—";
@@ -100,9 +113,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function resetCalculator() {
     productSelect.selectedIndex = 0;
     setVariantOptions(0);
-    reconMlInput.value = "";
     targetMgInput.value = "";
-    syringeUnitsSelect.value = "100";
+    syringeUnitsInput.value = "30";
+    reconMlInput.value = "3";
+
+    setActiveButton(needleButtons, needleButtons.find((btn) => btn.dataset.units === "30"));
+    setActiveButton(vialButtons, vialButtons.find((btn) => btn.dataset.vialMl === "3"));
+
     calculate();
   }
 
@@ -124,20 +141,31 @@ document.addEventListener("DOMContentLoaded", function () {
       calculate();
     });
 
-    [vialMgInput, reconMlInput, targetMgInput, syringeUnitsSelect].forEach((el) => {
+    [vialMgInput, reconMlInput, targetMgInput].forEach((el) => {
       if (el) {
         el.addEventListener("input", calculate);
         el.addEventListener("change", calculate);
       }
     });
 
-    if (runBtn) {
-      runBtn.addEventListener("click", calculate);
-    }
+    needleButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        syringeUnitsInput.value = button.dataset.units;
+        setActiveButton(needleButtons, button);
+        calculate();
+      });
+    });
 
-    if (resetBtn) {
-      resetBtn.addEventListener("click", resetCalculator);
-    }
+    vialButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        reconMlInput.value = button.dataset.vialMl;
+        setActiveButton(vialButtons, button);
+        calculate();
+      });
+    });
+
+    if (runBtn) runBtn.addEventListener("click", calculate);
+    if (resetBtn) resetBtn.addEventListener("click", resetCalculator);
 
     setVariantOptions(0);
     calculate();
