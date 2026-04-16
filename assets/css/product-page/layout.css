@@ -7,6 +7,11 @@
   min-height: 100vh;
 }
 
+.product-breadcrumbs-wrap {
+  padding-top: 14px;
+  padding-bottom: 6px;
+}
+
 .product-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -48,7 +53,7 @@
 
 .product-gallery-card {
   position: relative;
-  padding: 28px;
+  padding: 24px;
 }
 
 .product-badge {
@@ -70,21 +75,22 @@
 }
 
 .product-gallery-main {
+  aspect-ratio: 1 / 1;
+  width: 100%;
   border-radius: 24px;
   background: #f8fafc;
-  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 28px;
 }
 
 .product-gallery-main img {
   display: block;
-  max-width: 100%;
-  max-height: 680px;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  max-width: 88%;
+  max-height: 88%;
   object-fit: contain;
 }
 
@@ -144,11 +150,14 @@
   }
 
   .product-gallery-main {
-    min-height: 640px;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 34px;
   }
 
   .product-gallery-main img {
-    max-height: 620px;
+    max-width: 90%;
+    max-height: 90%;
   }
 }
 
@@ -165,17 +174,12 @@
 
   .product-gallery-card,
   .product-info-card {
-    padding: 24px;
+    padding: 22px;
   }
 
   .product-gallery-main {
-    min-height: 360px;
     border-radius: 20px;
-    padding: 16px;
-  }
-
-  .product-gallery-main img {
-    max-height: 420px;
+    padding: 22px;
   }
 
   .product-info-card h1 {
@@ -186,6 +190,11 @@
 @media (max-width: 767px) {
   .product-main {
     padding: 0 0 20px;
+  }
+
+  .product-breadcrumbs-wrap {
+    padding-top: 12px;
+    padding-bottom: 4px;
   }
 
   .product-layout {
@@ -220,13 +229,8 @@
   }
 
   .product-gallery-main {
-    min-height: 260px;
     border-radius: 18px;
-    padding: 12px;
-  }
-
-  .product-gallery-main img {
-    max-height: 300px;
+    padding: 18px;
   }
 
   .product-info-card h1 {
@@ -255,12 +259,7 @@
   }
 
   .product-gallery-main {
-    min-height: 220px;
-    padding: 10px;
-  }
-
-  .product-gallery-main img {
-    max-height: 260px;
+    padding: 16px;
   }
 
   .product-info-card h1 {
