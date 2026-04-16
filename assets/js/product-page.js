@@ -17,36 +17,109 @@ document.addEventListener("DOMContentLoaded", function () {
   const productMainImage = document.getElementById("productMainImage");
   const addToCartBtn = document.getElementById("productAddToCart");
   const stickyAddToCartBtn = document.getElementById("stickyAddToCartBtn");
-  const productPurchaseBox = document.getElementById("productPurchaseBox");
-  const stickyBar = document.getElementById("stickyProductBar");
   const productForm = document.getElementById("ajaxProductForm");
 
   const productCompareRow = document.getElementById("productCompareRow");
   const productComparePrice = document.getElementById("productComparePrice");
   const productSavePill = document.getElementById("productSavePill");
+  const stickyBar = document.getElementById("stickyProductBar");
+  const qtyNote = document.getElementById("productQtyNote");
 
   const variationData = window.AXIOM_PRODUCT_PAGE || {
     isVariable: false,
     productId: 0,
-    variations: []
+    variations: [],
+    simpleProduct: {
+      managingStock: false,
+      stockQuantity: null,
+      maxQty: "",
+      backordersAllowed: false
+    }
   };
 
-  function syncQtyDisplays(value) {
-    const safeValue = Math.max(1, parseInt(value || "1", 10) || 1);
-    if (qtyInput) qtyInput.value = safeValue;
-    if (stickyQtyValue) stickyQtyValue.textContent = safeValue;
+  const qtyState = {
+    maxQty: "",
+    backordersAllowed: false,
+    managingStock: false
+  };
+
+  function getNumericMax() {
+    const raw = qtyState.maxQty;
+    if (raw === "" || raw === null || typeof raw === "undefined") return null;
+    const parsed = parseInt(raw, 10);
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+  }
+
+  function updateQtyNote() {
+    if (!qtyNote) return;
+
+    const numericMax = getNumericMax();
+
+    if (qtyState.managingStock && !qtyState.backordersAllowed && numericMax) {
+      qtyNote.textContent = `Max available: ${numericMax}`;
+      qtyNote.style.display = "";
+    } else {
+      qtyNote.textContent = "";
+      qtyNote.style.display = "none";
+    }
+  }
+
+  function applyQtyLimits(requestedValue) {
+    let safeValue = parseInt(requestedValue || "1", 10);
+    if (!Number.isFinite(safeValue) || safeValue < 1) {
+      safeValue = 1;
+    }
+
+    const numericMax = getNumericMax();
+    if (numericMax && !qtyState.backordersAllowed) {
+      safeValue = Math.min(safeValue, numericMax);
+    }
+
+    if (qtyInput) {
+      qtyInput.value = safeValue;
+      qtyInput.setAttribute("min", "1");
+
+      if (numericMax && !qtyState.backordersAllowed) {
+        qtyInput.setAttribute("max", String(numericMax));
+      } else {
+        qtyInput.removeAttribute("max");
+      }
+    }
+
+    if (stickyQtyValue) {
+      stickyQtyValue.textContent = safeValue;
+    }
+
+    return safeValue;
   }
 
   function currentQty() {
-    return Math.max(1, parseInt(qtyInput ? qtyInput.value : "1", 10) || 1);
+    return applyQtyLimits(qtyInput ? qtyInput.value : "1");
   }
 
   function increaseQty() {
-    syncQtyDisplays(currentQty() + 1);
+    const current = currentQty();
+    const numericMax = getNumericMax();
+
+    if (numericMax && !qtyState.backordersAllowed && current >= numericMax) {
+      applyQtyLimits(current);
+      return;
+    }
+
+    applyQtyLimits(current + 1);
   }
 
   function decreaseQty() {
-    syncQtyDisplays(Math.max(1, currentQty() - 1));
+    applyQtyLimits(Math.max(1, currentQty() - 1));
+  }
+
+  function setQtyRules(config) {
+    qtyState.maxQty = config && typeof config.maxQty !== "undefined" ? config.maxQty : "";
+    qtyState.backordersAllowed = !!(config && config.backordersAllowed);
+    qtyState.managingStock = !!(config && config.managingStock);
+
+    updateQtyNote();
+    applyQtyLimits(currentQty());
   }
 
   function openCartDrawerIfAvailable() {
@@ -59,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function syncStickyVisibility() {
     if (!stickyBar || !addToCartBtn) return;
     const rect = addToCartBtn.getBoundingClientRect();
+
     if (rect.bottom < 0) {
       stickyBar.classList.add("active");
     } else {
@@ -111,6 +185,9 @@ document.addEventListener("DOMContentLoaded", function () {
         openCartDrawerIfAvailable();
       } else {
         console.error(result);
+        if (result && result.data && result.data.message) {
+          alert(result.data.message);
+        }
       }
     } catch (error) {
       console.error("Product add failed:", error);
@@ -152,13 +229,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (qtyInput) {
     qtyInput.addEventListener("input", function () {
-      syncQtyDisplays(qtyInput.value);
+      applyQtyLimits(qtyInput.value);
+    });
+
+    qtyInput.addEventListener("blur", function () {
+      applyQtyLimits(qtyInput.value);
     });
   }
 
-  syncQtyDisplays(1);
-
   if (variationSelect && variationData.isVariable) {
+    setQtyRules({
+      managingStock: false,
+      maxQty: "",
+      backordersAllowed: false
+    });
+
     variationSelect.addEventListener("change", function () {
       const selected = variationSelect.options[variationSelect.selectedIndex];
       const variationId = selected.value || "";
@@ -172,6 +257,9 @@ document.addEventListener("DOMContentLoaded", function () {
       const stockClass = selected.getAttribute("data-stock-class") || "";
       const purchasable = selected.getAttribute("data-purchasable") === "1";
       const attributesJson = selected.getAttribute("data-attributes") || "{}";
+      const managingStock = selected.getAttribute("data-managing-stock") === "1";
+      const maxQty = selected.getAttribute("data-max-qty") || "";
+      const backordersAllowed = selected.getAttribute("data-backorders-allowed") === "1";
 
       if (variationIdInput) {
         variationIdInput.value = variationId;
@@ -204,6 +292,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       updateCompareRow(regularPriceHtml, savePercent, isOnSale);
 
+      setQtyRules({
+        managingStock,
+        maxQty,
+        backordersAllowed
+      });
+
       if (addToCartBtn) {
         addToCartBtn.disabled = !variationId || !purchasable;
         addToCartBtn.textContent = variationId
@@ -231,10 +325,18 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   } else {
+    setQtyRules({
+      managingStock: !!variationData.simpleProduct.managingStock,
+      maxQty: variationData.simpleProduct.maxQty,
+      backordersAllowed: !!variationData.simpleProduct.backordersAllowed
+    });
+
     if (stickyProductVariant) {
       stickyProductVariant.textContent = "Ready to add";
     }
   }
+
+  applyQtyLimits(1);
 
   async function handleProductSubmit() {
     const quantity = currentQty();
