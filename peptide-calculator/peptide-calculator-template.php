@@ -1,4 +1,4 @@
-<?php
+<<?php
 /*
 Template Name: Peptide Calculator Template
 */
@@ -12,149 +12,159 @@ $products = array(
     array(
         'name' => 'BPC-157',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 3),
-        ),
-    ),
-    array(
-        'name' => 'BAC Water',
-        'variants' => array(
-            array('label' => '10mL', 'mg' => 0, 'ml' => 10),
+            array('label' => '5mg', 'mg' => 5),
         ),
     ),
     array(
         'name' => 'GHK-CU',
         'variants' => array(
-            array('label' => '50mg / 3mL', 'mg' => 50, 'ml' => 3),
-            array('label' => '100mg / 3mL', 'mg' => 100, 'ml' => 3),
+            array('label' => '50mg / 3mL', 'mg' => 50),
+            array('label' => '100mg / 3mL', 'mg' => 100),
         ),
     ),
     array(
         'name' => 'GLP-3 RT',
         'variants' => array(
-            array('label' => '10mg / 3mL', 'mg' => 10, 'ml' => 3),
-            array('label' => '20mg / 3mL', 'mg' => 20, 'ml' => 3),
+            array('label' => '10mg / 3mL', 'mg' => 10),
+            array('label' => '20mg / 3mL', 'mg' => 20),
         ),
     ),
     array(
         'name' => 'CJC with DAC',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 0),
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '5mg', 'mg' => 5),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Cerebrolysin',
         'variants' => array(
-            array('label' => '60mg', 'mg' => 60, 'ml' => 0),
+            array('label' => '60mg', 'mg' => 60),
         ),
     ),
     array(
         'name' => 'Sermorelin',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 0),
+            array('label' => '5mg', 'mg' => 5),
         ),
     ),
     array(
         'name' => 'Tesamorelin',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 0),
+            array('label' => '5mg', 'mg' => 5),
         ),
     ),
     array(
         'name' => 'Semax',
         'variants' => array(
-            array('label' => '10mg / 3mL', 'mg' => 10, 'ml' => 3),
+            array('label' => '10mg / 3mL', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'DSIP',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 0),
+            array('label' => '5mg', 'mg' => 5),
         ),
     ),
     array(
         'name' => 'NAD+',
         'variants' => array(
-            array('label' => '500mg', 'mg' => 500, 'ml' => 0),
-            array('label' => '1000mg', 'mg' => 1000, 'ml' => 0),
+            array('label' => '500mg', 'mg' => 500),
+            array('label' => '1000mg', 'mg' => 1000),
         ),
     ),
     array(
         'name' => 'KPV',
         'variants' => array(
-            array('label' => '5mg', 'mg' => 5, 'ml' => 0),
+            array('label' => '5mg', 'mg' => 5),
         ),
     ),
     array(
         'name' => 'PT-141',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Pinealon',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Selank',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Glow',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Kisspeptin',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'ARA-290',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'SS-31',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'MT-1',
         'variants' => array(
-            array('label' => '10mg', 'mg' => 10, 'ml' => 0),
+            array('label' => '10mg', 'mg' => 10),
         ),
     ),
     array(
         'name' => 'Glutathione',
         'variants' => array(
-            array('label' => '1500mg', 'mg' => 1500, 'ml' => 0),
+            array('label' => '1500mg', 'mg' => 1500),
         ),
     ),
 );
-
 ?>
 
 <main class="axiom-calculator-page">
   <div class="container">
     <section class="axiom-calculator-hero">
       <p class="axiom-calculator-kicker">Research Calculator</p>
-      <h1>Peptide Reconstitution Calculator</h1>
+      <h1>Peptide Calculator</h1>
       <p class="axiom-calculator-subtitle">
-        Select a product and variant, enter your reconstitution amount, and calculate concentration, insulin units, and dose conversions for research preparation.
+        Choose your syringe size, vial size, product, and variant to calculate concentration and conversion math for research preparation.
       </p>
     </section>
 
     <section class="axiom-calculator-shell">
       <div class="axiom-calculator-card">
+        <div class="axiom-calculator-step">
+          <h2>Syringe Size</h2>
+          <div class="axiom-calculator-choice-grid axiom-calculator-choice-grid-needle">
+            <button type="button" class="axiom-choice-btn is-active" data-units="30">30 Units</button>
+            <button type="button" class="axiom-choice-btn" data-units="50">50 Units</button>
+            <button type="button" class="axiom-choice-btn" data-units="100">100 Units</button>
+          </div>
+        </div>
+
+        <div class="axiom-calculator-step">
+          <h2>Vial Size</h2>
+          <div class="axiom-calculator-choice-grid axiom-calculator-choice-grid-vial">
+            <button type="button" class="axiom-choice-btn is-active" data-vial-ml="3">3 mL</button>
+            <button type="button" class="axiom-choice-btn" data-vial-ml="10">10 mL</button>
+          </div>
+        </div>
+
         <div class="axiom-calculator-grid">
           <div class="axiom-calculator-field">
             <label for="axiomCalcProduct">Product</label>
@@ -173,7 +183,7 @@ $products = array(
 
           <div class="axiom-calculator-field">
             <label for="axiomCalcReconMl">Reconstitution Amount (mL)</label>
-            <input type="number" id="axiomCalcReconMl" min="0.01" step="0.01" placeholder="Example: 2">
+            <input type="number" id="axiomCalcReconMl" min="0.01" step="0.01" value="3">
           </div>
 
           <div class="axiom-calculator-field">
@@ -182,12 +192,8 @@ $products = array(
           </div>
 
           <div class="axiom-calculator-field">
-            <label for="axiomCalcSyringeUnits">Insulin Syringe Size (units per 1mL)</label>
-            <select id="axiomCalcSyringeUnits">
-              <option value="100">100 units / 1mL</option>
-              <option value="50">50 units / 1mL</option>
-              <option value="30">30 units / 0.3mL</option>
-            </select>
+            <label for="axiomCalcSyringeUnits">Needle Units</label>
+            <input type="number" id="axiomCalcSyringeUnits" value="30" readonly>
           </div>
         </div>
 
@@ -205,7 +211,7 @@ $products = array(
         </div>
 
         <div class="axiom-calculator-result-card">
-          <span>Per 10 insulin units</span>
+          <span>Per 10 units</span>
           <strong id="axiomResultPer10Units">—</strong>
           <p>mg in 10 units</p>
         </div>
@@ -213,20 +219,20 @@ $products = array(
         <div class="axiom-calculator-result-card">
           <span>Target amount</span>
           <strong id="axiomResultUnitsNeeded">—</strong>
-          <p>insulin units needed for target mg</p>
+          <p>units needed for target mg</p>
         </div>
 
         <div class="axiom-calculator-result-card">
           <span>Total doses per vial</span>
           <strong id="axiomResultTotalDoses">—</strong>
-          <p>approximate number of target doses</p>
+          <p>approximate target doses per vial</p>
         </div>
       </div>
 
       <div class="axiom-calculator-table-card">
         <div class="axiom-calculator-table-header">
           <h2>Quick Unit Table</h2>
-          <p>Reference table based on the current reconstitution settings.</p>
+          <p>Reference table based on your current settings.</p>
         </div>
 
         <div class="axiom-calculator-table-wrap">
@@ -246,7 +252,7 @@ $products = array(
       <div class="axiom-calculator-disclaimer">
         <strong>Research use only.</strong>
         <p>
-          This calculator is provided for preparation math and concentration conversions only. It does not provide medical advice, diagnosis, treatment guidance, or usage recommendations.
+          This calculator is for concentration math and preparation conversions only. It does not provide medical advice or usage recommendations.
         </p>
       </div>
     </section>
