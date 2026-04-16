@@ -46,9 +46,13 @@
 }
 
 .axiom-payment-methods-section,
-.axiom-payment-subtotal-section,
 .axiom-place-order-section {
   margin-top: 16px;
+}
+
+.axiom-payment-subtotal-section {
+  margin-top: 16px;
+  margin-bottom: 32px;
 }
 
 .axiom-payment-section-title {
@@ -289,6 +293,7 @@
   border: 1px solid #dbe4f0;
   border-radius: 28px;
   overflow: hidden;
+  margin-bottom: 10px;
 }
 
 .axiom-summary-items {
@@ -476,6 +481,14 @@ button[name="woocommerce_checkout_place_order"] {
 }
 
 @media (max-width: 767px) {
+  .axiom-payment-subtotal-section {
+    margin-bottom: 38px;
+  }
+
+  .axiom-summary-card {
+    margin-bottom: 12px;
+  }
+
   .axiom-summary-items {
     padding: 16px 16px 8px;
     gap: 12px;
