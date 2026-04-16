@@ -13,16 +13,11 @@ if (!function_exists('WC')) {
     return;
 }
 
-$cart                = WC()->cart;
-$cart_url            = wc_get_cart_url();
-$checkout_url        = wc_get_checkout_url();
-$shop_url            = wc_get_page_permalink('shop');
-$cross_sell_limit    = 6;
+$cart         = WC()->cart;
+$cart_url     = wc_get_cart_url();
+$checkout_url = wc_get_checkout_url();
+$shop_url     = wc_get_page_permalink('shop');
 
-/*
- * Recommended products for cart page.
- * Change these slugs whenever you want.
- */
 $recommended_slugs = array(
     'glp-3-rt',
     'ghk-cu',
@@ -60,8 +55,8 @@ $recommended_products = array();
 
 if (!empty($recommended_ids)) {
     $recommended_products = wc_get_products(array(
-        'include' => array_slice($recommended_ids, 0, $cross_sell_limit),
-        'limit'   => $cross_sell_limit,
+        'include' => array_slice($recommended_ids, 0, 6),
+        'limit'   => 6,
         'status'  => 'publish',
         'orderby' => 'include',
     ));
@@ -71,7 +66,6 @@ if (!empty($recommended_ids)) {
 <main class="axiom-cart-page">
   <section class="axiom-cart-shell">
     <div class="container">
-
       <div class="axiom-cart-header">
         <p class="axiom-cart-kicker">Your Cart</p>
         <h1>Review Your Order</h1>
@@ -82,7 +76,6 @@ if (!empty($recommended_ids)) {
 
       <?php if ($cart && !$cart->is_empty()) : ?>
         <form class="woocommerce-cart-form axiom-cart-layout" action="<?php echo esc_url($cart_url); ?>" method="post">
-
           <section class="axiom-cart-main">
             <div class="axiom-cart-card axiom-cart-items-card">
               <div class="axiom-cart-card-header">
@@ -165,12 +158,12 @@ if (!empty($recommended_ids)) {
                           <div class="axiom-cart-item-qty">
                             <?php
                             if ($_product->is_sold_individually()) {
-                                $product_quantity = sprintf(
+                                echo sprintf(
                                     '<span class="axiom-qty-static">1</span><input type="hidden" name="cart[%s][qty]" value="1" />',
                                     esc_attr($cart_item_key)
                                 );
                             } else {
-                                $product_quantity = woocommerce_quantity_input(array(
+                                echo woocommerce_quantity_input(array(
                                     'input_name'   => "cart[{$cart_item_key}][qty]",
                                     'input_value'  => $cart_item['quantity'],
                                     'max_value'    => $_product->get_max_purchase_quantity(),
@@ -178,8 +171,6 @@ if (!empty($recommended_ids)) {
                                     'product_name' => $product_name,
                                 ), $_product, false);
                             }
-
-                            echo $product_quantity;
                             ?>
                           </div>
 
@@ -196,7 +187,7 @@ if (!empty($recommended_ids)) {
                 <?php if (wc_coupons_enabled()) : ?>
                   <div class="axiom-cart-coupon">
                     <label for="coupon_code" class="screen-reader-text"><?php esc_html_e('Coupon:', 'woocommerce'); ?></label>
-                    <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Discount code" />
+                    <input type="text" name="coupon_code" id="coupon_code" value="" placeholder="Discount code" />
                     <button type="submit" class="button axiom-cart-coupon-btn" name="apply_coupon" value="<?php esc_attr_e('Apply coupon', 'woocommerce'); ?>">
                       Apply Code
                     </button>
@@ -256,9 +247,7 @@ if (!empty($recommended_ids)) {
         </form>
       <?php else : ?>
         <section class="axiom-cart-empty-card">
-          <div class="axiom-cart-empty-icon">
-            <span>🛒</span>
-          </div>
+          <div class="axiom-cart-empty-icon"><span>🛒</span></div>
           <h2>Your cart is currently empty</h2>
           <p>Add research products to begin your order. Fast fulfillment and secure checkout are available once items are added.</p>
           <a href="<?php echo esc_url($shop_url); ?>" class="axiom-cart-checkout-btn axiom-cart-empty-btn">
@@ -270,7 +259,7 @@ if (!empty($recommended_ids)) {
       <?php if (!empty($recommended_products)) : ?>
         <section class="axiom-cart-recommendations">
           <div class="axiom-cart-recommendations-header">
-            <p class="axiom-cart-kicker">Recommended Additions</p>
+            <p class="axiom-cart-kicker">Recommended Products</p>
             <h2>You may also like</h2>
           </div>
 
@@ -280,24 +269,25 @@ if (!empty($recommended_ids)) {
                     continue;
                 }
 
-                $rec_id         = $rec_product->get_id();
-                $rec_name       = $rec_product->get_name();
-                $rec_link       = get_permalink($rec_id);
-                $rec_image      = $rec_product->get_image('woocommerce_thumbnail');
-                $rec_is_sale    = $rec_product->is_on_sale();
-                $rec_regular    = $rec_product->is_type('variable')
-                    ? $rec_product->get_variation_regular_price('min', true)
-                    : $rec_product->get_regular_price();
-                $rec_current    = $rec_product->is_type('variable')
-                    ? $rec_product->get_variation_price('min', true)
-                    : $rec_product->get_price();
+                $rec_id      = $rec_product->get_id();
+                $rec_name    = $rec_product->get_name();
+                $rec_link    = get_permalink($rec_id);
+                $rec_image   = $rec_product->get_image('woocommerce_thumbnail');
+                $rec_is_sale = $rec_product->is_on_sale();
+
+                if ($rec_product->is_type('variable')) {
+                    $rec_regular = $rec_product->get_variation_regular_price('min', true);
+                    $rec_current = $rec_product->get_variation_price('min', true);
+                } else {
+                    $rec_regular = $rec_product->get_regular_price();
+                    $rec_current = $rec_product->get_price();
+                }
                 ?>
                 <article class="axiom-cart-rec-card">
                   <div class="axiom-cart-rec-image">
                     <?php if ($rec_is_sale) : ?>
                       <span class="axiom-cart-rec-badge">Sale</span>
                     <?php endif; ?>
-
                     <a href="<?php echo esc_url($rec_link); ?>">
                       <?php echo $rec_image; ?>
                     </a>
@@ -326,7 +316,6 @@ if (!empty($recommended_ids)) {
           </div>
         </section>
       <?php endif; ?>
-
     </div>
   </section>
 </main>
