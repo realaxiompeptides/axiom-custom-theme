@@ -55,11 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const raw = qtyState.stockQuantity;
     if (raw === "" || raw === null || typeof raw === "undefined") return 0;
     const parsed = parseInt(raw, 10);
-    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+    return Number.isFinite(parsed) && parsed >= 0 ? parsed : 0;
   }
 
   function getSafeQtyValue(requestedValue) {
     let safeValue = parseInt(requestedValue || "1", 10);
+
     if (!Number.isFinite(safeValue) || safeValue < 1) {
       safeValue = 1;
     }
@@ -85,10 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (qtyState.backordersAllowed) {
       if (currentQuantity > stockQty) {
         const backorderCount = currentQuantity - stockQty;
-        qtyNote.textContent =
-          backorderCount === 1
-            ? "1 item will be placed on backorder."
-            : `${backorderCount} items will be placed on backorder.`;
+        qtyNote.textContent = `${stockQty} available now • ${backorderCount} item${backorderCount === 1 ? "" : "s"} will be backordered`;
         qtyNote.style.display = "";
       }
       return;
@@ -157,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function syncStickyVisibility() {
     if (!stickyBar || !addToCartBtn) return;
+
     const rect = addToCartBtn.getBoundingClientRect();
 
     if (rect.bottom < 0) {
