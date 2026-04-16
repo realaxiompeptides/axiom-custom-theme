@@ -78,11 +78,6 @@
 
       <div id="homepageCollectionGrid">
         <?php
-        /*
-         * Exact homepage order.
-         * These are product slugs. If any item does not appear,
-         * check the actual WooCommerce product slug and update it here.
-         */
         $homepage_product_slugs = array(
           'glp-3-rt',
           'ghk-cu',
@@ -124,18 +119,48 @@
               continue;
             }
 
-            $product_id    = $product->get_id();
-            $product_name  = $product->get_name();
-            $product_link  = get_permalink($product_id);
-            $image_id      = $product->get_image_id();
-            $image_html    = $image_id
+            $product_id   = $product->get_id();
+            $product_name = $product->get_name();
+            $product_link = get_permalink($product_id);
+
+            $image_id   = $product->get_image_id();
+            $image_html = $image_id
               ? wp_get_attachment_image($image_id, 'large', false, array('alt' => $product_name))
               : wc_placeholder_img('large');
 
-            $is_on_sale    = $product->is_on_sale();
-            $regular_price = $product->get_regular_price();
-            $sale_price    = $product->get_sale_price();
-            $display_price = $product->get_price();
+            $is_on_sale = $product->is_on_sale();
+
+            $regular_price_value = '';
+            $current_price_value = '';
+
+            if ($product->is_type('variable')) {
+              $regular_price_value = $product->get_variation_regular_price('min', true);
+              $sale_price_value    = $product->get_variation_sale_price('min', true);
+              $price_value         = $product->get_variation_price('min', true);
+
+              if ($is_on_sale && $regular_price_value !== '' && $sale_price_value !== '') {
+                $current_price_value = $sale_price_value;
+              } else {
+                $current_price_value = $price_value;
+              }
+            } else {
+              $regular_price_value = $product->get_regular_price();
+              $sale_price_value    = $product->get_sale_price();
+              $price_value         = $product->get_price();
+
+              if ($is_on_sale && $regular_price_value !== '' && $sale_price_value !== '') {
+                $current_price_value = $sale_price_value;
+              } else {
+                $current_price_value = $price_value;
+              }
+            }
+
+            $show_old_price = (
+              $is_on_sale &&
+              $regular_price_value !== '' &&
+              $current_price_value !== '' &&
+              (float) $regular_price_value > (float) $current_price_value
+            );
             ?>
             <article class="homepage-product-card">
               <div class="homepage-product-image-wrap">
@@ -154,14 +179,14 @@
                 </h3>
 
                 <div class="homepage-product-price-block">
-                  <?php if ($is_on_sale && $regular_price) : ?>
+                  <?php if ($show_old_price) : ?>
                     <span class="homepage-product-old-price">
-                      <?php echo wp_kses_post(wc_price($regular_price)); ?>
+                      <?php echo wp_kses_post(wc_price($regular_price_value)); ?>
                     </span>
                   <?php endif; ?>
 
                   <span class="homepage-product-current-price">
-                    <?php echo wp_kses_post(wc_price($sale_price ? $sale_price : $display_price)); ?>
+                    <?php echo wp_kses_post(wc_price($current_price_value)); ?>
                   </span>
                 </div>
 
