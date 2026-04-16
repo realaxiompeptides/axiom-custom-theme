@@ -8,10 +8,113 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
+/**
+ * Helpers local to this template.
+ */
+if (!function_exists('axiom_coa_template_normalize_text')) {
+    function axiom_coa_template_normalize_text($text) {
+        $text = wp_strip_all_tags((string) $text);
+        $text = strtolower($text);
+        $text = str_replace('&', ' and ', $text);
+        $text = str_replace('+', ' plus ', $text);
+        $text = preg_replace('/[^a-z0-9]+/i', '-', $text);
+        $text = trim($text, '-');
+
+        return $text;
+    }
+}
+
+if (!function_exists('axiom_coa_template_get_all_attachments')) {
+    function axiom_coa_template_get_all_attachments() {
+        $attachments = get_posts(array(
+            'post_type'      => 'attachment',
+            'post_status'    => 'inherit',
+            'post_mime_type' => array('image/png', 'image/jpeg', 'image/jpg', 'application/pdf'),
+            'posts_per_page' => -1,
+            'orderby'        => 'date',
+            'order'          => 'DESC',
+        ));
+
+        $results = array();
+
+        foreach ($attachments as $attachment) {
+            $title = axiom_coa_template_normalize_text($attachment->post_title);
+            $file  = get_attached_file($attachment->ID);
+            $base  = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+
+            if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
+                $results[] = $attachment;
+            }
+        }
+
+        return $results;
+    }
+}
+
+if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
+    function axiom_coa_template_get_mapped_attachments($product_name) {
+        if (!function_exists('axiom_coa_file_map')) {
+            return array();
+        }
+
+        $map = axiom_coa_file_map();
+
+        if (empty($map[$product_name]) || !is_array($map[$product_name])) {
+            return array();
+        }
+
+        $wanted_keys = array_map('axiom_coa_template_normalize_text', $map[$product_name]);
+        $attachments = axiom_coa_template_get_all_attachments();
+        $matches = array();
+
+        foreach ($attachments as $attachment) {
+            $title = axiom_coa_template_normalize_text(get_the_title($attachment->ID));
+            $file  = get_attached_file($attachment->ID);
+            $base  = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+
+            foreach ($wanted_keys as $wanted) {
+                if (
+                    $wanted &&
+                    (
+                        $title === $wanted ||
+                        $base === $wanted ||
+                        strpos($title, $wanted) !== false ||
+                        strpos($base, $wanted) !== false
+                    )
+                ) {
+                    $matches[] = $attachment->ID;
+                    break;
+                }
+            }
+        }
+
+        return array_values(array_unique($matches));
+    }
+}
+
+if (!function_exists('axiom_coa_template_get_variant_label')) {
+    function axiom_coa_template_get_variant_label($attachment_id) {
+        $file = get_attached_file($attachment_id);
+        $base = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+
+        $base = str_replace('axiom-', '', $base);
+        $base = str_replace('-coa', '', $base);
+        $base = trim($base, '- ');
+
+        if (!$base) {
+            return 'COA FILE';
+        }
+
+        return strtoupper(str_replace('-', ' ', $base));
+    }
+}
+
 $products = function_exists('wc_get_products') ? wc_get_products(array(
     'status' => 'publish',
     'limit'  => -1,
     'return' => 'objects',
+    'orderby' => 'menu_order',
+    'order' => 'ASC',
 )) : array();
 
 $coa_css_path = get_template_directory() . '/assets/css/coa/coa.css';
@@ -61,11 +164,9 @@ if (file_exists($coa_css_path)) {
               $product_image_html = '<img class="axiom-coa-product-image" src="' . esc_url(wc_placeholder_img_src()) . '" alt="' . esc_attr($product_name) . '">';
           }
 
-          $product_coa    = function_exists('axiom_get_product_coa_data') ? axiom_get_product_coa_data($product) : array();
-          $product_status = !empty($product_coa['status']) ? $product_coa['status'] : 'not_ready';
-          $product_label  = !empty($product_coa['label']) ? $product_coa['label'] : 'Janoshik Tested';
-          $product_image  = !empty($product_coa['image']) ? $product_coa['image'] : '';
-          $product_pdf    = !empty($product_coa['pdf']) ? $product_coa['pdf'] : '';
+          $product_matches = axiom_coa_template_get_mapped_attachments($product_name);
+          $product_status  = !empty($product_matches) ? 'ready' : 'not_ready';
+          $product_label   = 'Janoshik Tested';
           ?>
           <article class="axiom-coa-card" data-search="<?php echo esc_attr(strtolower($product_name)); ?>">
             <div class="axiom-coa-card-head">
@@ -87,88 +188,83 @@ if (file_exists($coa_css_path)) {
               </div>
             </div>
 
-            <?php if (!empty($product_image) || !empty($product_pdf)) : ?>
+            <?php if (!empty($product_matches)) : ?>
               <div class="axiom-coa-actions">
-                <?php if (!empty($product_image)) : ?>
+                <?php
+                $first_attachment_id = $product_matches[0];
+                $first_file_url      = wp_get_attachment_url($first_attachment_id);
+                $first_mime_type     = get_post_mime_type($first_attachment_id);
+                $first_is_image      = strpos((string) $first_mime_type, 'image/') === 0;
+                ?>
+
+                <?php if ($first_is_image && !empty($first_file_url)) : ?>
                   <button
                     type="button"
                     class="axiom-coa-btn axiom-coa-open-modal"
                     data-coa-title="<?php echo esc_attr($product_name . ' COA'); ?>"
-                    data-coa-image="<?php echo esc_url($product_image); ?>"
+                    data-coa-image="<?php echo esc_url($first_file_url); ?>"
                   >
                     View COA
                   </button>
-                <?php endif; ?>
 
-                <?php if (!empty($product_image)) : ?>
-                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($product_image); ?>" target="_blank" rel="noopener noreferrer">Open Image</a>
-                <?php endif; ?>
-
-                <?php if (!empty($product_pdf)) : ?>
-                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($product_pdf); ?>" target="_blank" rel="noopener noreferrer">Open PDF</a>
+                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($first_file_url); ?>" target="_blank" rel="noopener noreferrer">
+                    Open Image
+                  </a>
+                <?php elseif (!empty($first_file_url)) : ?>
+                  <a class="axiom-coa-btn axiom-coa-btn-secondary" href="<?php echo esc_url($first_file_url); ?>" target="_blank" rel="noopener noreferrer">
+                    Open PDF
+                  </a>
                 <?php endif; ?>
               </div>
             <?php endif; ?>
 
-            <?php if ($product->is_type('variable')) : ?>
-              <?php
-              $variation_ids = $product->get_children();
-              if (!empty($variation_ids)) :
-              ?>
-                <div class="axiom-coa-variant-list">
-                  <?php foreach ($variation_ids as $variation_id) : ?>
-                    <?php
-                    $variation = wc_get_product($variation_id);
-                    if (!$variation || !is_a($variation, 'WC_Product_Variation')) {
-                        continue;
-                    }
-
-                    $variation_coa    = function_exists('axiom_get_variation_coa_data') ? axiom_get_variation_coa_data($variation_id) : array();
-                    $variation_status = !empty($variation_coa['status']) ? $variation_coa['status'] : 'not_ready';
-                    $variation_label  = function_exists('axiom_get_variation_display_label') ? axiom_get_variation_display_label($variation) : 'Variant';
-                    $variation_image  = !empty($variation_coa['image']) ? $variation_coa['image'] : '';
-                    $variation_pdf    = !empty($variation_coa['pdf']) ? $variation_coa['pdf'] : '';
-                    ?>
-                    <div class="axiom-coa-variant-row" data-search="<?php echo esc_attr(strtolower($product_name . ' ' . $variation_label)); ?>">
-                      <div class="axiom-coa-variant-copy">
-                        <strong><?php echo esc_html(strtoupper($variation_label ?: 'VARIANT')); ?></strong>
-
-                        <?php if ($variation_status === 'ready') : ?>
-                          <span class="axiom-coa-status axiom-coa-status-ready">COA READY</span>
-                        <?php else : ?>
-                          <span class="axiom-coa-status axiom-coa-status-not-ready">COA NOT READY</span>
-                        <?php endif; ?>
-
-                        <?php if (empty($variation_image) && empty($variation_pdf)) : ?>
-                          <span class="axiom-coa-empty">No file yet</span>
-                        <?php endif; ?>
-                      </div>
-
-                      <div class="axiom-coa-variant-actions">
-                        <?php if (!empty($variation_image)) : ?>
-                          <button
-                            type="button"
-                            class="axiom-coa-btn axiom-coa-btn-small axiom-coa-open-modal"
-                            data-coa-title="<?php echo esc_attr($product_name . ' - ' . $variation_label); ?>"
-                            data-coa-image="<?php echo esc_url($variation_image); ?>"
-                          >
-                            View COA
-                          </button>
-                        <?php endif; ?>
-
-                        <?php if (!empty($variation_image)) : ?>
-                          <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($variation_image); ?>" target="_blank" rel="noopener noreferrer">Open Image</a>
-                        <?php endif; ?>
-
-                        <?php if (!empty($variation_pdf)) : ?>
-                          <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($variation_pdf); ?>" target="_blank" rel="noopener noreferrer">Open PDF</a>
-                        <?php endif; ?>
-                      </div>
+            <div class="axiom-coa-variant-list">
+              <?php if (!empty($product_matches)) : ?>
+                <?php foreach ($product_matches as $attachment_id) : ?>
+                  <?php
+                  $file_url  = wp_get_attachment_url($attachment_id);
+                  $mime_type = get_post_mime_type($attachment_id);
+                  $is_image  = strpos((string) $mime_type, 'image/') === 0;
+                  $label     = axiom_coa_template_get_variant_label($attachment_id);
+                  ?>
+                  <div class="axiom-coa-variant-row" data-search="<?php echo esc_attr(strtolower($product_name . ' ' . $label)); ?>">
+                    <div class="axiom-coa-variant-copy">
+                      <strong><?php echo esc_html($label ?: 'VARIANT'); ?></strong>
+                      <span class="axiom-coa-status axiom-coa-status-ready">COA READY</span>
                     </div>
-                  <?php endforeach; ?>
+
+                    <div class="axiom-coa-variant-actions">
+                      <?php if ($is_image && !empty($file_url)) : ?>
+                        <button
+                          type="button"
+                          class="axiom-coa-btn axiom-coa-btn-small axiom-coa-open-modal"
+                          data-coa-title="<?php echo esc_attr($product_name . ' - ' . $label); ?>"
+                          data-coa-image="<?php echo esc_url($file_url); ?>"
+                        >
+                          View COA
+                        </button>
+
+                        <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
+                          Open Image
+                        </a>
+                      <?php elseif (!empty($file_url)) : ?>
+                        <a class="axiom-coa-btn axiom-coa-btn-secondary axiom-coa-btn-small" href="<?php echo esc_url($file_url); ?>" target="_blank" rel="noopener noreferrer">
+                          Open PDF
+                        </a>
+                      <?php endif; ?>
+                    </div>
+                  </div>
+                <?php endforeach; ?>
+              <?php else : ?>
+                <div class="axiom-coa-variant-row">
+                  <div class="axiom-coa-variant-copy">
+                    <strong>VARIANT</strong>
+                    <span class="axiom-coa-status axiom-coa-status-not-ready">COA NOT READY</span>
+                    <span class="axiom-coa-empty">No file yet</span>
+                  </div>
                 </div>
               <?php endif; ?>
-            <?php endif; ?>
+            </div>
           </article>
         <?php endforeach; ?>
       <?php else : ?>
