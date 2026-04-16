@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
 
         <div class="cart-upsell-copy">
-          <span class="cart-upsell-kicker">Recommended Add-On</span>
+          <span class="cart-upsell-kicker">RECOMMENDED ADD-ON</span>
           <h3 class="cart-upsell-title">${upsell.name}</h3>
           <div class="cart-upsell-price">${upsell.priceHtml}</div>
         </div>
@@ -141,6 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (cartCount) {
       cartCount.textContent = String(count);
+      cartCount.style.display = count > 0 ? "flex" : "none";
     }
 
     if (cartSubtotal) {
@@ -164,14 +165,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!cartItemsList || !cartEmptyState) return;
 
     if (!items.length) {
-      cartEmptyState.hidden = false;
-      cartItemsList.hidden = false;
+      cartEmptyState.style.display = "block";
       cartItemsList.innerHTML = data.upsell ? renderUpsell(data.upsell) : "";
       return;
     }
 
-    cartEmptyState.hidden = true;
-    cartItemsList.hidden = false;
+    cartEmptyState.style.display = "none";
 
     cartItemsList.innerHTML = `
       <div class="cart-items-stack">
