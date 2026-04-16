@@ -1,20 +1,20 @@
 .axiom-checkout-research-wrap--payment {
-  padding: 14px !important;
+  padding: 18px !important;
   border: 1px solid #ead56e !important;
   background: #fef9e7 !important;
   border-radius: 20px !important;
-  margin: 14px 0 10px !important;
+  margin: 20px 0 20px !important;
 }
 
 .axiom-research-use-box {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 14px;
-  border: 2px solid #e5ce62;
-  border-radius: 18px;
-  background: rgba(255, 248, 220, 0.45);
-  margin-bottom: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  margin-bottom: 14px;
 }
 
 .axiom-research-use-icon {
@@ -77,16 +77,16 @@
 
 @media (max-width: 767px) {
   .axiom-checkout-research-wrap--payment {
-    padding: 12px !important;
+    padding: 16px !important;
     border-radius: 18px !important;
-    margin: 12px 0 8px !important;
+    margin: 16px 0 16px !important;
   }
 
   .axiom-research-use-box {
     gap: 10px;
-    padding: 12px;
-    border-radius: 16px;
-    margin-bottom: 8px;
+    padding: 0;
+    border-radius: 0;
+    margin-bottom: 12px;
   }
 
   .axiom-research-use-icon {
