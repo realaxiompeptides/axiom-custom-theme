@@ -22,6 +22,54 @@ function axiom_cart_variation_text($cart_item) {
     return implode(' • ', $parts);
 }
 
+function axiom_product_in_cart_by_product_or_parent($product_id) {
+    if (!function_exists('WC') || !WC()->cart) {
+        return false;
+    }
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $cart_product_id   = isset($cart_item['product_id']) ? (int) $cart_item['product_id'] : 0;
+        $cart_variation_id = isset($cart_item['variation_id']) ? (int) $cart_item['variation_id'] : 0;
+
+        if ($cart_product_id === (int) $product_id || $cart_variation_id === (int) $product_id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function axiom_get_single_variation_for_upsell($product) {
+    if (!$product || !$product->is_type('variable')) {
+        return null;
+    }
+
+    $available_variations = $product->get_available_variations();
+
+    if (empty($available_variations) || !is_array($available_variations)) {
+        return null;
+    }
+
+    if (count($available_variations) !== 1) {
+        return null;
+    }
+
+    $variation_data = reset($available_variations);
+    if (empty($variation_data['variation_id'])) {
+        return null;
+    }
+
+    $variation = wc_get_product($variation_data['variation_id']);
+    if (!$variation || !$variation->is_purchasable() || (!$variation->is_in_stock() && !$variation->backorders_allowed())) {
+        return null;
+    }
+
+    return array(
+        'variation_id' => (int) $variation->get_id(),
+        'attributes'   => isset($variation_data['attributes']) && is_array($variation_data['attributes']) ? $variation_data['attributes'] : array(),
+    );
+}
+
 function axiom_find_bac_water_upsell_product() {
     $candidate_slugs = array(
         'bac-water-10ml',
@@ -36,26 +84,65 @@ function axiom_find_bac_water_upsell_product() {
         }
 
         $product = wc_get_product($page->ID);
-        if ($product && $product->is_purchasable() && $product->is_in_stock()) {
-            return $product;
+
+        if (!$product || !$product->is_purchasable()) {
+            continue;
+        }
+
+        if ($product->is_type('variable')) {
+            $single_variation = axiom_get_single_variation_for_upsell($product);
+            if ($single_variation) {
+                return array(
+                    'product'      => $product,
+                    'variation_id' => $single_variation['variation_id'],
+                    'attributes'   => $single_variation['attributes'],
+                );
+            }
+        } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
+            return array(
+                'product'      => $product,
+                'variation_id' => 0,
+                'attributes'   => array(),
+            );
         }
     }
 
     $query = new WP_Query(array(
         'post_type'      => 'product',
         'post_status'    => 'publish',
-        'posts_per_page' => 1,
+        'posts_per_page' => 5,
         's'              => 'BAC Water',
     ));
 
     if ($query->have_posts()) {
-        $query->the_post();
-        $product = wc_get_product(get_the_ID());
-        wp_reset_postdata();
+        while ($query->have_posts()) {
+            $query->the_post();
+            $product = wc_get_product(get_the_ID());
 
-        if ($product && $product->is_purchasable() && $product->is_in_stock()) {
-            return $product;
+            if (!$product || !$product->is_purchasable()) {
+                continue;
+            }
+
+            if ($product->is_type('variable')) {
+                $single_variation = axiom_get_single_variation_for_upsell($product);
+                if ($single_variation) {
+                    wp_reset_postdata();
+                    return array(
+                        'product'      => $product,
+                        'variation_id' => $single_variation['variation_id'],
+                        'attributes'   => $single_variation['attributes'],
+                    );
+                }
+            } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
+                wp_reset_postdata();
+                return array(
+                    'product'      => $product,
+                    'variation_id' => 0,
+                    'attributes'   => array(),
+                );
+            }
         }
+        wp_reset_postdata();
     }
 
     return null;
@@ -66,10 +153,11 @@ function axiom_get_cart_drawer_payload() {
 
     if (!function_exists('WC') || !WC()->cart) {
         return array(
-            'count'    => 0,
-            'subtotal' => '$0.00',
-            'items'    => array(),
-            'upsell'   => null,
+            'count'         => 0,
+            'subtotal'      => '$0.00',
+            'shippingLabel' => 'Calculated at checkout',
+            'items'         => array(),
+            'upsell'        => null,
         );
     }
 
@@ -80,47 +168,54 @@ function axiom_get_cart_drawer_payload() {
             continue;
         }
 
-        $product_id    = $product->get_id();
-        $image         = wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail');
-        $name          = $product->get_name();
-        $quantity      = (int) $cart_item['quantity'];
-        $line_subtotal = WC()->cart->get_product_subtotal($product, $quantity);
-        $price_html    = $product->get_price_html();
-        $variant       = axiom_cart_variation_text($cart_item);
+        $display_product_id = isset($cart_item['product_id']) ? (int) $cart_item['product_id'] : $product->get_id();
+        $image              = wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail');
+        $quantity           = isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
+        $line_subtotal      = WC()->cart->get_product_subtotal($product, $quantity);
+        $variant            = axiom_cart_variation_text($cart_item);
 
         $items[] = array(
             'key'       => $cart_item_key,
-            'productId' => $product_id,
-            'name'      => $name,
+            'productId' => $display_product_id,
+            'name'      => $product->get_name(),
             'image'     => $image ? $image : wc_placeholder_img_src(),
             'quantity'  => $quantity,
             'subtotal'  => $line_subtotal,
-            'priceHtml' => $price_html,
+            'priceHtml' => $product->get_price_html(),
             'variant'   => $variant,
-            'link'      => get_permalink($product_id),
+            'link'      => get_permalink($display_product_id),
         );
     }
 
     $upsell_data = null;
-    $upsell = axiom_find_bac_water_upsell_product();
+    $upsell_wrap = axiom_find_bac_water_upsell_product();
 
-    if ($upsell) {
-        $upsell_image = wp_get_attachment_image_url($upsell->get_image_id(), 'woocommerce_thumbnail');
+    if ($upsell_wrap && !empty($upsell_wrap['product']) && is_a($upsell_wrap['product'], 'WC_Product')) {
+        $upsell       = $upsell_wrap['product'];
+        $variation_id = !empty($upsell_wrap['variation_id']) ? (int) $upsell_wrap['variation_id'] : 0;
+        $attributes   = !empty($upsell_wrap['attributes']) && is_array($upsell_wrap['attributes']) ? $upsell_wrap['attributes'] : array();
 
-        $upsell_data = array(
-            'productId' => $upsell->get_id(),
-            'name'      => $upsell->get_name(),
-            'image'     => $upsell_image ? $upsell_image : wc_placeholder_img_src(),
-            'priceHtml' => $upsell->get_price_html(),
-            'link'      => get_permalink($upsell->get_id()),
-        );
+        if (!axiom_product_in_cart_by_product_or_parent($upsell->get_id()) && (!$variation_id || !axiom_product_in_cart_by_product_or_parent($variation_id))) {
+            $upsell_image = wp_get_attachment_image_url($upsell->get_image_id(), 'woocommerce_thumbnail');
+
+            $upsell_data = array(
+                'productId'   => $upsell->get_id(),
+                'variationId' => $variation_id,
+                'attributes'  => $attributes,
+                'name'        => $upsell->get_name(),
+                'image'       => $upsell_image ? $upsell_image : wc_placeholder_img_src(),
+                'priceHtml'   => $variation_id ? wc_get_product($variation_id)->get_price_html() : $upsell->get_price_html(),
+                'link'        => get_permalink($upsell->get_id()),
+            );
+        }
     }
 
     return array(
-        'count'    => WC()->cart->get_cart_contents_count(),
-        'subtotal' => WC()->cart->get_cart_subtotal(),
-        'items'    => $items,
-        'upsell'   => $upsell_data,
+        'count'         => WC()->cart->get_cart_contents_count(),
+        'subtotal'      => WC()->cart->get_cart_subtotal(),
+        'shippingLabel' => 'Calculated at checkout',
+        'items'         => $items,
+        'upsell'        => $upsell_data,
     );
 }
 
@@ -191,7 +286,8 @@ function axiom_add_simple_product_to_cart() {
         wp_send_json_error(array('message' => 'Cart unavailable.'));
     }
 
-    $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    $product_id   = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
+    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
 
     if (!$product_id) {
         wp_send_json_error(array('message' => 'Missing product ID.'));
@@ -199,15 +295,42 @@ function axiom_add_simple_product_to_cart() {
 
     $product = wc_get_product($product_id);
 
-    if (!$product || !$product->is_purchasable() || !$product->is_in_stock()) {
+    if (!$product || !$product->is_purchasable()) {
         wp_send_json_error(array('message' => 'Product unavailable.'));
     }
 
-    if ($product->is_type('variable')) {
-        wp_send_json_error(array('message' => 'Variable product requires options.'));
-    }
+    $added = false;
 
-    $added = WC()->cart->add_to_cart($product_id, 1);
+    if ($variation_id) {
+        $variation = wc_get_product($variation_id);
+
+        if (!$variation || !$variation->is_purchasable()) {
+            wp_send_json_error(array('message' => 'Variation unavailable.'));
+        }
+
+        if (!$variation->is_in_stock() && !$variation->backorders_allowed()) {
+            wp_send_json_error(array('message' => 'Variation unavailable.'));
+        }
+
+        $variation_data = array();
+        foreach ($_POST as $key => $value) {
+            if (strpos($key, 'attribute_') === 0) {
+                $variation_data[wc_clean(wp_unslash($key))] = wc_clean(wp_unslash($value));
+            }
+        }
+
+        $added = WC()->cart->add_to_cart($product_id, 1, $variation_id, $variation_data);
+    } else {
+        if ($product->is_type('variable')) {
+            wp_send_json_error(array('message' => 'Variable product requires options.'));
+        }
+
+        if (!$product->is_in_stock() && !$product->backorders_allowed()) {
+            wp_send_json_error(array('message' => 'Product unavailable.'));
+        }
+
+        $added = WC()->cart->add_to_cart($product_id, 1);
+    }
 
     if (!$added) {
         wp_send_json_error(array('message' => 'Could not add product.'));
@@ -252,6 +375,24 @@ function axiom_add_product_from_product_page() {
             wp_send_json_error(array('message' => 'Variation unavailable.'));
         }
 
+        if (!$variation->is_in_stock() && !$variation->backorders_allowed()) {
+            wp_send_json_error(array('message' => 'This variation is out of stock.'));
+        }
+
+        if ($variation->managing_stock() && !$variation->backorders_allowed()) {
+            $stock_qty = (int) $variation->get_stock_quantity();
+
+            if ($stock_qty < 1) {
+                wp_send_json_error(array('message' => 'This variation is out of stock.'));
+            }
+
+            if ($quantity > $stock_qty) {
+                wp_send_json_error(array(
+                    'message' => sprintf('You can only add up to %d of this variation.', $stock_qty),
+                ));
+            }
+        }
+
         $variation_data = array();
         foreach ($_POST as $key => $value) {
             if (strpos($key, 'attribute_') === 0) {
@@ -265,6 +406,24 @@ function axiom_add_product_from_product_page() {
             wp_send_json_error(array('message' => 'Product unavailable.'));
         }
 
+        if (!$product->is_in_stock() && !$product->backorders_allowed()) {
+            wp_send_json_error(array('message' => 'This product is out of stock.'));
+        }
+
+        if ($product->managing_stock() && !$product->backorders_allowed()) {
+            $stock_qty = (int) $product->get_stock_quantity();
+
+            if ($stock_qty < 1) {
+                wp_send_json_error(array('message' => 'This product is out of stock.'));
+            }
+
+            if ($quantity > $stock_qty) {
+                wp_send_json_error(array(
+                    'message' => sprintf('You can only add up to %d of this product.', $stock_qty),
+                ));
+            }
+        }
+
         $added = WC()->cart->add_to_cart($product_id, $quantity);
     }
 
@@ -275,9 +434,4 @@ function axiom_add_product_from_product_page() {
     WC()->cart->calculate_totals();
 
     wp_send_json_success(array(
-        'message' => 'Added to cart.',
-        'cart'    => axiom_get_cart_drawer_payload(),
-    ));
-}
-add_action('wp_ajax_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
-add_action('wp_ajax_nopriv_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
+        'message' => '
