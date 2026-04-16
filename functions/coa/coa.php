@@ -18,11 +18,22 @@ function axiom_coa_normalize_text($text) {
 }
 
 /**
+ * Manual exact attachment overrides by product name.
+ * KEY = exact WooCommerce product name
+ * VALUE = attachment title/file tokens to match first
+ */
+function axiom_coa_manual_attachment_map() {
+    return array(
+        'NAD+' => array(
+            'axiom-nad-plus-500mg-coa',
+        ),
+    );
+}
+
+/**
  * Manual alias map.
  * KEY = product display name as it exists in WooCommerce
  * VALUE = array of keywords/tokens that may appear in COA filenames/titles.
- *
- * Add more products here as needed.
  */
 function axiom_coa_manual_alias_map() {
     return array(
@@ -93,7 +104,6 @@ function axiom_coa_get_product_match_keys($product) {
         }
     }
 
-    // Add a few tolerant fallbacks from the name itself.
     $keys[] = str_replace('plus', '', $product_name_norm);
     $keys[] = str_replace('-with-dac', '', $product_name_norm);
     $keys[] = str_replace('-no-dac', '', $product_name_norm);
@@ -122,6 +132,80 @@ function axiom_coa_get_attachment_search_string($attachment_id) {
     $search = preg_replace('/\s+/', ' ', trim($search));
 
     return $search;
+}
+
+/**
+ * Get all COA-like attachments.
+ */
+function axiom_coa_get_all_attachments() {
+    $attachments = get_posts(array(
+        'post_type'      => 'attachment',
+        'post_status'    => 'inherit',
+        'post_mime_type' => array('image/png', 'image/jpeg', 'image/jpg', 'application/pdf'),
+        'posts_per_page' => -1,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ));
+
+    $results = array();
+
+    foreach ($attachments as $attachment) {
+        $title = axiom_coa_normalize_text($attachment->post_title);
+        $file  = get_attached_file($attachment->ID);
+        $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+
+        if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
+            $results[] = $attachment;
+        }
+    }
+
+    return $results;
+}
+
+/**
+ * Manual attachment lookup first.
+ */
+function axiom_coa_get_manual_attachments_for_product($product) {
+    if (!$product || !is_a($product, 'WC_Product')) {
+        return array();
+    }
+
+    $map = axiom_coa_manual_attachment_map();
+    $product_name = trim($product->get_name());
+
+    if (empty($map[$product_name]) || !is_array($map[$product_name])) {
+        return array();
+    }
+
+    $wanted_keys = array_map('axiom_coa_normalize_text', $map[$product_name]);
+    $attachments = axiom_coa_get_all_attachments();
+    $matches = array();
+
+    foreach ($attachments as $attachment) {
+        $title = axiom_coa_normalize_text(get_the_title($attachment->ID));
+        $file  = get_attached_file($attachment->ID);
+        $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+        $full  = axiom_coa_get_attachment_search_string($attachment->ID);
+
+        foreach ($wanted_keys as $wanted) {
+            if (
+                $wanted &&
+                (
+                    $title === $wanted ||
+                    $base === $wanted ||
+                    $full === $wanted ||
+                    strpos($title, $wanted) !== false ||
+                    strpos($base, $wanted) !== false ||
+                    strpos($full, $wanted) !== false
+                )
+            ) {
+                $matches[] = $attachment->ID;
+                break;
+            }
+        }
+    }
+
+    return array_values(array_unique($matches));
 }
 
 /**
@@ -176,39 +260,16 @@ function axiom_coa_score_attachment_for_product($attachment_id, $product) {
 }
 
 /**
- * Get all COA-like attachments.
- */
-function axiom_coa_get_all_attachments() {
-    $attachments = get_posts(array(
-        'post_type'      => 'attachment',
-        'post_status'    => 'inherit',
-        'post_mime_type' => array('image/png', 'image/jpeg', 'image/jpg', 'application/pdf'),
-        'posts_per_page' => -1,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    ));
-
-    $results = array();
-
-    foreach ($attachments as $attachment) {
-        $title = axiom_coa_normalize_text($attachment->post_title);
-        $file  = get_attached_file($attachment->ID);
-        $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
-
-        if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
-            $results[] = $attachment;
-        }
-    }
-
-    return $results;
-}
-
-/**
  * Get matching attachments for product.
  */
 function axiom_coa_get_matching_attachments_for_product($product) {
     if (!$product || !is_a($product, 'WC_Product')) {
         return array();
+    }
+
+    $manual_matches = axiom_coa_get_manual_attachments_for_product($product);
+    if (!empty($manual_matches)) {
+        return $manual_matches;
     }
 
     $attachments = axiom_coa_get_all_attachments();
@@ -367,7 +428,7 @@ function axiom_enqueue_coa_assets() {
             'axiom-coa-page',
             get_template_directory_uri() . '/assets/css/coa-page.css',
             array(),
-            '1.0.2'
+            '1.0.3'
         );
     }
 }
