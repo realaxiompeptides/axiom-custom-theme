@@ -130,49 +130,48 @@ $drawer_checkout_url = home_url('/checkout/');
     </div>
   </aside>
 
-  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true">
-    <div class="cart-drawer-inner">
-      <div class="cart-drawer-header">
+<div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+  <div class="cart-drawer-inner">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title-wrap">
         <h2>Your Cart</h2>
-        <button class="drawer-close" id="cartClose" aria-label="Close cart" type="button">
-          &times;
-        </button>
+        <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
       </div>
 
-      <div class="cart-body">
-        <div class="cart-empty-state" id="cartEmptyState">
-          <p class="cart-empty-text">Your cart is currently empty.</p>
-        </div>
-
-        <div class="cart-items-list" id="cartItemsList" hidden></div>
-      </div>
-
-      <div class="cart-footer">
-        <div class="cart-subtotal-row">
-          <span>Subtotal</span>
-          <strong id="cartSubtotal">
-            <?php echo function_exists('WC') && WC()->cart ? wp_kses_post(WC()->cart->get_cart_subtotal()) : '$0.00'; ?>
-          </strong>
-        </div>
-
-        <div class="cart-action-stack">
-          <a
-            href="<?php echo esc_url($cart_url); ?>"
-            class="cart-pill-btn cart-muted-btn"
-          >
-            View Cart
-          </a>
-
-          <a
-            href="<?php echo esc_url($drawer_checkout_url); ?>"
-            class="cart-pill-btn cart-outline-btn"
-          >
-            Checkout
-          </a>
-        </div>
-      </div>
+      <button class="cart-close" id="cartClose" aria-label="Close cart">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
-  </aside>
+
+    <div class="cart-drawer-body">
+      <div class="cart-empty-state" id="cartEmptyState">
+        Your cart is currently empty.
+      </div>
+
+      <div class="cart-items-list" id="cartItemsList"></div>
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-summary-row">
+        <span>Subtotal</span>
+        <strong id="cartSubtotal">$0.00</strong>
+      </div>
+
+      <div class="cart-summary-row cart-summary-row-shipping">
+        <span>Shipping</span>
+        <span id="cartShippingValue">Calculated at checkout</span>
+      </div>
+
+      <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-checkout-btn">
+        Checkout
+      </a>
+
+      <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-view-full-link">
+        View Full Cart
+      </a>
+    </div>
+  </div>
+</div>
 
   <div class="site-overlay" id="siteOverlay"></div>
 <?php endif; ?>
