@@ -87,7 +87,7 @@
           'mt-2',
           'semax',
           'selank',
-          'cjc-1295',
+          'cjc-1295-no-dac',
           'ipamorelin',
           'bpc-157',
           'tb-500',
