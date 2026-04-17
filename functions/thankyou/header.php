@@ -3,388 +3,303 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Cash App thank you box
- */
-
-function axiom_thankyou_cashapp_btc_address() {
-    return 'bc1qa2c4nfzakewrxf9jcj3m8ql3n436jhzn0spgfr';
-}
-
-function axiom_thankyou_cashapp_logo_url() {
-    $file_1 = get_template_directory() . '/assets/images/cashapp.png';
-    $url_1  = get_template_directory_uri() . '/assets/images/cashapp.png';
-
-    if (file_exists($file_1)) {
-        return $url_1;
-    }
-
-    $file_2 = get_template_directory() . '/assets/images/cash-app.png';
-    $url_2  = get_template_directory_uri() . '/assets/images/cash-app.png';
-
-    if (file_exists($file_2)) {
-        return $url_2;
-    }
-
-    return '';
-}
-
-function axiom_thankyou_is_cashapp_order($order) {
-    if (!$order instanceof WC_Order) {
-        return false;
-    }
-
-    $method_id    = strtolower((string) $order->get_payment_method());
-    $method_title = strtolower((string) $order->get_payment_method_title());
-    $haystack     = trim($method_id . ' ' . $method_title);
-
-    return (strpos($haystack, 'cash app') !== false || strpos($haystack, 'cashapp') !== false);
-}
-
-function axiom_thankyou_cashapp_assets_once() {
-    static $printed = false;
-
-    if ($printed) {
-        return;
-    }
-
-    $printed = true;
-    ?>
-    <style>
-      .axiom-cashapp-thankyou-wrap {
-        margin: 28px 0 0;
-      }
-
-      .axiom-cashapp-thankyou-card {
-        border: 1px solid #dbe6f2;
-        border-radius: 28px;
-        background: #f8fbff;
-        padding: 24px;
-      }
-
-      .axiom-cashapp-thankyou-header {
-        display: flex;
-        align-items: center;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-      }
-
-      .axiom-cashapp-thankyou-logo {
-        width: 50px;
-        height: 50px;
-        min-width: 50px;
-        border-radius: 14px;
-        background: #ffffff;
-        border: 1px solid #dbe6f2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-      }
-
-      .axiom-cashapp-thankyou-logo img {
-        width: 34px;
-        height: 34px;
-        object-fit: contain;
-        display: block;
-      }
-
-      .axiom-cashapp-thankyou-title-row {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
-
-      .axiom-cashapp-thankyou-title {
-        margin: 0;
-        color: #1877f2;
-        font-size: 28px;
-        line-height: 1.05;
-        font-weight: 900;
-      }
-
-      .axiom-cashapp-thankyou-badge {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 40px;
-        padding: 0 18px;
-        border-radius: 999px;
-        background: linear-gradient(135deg, #66b5ef, #3f90cf);
-        color: #ffffff;
-        font-size: 15px;
-        font-weight: 900;
-      }
-
-      .axiom-cashapp-thankyou-subtitle {
-        margin: 0 0 16px;
-        color: #617189;
-        font-size: 17px;
-        font-weight: 900;
-      }
-
-      .axiom-cashapp-thankyou-steps {
-        margin: 0 0 24px;
-        padding-left: 24px;
-        color: #6c7a92;
-      }
-
-      .axiom-cashapp-thankyou-steps li {
-        margin-bottom: 12px;
-        font-size: 17px;
-        line-height: 1.7;
-      }
-
-      .axiom-cashapp-thankyou-steps strong {
-        color: #617189;
-        font-weight: 900;
-      }
-
-      .axiom-cashapp-thankyou-label {
-        margin: 0 0 10px;
-        color: #69758d;
-        font-size: 15px;
-        font-weight: 900;
-        letter-spacing: .04em;
-        text-transform: uppercase;
-      }
-
-      .axiom-cashapp-thankyou-copy-field {
-        width: 100%;
-        min-height: 58px;
-        padding: 0 18px;
-        border: 1px solid #dbe6f2;
-        border-radius: 18px;
-        background: #ffffff;
-        color: #0f172a;
-        font-size: 18px;
-        font-weight: 800;
-        box-sizing: border-box;
-      }
-
-      .axiom-cashapp-thankyou-copy-btn {
-        width: 100%;
-        min-height: 58px;
-        margin-top: 12px;
-        border: 0;
-        border-radius: 18px;
-        background: linear-gradient(135deg, #4aa7e8, #2f84bf);
-        color: #ffffff;
-        font-size: 20px;
-        font-weight: 900;
-        cursor: pointer;
-      }
-
-      .axiom-cashapp-thankyou-copy-btn:hover {
-        opacity: 0.96;
-      }
-
-      .axiom-cashapp-thankyou-note {
-        margin: 16px 0 20px;
-        color: #6a768d;
-        font-size: 16px;
-        line-height: 1.5;
-        font-weight: 900;
-        text-transform: uppercase;
-      }
-
-      .axiom-cashapp-thankyou-goodtoknow {
-        margin-top: 16px;
-        padding: 22px;
-        border: 1px solid #cfe0ef;
-        border-radius: 24px;
-        background: #f8fbff;
-      }
-
-      .axiom-cashapp-thankyou-goodtoknow h3 {
-        margin: 0 0 12px;
-        color: #0f172a;
-        font-size: 22px;
-        font-weight: 900;
-      }
-
-      .axiom-cashapp-thankyou-goodtoknow ul {
-        margin: 0;
-        padding-left: 22px;
-        color: #69758d;
-      }
-
-      .axiom-cashapp-thankyou-goodtoknow li {
-        margin-bottom: 12px;
-        font-size: 17px;
-        line-height: 1.7;
-      }
-
-      .axiom-cashapp-thankyou-goodtoknow strong {
-        color: #617189;
-        font-weight: 900;
-      }
-
-      @media (max-width: 767px) {
-        .axiom-cashapp-thankyou-card {
-          padding: 20px;
-          border-radius: 24px;
-        }
-
-        .axiom-cashapp-thankyou-title {
-          font-size: 24px;
-        }
-
-        .axiom-cashapp-thankyou-badge {
-          min-height: 36px;
-          padding: 0 16px;
-          font-size: 14px;
-        }
-
-        .axiom-cashapp-thankyou-subtitle {
-          font-size: 16px;
-        }
-
-        .axiom-cashapp-thankyou-steps li,
-        .axiom-cashapp-thankyou-goodtoknow li {
-          font-size: 16px;
-          line-height: 1.65;
-        }
-
-        .axiom-cashapp-thankyou-copy-field {
-          font-size: 16px;
-        }
-
-        .axiom-cashapp-thankyou-copy-btn {
-          font-size: 18px;
-        }
-
-        .axiom-cashapp-thankyou-goodtoknow h3 {
-          font-size: 18px;
-        }
-      }
-    </style>
-
-    <script>
-      document.addEventListener('click', async function (e) {
-        const btn = e.target.closest('[data-axiom-copy-target]');
-        if (!btn) return;
-
-        const target = document.querySelector(btn.getAttribute('data-axiom-copy-target'));
-        if (!target) return;
-
-        const text = (target.value || target.textContent || '').trim();
-        if (!text) return;
-
-        const original = btn.textContent;
-
-        try {
-          await navigator.clipboard.writeText(text);
-          btn.textContent = 'Copied';
-          setTimeout(function () {
-            btn.textContent = original;
-          }, 1400);
-        } catch (err) {
-          btn.textContent = 'Copy failed';
-          setTimeout(function () {
-            btn.textContent = original;
-          }, 1400);
-        }
-      });
-    </script>
-    <?php
-}
-
-function axiom_render_cashapp_box_on_thankyou($order_id) {
+function axiom_render_custom_thankyou_header($order_id) {
     if (!$order_id) {
         return;
     }
 
     $order = wc_get_order($order_id);
 
-    if (!$order || !axiom_thankyou_is_cashapp_order($order)) {
+    if (!$order) {
         return;
     }
 
-    $order_number = $order->get_order_number();
-    $btc_address  = axiom_thankyou_cashapp_btc_address();
-    $logo_url     = axiom_thankyou_cashapp_logo_url();
-    $addr_id      = 'axiom-cashapp-btc-address-' . $order_id;
-    $order_id_el  = 'axiom-cashapp-order-number-' . $order_id;
+    $order_number      = $order->get_order_number();
+    $order_total       = (float) $order->get_total();
+    $order_subtotal    = (float) $order->get_subtotal();
+    $order_shipping    = (float) $order->get_shipping_total();
+    $order_tax         = (float) $order->get_total_tax();
+    $payment_method    = (string) $order->get_payment_method_title();
+    $payment_method_id = (string) $order->get_payment_method();
+    $order_status_slug = (string) $order->get_status();
+    $order_status      = wc_get_order_status_name($order_status_slug);
+    $shipping_methods  = $order->get_shipping_methods();
+    $shipping_label    = '';
 
-    axiom_thankyou_cashapp_assets_once();
-    ?>
-    <div class="axiom-cashapp-thankyou-wrap">
-      <div class="axiom-cashapp-thankyou-card">
-        <div class="axiom-cashapp-thankyou-header">
-          <?php if ($logo_url) : ?>
-            <div class="axiom-cashapp-thankyou-logo">
-              <img src="<?php echo esc_url($logo_url); ?>" alt="Cash App">
-            </div>
-          <?php endif; ?>
+    if (!empty($shipping_methods)) {
+        $first_shipping = reset($shipping_methods);
+        $shipping_label = $first_shipping ? $first_shipping->get_name() : '';
+    }
 
-          <div class="axiom-cashapp-thankyou-title-row">
-            <h2 class="axiom-cashapp-thankyou-title">Cash App</h2>
-            <span class="axiom-cashapp-thankyou-badge">5% OFF</span>
-          </div>
-        </div>
+    $payment_method_id_lower = strtolower($payment_method_id);
+    $payment_method_lower    = strtolower($payment_method);
 
-        <p class="axiom-cashapp-thankyou-subtitle">How to pay with Cash App Bitcoin:</p>
+    $is_zelle   = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
+    $is_venmo   = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
+    $is_cashapp = (false !== strpos($payment_method_id_lower, 'cashapp') || false !== strpos($payment_method_id_lower, 'cash-app') || false !== strpos($payment_method_lower, 'cash app') || false !== strpos($payment_method_lower, 'cashapp'));
 
-        <ol class="axiom-cashapp-thankyou-steps">
-          <li>Open <strong>Cash App</strong> on your phone.</li>
-          <li>Tap the <strong>Bitcoin</strong> tab inside Cash App.</li>
-          <li>If you do not already have Bitcoin, tap <strong>Buy</strong> and purchase enough BTC to cover your order total.</li>
-          <li>Tap <strong>Send</strong> on the Bitcoin screen.</li>
-          <li>Paste our exact Bitcoin address shown below into the recipient field.</li>
-          <li>Double-check the address before sending to make sure it matches exactly.</li>
-          <li>After sending, save your transaction confirmation and send us your order number and payment confirmation.</li>
-        </ol>
+    $la_timezone = new DateTimeZone('America/Los_Angeles');
 
-        <p class="axiom-cashapp-thankyou-label">Bitcoin (BTC) Address</p>
-        <input
-          type="text"
-          id="<?php echo esc_attr($addr_id); ?>"
-          class="axiom-cashapp-thankyou-copy-field"
-          readonly
-          value="<?php echo esc_attr($btc_address); ?>"
-        >
-        <button
-          type="button"
-          class="axiom-cashapp-thankyou-copy-btn"
-          data-axiom-copy-target="#<?php echo esc_attr($addr_id); ?>"
-        >
-          Copy
-        </button>
+    if ($order->get_date_created()) {
+        $created_dt = $order->get_date_created();
+        $ship_dt = new DateTime('@' . $created_dt->getTimestamp());
+        $ship_dt->setTimezone($la_timezone);
+    } else {
+        $ship_dt = new DateTime('now', $la_timezone);
+    }
 
-        <p class="axiom-cashapp-thankyou-note">
-          After sending payment, message your order number #<?php echo esc_html($order_number); ?> and payment confirmation.
-        </p>
+    $day_num = (int) $ship_dt->format('N');
+    $hour    = (int) $ship_dt->format('G');
 
-        <p class="axiom-cashapp-thankyou-label">Order Number</p>
-        <input
-          type="text"
-          id="<?php echo esc_attr($order_id_el); ?>"
-          class="axiom-cashapp-thankyou-copy-field"
-          readonly
-          value="#<?php echo esc_attr($order_number); ?>"
-        >
-        <button
-          type="button"
-          class="axiom-cashapp-thankyou-copy-btn"
-          data-axiom-copy-target="#<?php echo esc_attr($order_id_el); ?>"
-        >
-          Copy
-        </button>
+    if ($day_num === 6) {
+        $ship_dt->modify('next monday');
+    } elseif ($day_num === 7) {
+        $ship_dt->modify('next monday');
+    } else {
+        if ($hour >= 14) {
+            if ($day_num === 5) {
+                $ship_dt->modify('next monday');
+            } else {
+                $ship_dt->modify('+1 day');
+            }
+        }
+    }
 
-        <div class="axiom-cashapp-thankyou-goodtoknow">
-          <h3>Good to know</h3>
-          <ul>
-            <li>You get <strong>5% off</strong> because crypto payments save us processing fees.</li>
-            <li>Cash App Bitcoin is usually one of the easiest ways to pay with crypto.</li>
-            <li>If you need to buy BTC first in Cash App, it usually only takes a moment before you can send it.</li>
-            <li>Confirmation usually takes a short time after sending. Message us with your order number and transaction ID so we can confirm it faster.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <?php
+    $estimated_ship_date = $ship_dt->format('l, F j');
+
+    $delivery_days = 5;
+    if ($shipping_label) {
+        $shipping_label_lower = strtolower($shipping_label);
+
+        if (false !== strpos($shipping_label_lower, 'ground')) {
+            $delivery_days = 6;
+        } elseif (false !== strpos($shipping_label_lower, 'priority')) {
+            $delivery_days = 3;
+        } elseif (false !== strpos($shipping_label_lower, 'express')) {
+            $delivery_days = 2;
+        }
+    }
+
+    $delivery_dt = clone $ship_dt;
+    $delivery_dt->modify('+' . absint($delivery_days) . ' days');
+    $estimated_delivery_date = $delivery_dt->format('l, F j');
+
+    $hero_title = 'Thank you for your order';
+    $hero_copy  = 'You can review your order details and shipping timeline below.';
+
+    if (in_array($order_status_slug, array('processing', 'completed'), true)) {
+        $hero_copy = 'Your order has been received and payment has been confirmed. You can review the order details below.';
+    } elseif (in_array($order_status_slug, array('pending', 'on-hold'), true)) {
+        $hero_copy = 'We’ve received your order. Please review the details below.';
+    } elseif (in_array($order_status_slug, array('cancelled', 'failed'), true)) {
+        $hero_copy = 'You can review the order details and current status below. If you need help, please contact us.';
+    }
+
+    echo '<section class="axiom-payment-confirmation-hero">';
+    echo '  <h1>' . esc_html($hero_title) . '</h1>';
+    echo '  <p class="axiom-payment-confirmation-copy">' . esc_html($hero_copy) . '</p>';
+    echo '</section>';
+
+    echo '<section class="axiom-payment-status-card">';
+    echo '  <div class="axiom-payment-status-top">';
+    echo '      <div class="axiom-payment-status-icon-wrap">';
+    echo '          <div class="axiom-payment-status-icon"><i class="fa-solid fa-check"></i></div>';
+    echo '      </div>';
+    echo '      <div class="axiom-payment-status-heading">';
+    echo '          <span>Order Number</span>';
+    echo '          <h2>#' . esc_html($order_number) . '</h2>';
+    echo '      </div>';
+    echo '  </div>';
+
+    echo '  <div class="axiom-payment-status-rows">';
+    echo '      <div class="axiom-payment-status-row"><span>Status</span><strong>' . esc_html($order_status) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Subtotal</span><strong>' . wp_kses_post(wc_price($order_subtotal)) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Shipping</span><strong>' . wp_kses_post(wc_price($order_shipping)) . '</strong></div>';
+
+    if ($order_tax > 0) {
+        echo '      <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
+    }
+
+    echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
+    echo '      <div class="axiom-payment-status-row"><span>Payment method</span><strong>' . esc_html($payment_method) . '</strong></div>';
+    echo '  </div>';
+
+    if ($is_zelle) {
+        echo '  <div class="axiom-payment-alert-card">';
+        echo '      <div class="axiom-payment-alert-title">Send Payment Now</div>';
+        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> as the payment note: <strong>#' . esc_html($order_number) . '</strong></p>';
+        echo '      <p>Do not mention product names or order contents.</p>';
+        echo '  </div>';
+
+        echo '  <div class="axiom-payment-instructions-card">';
+        echo '      <div class="axiom-payment-instructions-header"><h3>Zelle Payment Instructions</h3></div>';
+        echo '      <div class="axiom-payment-instructions-body">';
+        echo '          <p>Please complete your payment through Zelle after placing your order.</p>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Zelle phone</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>916-233-5312</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'916-233-5312\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Zelle email</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>jaxferone@gmail.com</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'jaxferone@gmail.com\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Payment note</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>#' . esc_html($order_number) . '</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+        echo '      </div>';
+        echo '  </div>';
+    }
+
+    if ($is_venmo) {
+        echo '  <div class="axiom-payment-alert-card">';
+        echo '      <div class="axiom-payment-alert-title">Send Payment Now</div>';
+        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> as the payment note: <strong>#' . esc_html($order_number) . '</strong></p>';
+        echo '      <p>Do not mention product names or order contents.</p>';
+        echo '  </div>';
+
+        echo '  <div class="axiom-payment-instructions-card">';
+        echo '      <div class="axiom-payment-instructions-header"><h3>Venmo Payment Instructions</h3></div>';
+        echo '      <div class="axiom-payment-instructions-body">';
+        echo '          <p>Please send your payment after placing your order.</p>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Venmo username</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>@thomas-harris-axiom</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'@thomas-harris-axiom\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Venmo link</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'https://venmo.com/thomas-harris-axiom\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Payment note</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>#' . esc_html($order_number) . '</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+        echo '      </div>';
+        echo '  </div>';
+    }
+
+    if ($is_cashapp) {
+        echo '  <div class="axiom-payment-alert-card">';
+        echo '      <div class="axiom-payment-alert-title">Complete Cash App Bitcoin Payment</div>';
+        echo '      <p>Your order includes the <strong>5% Cash App discount</strong>.</p>';
+        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> when contacting us about payment: <strong>#' . esc_html($order_number) . '</strong></p>';
+        echo '  </div>';
+
+        echo '  <div class="axiom-payment-instructions-card">';
+        echo '      <div class="axiom-payment-instructions-header"><h3>Cash App Bitcoin Instructions</h3></div>';
+        echo '      <div class="axiom-payment-instructions-body">';
+        echo '          <p>Follow these steps to complete payment with Cash App Bitcoin.</p>';
+
+        echo '          <ol style="margin:0 0 18px 18px; padding:0; color:#64748b; line-height:1.7;">';
+        echo '              <li>Open <strong>Cash App</strong> on your phone.</li>';
+        echo '              <li>Tap the <strong>Bitcoin</strong> tab inside Cash App.</li>';
+        echo '              <li>If you do not already have Bitcoin, tap <strong>Buy</strong> and purchase enough BTC to cover your order total.</li>';
+        echo '              <li>Tap <strong>Send</strong> on the Bitcoin screen.</li>';
+        echo '              <li>Paste our exact Bitcoin address shown below into the recipient field.</li>';
+        echo '              <li>Double-check the address before sending to make sure it matches exactly.</li>';
+        echo '              <li>After sending, save your transaction confirmation and send us your order number and payment confirmation.</li>';
+        echo '          </ol>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Bitcoin (BTC) address</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong style="font-size:14px; word-break:break-all;">bc1qa2c4nfzakewrxf9jcj3m8ql3n436jhzn0spgfr</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'bc1qa2c4nfzakewrxf9jcj3m8ql3n436jhzn0spgfr\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-copy-field">';
+        echo '              <span>Order number</span>';
+        echo '              <div class="axiom-payment-copy-row">';
+        echo '                  <strong>#' . esc_html($order_number) . '</strong>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div style="margin-top:18px; padding:16px; border:1px solid #dbe7f3; border-radius:18px; background:#f8fbff;">';
+        echo '              <strong style="display:block; margin-bottom:10px; color:#0f172a;">Good to know</strong>';
+        echo '              <ul style="margin:0; padding-left:18px; color:#64748b; line-height:1.7;">';
+        echo '                  <li>You get <strong>5% off</strong> because crypto payments save us processing fees.</li>';
+        echo '                  <li>Cash App Bitcoin is usually one of the easiest ways to pay with crypto.</li>';
+        echo '                  <li>If you need to buy BTC first in Cash App, it usually only takes a moment before you can send it.</li>';
+        echo '                  <li>Confirmation usually takes a short time after sending. Message us with your order number and transaction ID so we can confirm it faster.</li>';
+        echo '              </ul>';
+        echo '          </div>';
+
+        echo '      </div>';
+        echo '  </div>';
+    }
+
+    echo '  <div class="axiom-payment-next-steps">';
+    echo '      <h3>What happens next?</h3>';
+
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">1</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Order Processing</strong>';
+    echo '              <p>Orders placed before 2:00 PM Pacific Time, Monday through Friday, usually ship the same business day.</p>';
+    echo '          </div>';
+    echo '      </div>';
+
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">2</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Shipping Confirmation</strong>';
+    echo '              <p>You will receive tracking information once your order ships.</p>';
+    echo '          </div>';
+    echo '      </div>';
+
+    echo '      <div class="axiom-payment-next-step">';
+    echo '          <div class="axiom-payment-next-step-number">3</div>';
+    echo '          <div class="axiom-payment-next-step-copy">';
+    echo '              <strong>Delivery</strong>';
+    echo '              <p>Estimated ship date is <strong>' . esc_html($estimated_ship_date) . '</strong> and estimated delivery is <strong>' . esc_html($estimated_delivery_date) . '</strong>.</p>';
+    echo '          </div>';
+    echo '      </div>';
+
+    echo '  </div>';
+    echo '</section>';
+
+    echo '<script>
+    function axiomCopyValue(button, value) {
+        if (!navigator.clipboard) {
+            return;
+        }
+
+        navigator.clipboard.writeText(value).then(function() {
+            var originalText = button.innerText;
+            button.innerText = "Copied!";
+            button.classList.add("is-copied");
+
+            setTimeout(function() {
+                button.innerText = originalText;
+                button.classList.remove("is-copied");
+            }, 1400);
+        });
+    }
+    </script>';
 }
-add_action('woocommerce_thankyou', 'axiom_render_cashapp_box_on_thankyou', 25);
