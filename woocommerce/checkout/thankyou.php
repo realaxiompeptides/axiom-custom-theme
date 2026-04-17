@@ -26,8 +26,8 @@ if ( ! empty( $shipping_methods ) ) {
  * Estimated ship and delivery dates.
  * Ships same day Mon-Fri. Weekend orders ship Monday.
  */
-$created = $order->get_date_created();
-$timezone = wp_timezone();
+$created   = $order->get_date_created();
+$timezone  = wp_timezone();
 $base_date = $created ? $created->setTimezone( $timezone ) : new WC_DateTime( 'now', $timezone );
 
 $ship_timestamp = $base_date->getTimestamp();
@@ -64,9 +64,6 @@ $days_added = 0;
 
 while ( $days_added < $delivery_days ) {
 	$delivery_timestamp = strtotime( '+1 day', $delivery_timestamp );
-	$day_num = (int) wp_date( 'N', $delivery_timestamp, $timezone );
-
-	// Count calendar days, not just business days:
 	$days_added++;
 }
 
@@ -119,7 +116,7 @@ $estimated_delivery_date = wp_date( 'l, F j', $delivery_timestamp, $timezone );
 
 				<div class="axiom-payment-status-row">
 					<span><?php esc_html_e( 'Shipping', 'woocommerce' ); ?></span>
-					<strong><?php echo wp_kses_post( wc_price( $order_shipping ) ); ?></strong>
+					<strong><?php echo wp_kses_post( wc_price( $order_shipping ) ); ?><?php echo $shipping_label ? ' via ' . esc_html( $shipping_label ) : ''; ?></strong>
 				</div>
 
 				<?php if ( $order_tax > 0 ) : ?>
@@ -132,6 +129,11 @@ $estimated_delivery_date = wp_date( 'l, F j', $delivery_timestamp, $timezone );
 				<div class="axiom-payment-status-row axiom-payment-status-row--total">
 					<span><?php esc_html_e( 'Total', 'woocommerce' ); ?></span>
 					<strong><?php echo wp_kses_post( wc_price( $order_total ) ); ?></strong>
+				</div>
+
+				<div class="axiom-payment-status-row">
+					<span><?php esc_html_e( 'Payment method', 'woocommerce' ); ?></span>
+					<strong><?php echo esc_html( $payment_method ); ?></strong>
 				</div>
 			</div>
 
@@ -151,14 +153,19 @@ $estimated_delivery_date = wp_date( 'l, F j', $delivery_timestamp, $timezone );
 		</section>
 
 		<?php
-		/*
-		 * Your custom lower sections already working.
-		 */
-		axiom_render_custom_thankyou_sections( $order_id );
+		$order_details_template = get_stylesheet_directory() . '/woocommerce/order/order-details.php';
+		$customer_details_template = get_stylesheet_directory() . '/woocommerce/order/order-details-customer.php';
+
+		if ( file_exists( $order_details_template ) ) {
+			include $order_details_template;
+		}
+
+		if ( file_exists( $customer_details_template ) ) {
+			include $customer_details_template;
+		}
 		?>
 
 		<?php do_action( 'woocommerce_thankyou_' . $order->get_payment_method(), $order_id ); ?>
-		<?php do_action( 'woocommerce_thankyou', $order_id ); ?>
 
 	</div>
 </div>
