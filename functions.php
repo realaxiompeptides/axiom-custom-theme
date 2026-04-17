@@ -22,6 +22,7 @@ $axiom_function_files = array(
 
     '/functions/thankyou/templates.php',
     '/functions/thankyou/header.php',
+    '/functions/thankyou/verification.php',
 
     '/functions/contact/contact-us.php',
 
