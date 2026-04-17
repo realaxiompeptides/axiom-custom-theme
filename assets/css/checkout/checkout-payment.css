@@ -760,3 +760,47 @@ button[name="woocommerce_checkout_place_order"] {
     margin-top: 1px !important;
   }
 }
+
+/* remove the default Paymento image/banner completely */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce img,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .payment_method_paymento_gateway_for_woocommerce_banner,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .crypto-accepted-here,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-accepted-here,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-banner,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-gateway-banner {
+  display: none !important;
+}
+
+/* keep the crypto title on one line and make the 5% text normal text */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce > label {
+  display: inline !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+}
+
+/* remove the blue special styling from the appended discount text */
+.axiom-payment-discount-label {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+  margin-left: 6px !important;
+  white-space: nowrap !important;
+}
+
+/* make sure no image spacing is left behind */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce label img {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+}
+
+/* keep the payment description box below nicely */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .payment_box {
+  margin-top: 16px !important;
+}
