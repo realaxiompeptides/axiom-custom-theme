@@ -55,7 +55,6 @@ function axiom_get_gateway_object_by_id($gateway_id) {
 
 /**
  * Detect discount type from gateway title / description / id.
- * No exact HTML value lookup needed.
  */
 function axiom_get_discount_payment_type($gateway_id = '') {
     if (!$gateway_id) {
@@ -74,7 +73,6 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 
     $haystack = trim($gateway_id_normalized . ' ' . $title . ' ' . $desc);
 
-    // Cash App detection
     if (
         strpos($haystack, 'cash app') !== false ||
         strpos($haystack, 'cashapp') !== false
@@ -82,7 +80,6 @@ function axiom_get_discount_payment_type($gateway_id = '') {
         return 'cashapp';
     }
 
-    // Crypto / Paymento detection
     if (
         strpos($haystack, 'paymento') !== false ||
         strpos($haystack, 'crypto') !== false ||
@@ -99,20 +96,6 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 }
 
 /**
- * Add "(5% OFF)" to gateway titles shown on checkout.
- */
-add_filter('woocommerce_gateway_title', 'axiom_gateway_title_with_discount', 20, 2);
-function axiom_gateway_title_with_discount($title, $gateway_id) {
-    $type = axiom_get_discount_payment_type($gateway_id);
-
-    if (($type === 'cashapp' || $type === 'crypto') && strpos($title, '5% OFF') === false) {
-        $title .= ' <span class="axiom-payment-discount-label">(5% OFF)</span>';
-    }
-
-    return $title;
-}
-
-/**
  * Add clearer description text on checkout.
  */
 add_filter('woocommerce_gateway_description', 'axiom_gateway_description_with_discount', 20, 2);
@@ -124,7 +107,7 @@ function axiom_gateway_description_with_discount($description, $gateway_id) {
     }
 
     if ($type === 'crypto') {
-        $description .= '<p class="axiom-payment-discount-copy">Pay with Paymento / crypto and receive an automatic 5% discount on your order total.</p>';
+        $description .= '<p class="axiom-payment-discount-copy">Pay with Bitcoin / crypto and receive an automatic 5% discount on your order total.</p>';
     }
 
     return $description;
@@ -211,7 +194,7 @@ function axiom_custom_coupon_label($label, $coupon) {
 }
 
 /**
- * Style checkout discount labels.
+ * Style checkout discount copy only.
  */
 add_action('wp_head', 'axiom_checkout_discount_styles');
 function axiom_checkout_discount_styles() {
@@ -220,12 +203,6 @@ function axiom_checkout_discount_styles() {
     }
     ?>
     <style>
-      .axiom-payment-discount-label{
-        color:#2f8df3;
-        font-weight:900;
-        margin-left:6px;
-        white-space:nowrap;
-      }
       .axiom-payment-discount-copy{
         margin:8px 0 0;
         color:#64748b;
@@ -249,13 +226,13 @@ function axiom_store_payment_instruction_meta($order, $data) {
     $type       = axiom_get_discount_payment_type($gateway_id);
 
     if ($type === 'cashapp') {
-        $order->update_meta_data('_axiom_payment_method_display', 'Cash App (5% OFF)');
+        $order->update_meta_data('_axiom_payment_method_display', 'Cash App');
         $order->update_meta_data('_axiom_payment_instruction_title', 'Cash App Payment Instructions');
         $order->update_meta_data('_axiom_payment_instruction_body', 'Send your payment via Cash App to ' . axiom_cashapp_display_value() . '. Your 5% discount has already been applied to the order total.');
     }
 
     if ($type === 'crypto') {
-        $order->update_meta_data('_axiom_payment_method_display', 'Paymento / Crypto (5% OFF)');
+        $order->update_meta_data('_axiom_payment_method_display', 'Bitcoin / Crypto');
         $order->update_meta_data('_axiom_payment_instruction_title', 'Bitcoin / Crypto Payment Instructions');
         $order->update_meta_data('_axiom_payment_instruction_body', 'Send your Bitcoin payment to: ' . axiom_crypto_btc_address() . '. Your 5% discount has already been applied to the order total.');
     }
