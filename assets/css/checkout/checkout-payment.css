@@ -482,7 +482,7 @@ button[name="woocommerce_checkout_place_order"] {
 
 @media (max-width: 767px) {
   .axiom-payment-subtotal-section {
-    margin-bottom: 38px;
+    margin-bottom: 24px;
   }
 
   .axiom-summary-card {
