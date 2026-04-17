@@ -11,17 +11,26 @@ $order_id = $order->get_id();
  * Show custom verification screen first for guest / wrong user.
  */
 $requires_verification = false;
+$is_verified_session   = false;
+
+if ( function_exists( 'WC' ) && WC()->session ) {
+	$is_verified_session = (bool) WC()->session->get( 'axiom_verified_order_' . $order_id );
+}
 
 if ( ! current_user_can( 'edit_shop_orders' ) ) {
 	if ( ! is_user_logged_in() ) {
-		$requires_verification = true;
+		if ( ! $is_verified_session ) {
+			$requires_verification = true;
+		}
 	} else {
 		$current_user  = wp_get_current_user();
 		$billing_email = strtolower( (string) $order->get_billing_email() );
 		$current_email = strtolower( (string) $current_user->user_email );
 
 		if ( ! $current_email || $current_email !== $billing_email ) {
-			$requires_verification = true;
+			if ( ! $is_verified_session ) {
+				$requires_verification = true;
+			}
 		}
 	}
 }
