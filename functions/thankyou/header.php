@@ -240,6 +240,15 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              </div>';
         echo '          </div>';
 
+        echo '          <div style="margin-top:18px; padding:16px; border:1px solid #dbe7f3; border-radius:18px; background:#ffffff;">';
+        echo '              <strong style="display:block; margin-bottom:12px; color:#0f172a; font-size:18px; font-weight:900;">Send your transaction ID and order screenshot to us</strong>';
+        echo '              <p style="margin:0 0 12px; color:#64748b; line-height:1.7;">After payment, message us your transaction ID and a screenshot of your order so we can confirm it faster.</p>';
+        echo '              <div style="display:grid; gap:12px;">';
+        echo '                  <a href="https://wa.me/15307019349" target="_blank" rel="noopener noreferrer" class="axiom-copy-button" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">WhatsApp: 530-701-9349</a>';
+        echo '                  <a href="https://t.me/axiompeptides" target="_blank" rel="noopener noreferrer" class="axiom-copy-button" style="text-decoration:none; display:flex; align-items:center; justify-content:center;">Telegram: @axiompeptides</a>';
+        echo '              </div>';
+        echo '          </div>';
+
         echo '          <div style="margin-top:18px; padding:16px; border:1px solid #dbe7f3; border-radius:18px; background:#f8fbff;">';
         echo '              <strong style="display:block; margin-bottom:10px; color:#0f172a;">Good to know</strong>';
         echo '              <ul style="margin:0; padding-left:18px; color:#64748b; line-height:1.7;">';
