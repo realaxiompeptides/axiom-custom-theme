@@ -28,6 +28,16 @@ function axiom_force_woocommerce_templates($template, $template_name, $template_
 }
 add_filter('woocommerce_locate_template', 'axiom_force_woocommerce_templates', 20, 3);
 
+/**
+ * Disable WooCommerce's built-in order email verification gate.
+ * We are handling verification ourselves inside the custom thank you template.
+ */
+add_filter('woocommerce_order_email_verification_required', '__return_false', 9999);
+add_filter('woocommerce_order_received_verify_known_shoppers', '__return_false', 9999);
+
+/**
+ * Handle custom order verification form submission.
+ */
 function axiom_handle_order_verification_submission() {
     if (
         empty($_POST['axiom_verify_order']) ||
@@ -59,8 +69,11 @@ function axiom_handle_order_verification_submission() {
         return;
     }
 
-    if ($order->get_user_id()) {
-        wc_set_customer_auth_cookie($order->get_user_id());
+    /*
+     * Mark this order as verified for this browser/session.
+     */
+    if (function_exists('WC') && WC()->session) {
+        WC()->session->set('axiom_verified_order_' . $order_id, true);
     }
 
     $redirect_url = $order->get_checkout_order_received_url();
