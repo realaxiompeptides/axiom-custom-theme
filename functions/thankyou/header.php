@@ -14,15 +14,12 @@ function axiom_render_custom_thankyou_header($order_id) {
         return;
     }
 
+    static $axiom_thankyou_header_assets_printed = false;
+
     $order_number      = $order->get_order_number();
-    $order_total       = (float) $order->get_total();
-    $order_subtotal    = (float) $order->get_subtotal();
-    $order_shipping    = (float) $order->get_shipping_total();
-    $order_tax         = (float) $order->get_total_tax();
     $payment_method    = (string) $order->get_payment_method_title();
     $payment_method_id = (string) $order->get_payment_method();
     $order_status_slug = (string) $order->get_status();
-    $order_status      = wc_get_order_status_name($order_status_slug);
     $shipping_methods  = $order->get_shipping_methods();
     $shipping_label    = '';
 
@@ -36,7 +33,12 @@ function axiom_render_custom_thankyou_header($order_id) {
 
     $is_zelle   = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
     $is_venmo   = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
-    $is_cashapp = (false !== strpos($payment_method_id_lower, 'cashapp') || false !== strpos($payment_method_id_lower, 'cash-app') || false !== strpos($payment_method_lower, 'cash app') || false !== strpos($payment_method_lower, 'cashapp'));
+    $is_cashapp = (
+        false !== strpos($payment_method_id_lower, 'cashapp') ||
+        false !== strpos($payment_method_id_lower, 'cash-app') ||
+        false !== strpos($payment_method_lower, 'cash app') ||
+        false !== strpos($payment_method_lower, 'cashapp')
+    );
 
     $la_timezone = new DateTimeZone('America/Los_Angeles');
 
@@ -95,34 +97,382 @@ function axiom_render_custom_thankyou_header($order_id) {
         $hero_copy = 'You can review the order details and current status below. If you need help, please contact us.';
     }
 
+    if (!$axiom_thankyou_header_assets_printed) {
+        $axiom_thankyou_header_assets_printed = true;
+
+        echo '<style>
+        .axiom-payment-confirmation-hero{
+            margin:0 0 28px;
+            padding:28px 24px;
+            border:1px solid #dbe7f3;
+            border-radius:28px;
+            background:#ffffff;
+            text-align:center;
+        }
+        .axiom-payment-confirmation-hero h1{
+            margin:0 0 14px;
+            color:#0f172a;
+            font-size:clamp(34px, 6vw, 58px);
+            line-height:1.02;
+            font-weight:900;
+            letter-spacing:-0.04em;
+        }
+        .axiom-payment-confirmation-copy{
+            max-width:820px;
+            margin:0 auto;
+            color:#66748b;
+            font-size:18px;
+            line-height:1.75;
+        }
+
+        .axiom-payment-alert-card{
+            margin:0 0 18px;
+            padding:22px 22px;
+            border:1px solid #d15a4e;
+            border-radius:26px;
+            background:#fff4f2;
+        }
+        .axiom-payment-alert-title{
+            margin:0 0 10px;
+            color:#c94035;
+            font-size:22px;
+            line-height:1.2;
+            font-weight:900;
+        }
+        .axiom-payment-alert-card p{
+            margin:0 0 10px;
+            color:#7b2b25;
+            font-size:17px;
+            line-height:1.6;
+            font-weight:700;
+        }
+        .axiom-payment-alert-card p:last-child{
+            margin-bottom:0;
+        }
+
+        .axiom-payment-instructions-card{
+            margin:0 0 24px;
+            padding:24px;
+            border:1px solid #dbe7f3;
+            border-radius:28px;
+            background:#f8fbff;
+        }
+        .axiom-payment-instructions-header{
+            margin:0 0 14px;
+        }
+        .axiom-payment-instructions-header h3{
+            margin:0;
+            color:#0f172a;
+            font-size:clamp(26px, 4vw, 42px);
+            line-height:1.05;
+            font-weight:900;
+            letter-spacing:-0.03em;
+        }
+        .axiom-payment-instructions-body > p{
+            margin:0 0 18px;
+            color:#64748b;
+            font-size:18px;
+            line-height:1.7;
+        }
+        .axiom-payment-instructions-body ol{
+            margin:0 0 18px 22px !important;
+            padding:0 !important;
+            color:#64748b !important;
+            line-height:1.8 !important;
+            font-size:17px;
+        }
+        .axiom-payment-instructions-body li{
+            margin-bottom:10px;
+        }
+
+        .axiom-payment-copy-field{
+            margin:0 0 18px;
+        }
+        .axiom-payment-copy-field > span{
+            display:block;
+            margin:0 0 10px;
+            color:#6b778c;
+            font-size:15px;
+            line-height:1.4;
+            font-weight:900;
+            letter-spacing:0.04em;
+            text-transform:uppercase;
+        }
+        .axiom-payment-copy-row{
+            display:flex;
+            align-items:center;
+            gap:14px;
+            flex-wrap:wrap;
+        }
+        .axiom-payment-copy-row strong{
+            flex:1 1 auto;
+            min-height:60px;
+            display:flex;
+            align-items:center;
+            padding:0 20px;
+            border:1px solid #dbe7f3;
+            border-radius:20px;
+            background:#ffffff;
+            color:#0f172a;
+            font-size:18px;
+            line-height:1.45;
+            font-weight:900;
+            box-sizing:border-box;
+        }
+        .axiom-payment-copy-row strong a{
+            color:#0f172a;
+            text-decoration:none;
+            word-break:break-word;
+        }
+
+        .axiom-copy-button{
+            min-width:170px;
+            min-height:60px;
+            padding:0 24px;
+            border:0;
+            border-radius:20px;
+            background:linear-gradient(135deg,#5ca8e3 0%,#3a88c5 100%);
+            color:#ffffff;
+            font-size:18px;
+            line-height:1;
+            font-weight:900;
+            cursor:pointer;
+            box-shadow:0 12px 24px rgba(58,136,197,0.14);
+        }
+        .axiom-copy-button.is-copied{
+            opacity:0.88;
+        }
+
+        .axiom-payment-contact-box{
+            margin-top:18px;
+            padding:18px;
+            border:1px solid #dbe7f3;
+            border-radius:20px;
+            background:#ffffff;
+        }
+        .axiom-payment-contact-box strong.contact-title{
+            display:block;
+            margin:0 0 12px;
+            color:#0f172a;
+            font-size:18px;
+            line-height:1.5;
+            font-weight:900;
+        }
+        .axiom-payment-contact-links{
+            display:grid;
+            gap:10px;
+        }
+        .axiom-payment-contact-links a{
+            color:#2c57b7;
+            text-decoration:none;
+            font-size:17px;
+            line-height:1.65;
+            font-weight:700;
+            word-break:break-word;
+        }
+        .axiom-payment-contact-links a strong{
+            color:#0f172a;
+            font-weight:900;
+        }
+
+        .axiom-payment-note-box{
+            margin-top:18px;
+            padding:18px;
+            border:1px solid #dbe7f3;
+            border-radius:20px;
+            background:#f8fbff;
+        }
+        .axiom-payment-note-box strong.note-title{
+            display:block;
+            margin:0 0 12px;
+            color:#0f172a;
+            font-size:18px;
+            line-height:1.4;
+            font-weight:900;
+        }
+        .axiom-payment-note-box ul{
+            margin:0;
+            padding-left:20px;
+            color:#64748b;
+            font-size:17px;
+            line-height:1.75;
+        }
+        .axiom-payment-note-box li{
+            margin-bottom:10px;
+        }
+        .axiom-payment-note-box li:last-child{
+            margin-bottom:0;
+        }
+
+        .axiom-payment-next-steps{
+            margin:26px 0 0;
+            padding:26px 24px;
+            border:1px solid #dbe7f3;
+            border-radius:28px;
+            background:#ffffff;
+        }
+        .axiom-payment-next-steps h3{
+            margin:0 0 18px;
+            color:#0f172a;
+            font-size:32px;
+            line-height:1.08;
+            font-weight:900;
+            letter-spacing:-0.03em;
+        }
+        .axiom-payment-next-step{
+            display:grid;
+            grid-template-columns:56px minmax(0,1fr);
+            gap:16px;
+            align-items:start;
+            padding:16px 0;
+            border-top:1px solid #e6eef6;
+        }
+        .axiom-payment-next-step:first-of-type{
+            border-top:0;
+            padding-top:0;
+        }
+        .axiom-payment-next-step-number{
+            width:56px;
+            height:56px;
+            border-radius:999px;
+            background:#edf7ff;
+            color:#5aa8df;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:22px;
+            font-weight:900;
+            line-height:1;
+        }
+        .axiom-payment-next-step-copy strong{
+            display:block;
+            margin:0 0 8px;
+            color:#0f172a;
+            font-size:20px;
+            line-height:1.25;
+            font-weight:900;
+        }
+        .axiom-payment-next-step-copy p{
+            margin:0;
+            color:#64748b;
+            font-size:17px;
+            line-height:1.7;
+        }
+
+        @media (max-width: 767px){
+            .axiom-payment-confirmation-hero{
+                margin-bottom:22px;
+                padding:24px 18px;
+                border-radius:24px;
+            }
+            .axiom-payment-confirmation-copy{
+                font-size:16px;
+                line-height:1.7;
+            }
+
+            .axiom-payment-alert-card{
+                padding:18px;
+                border-radius:22px;
+            }
+            .axiom-payment-alert-title{
+                font-size:18px;
+            }
+            .axiom-payment-alert-card p{
+                font-size:15px;
+            }
+
+            .axiom-payment-instructions-card{
+                padding:18px;
+                border-radius:24px;
+                margin-bottom:20px;
+            }
+            .axiom-payment-instructions-body > p,
+            .axiom-payment-instructions-body ol,
+            .axiom-payment-note-box ul,
+            .axiom-payment-next-step-copy p{
+                font-size:15px;
+                line-height:1.7;
+            }
+
+            .axiom-payment-copy-row{
+                gap:12px;
+            }
+            .axiom-payment-copy-row strong{
+                width:100%;
+                min-height:56px;
+                padding:0 16px;
+                font-size:16px;
+                border-radius:18px;
+            }
+            .axiom-copy-button{
+                width:100%;
+                min-width:0;
+                min-height:56px;
+                font-size:16px;
+                border-radius:18px;
+            }
+
+            .axiom-payment-contact-box,
+            .axiom-payment-note-box{
+                padding:16px;
+                border-radius:18px;
+            }
+            .axiom-payment-contact-box strong.contact-title,
+            .axiom-payment-note-box strong.note-title{
+                font-size:16px;
+            }
+            .axiom-payment-contact-links a{
+                font-size:15px;
+                line-height:1.6;
+            }
+
+            .axiom-payment-next-steps{
+                padding:22px 18px;
+                border-radius:24px;
+            }
+            .axiom-payment-next-steps h3{
+                font-size:26px;
+            }
+            .axiom-payment-next-step{
+                grid-template-columns:46px minmax(0,1fr);
+                gap:12px;
+                padding:14px 0;
+            }
+            .axiom-payment-next-step-number{
+                width:46px;
+                height:46px;
+                font-size:18px;
+            }
+            .axiom-payment-next-step-copy strong{
+                font-size:17px;
+            }
+        }
+        </style>';
+
+        echo '<script>
+        function axiomCopyValue(button, value) {
+            if (!navigator.clipboard) {
+                return;
+            }
+
+            navigator.clipboard.writeText(value).then(function() {
+                var originalText = button.innerText;
+                button.innerText = "Copied!";
+                button.classList.add("is-copied");
+
+                setTimeout(function() {
+                    button.innerText = originalText;
+                    button.classList.remove("is-copied");
+                }, 1400);
+            });
+        }
+        </script>';
+    }
+
     echo '<section class="axiom-payment-confirmation-hero">';
     echo '  <h1>' . esc_html($hero_title) . '</h1>';
     echo '  <p class="axiom-payment-confirmation-copy">' . esc_html($hero_copy) . '</p>';
     echo '</section>';
-
-    echo '<section class="axiom-payment-status-card">';
-    echo '  <div class="axiom-payment-status-top">';
-    echo '      <div class="axiom-payment-status-icon-wrap">';
-    echo '          <div class="axiom-payment-status-icon"><i class="fa-solid fa-check"></i></div>';
-    echo '      </div>';
-    echo '      <div class="axiom-payment-status-heading">';
-    echo '          <span>Order Number</span>';
-    echo '          <h2>#' . esc_html($order_number) . '</h2>';
-    echo '      </div>';
-    echo '  </div>';
-
-    echo '  <div class="axiom-payment-status-rows">';
-    echo '      <div class="axiom-payment-status-row"><span>Status</span><strong>' . esc_html($order_status) . '</strong></div>';
-    echo '      <div class="axiom-payment-status-row"><span>Subtotal</span><strong>' . wp_kses_post(wc_price($order_subtotal)) . '</strong></div>';
-    echo '      <div class="axiom-payment-status-row"><span>Shipping</span><strong>' . wp_kses_post(wc_price($order_shipping)) . '</strong></div>';
-
-    if ($order_tax > 0) {
-        echo '      <div class="axiom-payment-status-row"><span>Tax</span><strong>' . wp_kses_post(wc_price($order_tax)) . '</strong></div>';
-    }
-
-    echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
-    echo '      <div class="axiom-payment-status-row"><span>Payment method</span><strong>' . esc_html($payment_method) . '</strong></div>';
-    echo '  </div>';
 
     if ($is_zelle) {
         echo '  <div class="axiom-payment-alert-card">';
@@ -214,7 +564,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Follow these steps to complete payment with Cash App Bitcoin.</p>';
 
-        echo '          <ol style="margin:0 0 18px 18px; padding:0; color:#64748b; line-height:1.7;">';
+        echo '          <ol>';
         echo '              <li>Open <strong>Cash App</strong> on your phone.</li>';
         echo '              <li>Tap the <strong>Bitcoin</strong> tab inside Cash App.</li>';
         echo '              <li>If you do not already have Bitcoin, tap <strong>Buy</strong> and purchase enough BTC to cover your order total.</li>';
@@ -240,9 +590,18 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              </div>';
         echo '          </div>';
 
-        echo '          <div style="margin-top:18px; padding:16px; border:1px solid #dbe7f3; border-radius:18px; background:#f8fbff;">';
-        echo '              <strong style="display:block; margin-bottom:10px; color:#0f172a;">Good to know</strong>';
-        echo '              <ul style="margin:0; padding-left:18px; color:#64748b; line-height:1.7;">';
+        echo '          <div class="axiom-payment-contact-box">';
+        echo '              <strong class="contact-title">Please message your order number to WhatsApp, Telegram, or our email.</strong>';
+        echo '              <div class="axiom-payment-contact-links">';
+        echo '                  <a href="https://wa.me/15307019349" target="_blank" rel="noopener noreferrer"><strong>WhatsApp:</strong> 530-701-9349</a>';
+        echo '                  <a href="https://t.me/axiompeptides" target="_blank" rel="noopener noreferrer"><strong>Telegram:</strong> @axiompeptides</a>';
+        echo '                  <a href="mailto:realaxiompeptides@gmail.com"><strong>Email:</strong> realaxiompeptides@gmail.com</a>';
+        echo '              </div>';
+        echo '          </div>';
+
+        echo '          <div class="axiom-payment-note-box">';
+        echo '              <strong class="note-title">Good to know</strong>';
+        echo '              <ul>';
         echo '                  <li>You get <strong>5% off</strong> because crypto payments save us processing fees.</li>';
         echo '                  <li>Cash App Bitcoin is usually one of the easiest ways to pay with crypto.</li>';
         echo '                  <li>If you need to buy BTC first in Cash App, it usually only takes a moment before you can send it.</li>';
@@ -282,24 +641,4 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      </div>';
 
     echo '  </div>';
-    echo '</section>';
-
-    echo '<script>
-    function axiomCopyValue(button, value) {
-        if (!navigator.clipboard) {
-            return;
-        }
-
-        navigator.clipboard.writeText(value).then(function() {
-            var originalText = button.innerText;
-            button.innerText = "Copied!";
-            button.classList.add("is-copied");
-
-            setTimeout(function() {
-                button.innerText = originalText;
-                button.classList.remove("is-copied");
-            }, 1400);
-        });
-    }
-    </script>';
 }
