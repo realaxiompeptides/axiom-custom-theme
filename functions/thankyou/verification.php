@@ -3,51 +3,39 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-/**
- * Custom order verification form
- *
- * Expected variables:
- * $order
- */
 if (!isset($order) || !$order instanceof WC_Order) {
     return;
 }
-
-$order_id = $order->get_id();
 ?>
 
 <section class="axiom-order-verify-card">
     <div class="axiom-order-verify-inner">
-        <div class="axiom-order-verify-kicker">Order Access Required</div>
+        <p class="axiom-order-verify-kicker">Order Access Required</p>
         <h1 class="axiom-order-verify-title">Verify Your Order</h1>
         <p class="axiom-order-verify-copy">
-            To view this order, enter the email address used at checkout. Once verified, you’ll be able to access the full order details page.
+            Enter the email address used at checkout to view your order details.
         </p>
 
+        <?php wc_print_notices(); ?>
+
         <form method="post" class="axiom-order-verify-form">
-            <input type="hidden" name="check_submission" value="1" />
-            <input type="hidden" name="order_id" value="<?php echo esc_attr($order_id); ?>" />
-            <input type="hidden" name="order_key" value="<?php echo esc_attr($order->get_order_key()); ?>" />
+            <p class="axiom-order-verify-field">
+                <label for="order_email">Email address <span>*</span></label>
+                <input
+                    type="email"
+                    name="order_email"
+                    id="order_email"
+                    required
+                    autocomplete="email"
+                />
+            </p>
 
-            <label for="order_email" class="axiom-order-verify-label">Email address</label>
-            <input
-                type="email"
-                class="axiom-order-verify-input"
-                name="order_email"
-                id="order_email"
-                autocomplete="email"
-                required
-            />
+            <input type="hidden" name="order_id" value="<?php echo esc_attr($order->get_id()); ?>">
+            <input type="hidden" name="order_key" value="<?php echo esc_attr($order->get_order_key()); ?>">
+            <input type="hidden" name="axiom_verify_order" value="1">
 
-            <button type="submit" class="axiom-order-verify-button">
-                Verify Order
-            </button>
+            <button type="submit" class="axiom-order-verify-button">Verify</button>
         </form>
-
-        <div class="axiom-order-verify-help">
-            Need help? Contact us at
-            <a href="mailto:realaxiompeptides@gmail.com">realaxiompeptides@gmail.com</a>
-        </div>
     </div>
 </section>
 
@@ -75,7 +63,7 @@ $order_id = $order->get_id();
 .axiom-order-verify-title{
   margin:0 0 12px;
   color:#0f172a;
-  font-size:42px;
+  font-size:40px;
   line-height:1.05;
   font-weight:900;
 }
@@ -89,12 +77,17 @@ $order_id = $order->get_id();
   display:grid;
   gap:14px;
 }
-.axiom-order-verify-label{
+.axiom-order-verify-field{
+  margin:0;
+}
+.axiom-order-verify-field label{
+  display:block;
+  margin-bottom:10px;
   color:#0f172a;
   font-size:15px;
   font-weight:800;
 }
-.axiom-order-verify-input{
+.axiom-order-verify-field input{
   width:100%;
   min-height:58px;
   padding:0 18px;
@@ -105,13 +98,9 @@ $order_id = $order->get_id();
   font-size:18px;
   box-sizing:border-box;
 }
-.axiom-order-verify-input:focus{
-  outline:none;
-  border-color:#5aa8df;
-  background:#ffffff;
-}
 .axiom-order-verify-button{
   min-height:56px;
+  padding:0 22px;
   border:0;
   border-radius:999px;
   background:linear-gradient(135deg,#4aa7e8,#2f84bf);
@@ -120,18 +109,7 @@ $order_id = $order->get_id();
   font-weight:900;
   cursor:pointer;
 }
-.axiom-order-verify-help{
-  margin-top:16px;
-  color:#64748b;
-  font-size:15px;
-  line-height:1.6;
-}
-.axiom-order-verify-help a{
-  color:#2f84bf;
-  font-weight:800;
-  text-decoration:none;
-}
-@media (max-width: 767px){
+@media (max-width:767px){
   .axiom-order-verify-card{
     margin:20px auto;
     padding:18px;
@@ -142,14 +120,6 @@ $order_id = $order->get_id();
   }
   .axiom-order-verify-copy{
     font-size:16px;
-  }
-  .axiom-order-verify-input{
-    font-size:16px;
-    min-height:54px;
-  }
-  .axiom-order-verify-button{
-    min-height:54px;
-    font-size:17px;
   }
 }
 </style>
