@@ -100,6 +100,10 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '  <p class="axiom-payment-confirmation-copy">' . esc_html($hero_copy) . '</p>';
     echo '</section>';
 
+    if (function_exists('axiom_render_payment_countdown')) {
+        axiom_render_payment_countdown($order);
+    }
+
     echo '<section class="axiom-payment-status-card">';
     echo '  <div class="axiom-payment-status-top">';
     echo '      <div class="axiom-payment-status-icon-wrap">';
