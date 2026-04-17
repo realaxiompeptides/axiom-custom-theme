@@ -63,7 +63,13 @@ function axiom_handle_order_verification_submission() {
         wc_set_customer_auth_cookie($order->get_user_id());
     }
 
-    wp_safe_redirect($order->get_view_order_url());
+    $redirect_url = $order->get_checkout_order_received_url();
+
+    if (!$redirect_url) {
+        $redirect_url = wc_get_endpoint_url('view-order', $order_id, wc_get_page_permalink('myaccount'));
+    }
+
+    wp_safe_redirect($redirect_url);
     exit;
 }
 add_action('template_redirect', 'axiom_handle_order_verification_submission', 1);
