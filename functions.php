@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Load modular function files.
+ * Load modular function files SAFELY
  */
 $axiom_function_files = array(
     '/functions/core/setup.php',
@@ -40,6 +40,12 @@ foreach ($axiom_function_files as $axiom_file) {
     $axiom_path = get_template_directory() . $axiom_file;
 
     if (file_exists($axiom_path)) {
-        require_once $axiom_path;
+        try {
+            require_once $axiom_path;
+        } catch (Throwable $e) {
+            error_log('Axiom include error in: ' . $axiom_file . ' | ' . $e->getMessage());
+        }
+    } else {
+        error_log('Axiom missing file: ' . $axiom_file);
     }
 }
