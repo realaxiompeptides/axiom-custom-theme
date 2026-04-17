@@ -97,6 +97,8 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 
 /**
  * Add clearer description text on checkout.
+ * Cash App gets custom copy.
+ * Crypto keeps the gateway's own description so there is no duplicate text.
  */
 add_filter('woocommerce_gateway_description', 'axiom_gateway_description_with_discount', 20, 2);
 function axiom_gateway_description_with_discount($description, $gateway_id) {
@@ -107,7 +109,7 @@ function axiom_gateway_description_with_discount($description, $gateway_id) {
     }
 
     if ($type === 'crypto') {
-        $description .= '<p class="axiom-payment-discount-copy">Pay with Bitcoin / crypto and receive an automatic 5% discount on your order total.</p>';
+        return $description;
     }
 
     return $description;
