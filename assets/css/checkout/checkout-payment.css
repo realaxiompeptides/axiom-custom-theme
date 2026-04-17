@@ -804,3 +804,48 @@ button[name="woocommerce_checkout_place_order"] {
 .woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .payment_box {
   margin-top: 16px !important;
 }
+
+/* REMOVE ALL Paymento / crypto gateway images and banners */
+.woocommerce-checkout #payment li[class*="paymento"] img,
+.woocommerce-checkout #payment li[class*="paymento"] svg,
+.woocommerce-checkout #payment li[class*="paymento"] .payment_box img,
+.woocommerce-checkout #payment li[class*="paymento"] .paymento-banner,
+.woocommerce-checkout #payment li[class*="paymento"] .crypto-accepted-here,
+.woocommerce-checkout #payment li[class*="paymento"] * img {
+  display: none !important;
+}
+
+/* make crypto title display clean like the others */
+.woocommerce-checkout #payment li[class*="paymento"] > label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+  font-weight: 900 !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  line-height: 1.2 !important;
+}
+
+/* remove leftover spacing from hidden banner */
+.woocommerce-checkout #payment li[class*="paymento"] label img {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+}
+
+/* keep payment box clean below title */
+.woocommerce-checkout #payment li[class*="paymento"] .payment_box {
+  margin-top: 16px !important;
+}
+
+/* make discount text plain black if your span still exists */
+.axiom-payment-discount-label {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+  margin-left: 6px !important;
+  white-space: nowrap !important;
+}
