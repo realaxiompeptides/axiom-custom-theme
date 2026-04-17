@@ -6,6 +6,40 @@ if ( ! isset( $order ) || ! $order instanceof WC_Order ) {
 }
 
 $order_id = $order->get_id();
+
+/*
+ * Show custom verification screen first for guest / wrong user.
+ */
+$requires_verification = false;
+
+if ( ! current_user_can( 'edit_shop_orders' ) ) {
+	if ( ! is_user_logged_in() ) {
+		$requires_verification = true;
+	} else {
+		$current_user  = wp_get_current_user();
+		$billing_email = strtolower( (string) $order->get_billing_email() );
+		$current_email = strtolower( (string) $current_user->user_email );
+
+		if ( ! $current_email || $current_email !== $billing_email ) {
+			$requires_verification = true;
+		}
+	}
+}
+
+if ( $requires_verification ) {
+	$verification_file = get_template_directory() . '/functions/thankyou/verification.php';
+
+	if ( file_exists( $verification_file ) ) {
+		?>
+		<div class="axiom-thankyou-page">
+			<div class="axiom-thankyou-shell">
+				<?php include $verification_file; ?>
+			</div>
+		</div>
+		<?php
+		return;
+	}
+}
 ?>
 
 <div class="axiom-thankyou-page">
