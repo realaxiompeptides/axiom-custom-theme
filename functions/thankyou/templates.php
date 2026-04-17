@@ -29,13 +29,6 @@ function axiom_force_woocommerce_templates($template, $template_name, $template_
 add_filter('woocommerce_locate_template', 'axiom_force_woocommerce_templates', 20, 3);
 
 /**
- * Disable WooCommerce built-in order verification gate.
- * We are handling verification ourselves in the custom thank you flow.
- */
-add_filter('woocommerce_order_email_verification_required', '__return_false', 9999);
-add_filter('woocommerce_order_received_verify_known_shoppers', '__return_false', 9999);
-
-/**
  * Build verification cookie name.
  */
 function axiom_get_order_verification_cookie_name($order_id) {
