@@ -1,10 +1,36 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
-$order = wc_get_order( $order_id );
-
-if ( ! $order ) {
+if ( ! isset( $order ) || ! $order instanceof WC_Order ) {
 	return;
+}
+
+/*
+ * Show custom verification screen when guest / wrong user tries to access order details.
+ */
+$requires_verification = false;
+
+if ( ! current_user_can( 'edit_shop_orders' ) ) {
+	if ( ! is_user_logged_in() ) {
+		$requires_verification = true;
+	} else {
+		$current_user  = wp_get_current_user();
+		$billing_email = strtolower( (string) $order->get_billing_email() );
+		$current_email = strtolower( (string) $current_user->user_email );
+
+		if ( ! $current_email || $current_email !== $billing_email ) {
+			$requires_verification = true;
+		}
+	}
+}
+
+if ( $requires_verification ) {
+	$verification_file = get_template_directory() . '/functions/thankyou/verification.php';
+
+	if ( file_exists( $verification_file ) ) {
+		include $verification_file;
+		return;
+	}
 }
 
 $order_items      = $order->get_items( apply_filters( 'woocommerce_purchase_order_item_types', 'line_item' ) );
