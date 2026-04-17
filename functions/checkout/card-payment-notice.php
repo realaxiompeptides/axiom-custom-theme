@@ -14,7 +14,9 @@ function axiom_render_card_payment_notice() {
     }
     ?>
     <div id="axiom-card-payment-notice" class="axiom-card-payment-notice" style="display:none;" aria-hidden="true">
-        <div class="axiom-card-payment-notice__icon" aria-hidden="true">⚠️</div>
+        <div class="axiom-card-payment-notice__icon" aria-hidden="true">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
         <div class="axiom-card-payment-notice__text">
             <strong>Important:</strong>
             If paying by Credit or Debit Card, please ensure
@@ -40,8 +42,8 @@ function axiom_card_payment_notice_assets() {
             align-items:flex-start;
             gap:14px;
             margin:18px 0 14px;
-            padding:18px 18px 18px 16px;
-            border-left:4px solid #ef4444;
+            padding:18px;
+            border:1px solid #f6d1d1;
             border-radius:16px;
             background:#fef2f2;
             color:#7f1d1d;
@@ -54,6 +56,12 @@ function axiom_card_payment_notice_assets() {
 
         .axiom-card-payment-notice__icon{
             flex:0 0 auto;
+            width:28px;
+            height:28px;
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            color:#f4b63f;
             font-size:22px;
             line-height:1;
             margin-top:2px;
@@ -75,11 +83,13 @@ function axiom_card_payment_notice_assets() {
             .axiom-card-payment-notice{
                 gap:12px;
                 margin:16px 0 12px;
-                padding:16px 14px 16px 14px;
+                padding:16px 14px;
                 border-radius:14px;
             }
 
             .axiom-card-payment-notice__icon{
+                width:24px;
+                height:24px;
                 font-size:20px;
             }
 
