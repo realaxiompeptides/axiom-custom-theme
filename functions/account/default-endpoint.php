@@ -1,4 +1,4 @@
-Vi e me the full updated default endpoint php: <?php
+<?php
 if (!defined('ABSPATH')) {
     exit;
 }
