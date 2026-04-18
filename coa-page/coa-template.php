@@ -1,4 +1,4 @@
-<?php<?php
+<?php
 /*
 Template Name: COA Template
 */
