@@ -247,7 +247,7 @@ if (!empty($recommended_ids)) {
         </form>
       <?php else : ?>
         <section class="axiom-cart-empty-card">
-          <div class="axiom-cart-empty-icon"><span>🛒</span></div>
+          <div class="axiom-cart-empty-icon" aria-hidden="true"><i class="fa-solid fa-cart-shopping"></i></div>
           <h2>Your cart is currently empty</h2>
           <p>Add research products to begin your order. Fast fulfillment and secure checkout are available once items are added.</p>
           <a href="<?php echo esc_url($shop_url); ?>" class="axiom-cart-checkout-btn axiom-cart-empty-btn">
