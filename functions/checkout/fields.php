@@ -50,7 +50,12 @@ function axiom_reorder_checkout_fields($fields) {
 
     if (isset($fields['billing']['billing_state'])) {
         $fields['billing']['billing_state']['priority'] = 90;
-        $fields['billing']['billing_state']['required'] = true;
+
+        // Do NOT force state required for every country.
+        // Let WooCommerce handle country-specific state requirements.
+        if (!isset($fields['billing']['billing_state']['required'])) {
+            $fields['billing']['billing_state']['required'] = false;
+        }
     }
 
     if (isset($fields['billing']['billing_postcode'])) {
