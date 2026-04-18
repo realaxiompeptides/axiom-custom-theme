@@ -26,8 +26,13 @@ get_header();
         </div>
 
         <a class="axiom-affiliate-primary-btn" href="#affiliate-apply">
-          Apply Now
-        </a>
+  Apply Now
+</a>
+
+<p class="axiom-affiliate-login-text">
+  Already have an account?
+  <a href="<?php echo esc_url( home_url( '/affiliate-account/' ) ); ?>">Log in</a>
+</p>
       </div>
     </div>
   </section>
