@@ -141,6 +141,9 @@ if ($is_variable) {
         );
     }
 }
+
+$coa_page = get_page_by_path('coa');
+$coa_url  = $coa_page ? get_permalink($coa_page->ID) : '';
 ?>
 
 <main class="product-main">
@@ -293,6 +296,14 @@ if ($is_variable) {
                   <?php echo $product->is_purchasable() ? 'Add To Cart' : 'Unavailable'; ?>
                 </button>
               </form>
+            <?php endif; ?>
+
+            <?php if (!empty($coa_url)) : ?>
+              <div class="product-coa-button-wrap">
+                <a class="product-coa-button" href="<?php echo esc_url($coa_url); ?>">
+                  View COA
+                </a>
+              </div>
             <?php endif; ?>
 
             <div class="product-payment-icons">
