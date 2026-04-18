@@ -38,23 +38,58 @@ jQuery(function ($) {
     return $("#ship-to-different-address-checkbox").is(":checked");
   }
 
+  function fieldExistsAndVisible(selector) {
+    var $field = $(selector);
+    return !!($field.length && $field.is(":visible"));
+  }
+
+  function fieldRequired(selector) {
+    var $field = $(selector);
+
+    if (!$field.length || !$field.is(":visible")) {
+      return false;
+    }
+
+    if ($field.prop("required")) {
+      return true;
+    }
+
+    var ariaRequired = String($field.attr("aria-required") || "").toLowerCase();
+    if (ariaRequired === "true") {
+      return true;
+    }
+
+    var $formRow = $field.closest(".form-row, .woocommerce-input-wrapper, .validate-required");
+    if ($formRow.hasClass("validate-required")) {
+      return true;
+    }
+
+    return false;
+  }
+
   function billingAddressComplete() {
+    var stateMustBeFilled = fieldRequired("#billing_state");
+    var postcodeMustBeFilled = fieldRequired("#billing_postcode") || fieldExistsAndVisible("#billing_postcode");
+
     return (
       getFieldValue("#billing_country") !== "" &&
       getFieldValue("#billing_address_1") !== "" &&
       getFieldValue("#billing_city") !== "" &&
-      getFieldValue("#billing_state") !== "" &&
-      getFieldValue("#billing_postcode") !== ""
+      (!postcodeMustBeFilled || getFieldValue("#billing_postcode") !== "") &&
+      (!stateMustBeFilled || getFieldValue("#billing_state") !== "")
     );
   }
 
   function shippingAddressComplete() {
+    var stateMustBeFilled = fieldRequired("#shipping_state");
+    var postcodeMustBeFilled = fieldRequired("#shipping_postcode") || fieldExistsAndVisible("#shipping_postcode");
+
     return (
       getFieldValue("#shipping_country") !== "" &&
       getFieldValue("#shipping_address_1") !== "" &&
       getFieldValue("#shipping_city") !== "" &&
-      getFieldValue("#shipping_state") !== "" &&
-      getFieldValue("#shipping_postcode") !== ""
+      (!postcodeMustBeFilled || getFieldValue("#shipping_postcode") !== "") &&
+      (!stateMustBeFilled || getFieldValue("#shipping_state") !== "")
     );
   }
 
@@ -202,6 +237,8 @@ jQuery(function ($) {
         id === "billing_postcode" ||
         id === "billing_city" ||
         id === "billing_address_1" ||
+        id === "billing_phone" ||
+        id === "billing_email" ||
         id === "shipping_postcode" ||
         id === "shipping_city" ||
         id === "shipping_address_1"
