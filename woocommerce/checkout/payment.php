@@ -240,31 +240,37 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 			<?php wp_nonce_field( 'woocommerce-process_checkout', 'woocommerce-process-checkout-nonce' ); ?>
 		</div>
 
-		<div class="axiom-place-order-trust-icons">
-			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">🔒</span>
-				<strong><?php esc_html_e( '256-bit SSL', 'woocommerce' ); ?></strong>
-				<small><?php esc_html_e( 'Encrypted', 'woocommerce' ); ?></small>
-			</div>
+<div class="axiom-place-order-trust-icons">
+	<div class="axiom-place-order-trust-item">
+		<span class="axiom-place-order-trust-icon" aria-hidden="true">
+			<i class="fa-solid fa-lock"></i>
+		</span>
+		<strong><?php esc_html_e( '256-bit SSL', 'woocommerce' ); ?></strong>
+		<small><?php esc_html_e( 'Encrypted', 'woocommerce' ); ?></small>
+	</div>
 
-			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">✔️</span>
-				<strong><?php esc_html_e( '99%+ Purity', 'woocommerce' ); ?></strong>
-				<small><?php esc_html_e( 'Third-Party Verified', 'woocommerce' ); ?></small>
-			</div>
+	<div class="axiom-place-order-trust-item">
+		<span class="axiom-place-order-trust-icon" aria-hidden="true">
+			<i class="fa-solid fa-circle-check"></i>
+		</span>
+		<strong><?php esc_html_e( '99%+ Purity', 'woocommerce' ); ?></strong>
+		<small><?php esc_html_e( 'Third-Party Verified', 'woocommerce' ); ?></small>
+	</div>
 
-			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">🇺🇸</span>
-				<strong><?php esc_html_e( 'U.S. Based', 'woocommerce' ); ?></strong>
-				<small><?php esc_html_e( 'California', 'woocommerce' ); ?></small>
-			</div>
+	<div class="axiom-place-order-trust-item">
+		<span class="axiom-place-order-trust-icon" aria-hidden="true">
+			<i class="fa-solid fa-flag-usa"></i>
+		</span>
+		<strong><?php esc_html_e( 'U.S. Based', 'woocommerce' ); ?></strong>
+		<small><?php esc_html_e( 'California', 'woocommerce' ); ?></small>
+	</div>
 
-			<div class="axiom-place-order-trust-item">
-				<span class="axiom-place-order-trust-emoji">📦</span>
-				<strong><?php esc_html_e( 'Same-Day Ship', 'woocommerce' ); ?></strong>
-				<small><?php esc_html_e( 'Before 2PM PST', 'woocommerce' ); ?></small>
-			</div>
-		</div>
+	<div class="axiom-place-order-trust-item">
+		<span class="axiom-place-order-trust-icon" aria-hidden="true">
+			<i class="fa-solid fa-box"></i>
+		</span>
+		<strong><?php esc_html_e( 'Same-Day Ship', 'woocommerce' ); ?></strong>
+		<small><?php esc_html_e( 'Before 2PM PST', 'woocommerce' ); ?></small>
 	</div>
 </div>
 
