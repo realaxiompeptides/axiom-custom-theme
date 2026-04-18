@@ -76,53 +76,35 @@
   background: #ffffff;
 }
 
-.woocommerce-account .u-column1 .password-input,
-.woocommerce-account .u-column2 .password-input,
-.woocommerce-account .woocommerce-MyAccount-content .password-input,
-.woocommerce-account .woocommerce-ResetPassword .password-input {
-  position: relative;
-  display: block;
-  width: 100%;
+<?php
+if (!defined('ABSPATH')) {
+    exit;
 }
 
-.woocommerce-account .u-column1 .password-input input,
-.woocommerce-account .u-column2 .password-input input,
-.woocommerce-account .woocommerce-MyAccount-content .password-input input,
-.woocommerce-account .woocommerce-ResetPassword .password-input input {
-  padding-right: 52px;
-}
+function axiom_force_my_account_dashboard_endpoint() {
+    if (is_admin() || wp_doing_ajax()) {
+        return;
+    }
 
-.woocommerce-account .u-column1 .show-password-input,
-.woocommerce-account .u-column2 .show-password-input,
-.woocommerce-account .woocommerce-MyAccount-content .show-password-input,
-.woocommerce-account .woocommerce-ResetPassword .show-password-input {
-  position: absolute;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  width: 22px;
-  height: 22px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent !important;
-  color: #64748b;
-  min-height: 0;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: none;
-  border-radius: 0;
-}
+    if (!function_exists('is_account_page') || !is_account_page()) {
+        return;
+    }
 
-.woocommerce-account .u-column1 .show-password-input:hover,
-.woocommerce-account .u-column2 .show-password-input:hover,
-.woocommerce-account .woocommerce-MyAccount-content .show-password-input:hover,
-.woocommerce-account .woocommerce-ResetPassword .show-password-input:hover {
-  background: transparent !important;
-  color: #0f172a;
+    global $wp;
+
+    $current_request = isset($wp->request) ? trim((string) $wp->request, '/') : '';
+    $account_page_id = function_exists('wc_get_page_id') ? wc_get_page_id('myaccount') : 0;
+    $account_slug    = $account_page_id > 0 ? trim(get_page_uri($account_page_id), '/') : 'my-account';
+
+    /*
+     * Do nothing on the base My Account page.
+     * WooCommerce will load the dashboard there by default.
+     */
+    if ($current_request === $account_slug || $current_request === '') {
+        return;
+    }
 }
+add_action('template_redirect', 'axiom_force_my_account_dashboard_endpoint', 1);
 
 .woocommerce-account .u-column1 button:not(.show-password-input),
 .woocommerce-account .u-column1 .button:not(.show-password-input),
