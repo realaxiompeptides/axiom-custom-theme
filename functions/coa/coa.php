@@ -39,10 +39,11 @@ function axiom_coa_get_product_image_html($product) {
 }
 
 /**
- * Get all COA-like attachments.
+ * Get all image/pdf attachments.
+ * Do NOT pre-filter to only "coa" filenames.
  */
 function axiom_coa_get_all_attachments() {
-    $attachments = get_posts(array(
+    return get_posts(array(
         'post_type'      => 'attachment',
         'post_status'    => 'inherit',
         'post_mime_type' => array('image/png', 'image/jpeg', 'image/jpg', 'application/pdf'),
@@ -50,24 +51,10 @@ function axiom_coa_get_all_attachments() {
         'orderby'        => 'date',
         'order'          => 'DESC',
     ));
-
-    $results = array();
-
-    foreach ($attachments as $attachment) {
-        $title = axiom_coa_normalize_text($attachment->post_title);
-        $file  = get_attached_file($attachment->ID);
-        $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
-
-        if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
-            $results[] = $attachment;
-        }
-    }
-
-    return $results;
 }
 
 /**
- * Match only from the separate COA map file.
+ * Match attachments using loose product + variant aliases from coa-map.php
  */
 function axiom_coa_get_matching_attachments_for_product($product) {
     if (
@@ -85,7 +72,16 @@ function axiom_coa_get_matching_attachments_for_product($product) {
         return array();
     }
 
-    $wanted_keys = array_map('axiom_coa_normalize_text', $map[$product_name]);
+    $config = $map[$product_name];
+
+    $product_aliases = !empty($config['product_aliases'])
+        ? array_map('axiom_coa_normalize_text', (array) $config['product_aliases'])
+        : array(axiom_coa_normalize_text($product_name));
+
+    $variant_aliases = !empty($config['variant_aliases'])
+        ? array_map('axiom_coa_normalize_text', (array) $config['variant_aliases'])
+        : array();
+
     $attachments = axiom_coa_get_all_attachments();
     $matches = array();
 
@@ -93,21 +89,45 @@ function axiom_coa_get_matching_attachments_for_product($product) {
         $title = axiom_coa_normalize_text(get_the_title($attachment->ID));
         $file  = get_attached_file($attachment->ID);
         $base  = $file ? axiom_coa_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+        $haystack = trim($title . ' ' . $base);
 
-        foreach ($wanted_keys as $wanted) {
-            if (
-                $wanted &&
-                (
-                    $title === $wanted ||
-                    $base === $wanted ||
-                    strpos($title, $wanted) !== false ||
-                    strpos($base, $wanted) !== false
-                )
-            ) {
-                $matches[] = $attachment->ID;
+        if (!$haystack) {
+            continue;
+        }
+
+        $product_hit = false;
+        foreach ($product_aliases as $alias) {
+            if ($alias && strpos($haystack, $alias) !== false) {
+                $product_hit = true;
                 break;
             }
         }
+
+        if (!$product_hit) {
+            continue;
+        }
+
+        if (!empty($variant_aliases)) {
+            $variant_hit = false;
+
+            foreach ($variant_aliases as $variant) {
+                if ($variant && strpos($haystack, $variant) !== false) {
+                    $variant_hit = true;
+                    break;
+                }
+            }
+
+            /**
+             * Still allow the match if the product name clearly matches,
+             * even when the variant text is missing or slightly messy.
+             */
+            if (!$variant_hit) {
+                $matches[] = $attachment->ID;
+                continue;
+            }
+        }
+
+        $matches[] = $attachment->ID;
     }
 
     return array_values(array_unique($matches));
@@ -122,6 +142,7 @@ function axiom_coa_get_attachment_variant_label($attachment_id) {
 
     $base = str_replace('axiom-', '', $base);
     $base = str_replace('-coa', '', $base);
+    $base = str_replace('-cow', '', $base);
     $base = trim($base, '- ');
 
     if (!$base) {
