@@ -1,4 +1,4 @@
-<?php
+<?php<?php
 /*
 Template Name: COA Template
 */
@@ -34,7 +34,7 @@ if (!function_exists('axiom_coa_template_normalize_text')) {
 
 if (!function_exists('axiom_coa_template_get_all_attachments')) {
     function axiom_coa_template_get_all_attachments() {
-        $attachments = get_posts(array(
+        return get_posts(array(
             'post_type'      => 'attachment',
             'post_status'    => 'inherit',
             'post_mime_type' => array('image/png', 'image/jpeg', 'image/jpg', 'application/pdf'),
@@ -42,36 +42,89 @@ if (!function_exists('axiom_coa_template_get_all_attachments')) {
             'orderby'        => 'date',
             'order'          => 'DESC',
         ));
+    }
+}
 
-        $results = array();
+if (!function_exists('axiom_coa_template_get_map_config_for_product_name')) {
+    function axiom_coa_template_get_map_config_for_product_name($product_name) {
+        if (!function_exists('axiom_coa_file_map')) {
+            return null;
+        }
 
-        foreach ($attachments as $attachment) {
-            $title = axiom_coa_template_normalize_text($attachment->post_title);
-            $file  = get_attached_file($attachment->ID);
-            $base  = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+        $map = axiom_coa_file_map();
+        if (empty($map) || !is_array($map)) {
+            return null;
+        }
 
-            if (strpos($title, 'coa') !== false || strpos($base, 'coa') !== false) {
-                $results[] = $attachment;
+        $normalized_product_name = axiom_coa_template_normalize_text($product_name);
+
+        // 1. Exact normalized key match.
+        foreach ($map as $map_key => $config) {
+            if (axiom_coa_template_normalize_text($map_key) === $normalized_product_name) {
+                return is_array($config) ? $config : null;
             }
         }
 
-        return $results;
+        // 2. Alias match against the actual product name.
+        foreach ($map as $map_key => $config) {
+            if (empty($config['product_aliases']) || !is_array($config['product_aliases'])) {
+                continue;
+            }
+
+            foreach ($config['product_aliases'] as $alias) {
+                $alias_normalized = axiom_coa_template_normalize_text($alias);
+
+                if (
+                    $alias_normalized &&
+                    (
+                        strpos($normalized_product_name, $alias_normalized) !== false ||
+                        strpos($alias_normalized, $normalized_product_name) !== false
+                    )
+                ) {
+                    return is_array($config) ? $config : null;
+                }
+            }
+        }
+
+        // 3. Fallback loose key match.
+        foreach ($map as $map_key => $config) {
+            $normalized_map_key = axiom_coa_template_normalize_text($map_key);
+
+            if (
+                $normalized_map_key &&
+                (
+                    strpos($normalized_product_name, $normalized_map_key) !== false ||
+                    strpos($normalized_map_key, $normalized_product_name) !== false
+                )
+            ) {
+                return is_array($config) ? $config : null;
+            }
+        }
+
+        return null;
     }
 }
 
 if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
     function axiom_coa_template_get_mapped_attachments($product_name) {
-        if (!function_exists('axiom_coa_file_map')) {
+        $config = axiom_coa_template_get_map_config_for_product_name($product_name);
+
+        if (empty($config) || !is_array($config)) {
             return array();
         }
 
-        $map = axiom_coa_file_map();
+        $product_aliases = !empty($config['product_aliases'])
+            ? array_map('axiom_coa_template_normalize_text', (array) $config['product_aliases'])
+            : array(axiom_coa_template_normalize_text($product_name));
 
-        if (empty($map[$product_name]) || !is_array($map[$product_name])) {
-            return array();
-        }
+        $variant_aliases = !empty($config['variant_aliases'])
+            ? array_map('axiom_coa_template_normalize_text', (array) $config['variant_aliases'])
+            : array();
 
-        $wanted_keys = array_map('axiom_coa_template_normalize_text', $map[$product_name]);
+        // Always include the actual product name as an alias too.
+        $product_aliases[] = axiom_coa_template_normalize_text($product_name);
+        $product_aliases = array_values(array_unique(array_filter($product_aliases)));
+
         $attachments = axiom_coa_template_get_all_attachments();
         $matches = array();
 
@@ -79,20 +132,40 @@ if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
             $title = axiom_coa_template_normalize_text(get_the_title($attachment->ID));
             $file  = get_attached_file($attachment->ID);
             $base  = $file ? axiom_coa_template_normalize_text(pathinfo($file, PATHINFO_FILENAME)) : '';
+            $haystack = trim($title . ' ' . $base);
 
-            foreach ($wanted_keys as $wanted) {
-                if (
-                    $wanted &&
-                    (
-                        $title === $wanted ||
-                        $base === $wanted ||
-                        strpos($title, $wanted) !== false ||
-                        strpos($base, $wanted) !== false
-                    )
-                ) {
-                    $matches[] = $attachment->ID;
+            if (!$haystack) {
+                continue;
+            }
+
+            $product_hit = false;
+            foreach ($product_aliases as $alias) {
+                if ($alias && strpos($haystack, $alias) !== false) {
+                    $product_hit = true;
                     break;
                 }
+            }
+
+            if (!$product_hit) {
+                continue;
+            }
+
+            // If there are variants, prefer those, but still allow a product-only match.
+            if (!empty($variant_aliases)) {
+                $variant_hit = false;
+
+                foreach ($variant_aliases as $variant) {
+                    if ($variant && strpos($haystack, $variant) !== false) {
+                        $variant_hit = true;
+                        break;
+                    }
+                }
+
+                if ($variant_hit || !$variant_hit) {
+                    $matches[] = $attachment->ID;
+                }
+            } else {
+                $matches[] = $attachment->ID;
             }
         }
 
@@ -107,12 +180,12 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 
         $base = str_replace('axiom-', '', $base);
         $base = str_replace('-coa', '', $base);
+        $base = str_replace('-cow', '', $base);
 
         if ($product_name) {
             $product_norm = axiom_coa_template_normalize_text($product_name);
             $base = str_replace($product_norm, '', $base);
 
-            // Extra cleanup for NAD+
             if ($product_norm === 'nad-plus') {
                 $base = str_replace('nad', '', $base);
             }
