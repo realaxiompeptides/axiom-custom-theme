@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Load modular function files SAFELY
+ * Load modular function files safely.
  */
 $axiom_function_files = array(
     '/functions/core/setup.php',
@@ -52,4 +52,25 @@ foreach ($axiom_function_files as $axiom_file) {
     } else {
         error_log('Axiom missing file: ' . $axiom_file);
     }
+}
+
+/**
+ * Enqueue Reviews page stylesheet.
+ * Loads only on the custom reviews page template.
+ */
+add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
+
+function axiom_enqueue_reviews_page_assets() {
+    if (!is_page_template('page-reviews.php')) {
+        return;
+    }
+
+    wp_enqueue_style(
+        'axiom-reviews-page',
+        get_template_directory_uri() . '/assets/css/reviews-page.css',
+        array(),
+        file_exists(get_template_directory() . '/assets/css/reviews-page.css')
+            ? filemtime(get_template_directory() . '/assets/css/reviews-page.css')
+            : '1.0.0'
+    );
 }
