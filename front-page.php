@@ -217,6 +217,13 @@
     </div>
   </section>
 
+  <?php
+  $coa_trust_section = get_template_directory() . '/homepage/coa-trust-section.php';
+  if (file_exists($coa_trust_section)) {
+      include $coa_trust_section;
+  }
+  ?>
+
   <section class="axiom-faq section-pad">
     <div class="container">
       <div class="axiom-faq-header">
