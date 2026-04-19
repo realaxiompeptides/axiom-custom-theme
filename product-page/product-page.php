@@ -144,6 +144,20 @@ if ($is_variable) {
 
 $coa_page = get_page_by_path('coa');
 $coa_url  = $coa_page ? get_permalink($coa_page->ID) : '';
+$coa_matches = function_exists('axiom_coa_get_matching_attachments_for_product')
+    ? axiom_coa_get_matching_attachments_for_product($product)
+    : array();
+
+$coa_preview_id    = !empty($coa_matches) ? (int) $coa_matches[0] : 0;
+$coa_preview_url   = $coa_preview_id ? wp_get_attachment_url($coa_preview_id) : '';
+$coa_preview_thumb = $coa_preview_id ? wp_get_attachment_image_url($coa_preview_id, 'large') : '';
+$coa_preview_title = $coa_preview_id ? get_the_title($coa_preview_id) : '';
+
+$coa_is_pdf = false;
+if ($coa_preview_id) {
+    $coa_mime = get_post_mime_type($coa_preview_id);
+    $coa_is_pdf = ($coa_mime === 'application/pdf');
+}
 ?>
 
 <main class="product-main">
