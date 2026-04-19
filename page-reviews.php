@@ -17,8 +17,10 @@ $reviews_page_data = array(
     'total_reviews'     => '4,800+',
     'founded'           => '2024',
     'company_size'      => 'Small Team',
-    'telegram_url'      => 'https://t.me/yourtelegramhere',
-    'whatsapp_url'      => 'https://wa.me/15555555555',
+    'telegram_url'      => 'https://t.me/axiompeptides',
+    'whatsapp_url'      => 'https://wa.me/15307019349',
+    'whatsapp_label'    => '530-701-9349',
+    'telegram_label'    => '@axiompeptides',
     'top_mentions'      => array(
         'fast shipping',
         'great quality',
@@ -116,11 +118,15 @@ function axiom_render_stars($count = 5) {
               <strong><?php echo esc_html($reviews_page_data['total_reviews']); ?></strong>
             </div>
             <div class="axiom-reviews-meta-row">
-              <span>Contact</span>
+              <span>Telegram</span>
               <strong class="axiom-reviews-contact-links">
-                <a href="<?php echo esc_url($reviews_page_data['telegram_url']); ?>" target="_blank" rel="noopener noreferrer">Telegram</a>
-                <span>|</span>
-                <a href="<?php echo esc_url($reviews_page_data['whatsapp_url']); ?>" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <a href="<?php echo esc_url($reviews_page_data['telegram_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($reviews_page_data['telegram_label']); ?></a>
+              </strong>
+            </div>
+            <div class="axiom-reviews-meta-row">
+              <span>WhatsApp</span>
+              <strong class="axiom-reviews-contact-links">
+                <a href="<?php echo esc_url($reviews_page_data['whatsapp_url']); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html($reviews_page_data['whatsapp_label']); ?></a>
               </strong>
             </div>
           </div>
@@ -153,23 +159,6 @@ function axiom_render_stars($count = 5) {
       <div class="axiom-reviews-list-header">
         <h2>Customer Reviews</h2>
         <div class="axiom-reviews-sort">Most recent</div>
-      </div>
-
-      <div class="axiom-reviews-card axiom-reviews-add-review-card">
-        <div class="axiom-reviews-toolbar">
-          <div>
-            <h2>Add a Review</h2>
-            <p>Share your experience with Axiom Peptides.</p>
-          </div>
-        </div>
-
-        <div class="axiom-reviews-add-review-actions">
-          <a href="#axiom-all-reviews" class="axiom-review-pill">Browse Reviews</a>
-        </div>
-
-        <div class="axiom-reviews-add-review-form">
-          <?php echo do_shortcode('[WPCR_SHOW POSTID="ALL" NUM="1000" PAGINATE="1" PERPAGE="10" SHOWFORM="1" HIDEREVIEWS="1" HIDERESPONSE="0" SNIPPET="" MORE="" HIDECUSTOM="0"]'); ?>
-        </div>
       </div>
 
       <div class="axiom-reviews-card axiom-reviews-all-card" id="axiom-all-reviews">
