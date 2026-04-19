@@ -114,19 +114,21 @@ $catalog_terms = get_terms(array(
                         continue;
                     }
 
-                    $product_id    = $product->get_id();
-                    $product_name  = $product->get_name();
-                    $product_link  = get_permalink($product_id);
-                    $image_html    = $product->get_image('woocommerce_thumbnail');
-                    $price_html    = $product->get_price_html();
-                    $is_on_sale    = $product->is_on_sale();
-                    $is_in_stock   = $product->is_in_stock();
-                    $date_created  = $product->get_date_created() ? $product->get_date_created()->date('U') : 0;
-                    $raw_price     = $product->get_price() !== '' ? (float) $product->get_price() : 0;
+                    $product_id      = $product->get_id();
+                    $product_name    = $product->get_name();
+                    $product_link    = get_permalink($product_id);
+                    $image_html      = $product->get_image('woocommerce_thumbnail');
+                    $price_html      = $product->get_price_html();
+                    $is_on_sale      = $product->is_on_sale();
+                    $is_in_stock     = $product->is_in_stock();
+                    $backorders_ok   = $product->backorders_allowed();
+                    $is_backorder    = (!$is_in_stock && $backorders_ok);
+                    $date_created    = $product->get_date_created() ? $product->get_date_created()->date('U') : 0;
+                    $raw_price       = $product->get_price() !== '' ? (float) $product->get_price() : 0;
 
                     $product_terms = get_the_terms($product_id, 'product_cat');
-                    $term_slugs    = array();
-                    $term_names    = array();
+                    $term_slugs = array();
+                    $term_names = array();
 
                     if (!is_wp_error($product_terms) && !empty($product_terms)) {
                         foreach ($product_terms as $term) {
@@ -139,7 +141,7 @@ $catalog_terms = get_terms(array(
                     $term_names_string = implode(', ', $term_names);
                     ?>
                     <article
-                        class="axiom-product-card<?php echo !$is_in_stock ? ' axiom-product-card-out-of-stock' : ''; ?>"
+                        class="axiom-product-card<?php echo $is_backorder ? ' axiom-product-card-backorder' : (!$is_in_stock ? ' axiom-product-card-out-of-stock' : ''); ?>"
                         data-name="<?php echo esc_attr(strtolower($product_name)); ?>"
                         data-price="<?php echo esc_attr($raw_price); ?>"
                         data-date="<?php echo esc_attr($date_created); ?>"
@@ -147,7 +149,9 @@ $catalog_terms = get_terms(array(
                     >
                         <a href="<?php echo esc_url($product_link); ?>" class="axiom-product-card-link">
                             <div class="axiom-product-image-wrap">
-                                <?php if (!$is_in_stock) : ?>
+                                <?php if ($is_backorder) : ?>
+                                    <span class="axiom-product-badge axiom-product-badge-backorder">Backorder</span>
+                                <?php elseif (!$is_in_stock) : ?>
                                     <span class="axiom-product-badge axiom-product-badge-out">Out of stock</span>
                                 <?php elseif ($is_on_sale) : ?>
                                     <span class="axiom-product-badge">Sale</span>
@@ -172,7 +176,7 @@ $catalog_terms = get_terms(array(
                         </a>
 
                         <div class="axiom-product-actions">
-                            <?php if ($product->is_purchasable() && $is_in_stock) : ?>
+                            <?php if ($product->is_purchasable() && ($is_in_stock || $is_backorder)) : ?>
                                 <?php if ($product->is_type('simple')) : ?>
                                     <?php
                                     echo sprintf(
