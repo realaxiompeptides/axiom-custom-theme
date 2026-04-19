@@ -1,0 +1,341 @@
+/* Product reviews section */
+.product-reviews-card {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e5edf7;
+}
+
+.product-reviews-header {
+  margin-bottom: 18px;
+}
+
+.product-reviews-header h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 900;
+  line-height: 1.05;
+}
+
+.product-reviews-shortcode-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Main plugin wrapper */
+.product-reviews-shortcode-wrap .wpcr3_reviews_holder,
+.product-reviews-shortcode-wrap .wpcr3_review_form {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Review form container */
+.product-reviews-shortcode-wrap .wpcr3_review_form {
+  margin: 18px 0 28px;
+  padding: 22px;
+  border: 1px solid #dfe8f5;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 10px 30px rgba(20, 38, 63, 0.04);
+}
+
+/* Form title */
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_dotline + h3,
+.product-reviews-shortcode-wrap .wpcr3_review_form h3,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_review_title,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_section_title {
+  margin: 0 0 18px !important;
+  color: #0f172a !important;
+  font-size: 30px !important;
+  font-weight: 900 !important;
+  line-height: 1.1 !important;
+}
+
+/* Hide ugly dotted line */
+.product-reviews-shortcode-wrap .wpcr3_dotline {
+  display: none !important;
+}
+
+/* Form table/layout cleanup */
+.product-reviews-shortcode-wrap .wpcr3_review_form table,
+.product-reviews-shortcode-wrap .wpcr3_review_form tbody,
+.product-reviews-shortcode-wrap .wpcr3_review_form tr,
+.product-reviews-shortcode-wrap .wpcr3_review_form td {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_review_form tr {
+  margin-bottom: 14px;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_review_form td {
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+/* Labels */
+.product-reviews-shortcode-wrap .wpcr3_review_form label,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_label,
+.product-reviews-shortcode-wrap .wpcr3_review_form td:first-child {
+  display: block;
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+/* Inputs / textareas */
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="text"],
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="email"],
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="url"],
+.product-reviews-shortcode-wrap .wpcr3_review_form textarea,
+.product-reviews-shortcode-wrap .wpcr3_review_form select {
+  width: 100% !important;
+  min-height: 56px;
+  padding: 0 16px;
+  border: 1px solid #d7e4f3 !important;
+  border-radius: 16px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 600;
+  box-shadow: none !important;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_review_form textarea {
+  min-height: 160px;
+  padding: 16px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Focus state */
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="text"]:focus,
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="email"]:focus,
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="url"]:focus,
+.product-reviews-shortcode-wrap .wpcr3_review_form textarea:focus,
+.product-reviews-shortcode-wrap .wpcr3_review_form select:focus {
+  border-color: #5ea8e1 !important;
+  box-shadow: 0 0 0 4px rgba(94, 168, 225, 0.14) !important;
+}
+
+/* Rating row */
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_rating,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_review_rating,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_respond_stars {
+  margin-top: 6px;
+}
+
+/* Try to enlarge plugin stars */
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_respond_stars a,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_rating a,
+.product-reviews-shortcode-wrap .wpcr3_review_form .star,
+.product-reviews-shortcode-wrap .wpcr3_review_form .stars a {
+  transform: scale(1.15);
+  transform-origin: left center;
+}
+
+/* Human checkbox row */
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+  vertical-align: middle;
+  accent-color: #2f6fd0;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_confirm,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_checkbox,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_checkbox label {
+  color: #334155;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* Buttons row */
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_submit,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_button_row,
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_btns,
+.product-reviews-shortcode-wrap .wpcr3_review_form td[colspan] {
+  margin-top: 16px;
+}
+
+/* Buttons */
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="submit"],
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="button"],
+.product-reviews-shortcode-wrap .wpcr3_review_form button,
+.product-reviews-shortcode-wrap .wpcr3_review_form .button {
+  min-width: 140px;
+  min-height: 54px;
+  padding: 0 22px;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #2f6fd0, #4b97e3) !important;
+  color: #ffffff !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  box-shadow: 0 12px 24px rgba(47, 111, 208, 0.18) !important;
+  text-shadow: none !important;
+  cursor: pointer;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_review_form input[type="button"],
+.product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_cancel {
+  background: #eef5ff !important;
+  color: #245fc0 !important;
+  border: 1px solid #d9e6f7 !important;
+  box-shadow: none !important;
+}
+
+/* Existing review list wrapper */
+.product-reviews-shortcode-wrap .wpcr3_reviews_holder {
+  margin-top: 16px;
+}
+
+/* Each review card */
+.product-reviews-shortcode-wrap .wpcr3_review,
+.product-reviews-shortcode-wrap .wpcr3_review_item,
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_content {
+  margin-bottom: 18px;
+  padding: 20px;
+  border: 1px solid #dfe8f5;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(20, 38, 63, 0.04);
+}
+
+/* Review headings */
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_title,
+.product-reviews-shortcode-wrap .wpcr3_review_title,
+.product-reviews-shortcode-wrap .wpcr3_review .review-title {
+  margin: 0 0 10px !important;
+  color: #0f172a !important;
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  line-height: 1.3 !important;
+}
+
+/* Review meta */
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_author,
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_date,
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_meta {
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+}
+
+/* Review body */
+.product-reviews-shortcode-wrap .wpcr3_review p,
+.product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_text,
+.product-reviews-shortcode-wrap .wpcr3_content p {
+  color: #334155 !important;
+  font-size: 16px !important;
+  line-height: 1.65 !important;
+}
+
+/* Pagination */
+.product-reviews-shortcode-wrap .wpcr3_pagination,
+.product-reviews-shortcode-wrap .wpcr3_page_nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_pagination a,
+.product-reviews-shortcode-wrap .wpcr3_pagination span,
+.product-reviews-shortcode-wrap .wpcr3_page_nav a,
+.product-reviews-shortcode-wrap .wpcr3_page_nav span {
+  min-width: 42px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid #d9e6f7;
+  background: #ffffff;
+  color: #2f6fd0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.product-reviews-shortcode-wrap .wpcr3_pagination .current,
+.product-reviews-shortcode-wrap .wpcr3_page_nav .current {
+  background: #2f6fd0;
+  border-color: #2f6fd0;
+  color: #ffffff;
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  .product-reviews-card {
+    margin-top: 22px;
+    padding-top: 20px;
+  }
+
+  .product-reviews-header h2 {
+    font-size: 24px;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review_form {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review_form h3,
+  .product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_review_title,
+  .product-reviews-shortcode-wrap .wpcr3_review_form .wpcr3_section_title {
+    font-size: 22px !important;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review_form input[type="text"],
+  .product-reviews-shortcode-wrap .wpcr3_review_form input[type="email"],
+  .product-reviews-shortcode-wrap .wpcr3_review_form input[type="url"],
+  .product-reviews-shortcode-wrap .wpcr3_review_form textarea,
+  .product-reviews-shortcode-wrap .wpcr3_review_form select {
+    min-height: 52px;
+    font-size: 15px !important;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review_form textarea {
+    min-height: 140px;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review_form input[type="submit"],
+  .product-reviews-shortcode-wrap .wpcr3_review_form input[type="button"],
+  .product-reviews-shortcode-wrap .wpcr3_review_form button,
+  .product-reviews-shortcode-wrap .wpcr3_review_form .button {
+    width: 100%;
+    min-width: 0;
+    min-height: 50px;
+    font-size: 16px !important;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review,
+  .product-reviews-shortcode-wrap .wpcr3_review_item,
+  .product-reviews-shortcode-wrap .wpcr3_review .wpcr3_content {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_title,
+  .product-reviews-shortcode-wrap .wpcr3_review_title,
+  .product-reviews-shortcode-wrap .wpcr3_review .review-title {
+    font-size: 19px !important;
+  }
+
+  .product-reviews-shortcode-wrap .wpcr3_review p,
+  .product-reviews-shortcode-wrap .wpcr3_review .wpcr3_review_text,
+  .product-reviews-shortcode-wrap .wpcr3_content p {
+    font-size: 15px !important;
+  }
+}
