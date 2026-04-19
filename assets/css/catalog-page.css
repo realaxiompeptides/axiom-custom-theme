@@ -394,3 +394,28 @@
     width: 100%;
   }
 }
+
+.axiom-product-badge,
+.axiom-product-badge-out {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
+
+.axiom-product-badge {
+  background: #0b1654;
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(11, 22, 84, 0.16);
+}
+
+.axiom-product-badge-out {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(75, 85, 99, 0.22);
+}
