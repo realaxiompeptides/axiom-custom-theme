@@ -404,6 +404,21 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
           <?php echo wp_kses_post(wpautop($product_long)); ?>
         </div>
 
+        <section class="product-reviews-card">
+          <div class="product-reviews-header">
+            <p class="product-section-kicker">Verified Feedback</p>
+            <h2>Customer Reviews</h2>
+          </div>
+
+          <div class="product-reviews-shortcode-wrap">
+            <?php
+            echo do_shortcode(
+              '[WPCR_SHOW POSTID="' . (int) $product_id . '" NUM="1000" PAGINATE="1" PERPAGE="10" SHOWFORM="1" HIDEREVIEWS="0" HIDERESPONSE="0" SNIPPET="" MORE="" HIDECUSTOM="0"]'
+            );
+            ?>
+          </div>
+        </section>
+
         <div class="product-disclaimer-box product-disclaimer-below-description">
           <div class="product-disclaimer-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
