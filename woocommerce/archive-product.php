@@ -120,9 +120,10 @@ $catalog_terms = get_terms(array(
                     $image_html      = $product->get_image('woocommerce_thumbnail');
                     $price_html      = $product->get_price_html();
                     $is_on_sale      = $product->is_on_sale();
-                    $is_in_stock     = $product->is_in_stock();
-                    $backorders_ok   = $product->backorders_allowed();
-                    $is_backorder    = (!$is_in_stock && $backorders_ok);
+                    $stock_status    = $product->get_stock_status();
+                    $is_in_stock     = ($stock_status === 'instock');
+                    $is_backorder    = ($stock_status === 'onbackorder');
+                    $is_out_of_stock = ($stock_status === 'outofstock');
                     $date_created    = $product->get_date_created() ? $product->get_date_created()->date('U') : 0;
                     $raw_price       = $product->get_price() !== '' ? (float) $product->get_price() : 0;
 
@@ -141,7 +142,7 @@ $catalog_terms = get_terms(array(
                     $term_names_string = implode(', ', $term_names);
                     ?>
                     <article
-                        class="axiom-product-card<?php echo $is_backorder ? ' axiom-product-card-backorder' : (!$is_in_stock ? ' axiom-product-card-out-of-stock' : ''); ?>"
+                        class="axiom-product-card<?php echo $is_backorder ? ' axiom-product-card-backorder' : ($is_out_of_stock ? ' axiom-product-card-out-of-stock' : ''); ?>"
                         data-name="<?php echo esc_attr(strtolower($product_name)); ?>"
                         data-price="<?php echo esc_attr($raw_price); ?>"
                         data-date="<?php echo esc_attr($date_created); ?>"
@@ -151,7 +152,7 @@ $catalog_terms = get_terms(array(
                             <div class="axiom-product-image-wrap">
                                 <?php if ($is_backorder) : ?>
                                     <span class="axiom-product-badge axiom-product-badge-backorder">Backorder</span>
-                                <?php elseif (!$is_in_stock) : ?>
+                                <?php elseif ($is_out_of_stock) : ?>
                                     <span class="axiom-product-badge axiom-product-badge-out">Out of stock</span>
                                 <?php elseif ($is_on_sale) : ?>
                                     <span class="axiom-product-badge">Sale</span>
