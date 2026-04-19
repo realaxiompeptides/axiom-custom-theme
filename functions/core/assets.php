@@ -30,6 +30,17 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
+    if ((function_exists('is_front_page') && is_front_page()) || (function_exists('is_home') && is_home())) {
+        if (file_exists($theme_path . '/assets/css/homepage/coa-trust-section.css')) {
+            wp_enqueue_style(
+                'axiom-home-coa-trust',
+                $theme_uri . '/assets/css/homepage/coa-trust-section.css',
+                array('axiom-base', 'axiom-home', 'axiom-collection'),
+                filemtime($theme_path . '/assets/css/homepage/coa-trust-section.css')
+            );
+        }
+    }
+
     if (
         function_exists('is_shop') &&
         (is_shop() || is_product_category() || is_product_tag() || is_tax('product_cat') || is_tax('product_tag'))
@@ -64,16 +75,9 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-description', $theme_uri . '/assets/css/product-page/description.css', array('axiom-base', 'axiom-product-layout'), '1.2');
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
-        if (file_exists($theme_path . '/assets/css/product-page/reviews.css')) {
-            wp_enqueue_style(
-                'axiom-product-reviews',
-                $theme_uri . '/assets/css/product-page/reviews.css',
-                array('axiom-base', 'axiom-product-layout', 'axiom-product-description'),
-                filemtime($theme_path . '/assets/css/product-page/reviews.css')
-            );
+        if (file_exists($theme_path . '/assets/js/product-page.js')) {
+            wp_enqueue_script('axiom-product-page', $theme_uri . '/assets/js/product-page.js', array('jquery'), '1.4', true);
         }
-
-        wp_enqueue_script('axiom-product-page', $theme_uri . '/assets/js/product-page.js', array('jquery'), '1.4', true);
     }
 
     if (function_exists('is_page_template') && is_page_template('page-reviews.php')) {
