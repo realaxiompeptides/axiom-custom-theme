@@ -442,6 +442,243 @@
   color: #1e293b;
 }
 
+.product-coa-button-wrap {
+  width: 100%;
+  margin-top: 14px;
+}
+
+.product-coa-button {
+  width: 100%;
+  min-height: 62px;
+  border-radius: 999px;
+  border: 3px solid #5ca0df;
+  background: linear-gradient(180deg, #f9fcff 0%, #eef6ff 100%);
+  color: #2f68c7;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.product-coa-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(47, 104, 199, 0.14);
+}
+
+.product-coa-modal[hidden] {
+  display: none !important;
+}
+
+.coa-modal-open,
+.coa-modal-open body {
+  overflow: hidden;
+}
+
+.product-coa-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+}
+
+.product-coa-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 18, 35, 0.62);
+}
+
+.product-coa-modal-dialog {
+  position: relative;
+  z-index: 2;
+  width: min(960px, calc(100vw - 24px));
+  max-height: calc(100vh - 24px);
+  margin: 12px auto;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-coa-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #173b7a;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.product-coa-modal-header {
+  padding: 22px 22px 14px;
+  border-bottom: 1px solid #e4edf9;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+}
+
+.product-coa-modal-kicker {
+  margin: 0 0 6px;
+  color: #5b84c9;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-coa-modal-header h3 {
+  margin: 0;
+  color: #163a76;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.product-coa-modal-variant-bar {
+  display: flex;
+  gap: 10px;
+  padding: 14px 18px;
+  overflow-x: auto;
+  border-bottom: 1px solid #e4edf9;
+  background: #fbfdff;
+}
+
+.product-coa-variant-btn {
+  flex: 0 0 auto;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid #cdddf5;
+  background: #ffffff;
+  color: #234a8c;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.product-coa-variant-btn.is-active {
+  background: #2f68c7;
+  border-color: #2f68c7;
+  color: #ffffff;
+}
+
+.product-coa-modal-body {
+  padding: 16px;
+  overflow: auto;
+}
+
+.product-coa-modal-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.product-coa-modal-current-label {
+  color: #173b7a;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.product-coa-modal-open-file {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: #eef5ff;
+  color: #234a8c;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.product-coa-modal-viewer {
+  border: 1px solid #dce8f7;
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+}
+
+.product-coa-modal-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.product-coa-modal-pdf-state {
+  display: flex;
+  min-height: 320px;
+  padding: 32px 20px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  text-align: center;
+}
+
+.product-coa-modal-pdf-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #2f68c7;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.product-coa-modal-pdf-state p {
+  margin: 0;
+  color: #26374d;
+  font-size: 15px;
+}
+
+.product-coa-modal-pdf-state a {
+  color: #2f68c7;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+@media (max-width: 767px) {
+  .product-coa-modal-dialog {
+    width: calc(100vw - 12px);
+    max-height: calc(100vh - 12px);
+    margin: 6px auto;
+    border-radius: 20px;
+  }
+
+  .product-coa-modal-header {
+    padding: 18px 18px 12px;
+  }
+
+  .product-coa-modal-header h3 {
+    font-size: 20px;
+    padding-right: 34px;
+  }
+
+  .product-coa-modal-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .product-coa-modal-open-file {
+    width: 100%;
+  }
+}
 @media (min-width: 768px) {
   .product-coa-preview-pdf {
     min-height: 220px;
