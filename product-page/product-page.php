@@ -149,16 +149,42 @@ $coa_matches = function_exists('axiom_coa_get_matching_attachments_for_product')
     ? axiom_coa_get_matching_attachments_for_product($product)
     : array();
 
-$coa_preview_id    = !empty($coa_matches) ? (int) $coa_matches[0] : 0;
-$coa_preview_url   = $coa_preview_id ? wp_get_attachment_url($coa_preview_id) : '';
-$coa_preview_thumb = $coa_preview_id ? wp_get_attachment_image_url($coa_preview_id, 'large') : '';
-$coa_preview_title = $coa_preview_id ? get_the_title($coa_preview_id) : '';
+$coa_items = array();
 
-$coa_is_pdf = false;
-if ($coa_preview_id) {
-    $coa_mime = get_post_mime_type($coa_preview_id);
-    $coa_is_pdf = ($coa_mime === 'application/pdf');
+if (!empty($coa_matches)) {
+    foreach ($coa_matches as $attachment_id) {
+        $attachment_id = (int) $attachment_id;
+        if (!$attachment_id) {
+            continue;
+        }
+
+        $file_url  = wp_get_attachment_url($attachment_id);
+        $thumb_url = wp_get_attachment_image_url($attachment_id, 'large');
+        $title     = get_the_title($attachment_id);
+        $mime_type = get_post_mime_type($attachment_id);
+        $is_pdf    = ($mime_type === 'application/pdf');
+
+        if (!$file_url) {
+            continue;
+        }
+
+        $label = function_exists('axiom_coa_get_attachment_variant_label')
+            ? axiom_coa_get_attachment_variant_label($attachment_id)
+            : $title;
+
+        $coa_items[] = array(
+            'id'       => $attachment_id,
+            'label'    => $label ? $label : 'COA FILE',
+            'title'    => $title ? $title : $product_name . ' COA',
+            'file_url' => $file_url,
+            'thumb'    => $thumb_url ? $thumb_url : '',
+            'is_pdf'   => $is_pdf,
+        );
+    }
 }
+
+$coa_has_items = !empty($coa_items);
+$first_coa     = $coa_has_items ? $coa_items[0] : null;
 ?>
 
 <main class="product-main">
@@ -313,46 +339,12 @@ if ($coa_preview_id) {
               </form>
             <?php endif; ?>
 
-            <?php if (!empty($coa_url) || !empty($coa_preview_url)) : ?>
+            <?php if ($coa_has_items) : ?>
               <div class="product-coa-button-wrap">
-                <a
-                  class="product-coa-button"
-                  href="<?php echo esc_url(!empty($coa_preview_url) ? $coa_preview_url : $coa_url); ?>"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <button type="button" class="product-coa-button" id="openCoaModalBtn">
                   View COA
-                </a>
+                </button>
               </div>
-
-              <?php if (!empty($coa_preview_url)) : ?>
-                <div class="product-coa-preview-wrap">
-                  <div class="product-coa-preview-head">
-                    <span class="product-coa-preview-label">Certificate of Analysis</span>
-                  </div>
-
-                  <a
-                    class="product-coa-preview-link"
-                    href="<?php echo esc_url($coa_preview_url); ?>"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <?php if (!$coa_is_pdf && !empty($coa_preview_thumb)) : ?>
-                      <img
-                        class="product-coa-preview-image"
-                        src="<?php echo esc_url($coa_preview_thumb); ?>"
-                        alt="<?php echo esc_attr($coa_preview_title ? $coa_preview_title : $product_name . ' COA'); ?>"
-                        loading="lazy"
-                      />
-                    <?php else : ?>
-                      <div class="product-coa-preview-pdf">
-                        <span class="product-coa-preview-pdf-icon">PDF</span>
-                        <span class="product-coa-preview-pdf-text">Open COA File</span>
-                      </div>
-                    <?php endif; ?>
-                  </a>
-                </div>
-              <?php endif; ?>
             <?php endif; ?>
 
             <div class="product-payment-icons">
@@ -458,6 +450,104 @@ if ($coa_preview_id) {
     </div>
   </div>
 </div>
+
+<?php if ($coa_has_items && $first_coa) : ?>
+  <div class="product-coa-modal" id="productCoaModal" aria-hidden="true" hidden>
+    <div class="product-coa-modal-backdrop" data-coa-close="1"></div>
+
+    <div class="product-coa-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="productCoaModalTitle">
+      <button type="button" class="product-coa-modal-close" id="closeCoaModalBtn" aria-label="Close COA modal">
+        ×
+      </button>
+
+      <div class="product-coa-modal-header">
+        <div class="product-coa-modal-header-copy">
+          <p class="product-coa-modal-kicker">Certificate of Analysis</p>
+          <h3 id="productCoaModalTitle"><?php echo esc_html($product_name); ?></h3>
+        </div>
+      </div>
+
+      <?php if (count($coa_items) > 1) : ?>
+        <div class="product-coa-modal-variant-bar" id="productCoaVariantBar">
+          <?php foreach ($coa_items as $index => $item) : ?>
+            <button
+              type="button"
+              class="product-coa-variant-btn<?php echo $index === 0 ? ' is-active' : ''; ?>"
+              data-coa-label="<?php echo esc_attr($item['label']); ?>"
+              data-coa-title="<?php echo esc_attr($item['title']); ?>"
+              data-coa-url="<?php echo esc_url($item['file_url']); ?>"
+              data-coa-thumb="<?php echo esc_url($item['thumb']); ?>"
+              data-coa-is-pdf="<?php echo $item['is_pdf'] ? '1' : '0'; ?>"
+            >
+              <?php echo esc_html($item['label']); ?>
+            </button>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
+
+      <div class="product-coa-modal-body">
+        <div class="product-coa-modal-toolbar">
+          <span class="product-coa-modal-current-label" id="productCoaModalCurrentLabel">
+            <?php echo esc_html($first_coa['label']); ?>
+          </span>
+
+          <a
+            class="product-coa-modal-open-file"
+            id="productCoaModalOpenFile"
+            href="<?php echo esc_url($first_coa['file_url']); ?>"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Open File
+          </a>
+        </div>
+
+        <div class="product-coa-modal-viewer" id="productCoaModalViewer">
+          <?php if (!$first_coa['is_pdf'] && !empty($first_coa['thumb'])) : ?>
+            <img
+              id="productCoaModalImage"
+              class="product-coa-modal-image"
+              src="<?php echo esc_url($first_coa['thumb']); ?>"
+              alt="<?php echo esc_attr($first_coa['title']); ?>"
+            />
+            <div id="productCoaModalPdfState" class="product-coa-modal-pdf-state" hidden>
+              <span class="product-coa-modal-pdf-badge">PDF</span>
+              <p>This COA is a PDF file.</p>
+              <a
+                id="productCoaModalPdfLink"
+                href="<?php echo esc_url($first_coa['file_url']); ?>"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open PDF
+              </a>
+            </div>
+          <?php else : ?>
+            <img
+              id="productCoaModalImage"
+              class="product-coa-modal-image"
+              src=""
+              alt=""
+              hidden
+            />
+            <div id="productCoaModalPdfState" class="product-coa-modal-pdf-state">
+              <span class="product-coa-modal-pdf-badge">PDF</span>
+              <p>This COA is a PDF file.</p>
+              <a
+                id="productCoaModalPdfLink"
+                href="<?php echo esc_url($first_coa['file_url']); ?>"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open PDF
+              </a>
+            </div>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+<?php endif; ?>
 
 <script>
 window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
