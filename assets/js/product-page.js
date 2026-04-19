@@ -25,6 +25,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const stickyBar = document.getElementById("stickyProductBar");
   const qtyNote = document.getElementById("productQtyNote");
 
+  const openCoaModalBtn = document.getElementById("openCoaModalBtn");
+  const productCoaModal = document.getElementById("productCoaModal");
+  const closeCoaModalBtn = document.getElementById("closeCoaModalBtn");
+  const coaVariantButtons = document.querySelectorAll(".product-coa-variant-btn");
+  const coaModalCurrentLabel = document.getElementById("productCoaModalCurrentLabel");
+  const coaModalOpenFile = document.getElementById("productCoaModalOpenFile");
+  const coaModalImage = document.getElementById("productCoaModalImage");
+  const coaModalPdfState = document.getElementById("productCoaModalPdfState");
+  const coaModalPdfLink = document.getElementById("productCoaModalPdfLink");
+
   const variationData = window.AXIOM_PRODUCT_PAGE || {
     isVariable: false,
     productId: 0,
@@ -247,6 +257,100 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function openCoaModal() {
+    if (!productCoaModal) return;
+    productCoaModal.hidden = false;
+    productCoaModal.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("coa-modal-open");
+    document.body.classList.add("coa-modal-open");
+  }
+
+  function closeCoaModal() {
+    if (!productCoaModal) return;
+    productCoaModal.hidden = true;
+    productCoaModal.setAttribute("aria-hidden", "true");
+    document.documentElement.classList.remove("coa-modal-open");
+    document.body.classList.remove("coa-modal-open");
+  }
+
+  function setActiveCoaButton(activeButton) {
+    if (!coaVariantButtons.length) return;
+    coaVariantButtons.forEach((button) => {
+      button.classList.toggle("is-active", button === activeButton);
+    });
+  }
+
+  function updateCoaModalFromButton(button) {
+    if (!button) return;
+
+    const label = button.getAttribute("data-coa-label") || "COA FILE";
+    const title = button.getAttribute("data-coa-title") || label;
+    const url = button.getAttribute("data-coa-url") || "";
+    const thumb = button.getAttribute("data-coa-thumb") || "";
+    const isPdf = button.getAttribute("data-coa-is-pdf") === "1";
+
+    if (coaModalCurrentLabel) {
+      coaModalCurrentLabel.textContent = label;
+    }
+
+    if (coaModalOpenFile) {
+      coaModalOpenFile.href = url;
+    }
+
+    if (coaModalPdfLink) {
+      coaModalPdfLink.href = url;
+    }
+
+    if (isPdf) {
+      if (coaModalImage) {
+        coaModalImage.hidden = true;
+        coaModalImage.src = "";
+        coaModalImage.alt = "";
+      }
+      if (coaModalPdfState) {
+        coaModalPdfState.hidden = false;
+      }
+    } else {
+      if (coaModalImage) {
+        coaModalImage.hidden = false;
+        coaModalImage.src = thumb || url;
+        coaModalImage.alt = title;
+      }
+      if (coaModalPdfState) {
+        coaModalPdfState.hidden = true;
+      }
+    }
+
+    setActiveCoaButton(button);
+  }
+
+  function normalizeText(value) {
+    return String(value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  }
+
+  function syncCoaToSelectedVariant(variationLabel) {
+    if (!variationLabel || !coaVariantButtons.length) return;
+
+    const target = normalizeText(variationLabel);
+    let match = null;
+
+    coaVariantButtons.forEach((button) => {
+      if (match) return;
+
+      const buttonLabel = normalizeText(button.getAttribute("data-coa-label") || "");
+      if (buttonLabel && (buttonLabel.includes(target) || target.includes(buttonLabel))) {
+        match = button;
+      }
+    });
+
+    if (match) {
+      updateCoaModalFromButton(match);
+    }
+  }
+
   if (qtyMinus) qtyMinus.addEventListener("click", decreaseQty);
   if (qtyPlus) qtyPlus.addEventListener("click", increaseQty);
   if (stickyQtyMinus) stickyQtyMinus.addEventListener("click", decreaseQty);
@@ -260,6 +364,43 @@ document.addEventListener("DOMContentLoaded", function () {
     qtyInput.addEventListener("blur", function () {
       applyQtyLimits(qtyInput.value);
     });
+  }
+
+  if (openCoaModalBtn) {
+    openCoaModalBtn.addEventListener("click", function () {
+      openCoaModal();
+    });
+  }
+
+  if (closeCoaModalBtn) {
+    closeCoaModalBtn.addEventListener("click", function () {
+      closeCoaModal();
+    });
+  }
+
+  if (productCoaModal) {
+    productCoaModal.addEventListener("click", function (event) {
+      const closeTrigger = event.target.closest("[data-coa-close='1']");
+      if (closeTrigger) {
+        closeCoaModal();
+      }
+    });
+  }
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && productCoaModal && !productCoaModal.hidden) {
+      closeCoaModal();
+    }
+  });
+
+  if (coaVariantButtons.length) {
+    coaVariantButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        updateCoaModalFromButton(button);
+      });
+    });
+
+    updateCoaModalFromButton(coaVariantButtons[0]);
   }
 
   if (variationSelect && variationData.isVariable) {
@@ -326,6 +467,8 @@ document.addEventListener("DOMContentLoaded", function () {
         maxQty,
         backordersAllowed
       });
+
+      syncCoaToSelectedVariant(variationLabel);
 
       if (addToCartBtn) {
         addToCartBtn.disabled = !variationId || !purchasable;
