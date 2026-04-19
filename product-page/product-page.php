@@ -144,6 +144,7 @@ if ($is_variable) {
 
 $coa_page = get_page_by_path('coa');
 $coa_url  = $coa_page ? get_permalink($coa_page->ID) : '';
+
 $coa_matches = function_exists('axiom_coa_get_matching_attachments_for_product')
     ? axiom_coa_get_matching_attachments_for_product($product)
     : array();
@@ -312,12 +313,46 @@ if ($coa_preview_id) {
               </form>
             <?php endif; ?>
 
-            <?php if (!empty($coa_url)) : ?>
+            <?php if (!empty($coa_url) || !empty($coa_preview_url)) : ?>
               <div class="product-coa-button-wrap">
-                <a class="product-coa-button" href="<?php echo esc_url($coa_url); ?>">
+                <a
+                  class="product-coa-button"
+                  href="<?php echo esc_url(!empty($coa_preview_url) ? $coa_preview_url : $coa_url); ?>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   View COA
                 </a>
               </div>
+
+              <?php if (!empty($coa_preview_url)) : ?>
+                <div class="product-coa-preview-wrap">
+                  <div class="product-coa-preview-head">
+                    <span class="product-coa-preview-label">Certificate of Analysis</span>
+                  </div>
+
+                  <a
+                    class="product-coa-preview-link"
+                    href="<?php echo esc_url($coa_preview_url); ?>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <?php if (!$coa_is_pdf && !empty($coa_preview_thumb)) : ?>
+                      <img
+                        class="product-coa-preview-image"
+                        src="<?php echo esc_url($coa_preview_thumb); ?>"
+                        alt="<?php echo esc_attr($coa_preview_title ? $coa_preview_title : $product_name . ' COA'); ?>"
+                        loading="lazy"
+                      />
+                    <?php else : ?>
+                      <div class="product-coa-preview-pdf">
+                        <span class="product-coa-preview-pdf-icon">PDF</span>
+                        <span class="product-coa-preview-pdf-text">Open COA File</span>
+                      </div>
+                    <?php endif; ?>
+                  </a>
+                </div>
+              <?php endif; ?>
             <?php endif; ?>
 
             <div class="product-payment-icons">
