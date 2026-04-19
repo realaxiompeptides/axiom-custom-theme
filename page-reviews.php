@@ -7,7 +7,6 @@ get_header();
 
 /*
  * Edit these values directly for now.
- * Later you can move them into ACF/options/Supabase if you want.
  */
 $reviews_page_data = array(
     'brand_name'        => 'Axiom Peptides',
@@ -36,57 +35,6 @@ $reviews_page_data = array(
         3 => 4,
         2 => 2,
         1 => 1,
-    ),
-);
-
-$reviews_items = array(
-    array(
-        'name' => 'Mike T.',
-        'country' => 'US',
-        'review_count' => '6 reviews',
-        'date' => 'Jan 28, 2026',
-        'title' => 'GLP-3 RT from Axiom is the real deal',
-        'body' => 'Fifth order from Axiom now and the quality has been consistently strong. I sent my last batch for third-party testing and the results came back excellent. Shipping was quick and communication was smooth from start to finish.',
-        'experience_date' => 'January 25, 2026',
-        'badge' => 'Verified purchase',
-        'rating' => 5,
-        'image' => '',
-    ),
-    array(
-        'name' => 'Jessica W.',
-        'country' => 'UK',
-        'review_count' => '2 reviews',
-        'date' => 'Jan 26, 2026',
-        'title' => 'BPC-157 and TB-500 combo arrived perfectly',
-        'body' => 'Ordered a BPC-157 and TB-500 research combo from Axiom. Communication was excellent and all of my questions were answered quickly. Package arrived with proper packing and everything looked professional.',
-        'experience_date' => 'January 22, 2026',
-        'badge' => 'Unprompted review',
-        'rating' => 5,
-        'image' => '',
-    ),
-    array(
-        'name' => 'Daniel R.',
-        'country' => 'CA',
-        'review_count' => '3 reviews',
-        'date' => 'Jan 21, 2026',
-        'title' => 'Clean ordering process and strong support',
-        'body' => 'The site was easy to use, checkout was simple, and support responded fast when I had a question about a COA. Overall the experience felt much more polished than most research sites I have used.',
-        'experience_date' => 'January 18, 2026',
-        'badge' => 'Verified purchase',
-        'rating' => 5,
-        'image' => '',
-    ),
-    array(
-        'name' => 'Aaron P.',
-        'country' => 'US',
-        'review_count' => '1 review',
-        'date' => 'Jan 18, 2026',
-        'title' => 'Fast USA delivery',
-        'body' => 'Order shipped quickly and landed in a few days. Packaging was neat, labels looked professional, and the product page COA system made everything easier to verify.',
-        'experience_date' => 'January 16, 2026',
-        'badge' => 'Verified purchase',
-        'rating' => 5,
-        'image' => '',
     ),
 );
 
@@ -203,45 +151,38 @@ function axiom_render_stars($count = 5) {
   <section class="axiom-reviews-list-section">
     <div class="container">
       <div class="axiom-reviews-list-header">
-        <h2>Showing <?php echo esc_html(count($reviews_items)); ?> reviews</h2>
+        <h2>Customer Reviews</h2>
         <div class="axiom-reviews-sort">Most recent</div>
       </div>
 
-      <div class="axiom-reviews-list">
-        <?php foreach ($reviews_items as $review) : ?>
-          <article class="axiom-review-card">
-            <div class="axiom-review-top">
-              <div class="axiom-review-avatar">
-                <?php echo esc_html(strtoupper(substr($review['name'], 0, 1) . substr(strrchr(' ' . $review['name'], ' '), 1, 1))); ?>
-              </div>
+      <div class="axiom-reviews-card axiom-reviews-add-review-card">
+        <div class="axiom-reviews-toolbar">
+          <div>
+            <h2>Add a Review</h2>
+            <p>Share your experience with Axiom Peptides.</p>
+          </div>
+        </div>
 
-              <div class="axiom-review-author">
-                <h3><?php echo esc_html($review['name']); ?></h3>
-                <p><?php echo esc_html($review['country']); ?> · <?php echo esc_html($review['review_count']); ?></p>
-              </div>
+        <div class="axiom-reviews-add-review-actions">
+          <a href="#axiom-all-reviews" class="axiom-review-pill">Browse Reviews</a>
+        </div>
 
-              <div class="axiom-review-date"><?php echo esc_html($review['date']); ?></div>
-            </div>
+        <div class="axiom-reviews-add-review-form">
+          <?php echo do_shortcode('[WPCR_SHOW POSTID="ALL" NUM="1000" PAGINATE="1" PERPAGE="10" SHOWFORM="1" HIDEREVIEWS="1" HIDERESPONSE="0" SNIPPET="" MORE="" HIDECUSTOM="0"]'); ?>
+        </div>
+      </div>
 
-            <?php echo axiom_render_stars($review['rating']); ?>
+      <div class="axiom-reviews-card axiom-reviews-all-card" id="axiom-all-reviews">
+        <div class="axiom-reviews-toolbar">
+          <div>
+            <h2>All Reviews</h2>
+            <p>Showing reviews from all products across the site.</p>
+          </div>
+        </div>
 
-            <h4 class="axiom-review-title"><?php echo esc_html($review['title']); ?></h4>
-            <div class="axiom-review-body">
-              <p><?php echo esc_html($review['body']); ?></p>
-            </div>
-
-            <?php if (!empty($review['image'])) : ?>
-              <div class="axiom-review-image">
-                <img src="<?php echo esc_url($review['image']); ?>" alt="<?php echo esc_attr($review['title']); ?>">
-              </div>
-            <?php endif; ?>
-
-            <div class="axiom-review-footer">
-              <span class="axiom-review-pill">Date of experience: <?php echo esc_html($review['experience_date']); ?></span>
-              <span class="axiom-review-pill"><?php echo esc_html($review['badge']); ?></span>
-            </div>
-          </article>
-        <?php endforeach; ?>
+        <div class="axiom-plugin-reviews-wrap">
+          <?php echo do_shortcode('[WPCR_SHOW POSTID="ALL" NUM="1000" PAGINATE="1" PERPAGE="10" SHOWFORM="0" HIDEREVIEWS="0" HIDERESPONSE="0" SNIPPET="" MORE="" HIDECUSTOM="0"]'); ?>
+        </div>
       </div>
     </div>
   </section>
