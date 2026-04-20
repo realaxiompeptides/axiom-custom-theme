@@ -42,12 +42,67 @@ function axiom_custom_theme_assets() {
     }
 
     if (function_exists('is_page_template') && is_page_template('page-kits.php')) {
-        if (file_exists($theme_path . '/assets/css/kits/kits-page.css')) {
+        if (file_exists($theme_path . '/assets/css/kits/kits-base.css')) {
             wp_enqueue_style(
-                'axiom-kits-page',
-                $theme_uri . '/assets/css/kits/kits-page.css',
+                'axiom-kits-base',
+                $theme_uri . '/assets/css/kits/kits-base.css',
                 array('axiom-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-page.css')
+                filemtime($theme_path . '/assets/css/kits/kits-base.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/css/kits/kits-hero.css')) {
+            wp_enqueue_style(
+                'axiom-kits-hero',
+                $theme_uri . '/assets/css/kits/kits-hero.css',
+                array('axiom-base', 'axiom-kits-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-hero.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/css/kits/kits-info-strip.css')) {
+            wp_enqueue_style(
+                'axiom-kits-info-strip',
+                $theme_uri . '/assets/css/kits/kits-info-strip.css',
+                array('axiom-base', 'axiom-kits-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-info-strip.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/css/kits/kits-explainer.css')) {
+            wp_enqueue_style(
+                'axiom-kits-explainer',
+                $theme_uri . '/assets/css/kits/kits-explainer.css',
+                array('axiom-base', 'axiom-kits-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-explainer.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/css/kits/kits-grid.css')) {
+            wp_enqueue_style(
+                'axiom-kits-grid',
+                $theme_uri . '/assets/css/kits/kits-grid.css',
+                array('axiom-base', 'axiom-kits-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-grid.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/css/kits/kits-faq.css')) {
+            wp_enqueue_style(
+                'axiom-kits-faq',
+                $theme_uri . '/assets/css/kits/kits-faq.css',
+                array('axiom-base', 'axiom-kits-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-faq.css')
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/js/kits/kits-faq.js')) {
+            wp_enqueue_script(
+                'axiom-kits-faq',
+                $theme_uri . '/assets/js/kits/kits-faq.js',
+                array(),
+                filemtime($theme_path . '/assets/js/kits/kits-faq.js'),
+                true
             );
         }
     }
