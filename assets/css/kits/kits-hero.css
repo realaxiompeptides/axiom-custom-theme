@@ -1,0 +1,29 @@
+.axiom-kits-hero {
+  padding-top: 40px;
+  padding-bottom: 16px;
+}
+
+.axiom-kits-hero-inner {
+  max-width: 920px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.axiom-kits-hero-actions {
+  margin-top: 22px;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 767px) {
+  .axiom-kits-hero {
+    padding-top: 24px;
+    padding-bottom: 8px;
+  }
+
+  .axiom-kits-hero-actions {
+    gap: 10px;
+  }
+}
