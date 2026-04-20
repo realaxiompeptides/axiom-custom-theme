@@ -220,13 +220,46 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
     }
 }
 
-$products = function_exists('wc_get_products') ? wc_get_products(array(
-    'status'  => 'publish',
-    'limit'   => -1,
-    'return'  => 'objects',
-    'orderby' => 'menu_order',
-    'order'   => 'ASC',
-)) : array();
+/*
+ * Build product list and exclude anything in the "kits" category.
+ */
+$products = array();
+
+if (function_exists('wc_get_products')) {
+    $all_products = wc_get_products(array(
+        'status'  => 'publish',
+        'limit'   => -1,
+        'return'  => 'objects',
+        'orderby' => 'menu_order',
+        'order'   => 'ASC',
+    ));
+
+    if (!empty($all_products)) {
+        foreach ($all_products as $product) {
+            if (!$product || !is_a($product, 'WC_Product')) {
+                continue;
+            }
+
+            $product_terms = get_the_terms($product->get_id(), 'product_cat');
+            $is_kit_product = false;
+
+            if (!empty($product_terms) && !is_wp_error($product_terms)) {
+                foreach ($product_terms as $term) {
+                    if (!empty($term->slug) && $term->slug === 'kits') {
+                        $is_kit_product = true;
+                        break;
+                    }
+                }
+            }
+
+            if ($is_kit_product) {
+                continue;
+            }
+
+            $products[] = $product;
+        }
+    }
+}
 
 $coa_css_path = get_template_directory() . '/assets/css/coa/coa.css';
 if (file_exists($coa_css_path)) {
@@ -353,7 +386,7 @@ if (file_exists($coa_css_path)) {
       <?php else : ?>
         <div class="axiom-coa-card">
           <h2>No products found</h2>
-          <p>No published products were found yet.</p>
+          <p>No published non-kit products were found yet.</p>
         </div>
       <?php endif; ?>
     </section>
