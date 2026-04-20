@@ -82,7 +82,13 @@ if (!$cart) {
       <?php foreach ($cart->get_coupons() as $code => $coupon) : ?>
         <div class="axiom-summary-row axiom-summary-row-discount">
           <span>Promo Code Discount</span>
-          <strong><?php echo wp_kses_post(wc_cart_totals_coupon_html($coupon, false)); ?></strong>
+          <strong>
+            <?php
+            ob_start();
+            wc_cart_totals_coupon_html($coupon);
+            echo wp_kses_post(ob_get_clean());
+            ?>
+          </strong>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
@@ -91,13 +97,7 @@ if (!$cart) {
       <?php foreach ($cart->get_fees() as $fee) : ?>
         <div class="axiom-summary-row <?php echo $fee->amount < 0 ? 'axiom-summary-row-discount' : ''; ?>">
           <span><?php echo esc_html($fee->name); ?></span>
-          <strong>
-            <?php
-            echo wp_kses_post(
-                wc_price($fee->total)
-            );
-            ?>
-          </strong>
+          <strong><?php echo wp_kses_post(wc_price($fee->total)); ?></strong>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
