@@ -3,7 +3,7 @@ defined('ABSPATH') || exit;
 
 $cart = function_exists('WC') ? WC()->cart : null;
 
-if (!$cart) {
+if (!$cart || !is_object($cart)) {
     return;
 }
 ?>
@@ -82,8 +82,12 @@ if (!$cart) {
         <?php
         $discount_amount = 0;
 
-        if (method_exists($cart, 'get_coupon_discount_amount')) {
-            $discount_amount = (float) $cart->get_coupon_discount_amount($code, $cart->display_cart_ex_tax);
+        if (is_string($code) && method_exists($cart, 'get_coupon_discount_amount')) {
+            try {
+                $discount_amount = (float) $cart->get_coupon_discount_amount($code, $cart->display_cart_ex_tax);
+            } catch (Throwable $e) {
+                $discount_amount = 0;
+            }
         }
         ?>
         <div class="axiom-summary-row axiom-summary-row-discount">
@@ -95,9 +99,9 @@ if (!$cart) {
 
     <?php if ($cart->get_fees()) : ?>
       <?php foreach ($cart->get_fees() as $fee) : ?>
-        <div class="axiom-summary-row <?php echo $fee->amount < 0 ? 'axiom-summary-row-discount' : ''; ?>">
-          <span><?php echo esc_html($fee->name); ?></span>
-          <strong><?php echo wp_kses_post(wc_price($fee->total)); ?></strong>
+        <div class="axiom-summary-row <?php echo (!empty($fee->amount) && $fee->amount < 0) ? 'axiom-summary-row-discount' : ''; ?>">
+          <span><?php echo esc_html(isset($fee->name) ? $fee->name : 'Fee'); ?></span>
+          <strong><?php echo wp_kses_post(wc_price(isset($fee->total) ? $fee->total : 0)); ?></strong>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
@@ -106,7 +110,7 @@ if (!$cart) {
       <span>Shipping</span>
       <strong>
         <?php
-        if ($cart->show_shipping()) {
+        if (method_exists($cart, 'show_shipping') && $cart->show_shipping()) {
             echo wp_kses_post(wc_price($cart->get_shipping_total()));
         } else {
             echo 'Calculated at checkout';
