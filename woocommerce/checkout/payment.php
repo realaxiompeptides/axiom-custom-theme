@@ -118,18 +118,9 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 
 				<?php if ( ! empty( $applied_coupons ) ) : ?>
 					<?php foreach ( $applied_coupons as $coupon_code => $coupon ) : ?>
-						<?php
-						$discount_amount = WC()->cart->get_coupon_discount_amount( $coupon_code, WC()->cart->display_cart_ex_tax() );
-						?>
+						<?php $discount_amount = (float) WC()->cart->get_coupon_discount_amount( $coupon_code ); ?>
 						<div class="axiom-summary-row axiom-summary-row--discount">
-							<span>
-								<?php
-								printf(
-									esc_html__( 'Discount (%s)', 'woocommerce' ),
-									esc_html( wc_format_coupon_code( $coupon_code ) )
-								);
-								?>
-							</span>
+							<span><?php esc_html_e( 'Promo Code Discount', 'woocommerce' ); ?></span>
 							<strong>-<?php echo wp_kses_post( wc_price( $discount_amount ) ); ?></strong>
 						</div>
 					<?php endforeach; ?>
@@ -240,42 +231,44 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 			<?php wp_nonce_field( 'woocommerce-process_checkout', 'woocommerce-process-checkout-nonce' ); ?>
 		</div>
 
-<div class="axiom-place-order-trust-icons">
-	<div class="axiom-place-order-trust-item">
-		<span class="axiom-place-order-trust-icon" aria-hidden="true">
-			<i class="fa-solid fa-lock"></i>
-		</span>
-		<strong><?php esc_html_e( '256-bit SSL', 'woocommerce' ); ?></strong>
-		<small><?php esc_html_e( 'Encrypted', 'woocommerce' ); ?></small>
-	</div>
+		<div class="axiom-place-order-trust-icons">
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-icon" aria-hidden="true">
+					<i class="fa-solid fa-lock"></i>
+				</span>
+				<strong><?php esc_html_e( '256-bit SSL', 'woocommerce' ); ?></strong>
+				<small><?php esc_html_e( 'Encrypted', 'woocommerce' ); ?></small>
+			</div>
 
-	<div class="axiom-place-order-trust-item">
-		<span class="axiom-place-order-trust-icon" aria-hidden="true">
-			<i class="fa-solid fa-circle-check"></i>
-		</span>
-		<strong><?php esc_html_e( '99%+ Purity', 'woocommerce' ); ?></strong>
-		<small><?php esc_html_e( 'Third-Party Verified', 'woocommerce' ); ?></small>
-	</div>
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-icon" aria-hidden="true">
+					<i class="fa-solid fa-circle-check"></i>
+				</span>
+				<strong><?php esc_html_e( '99%+ Purity', 'woocommerce' ); ?></strong>
+				<small><?php esc_html_e( 'Third-Party Verified', 'woocommerce' ); ?></small>
+			</div>
 
-	<div class="axiom-place-order-trust-item">
-		<span class="axiom-place-order-trust-icon" aria-hidden="true">
-			<i class="fa-solid fa-flag-usa"></i>
-		</span>
-		<strong><?php esc_html_e( 'U.S. Based', 'woocommerce' ); ?></strong>
-		<small><?php esc_html_e( 'California', 'woocommerce' ); ?></small>
-	</div>
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-icon" aria-hidden="true">
+					<i class="fa-solid fa-flag-usa"></i>
+				</span>
+				<strong><?php esc_html_e( 'U.S. Based', 'woocommerce' ); ?></strong>
+				<small><?php esc_html_e( 'California', 'woocommerce' ); ?></small>
+			</div>
 
-	<div class="axiom-place-order-trust-item">
-		<span class="axiom-place-order-trust-icon" aria-hidden="true">
-			<i class="fa-solid fa-box"></i>
-		</span>
-		<strong><?php esc_html_e( 'Same-Day Ship', 'woocommerce' ); ?></strong>
-		<small><?php esc_html_e( 'Before 2PM PST', 'woocommerce' ); ?></small>
+			<div class="axiom-place-order-trust-item">
+				<span class="axiom-place-order-trust-icon" aria-hidden="true">
+					<i class="fa-solid fa-box"></i>
+				</span>
+				<strong><?php esc_html_e( 'Same-Day Ship', 'woocommerce' ); ?></strong>
+				<small><?php esc_html_e( 'Before 2PM PST', 'woocommerce' ); ?></small>
+			</div>
+		</div>
+
+		<?php
+		if ( ! wp_doing_ajax() ) {
+			do_action( 'woocommerce_review_order_after_payment' );
+		}
+		?>
 	</div>
 </div>
-
-<?php
-if ( ! wp_doing_ajax() ) {
-	do_action( 'woocommerce_review_order_after_payment' );
-}
-?>
