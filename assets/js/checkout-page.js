@@ -308,13 +308,25 @@ jQuery(function ($) {
           }
 
           if (response.success) {
+            var appliedCode =
+              response.data && response.data.coupon_code
+                ? response.data.coupon_code
+                : couponCode;
+
             showCouponMessage(
               response.data && response.data.message
                 ? response.data.message
                 : "Discount applied.",
               "success"
             );
+
             $input.val("");
+
+            $body.trigger("applied_coupon", [appliedCode]);
+
+            setTimeout(function () {
+              queueCheckoutUpdate(10);
+            }, 0);
           } else {
             showCouponMessage(
               response.data && response.data.message
@@ -329,8 +341,10 @@ jQuery(function ($) {
         })
         .always(function () {
           $button.prop("disabled", false).removeClass("is-loading");
-          restoreScrollPosition();
-          clearTopNotices();
+          setTimeout(function () {
+            restoreScrollPosition();
+            clearTopNotices();
+          }, 20);
         });
 
       return false;
