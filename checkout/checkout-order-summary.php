@@ -21,7 +21,6 @@ if (!$cart) {
           continue;
       }
 
-      $product_id   = $product->get_id();
       $product_name = $product->get_name();
       $quantity     = isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
       $line_total   = $cart->get_product_subtotal($product, $quantity);
@@ -80,15 +79,16 @@ if (!$cart) {
 
     <?php if ($cart->get_coupons()) : ?>
       <?php foreach ($cart->get_coupons() as $code => $coupon) : ?>
+        <?php
+        $discount_amount = 0;
+
+        if (method_exists($cart, 'get_coupon_discount_amount')) {
+            $discount_amount = (float) $cart->get_coupon_discount_amount($code, $cart->display_cart_ex_tax);
+        }
+        ?>
         <div class="axiom-summary-row axiom-summary-row-discount">
           <span>Promo Code Discount</span>
-          <strong>
-            <?php
-            ob_start();
-            wc_cart_totals_coupon_html($coupon);
-            echo wp_kses_post(ob_get_clean());
-            ?>
-          </strong>
+          <strong>-<?php echo wp_kses_post(wc_price($discount_amount)); ?></strong>
         </div>
       <?php endforeach; ?>
     <?php endif; ?>
