@@ -315,7 +315,6 @@ jQuery(function ($) {
               "success"
             );
             $input.val("");
-            queueCheckoutUpdate(50);
           } else {
             showCouponMessage(
               response.data && response.data.message
