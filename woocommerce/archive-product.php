@@ -28,17 +28,27 @@ $product_query_args = array(
     'ignore_sticky_posts' => true,
 );
 
+$tax_query = array(
+    'relation' => 'AND',
+    array(
+        'taxonomy' => 'product_cat',
+        'field'    => 'slug',
+        'terms'    => array('kits'),
+        'operator' => 'NOT IN',
+    ),
+);
+
 if ($is_tax_archive && $current_term && !empty($current_term->term_id)) {
     $taxonomy = is_tax('product_tag') ? 'product_tag' : 'product_cat';
 
-    $product_query_args['tax_query'] = array(
-        array(
-            'taxonomy' => $taxonomy,
-            'field'    => 'term_id',
-            'terms'    => array((int) $current_term->term_id),
-        ),
+    $tax_query[] = array(
+        'taxonomy' => $taxonomy,
+        'field'    => 'term_id',
+        'terms'    => array((int) $current_term->term_id),
     );
 }
+
+$product_query_args['tax_query'] = $tax_query;
 
 $products = new WP_Query($product_query_args);
 
@@ -47,6 +57,9 @@ $catalog_terms = get_terms(array(
     'hide_empty' => true,
     'orderby'    => 'name',
     'order'      => 'ASC',
+    'exclude'    => array_filter(array(
+        ($kits_term = get_term_by('slug', 'kits', 'product_cat')) ? (int) $kits_term->term_id : 0,
+    )),
 ));
 ?>
 
@@ -133,6 +146,9 @@ $catalog_terms = get_terms(array(
 
                     if (!is_wp_error($product_terms) && !empty($product_terms)) {
                         foreach ($product_terms as $term) {
+                            if ($term->slug === 'kits') {
+                                continue;
+                            }
                             $term_slugs[] = $term->slug;
                             $term_names[] = $term->name;
                         }
