@@ -41,6 +41,17 @@ function axiom_custom_theme_assets() {
         }
     }
 
+    if (function_exists('is_page_template') && is_page_template('page-kits.php')) {
+        if (file_exists($theme_path . '/assets/css/kits/kits-page.css')) {
+            wp_enqueue_style(
+                'axiom-kits-page',
+                $theme_uri . '/assets/css/kits/kits-page.css',
+                array('axiom-base'),
+                filemtime($theme_path . '/assets/css/kits/kits-page.css')
+            );
+        }
+    }
+
     if (
         function_exists('is_shop') &&
         (is_shop() || is_product_category() || is_product_tag() || is_tax('product_cat') || is_tax('product_tag'))
