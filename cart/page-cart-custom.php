@@ -218,8 +218,14 @@ if (!empty($recommended_ids)) {
                 <?php if (WC()->cart->get_coupons()) : ?>
                   <?php foreach (WC()->cart->get_coupons() as $code => $coupon) : ?>
                     <div class="axiom-summary-line axiom-summary-discount">
-                      <span><?php echo esc_html(wc_cart_totals_coupon_label($coupon, false)); ?></span>
-                      <strong><?php echo wp_kses_post(wc_cart_totals_coupon_html($coupon, false)); ?></strong>
+                      <span>Promo Code Discount</span>
+                      <strong>
+                        <?php
+                        ob_start();
+                        wc_cart_totals_coupon_html($coupon);
+                        echo wp_kses_post(ob_get_clean());
+                        ?>
+                      </strong>
                     </div>
                   <?php endforeach; ?>
                 <?php endif; ?>
