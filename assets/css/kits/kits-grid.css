@@ -1,0 +1,170 @@
+.axiom-kits-grid-section {
+  padding-top: 16px;
+}
+
+.axiom-kits-grid-header {
+  max-width: 880px;
+  margin: 0 auto 24px;
+  text-align: center;
+}
+
+.axiom-kits-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.axiom-kit-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.axiom-kit-card-image {
+  padding: 18px 18px 0;
+  background: transparent;
+}
+
+.axiom-kit-card-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  background: #ffffff;
+}
+
+.axiom-kit-card-body {
+  padding: 18px;
+}
+
+.axiom-kit-card-title {
+  margin: 0 0 10px;
+  font-size: 26px;
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.axiom-kit-card-title a {
+  color: #0b1953;
+  text-decoration: none;
+}
+
+.axiom-kit-card-price {
+  margin-bottom: 14px;
+  color: #111111;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.axiom-kit-card-price .amount {
+  font-weight: 900;
+}
+
+.axiom-kit-card-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.axiom-kit-card-meta span {
+  color: #5c718f;
+  font-size: 14px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.axiom-kit-savings-box {
+  margin-bottom: 16px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f7fbff;
+  border: 1px solid #dce8f7;
+}
+
+.axiom-kit-savings-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0;
+  color: #41546f;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.axiom-kit-savings-row strong {
+  color: #0e1b54;
+}
+
+.axiom-kit-savings-row-highlight {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #dce8f7;
+}
+
+.axiom-kit-savings-row-highlight span,
+.axiom-kit-savings-row-highlight strong {
+  color: #1b8a45;
+  font-weight: 900;
+}
+
+.axiom-kit-card-button {
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .axiom-kits-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .axiom-kit-card {
+    border-radius: 22px;
+  }
+
+  .axiom-kit-card-image {
+    padding: 12px 12px 0;
+  }
+
+  .axiom-kit-card-image img {
+    border-radius: 16px;
+  }
+
+  .axiom-kit-card-body {
+    padding: 14px;
+  }
+
+  .axiom-kit-card-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .axiom-kit-card-price {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .axiom-kit-card-meta {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .axiom-kit-card-meta span {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .axiom-kit-savings-box {
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+  }
+
+  .axiom-kit-savings-row {
+    font-size: 12px;
+    gap: 8px;
+  }
+}
