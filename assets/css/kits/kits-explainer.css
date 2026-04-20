@@ -1,0 +1,71 @@
+.axiom-kits-explainer-card {
+  display: grid;
+  grid-template-columns: 1.4fr 0.95fr;
+  gap: 18px;
+  padding: 24px;
+}
+
+.axiom-kits-rules {
+  margin: 18px 0 0;
+  padding-left: 18px;
+  color: #0f172a;
+}
+
+.axiom-kits-rules li {
+  margin-bottom: 10px;
+  line-height: 1.65;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.axiom-kits-highlight-box {
+  padding: 24px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #eef7ff, #f8fbff);
+  border: 1px solid #dce8f7;
+  align-self: center;
+}
+
+.axiom-kits-highlight-label {
+  display: block;
+  margin-bottom: 10px;
+  color: #6f82a4;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.axiom-kits-highlight-box strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #0a1a53;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.axiom-kits-highlight-box p {
+  margin: 0;
+  color: #66758d;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .axiom-kits-explainer-card {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 18px;
+  }
+
+  .axiom-kits-highlight-box {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .axiom-kits-highlight-box strong {
+    font-size: 22px;
+  }
+}
