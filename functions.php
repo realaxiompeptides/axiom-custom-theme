@@ -17,6 +17,7 @@ $axiom_function_files = array(
 
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
+    '/functions/checkout/hide-ground-when-free.php',
     '/functions/checkout/coupons.php',
     '/functions/checkout/payment-discounts.php',
     '/functions/checkout/card-payment-notice.php',
