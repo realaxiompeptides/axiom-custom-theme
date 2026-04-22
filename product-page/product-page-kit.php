@@ -150,13 +150,33 @@ if ($kit_vial_count < 1) {
 $single_product_id = (int) get_post_meta($product_id, '_axiom_kit_single_product_id', true);
 $single_product    = $single_product_id ? wc_get_product($single_product_id) : null;
 
-$kit_price_value   = (float) $product->get_price();
-$per_vial_price    = $kit_vial_count > 0 ? ($kit_price_value / $kit_vial_count) : 0;
+/**
+ * Use a real price for variable products so per-vial cost is not $0.00.
+ * We use the lowest active variation price as the displayed kit starting price.
+ */
+$kit_price_value = 0.0;
+
+if ($is_variable) {
+    $variation_prices = $product->get_variation_prices(true);
+
+    if (!empty($variation_prices['price']) && is_array($variation_prices['price'])) {
+        $price_values = array_values($variation_prices['price']);
+        $price_values = array_filter($price_values, 'is_numeric');
+
+        if (!empty($price_values)) {
+            $kit_price_value = (float) min($price_values);
+        }
+    }
+} else {
+    $kit_price_value = (float) $product->get_price();
+}
+
+$per_vial_price = $kit_vial_count > 0 ? ($kit_price_value / $kit_vial_count) : 0.0;
 
 $single_product_name = '';
-$single_unit_price   = 0;
-$single_total_price  = 0;
-$kit_savings         = 0;
+$single_unit_price   = 0.0;
+$single_total_price  = 0.0;
+$kit_savings         = 0.0;
 $kit_savings_percent = 0;
 
 if ($single_product instanceof WC_Product) {
@@ -164,7 +184,7 @@ if ($single_product instanceof WC_Product) {
     $single_unit_price   = (float) $single_product->get_price();
     $single_total_price  = $single_unit_price * $kit_vial_count;
 
-    if ($single_total_price > $kit_price_value) {
+    if ($single_total_price > $kit_price_value && $kit_price_value > 0) {
         $kit_savings = $single_total_price - $kit_price_value;
         $kit_savings_percent = round(($kit_savings / $single_total_price) * 100);
     }
@@ -198,7 +218,24 @@ foreach ($competitor_fields as $key => $label) {
     }
 }
 
-get_header();
+/**
+ * Order value discount tiers in USD, not number of kits.
+ * Edit these if you want different thresholds later.
+ */
+$volume_discount_tiers = array(
+    array(
+        'threshold' => 250,
+        'percent'   => 5,
+    ),
+    array(
+        'threshold' => 500,
+        'percent'   => 10,
+    ),
+    array(
+        'threshold' => 1000,
+        'percent'   => 20,
+    ),
+);
 ?>
 
 <main class="product-main product-main-kit">
@@ -407,6 +444,40 @@ get_header();
         </div>
       </section>
 
+      <section class="kit-comparison-card">
+        <div class="product-description-header">
+          <p class="product-section-kicker">Volume Discounts</p>
+          <h2>Save more on larger dollar orders</h2>
+        </div>
+
+        <div class="kit-comparison-table-wrap">
+          <table class="kit-comparison-table">
+            <thead>
+              <tr>
+                <th>Order Value</th>
+                <th>Discount</th>
+                <th>Example Effective Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Under <?php echo wp_kses_post(wc_price($volume_discount_tiers[0]['threshold'])); ?></td>
+                <td>No discount</td>
+                <td><?php echo wp_kses_post(wc_price($kit_price_value)); ?> per kit</td>
+              </tr>
+
+              <?php foreach ($volume_discount_tiers as $tier) : ?>
+                <tr>
+                  <td><?php echo wp_kses_post(wc_price($tier['threshold'])); ?>+</td>
+                  <td><?php echo esc_html($tier['percent']); ?>% off</td>
+                  <td><?php echo wp_kses_post(wc_price($kit_price_value * (1 - ($tier['percent'] / 100)))); ?> per kit</td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <?php if ($single_total_price > 0 || !empty($competitor_rows)) : ?>
         <section class="kit-comparison-card">
           <div class="product-description-header">
@@ -500,5 +571,3 @@ window.AXIOM_PRODUCT_PAGE = <?php echo wp_json_encode(array(
     ),
 )); ?>;
 </script>
-
-<?php get_footer(); ?>
