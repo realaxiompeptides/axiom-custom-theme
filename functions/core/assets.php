@@ -155,17 +155,26 @@ function axiom_custom_theme_assets() {
             }
         }
 
-        if (
-            $axiom_current_product &&
-            has_term('kits', 'product_cat', $axiom_current_product->get_id()) &&
-            file_exists($theme_path . '/assets/css/product-page/kit-page.css')
-        ) {
-            wp_enqueue_style(
-                'axiom-kit-product-page',
-                $theme_uri . '/assets/css/product-page/kit-page.css',
-                array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
-                filemtime($theme_path . '/assets/css/product-page/kit-page.css')
+        if ($axiom_current_product && has_term('kits', 'product_cat', $axiom_current_product->get_id())) {
+            $kit_css_files = array(
+                'kit-page-base'     => '/assets/css/product-page/kit-page-base.css',
+                'kit-page-hero'     => '/assets/css/product-page/kit-page-hero.css',
+                'kit-page-purchase' => '/assets/css/product-page/kit-page-purchase.css',
+                'kit-page-volume'   => '/assets/css/product-page/kit-page-volume.css',
+                'kit-page-upsell'   => '/assets/css/product-page/kit-page-upsell.css',
+                'kit-page-mobile'   => '/assets/css/product-page/kit-page-mobile.css',
             );
+
+            foreach ($kit_css_files as $handle_suffix => $file_path) {
+                if (file_exists($theme_path . $file_path)) {
+                    wp_enqueue_style(
+                        'axiom-' . $handle_suffix,
+                        $theme_uri . $file_path,
+                        array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
+                        filemtime($theme_path . $file_path)
+                    );
+                }
+            }
         }
     }
 
