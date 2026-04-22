@@ -157,15 +157,14 @@ function axiom_custom_theme_assets() {
 
         if (
             $axiom_current_product &&
-            function_exists('axiom_is_kit_product') &&
-            axiom_is_kit_product($axiom_current_product) &&
-            file_exists($theme_path . '/kit-product-template/kit-product-template.css')
+            has_term('kits', 'product_cat', $axiom_current_product->get_id()) &&
+            file_exists($theme_path . '/assets/css/product-page/kit-page.css')
         ) {
             wp_enqueue_style(
-                'axiom-kit-product-template',
-                $theme_uri . '/kit-product-template/kit-product-template.css',
+                'axiom-kit-product-page',
+                $theme_uri . '/assets/css/product-page/kit-page.css',
                 array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
-                filemtime($theme_path . '/kit-product-template/kit-product-template.css')
+                filemtime($theme_path . '/assets/css/product-page/kit-page.css')
             );
         }
     }
