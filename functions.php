@@ -39,9 +39,6 @@ $axiom_function_files = array(
     '/functions/coa/coa-map.php',
 
     '/functions/calculator/peptide-calculator.php',
-
-    // Kit product template module
-    '/kit-product-template/bootstrap.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
