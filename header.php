@@ -23,21 +23,27 @@ $drawer_checkout_url = home_url('/checkout/');
 ?>
 
 <?php if (!$is_checkout_page) : ?>
-  <div class="top-announcement-bar">
-    <div class="top-announcement-track">
-      <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
-      <span class="announcement-sep">|</span>
-      <span class="announcement-item">🧪 Third-Party Lab Tested</span>
-      <span class="announcement-sep">|</span>
-      <span class="announcement-item">⭐ Trusted by 4,200+ Researchers</span>
-      <span class="announcement-sep">|</span>
-      <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
-      <span class="announcement-sep">|</span>
-      <span class="announcement-item">🧪 Third-Party Lab Tested</span>
-      <span class="announcement-sep">|</span>
-      <span class="announcement-item">⭐ Trusted by 4,200+ Researchers</span>
-    </div>
+  <div class="top-guide-bar">
+  <div class="top-guide-bar__inner">
+    <span class="top-guide-bar__text">🎁 Free Research Guide Included With Every Order</span>
   </div>
+</div>
+
+<div class="top-announcement-bar">
+  <div class="top-announcement-track">
+    <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
+    <span class="announcement-sep">|</span>
+    <span class="announcement-item">🧪 Third-Party Lab Tested</span>
+    <span class="announcement-sep">|</span>
+    <span class="announcement-item">⭐ Trusted by Researchers</span>
+    <span class="announcement-sep">|</span>
+    <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
+    <span class="announcement-sep">|</span>
+    <span class="announcement-item">🧪 Third-Party Lab Tested</span>
+    <span class="announcement-sep">|</span>
+    <span class="announcement-item">⭐ Trusted by Researchers</span>
+  </div>
+</div>
 
   <header class="site-header">
     <div class="header-inner container">
