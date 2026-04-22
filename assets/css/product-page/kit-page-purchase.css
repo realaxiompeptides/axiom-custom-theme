@@ -1,0 +1,38 @@
+.product-main-kit .kit-payment-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 18px 0 18px;
+}
+
+.product-main-kit .kit-payment-strip__item {
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: #f8fbff;
+  border: 1px solid rgba(37, 99, 235, 0.10);
+}
+
+.product-main-kit .kit-payment-strip__item strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+.product-main-kit .kit-payment-strip__item span {
+  display: block;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.product-main-kit #productPurchaseBox {
+  border: 1px solid rgba(37, 99, 235, 0.12);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.06);
+}
+
+.product-main-kit .product-add-to-cart-btn {
+  min-height: 62px;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
