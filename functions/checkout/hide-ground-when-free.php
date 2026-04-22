@@ -4,16 +4,16 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Hide Ground Advantage whenever Free Shipping is available.
+ * Hide only Ground Advantage when Free Shipping is available.
  * Keep Free Shipping and Priority Mail visible.
  */
-add_filter('woocommerce_package_rates', 'axiom_hide_ground_when_free_shipping_exists', 100, 2);
+add_filter('woocommerce_package_rates', 'axiom_hide_only_ground_advantage_when_free_exists', 9999, 2);
 
-function axiom_hide_ground_when_free_shipping_exists($rates, $package) {
+function axiom_hide_only_ground_advantage_when_free_exists($rates, $package) {
     $has_free_shipping = false;
 
     foreach ($rates as $rate_id => $rate) {
-        if (isset($rate->method_id) && $rate->method_id === 'free_shipping') {
+        if (!empty($rate->method_id) && $rate->method_id === 'free_shipping') {
             $has_free_shipping = true;
             break;
         }
@@ -24,14 +24,20 @@ function axiom_hide_ground_when_free_shipping_exists($rates, $package) {
     }
 
     foreach ($rates as $rate_id => $rate) {
-        $label = isset($rate->label) ? strtolower(wp_strip_all_tags($rate->label)) : '';
-        $method_id = isset($rate->method_id) ? $rate->method_id : '';
+        $label = !empty($rate->label) ? strtolower(wp_strip_all_tags($rate->label)) : '';
+        $method_id = !empty($rate->method_id) ? $rate->method_id : '';
 
+        // Never remove free shipping itself
+        if ($method_id === 'free_shipping') {
+            continue;
+        }
+
+        // Remove only Ground Advantage
         $is_ground_advantage =
             strpos($label, 'ground advantage') !== false ||
             strpos($label, 'usps ground advantage') !== false;
 
-        if ($method_id !== 'free_shipping' && $is_ground_advantage) {
+        if ($is_ground_advantage) {
             unset($rates[$rate_id]);
         }
     }
