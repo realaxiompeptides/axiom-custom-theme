@@ -1,18 +1,18 @@
 .top-guide-bar {
   position: relative;
   z-index: 42;
-  background: linear-gradient(90deg, #4ea2f5 0%, #3f93ee 100%);
+  background: linear-gradient(90deg, #53a7f7 0%, #469cf2 100%);
   color: #ffffff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 10px 24px rgba(63, 147, 238, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 8px 20px rgba(70, 156, 242, 0.18);
 }
 
 .top-guide-bar__inner {
-  min-height: 52px;
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 16px;
+  padding: 10px 14px;
   text-align: center;
 }
 
@@ -21,37 +21,45 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.2;
   font-weight: 800;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.025em;
   text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .top-guide-bar__text .emoji {
   font-size: 20px;
   line-height: 1;
   display: inline-block;
+  flex: 0 0 auto;
   transform: translateY(-1px);
 }
 
-@media (max-width: 767px) {
-  .top-guide-bar__inner {
-    min-height: 50px;
-    padding: 11px 12px;
-  }
-
-  .top-guide-bar__text {
-    font-size: 14px;
-    line-height: 1.25;
-    gap: 8px;
-    letter-spacing: 0.02em;
-  }
-
-  .top-guide-bar__text .emoji {
-    font-size: 18px;
-  }
+.top-announcement-bar {
+  position: relative;
+  overflow: hidden;
+  background: #08162f;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 41;
 }
+
+.top-announcement-track {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  white-space: nowrap;
+  min-width: max-content;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  animation: axiomTicker 30s linear infinite;
+}
+
 .announcement-item {
   opacity: 0.98;
 }
@@ -189,7 +197,7 @@
   height: 18px;
   padding: 0 5px;
   border-radius: 999px;
-  background: #2563eb;
+  background: #4ea2f5;
   color: #ffffff;
   font-size: 11px;
   font-weight: 800;
@@ -314,14 +322,20 @@
 
 @media (max-width: 767px) {
   .top-guide-bar__inner {
-    min-height: 40px;
-    padding: 9px 12px;
+    min-height: 46px;
+    padding: 8px 10px;
   }
 
   .top-guide-bar__text {
-    font-size: 11px;
-    line-height: 1.25;
-    letter-spacing: 0.03em;
+    font-size: 12px;
+    line-height: 1.2;
+    gap: 7px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .top-guide-bar__text .emoji {
+    font-size: 17px;
   }
 
   .header-inner {
