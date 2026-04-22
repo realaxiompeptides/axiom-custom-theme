@@ -1,0 +1,51 @@
+.product-main-kit .kit-addon-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 22px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid rgba(37, 99, 235, 0.12);
+}
+
+.product-main-kit .kit-addon-card__copy h3 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+.product-main-kit .kit-addon-card__copy p:last-child {
+  margin: 0;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.product-main-kit .kit-addon-card__actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.product-main-kit .kit-addon-card__price {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.product-main-kit .kit-addon-card__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 800;
+}
