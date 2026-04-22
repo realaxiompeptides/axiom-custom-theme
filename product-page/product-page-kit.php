@@ -151,8 +151,7 @@ $single_product_id = (int) get_post_meta($product_id, '_axiom_kit_single_product
 $single_product    = $single_product_id ? wc_get_product($single_product_id) : null;
 
 /**
- * Use a real price for variable products so per-vial cost is not $0.00.
- * We use the lowest active variation price as the displayed kit starting price.
+ * Real price source for variable products.
  */
 $kit_price_value = 0.0;
 
@@ -192,7 +191,7 @@ if ($single_product instanceof WC_Product) {
 
 $kit_microcopy = get_post_meta($product_id, '_axiom_kit_microcopy', true);
 if (!$kit_microcopy) {
-    $kit_microcopy = 'Built for bulk research ordering with lower per-vial pricing, streamlined checkout, and the same quality standards across the full bundle.';
+    $kit_microcopy = 'Built for bulk research ordering with lower per vial cost, streamlined checkout, and the same quality standards across the full bundle.';
 }
 
 $competitor_fields = array(
@@ -218,24 +217,19 @@ foreach ($competitor_fields as $key => $label) {
     }
 }
 
-/**
- * Order value discount tiers in USD, not number of kits.
- * Edit these if you want different thresholds later.
- */
 $volume_discount_tiers = array(
-    array(
-        'threshold' => 250,
-        'percent'   => 5,
-    ),
-    array(
-        'threshold' => 500,
-        'percent'   => 10,
-    ),
-    array(
-        'threshold' => 1000,
-        'percent'   => 20,
-    ),
+    array('threshold' => 250,  'percent' => 5),
+    array('threshold' => 500,  'percent' => 10),
+    array('threshold' => 1000, 'percent' => 20),
 );
+
+/**
+ * BAC Water upsell product.
+ * Set this custom field on the kit product:
+ * _axiom_bac_water_product_id
+ */
+$bac_water_product_id = (int) get_post_meta($product_id, '_axiom_bac_water_product_id', true);
+$bac_water_product    = $bac_water_product_id ? wc_get_product($bac_water_product_id) : null;
 ?>
 
 <main class="product-main product-main-kit">
@@ -251,6 +245,54 @@ $volume_discount_tiers = array(
         </div>
       </div>
 
+      <section class="kit-hero-card">
+        <div class="kit-hero-card__top">
+          <div>
+            <p class="kit-page-eyebrow">Kit Bundle</p>
+            <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
+            <p class="kit-hero-card__copy"><?php echo esc_html($kit_microcopy); ?></p>
+          </div>
+
+          <div class="kit-hero-card__badges">
+            <span class="kit-badge">10-vial bundle value</span>
+            <span class="kit-badge">Crypto accepted</span>
+            <span class="kit-badge">Bank transfers accepted</span>
+          </div>
+        </div>
+
+        <div class="kit-value-strip kit-value-strip--priority">
+          <div class="kit-value-card kit-value-card--savings">
+            <span class="kit-value-label">Save more</span>
+            <strong>
+              <?php if ($kit_savings > 0) : ?>
+                <?php echo wp_kses_post(wc_price($kit_savings)); ?>
+              <?php else : ?>
+                Bulk value
+              <?php endif; ?>
+            </strong>
+            <p>
+              <?php if ($kit_savings > 0) : ?>
+                Save <?php echo esc_html($kit_savings_percent); ?>% versus buying singles.
+              <?php else : ?>
+                Lower average cost built for larger research orders.
+              <?php endif; ?>
+            </p>
+          </div>
+
+          <div class="kit-value-card">
+            <span class="kit-value-label">Per vial cost</span>
+            <strong><?php echo wp_kses_post(wc_price($per_vial_price)); ?></strong>
+            <p>Based on the current displayed starting kit price.</p>
+          </div>
+
+          <div class="kit-value-card">
+            <span class="kit-value-label">Vials per kit</span>
+            <strong><?php echo esc_html($kit_vial_count); ?></strong>
+            <p>One bundle, one checkout, less piecing together singles.</p>
+          </div>
+        </div>
+      </section>
+
       <div class="product-layout">
         <div class="product-gallery-card">
           <?php if ($is_on_sale) : ?>
@@ -263,9 +305,6 @@ $volume_discount_tiers = array(
         </div>
 
         <div class="product-info-card">
-          <p class="kit-page-eyebrow">Kit Bundle</p>
-          <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
-
           <div class="product-price-stack">
             <div class="product-price-row">
               <span class="product-price-current" id="productPrice"><?php echo wp_kses_post($product_price); ?></span>
@@ -283,25 +322,15 @@ $volume_discount_tiers = array(
             </div>
           <?php endif; ?>
 
-          <div class="kit-value-strip">
-            <div class="kit-value-card">
-              <span class="kit-value-label">Vials per kit</span>
-              <strong><?php echo esc_html($kit_vial_count); ?></strong>
+          <div class="kit-payment-strip">
+            <div class="kit-payment-strip__item">
+              <strong>Payment options</strong>
+              <span>Cards, crypto, bank transfer, Zelle, Venmo</span>
             </div>
-
-            <div class="kit-value-card">
-              <span class="kit-value-label">Per-vial cost</span>
-              <strong><?php echo wp_kses_post(wc_price($per_vial_price)); ?></strong>
+            <div class="kit-payment-strip__item">
+              <strong>Best for bulk</strong>
+              <span>Lower per vial cost than building the order one vial at a time</span>
             </div>
-
-            <div class="kit-value-card">
-              <span class="kit-value-label">Kit savings</span>
-              <strong><?php echo $kit_savings > 0 ? wp_kses_post(wc_price($kit_savings)) : 'Bulk value'; ?></strong>
-            </div>
-          </div>
-
-          <div class="kit-intro-copy">
-            <p><?php echo esc_html($kit_microcopy); ?></p>
           </div>
 
           <p id="productStock" class="product-stock-text <?php echo esc_attr($stock_class); ?>">
@@ -405,24 +434,77 @@ $volume_discount_tiers = array(
               </form>
             <?php endif; ?>
           </div>
+
+          <?php if ($bac_water_product instanceof WC_Product) : ?>
+            <section class="kit-addon-card">
+              <div class="kit-addon-card__copy">
+                <p class="product-section-kicker">Recommended add-on</p>
+                <h3>Add a BAC Water kit</h3>
+                <p>Complete the order with a matching BAC Water add-on for easier bundle checkout.</p>
+              </div>
+
+              <div class="kit-addon-card__actions">
+                <span class="kit-addon-card__price"><?php echo wp_kses_post($bac_water_product->get_price_html()); ?></span>
+                <a class="kit-addon-card__button" href="<?php echo esc_url($bac_water_product->add_to_cart_url()); ?>">
+                  Add BAC Water
+                </a>
+              </div>
+            </section>
+          <?php endif; ?>
         </div>
       </div>
 
+      <section class="kit-volume-card">
+        <div class="product-description-header">
+          <p class="product-section-kicker">Automatic volume discounts</p>
+          <h2>Spend more, save more automatically</h2>
+        </div>
+
+        <div class="kit-comparison-table-wrap">
+          <table class="kit-comparison-table">
+            <thead>
+              <tr>
+                <th>Kit order value</th>
+                <th>Discount</th>
+                <th>Effective price per kit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Under <?php echo wp_kses_post(wc_price($volume_discount_tiers[0]['threshold'])); ?></td>
+                <td>No discount</td>
+                <td><?php echo wp_kses_post(wc_price($kit_price_value)); ?></td>
+              </tr>
+
+              <?php foreach ($volume_discount_tiers as $tier) : ?>
+                <tr>
+                  <td><?php echo wp_kses_post(wc_price($tier['threshold'])); ?>+</td>
+                  <td><?php echo esc_html($tier['percent']); ?>% off</td>
+                  <td><?php echo wp_kses_post(wc_price($kit_price_value * (1 - ($tier['percent'] / 100)))); ?></td>
+                </tr>
+              <?php endforeach; ?>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="kit-volume-card__note">Discounts should apply automatically in cart based on eligible kit subtotal.</p>
+      </section>
+
       <section class="kit-pricing-explainer">
         <div class="product-description-header">
-          <p class="product-section-kicker">Why Buy The Kit</p>
-          <h2>Better bundle pricing built for repeat ordering.</h2>
+          <p class="product-section-kicker">Why buy the kit</p>
+          <h2>Built to convert larger orders better than singles.</h2>
         </div>
 
         <div class="kit-pricing-explainer__grid">
           <div class="kit-pricing-explainer__card">
             <h3><?php echo esc_html($kit_vial_count); ?> vials in one order</h3>
-            <p>Built for labs and repeat buyers who want one bundle instead of piecing together singles.</p>
+            <p>One bundle, cleaner checkout, less friction than piecing together a larger order manually.</p>
           </div>
 
           <div class="kit-pricing-explainer__card">
             <h3><?php echo wp_kses_post(wc_price($per_vial_price)); ?> per vial</h3>
-            <p>Lower average per-vial pricing compared with buying the full quantity individually.</p>
+            <p>Show the bundle value instantly with a lower average cost per vial.</p>
           </div>
 
           <div class="kit-pricing-explainer__card">
@@ -435,53 +517,19 @@ $volume_discount_tiers = array(
             </h3>
             <p>
               <?php if ($kit_savings > 0) : ?>
-                Save <?php echo esc_html($kit_savings_percent); ?>% versus buying <?php echo esc_html($kit_vial_count); ?> singles separately.
+                Save <?php echo esc_html($kit_savings_percent); ?>% versus buying <?php echo esc_html($kit_vial_count); ?> single vials separately.
               <?php else : ?>
-                Bundle pricing designed to make larger orders more efficient.
+                Built to reward larger research orders.
               <?php endif; ?>
             </p>
           </div>
         </div>
       </section>
 
-      <section class="kit-comparison-card">
-        <div class="product-description-header">
-          <p class="product-section-kicker">Volume Discounts</p>
-          <h2>Save more on larger dollar orders</h2>
-        </div>
-
-        <div class="kit-comparison-table-wrap">
-          <table class="kit-comparison-table">
-            <thead>
-              <tr>
-                <th>Order Value</th>
-                <th>Discount</th>
-                <th>Example Effective Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Under <?php echo wp_kses_post(wc_price($volume_discount_tiers[0]['threshold'])); ?></td>
-                <td>No discount</td>
-                <td><?php echo wp_kses_post(wc_price($kit_price_value)); ?> per kit</td>
-              </tr>
-
-              <?php foreach ($volume_discount_tiers as $tier) : ?>
-                <tr>
-                  <td><?php echo wp_kses_post(wc_price($tier['threshold'])); ?>+</td>
-                  <td><?php echo esc_html($tier['percent']); ?>% off</td>
-                  <td><?php echo wp_kses_post(wc_price($kit_price_value * (1 - ($tier['percent'] / 100)))); ?> per kit</td>
-                </tr>
-              <?php endforeach; ?>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
       <?php if ($single_total_price > 0 || !empty($competitor_rows)) : ?>
         <section class="kit-comparison-card">
           <div class="product-description-header">
-            <p class="product-section-kicker">Value Comparison</p>
+            <p class="product-section-kicker">Value comparison</p>
             <h2>How this kit stacks up</h2>
           </div>
 
@@ -536,7 +584,7 @@ $volume_discount_tiers = array(
 
       <section class="product-description-card">
         <div class="product-description-header">
-          <p class="product-section-kicker">Kit Details</p>
+          <p class="product-section-kicker">Kit details</p>
           <h2>Product Description</h2>
         </div>
 
