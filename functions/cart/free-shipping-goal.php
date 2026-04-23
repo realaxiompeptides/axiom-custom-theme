@@ -4,15 +4,15 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Free shipping goal settings.
+ * Free shipping goal threshold.
  */
 function axiom_free_shipping_goal_threshold() {
     return 250;
 }
 
 /**
- * Get the cart subtotal used for the free shipping progress bar.
- * This uses cart contents total, excluding shipping.
+ * Get subtotal for the free shipping goal.
+ * Uses cart contents total, excluding shipping.
  */
 function axiom_free_shipping_goal_subtotal() {
     if (!function_exists('WC') || !WC()->cart) {
@@ -56,9 +56,9 @@ function axiom_render_free_shipping_goal() {
                 <span class="axiom-free-shipping-goal__fill" style="width: <?php echo esc_attr($progress); ?>%;"></span>
             </div>
 
-            <div class="axiom-free-shipping-goal__icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h9A1.5 1.5 0 0 1 15 7.5V9h2.086a1.5 1.5 0 0 1 1.2.6l2.414 3.219c.195.26.3.577.3.902V16.5A1.5 1.5 0 0 1 19.5 18H18a3 3 0 0 1-6 0H9a3 3 0 0 1-6 0H2.5A1.5 1.5 0 0 1 1 16.5v-1A1.5 1.5 0 0 1 2.5 14H3V7.5Zm12 3V14h4.5l-1.928-2.571a.5.5 0 0 0-.4-.2H15Zm-9.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Z"/>
+            <div class="axiom-free-shipping-goal__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h9A1.5 1.5 0 0 1 15 7.5V9h2.086a1.5 1.5 0 0 1 1.2.6l2.414 3.219c.195.26.3.577.3.902V16.5A1.5 1.5 0 0 1 19.5 18H18a3 3 0 0 1-6 0H9a3 3 0 0 1-6 0H2.5A1.5 1.5 0 0 1 1 16.5v-1A1.5 1.5 0 0 1 2.5 14H3V7.5Zm12 3V14h4.5l-1.928-2.571a.5.5 0 0 0-.4-.2H15Zm-9.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Z"></path>
                 </svg>
             </div>
         </div>
@@ -67,7 +67,20 @@ function axiom_render_free_shipping_goal() {
 }
 
 /**
- * Cart drawer styles.
+ * Return the free shipping goal markup as HTML for AJAX cart drawer rendering.
+ */
+function axiom_get_cart_drawer_free_shipping_goal_html() {
+    if (!function_exists('WC') || !WC()->cart) {
+        return '';
+    }
+
+    ob_start();
+    axiom_render_free_shipping_goal();
+    return trim(ob_get_clean());
+}
+
+/**
+ * Free shipping goal styles.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_free_shipping_goal_styles', 30);
 
