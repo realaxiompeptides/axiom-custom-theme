@@ -15,6 +15,7 @@ $axiom_function_files = array(
 
     '/functions/cart/ajax-cart.php',
     '/functions/cart/cart-page.php',
+    '/functions/cart/free-shipping-goal.php',
 
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
