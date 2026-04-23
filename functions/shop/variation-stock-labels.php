@@ -4,72 +4,133 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Append stock status text to WooCommerce variation dropdown option labels.
+ * Add stock text to variation dropdown option labels on single product pages.
+ * Example:
+ * 5mg — In stock
+ * 10mg — Sold out
+ * 20mg — Backorder
  */
-add_filter('woocommerce_dropdown_variation_attribute_options_html', 'axiom_add_stock_to_variation_dropdown', 10, 2);
+add_filter('woocommerce_dropdown_variation_attribute_options_args', 'axiom_variation_dropdown_stock_labels_args', 10, 1);
 
-function axiom_add_stock_to_variation_dropdown($html, $args) {
+function axiom_variation_dropdown_stock_labels_args($args) {
     if (empty($args['product']) || !is_a($args['product'], 'WC_Product_Variable')) {
-        return $html;
+        return $args;
     }
 
     $product   = $args['product'];
     $attribute = $args['attribute'];
 
-    $available_variations = $product->get_available_variations();
-    if (empty($available_variations)) {
-        return $html;
+    if (empty($attribute)) {
+        return $args;
     }
 
-    $stock_map = array();
+    $options = $args['options'];
 
-    foreach ($available_variations as $variation_data) {
-        if (empty($variation_data['attributes'])) {
+    if (empty($options)) {
+        $attributes = $product->get_variation_attributes();
+        $options = isset($attributes[$attribute]) ? $attributes[$attribute] : array();
+    }
+
+    if (empty($options) || !is_array($options)) {
+        return $args;
+    }
+
+    $children = $product->get_children();
+    if (empty($children)) {
+        return $args;
+    }
+
+    $label_map = array();
+
+    foreach ($children as $variation_id) {
+        $variation = wc_get_product($variation_id);
+
+        if (!$variation || !$variation->exists()) {
             continue;
         }
 
-        $variation_id = $variation_data['variation_id'];
-        $variation    = wc_get_product($variation_id);
+        $variation_attributes = $variation->get_attributes();
 
-        if (!$variation) {
+        if (!isset($variation_attributes[$attribute])) {
             continue;
         }
 
-        $attribute_key = 'attribute_' . $attribute;
-        if (empty($variation_data['attributes'][$attribute_key])) {
+        $option_value = (string) $variation_attributes[$attribute];
+
+        if ($option_value === '') {
             continue;
         }
-
-        $term_slug = $variation_data['attributes'][$attribute_key];
 
         if (!$variation->is_in_stock()) {
-            $stock_text = 'Out of stock';
-        } elseif ($variation->managing_stock() && $variation->is_on_backorder(1)) {
+            $stock_text = 'Sold out';
+        } elseif ($variation->is_on_backorder(1)) {
             $stock_text = 'Backorder';
         } else {
             $stock_text = 'In stock';
         }
 
-        $stock_map[$term_slug] = $stock_text;
+        $label_map[$option_value] = $stock_text;
     }
 
-    if (empty($stock_map)) {
+    if (empty($label_map)) {
+        return $args;
+    }
+
+    $new_options = array();
+
+    foreach ($options as $option) {
+        $option_key = (string) $option;
+        $display_name = $option_key;
+
+        if (taxonomy_exists($attribute)) {
+            $term = get_term_by('slug', $option_key, $attribute);
+            if ($term && !is_wp_error($term)) {
+                $display_name = $term->name;
+            }
+        }
+
+        if (isset($label_map[$option_key])) {
+            $new_options[$option_key] = $display_name . ' — ' . $label_map[$option_key];
+        } else {
+            $new_options[$option_key] = $display_name;
+        }
+    }
+
+    $args['options'] = $new_options;
+    return $args;
+}
+
+/**
+ * Render custom labels from the keyed options above.
+ */
+add_filter('woocommerce_dropdown_variation_attribute_options_html', 'axiom_render_variation_dropdown_stock_labels', 20, 2);
+
+function axiom_render_variation_dropdown_stock_labels($html, $args) {
+    if (empty($args['product']) || !is_a($args['product'], 'WC_Product_Variable')) {
         return $html;
     }
 
-    foreach ($stock_map as $term_slug => $stock_text) {
-        $term = get_term_by('slug', $term_slug, str_replace('pa_', '', $attribute));
-
-        if ($term && !is_wp_error($term)) {
-            $original = '>' . esc_html($term->name) . '<';
-            $updated  = '>' . esc_html($term->name . ' — ' . $stock_text) . '<';
-            $html = str_replace($original, $updated, $html);
-        } else {
-            $original = '>' . esc_html($term_slug) . '<';
-            $updated  = '>' . esc_html($term_slug . ' — ' . $stock_text) . '<';
-            $html = str_replace($original, $updated, $html);
-        }
+    if (empty($args['options']) || !is_array($args['options'])) {
+        return $html;
     }
+
+    $attribute          = $args['attribute'];
+    $product            = $args['product'];
+    $name               = $args['name'] ? $args['name'] : 'attribute_' . sanitize_title($attribute);
+    $id                 = $args['id'] ? $args['id'] : sanitize_title($attribute);
+    $class              = $args['class'];
+    $show_option_none   = (bool) $args['show_option_none'];
+    $option_none_text   = $args['show_option_none'] ? $args['show_option_none'] : __('Choose an option', 'woocommerce');
+
+    $html  = '<select id="' . esc_attr($id) . '" class="' . esc_attr($class) . '" name="' . esc_attr($name) . '" data-attribute_name="attribute_' . esc_attr(sanitize_title($attribute)) . '" data-show_option_none="' . ($show_option_none ? 'yes' : 'no') . '">';
+    $html .= '<option value="">' . esc_html($option_none_text) . '</option>';
+
+    foreach ($args['options'] as $value => $label) {
+        $selected = sanitize_title((string) $args['selected']) === sanitize_title((string) $value) ? 'selected="selected"' : '';
+        $html .= '<option value="' . esc_attr($value) . '" ' . $selected . '>' . esc_html($label) . '</option>';
+    }
+
+    $html .= '</select>';
 
     return $html;
 }
