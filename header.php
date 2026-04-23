@@ -138,18 +138,20 @@ $drawer_checkout_url = home_url('/checkout/');
 
 <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
   <div class="cart-drawer-inner">
-    <div class="cart-drawer-header">
-      <div class="cart-drawer-title-wrap">
-        <h2>Your Cart</h2>
-        <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
-      </div>
+<div class="cart-drawer-header">
+  <div class="cart-drawer-title-wrap">
+    <h2>Your Cart</h2>
+    <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
+  </div>
 
-      <button class="cart-close" id="cartClose" aria-label="Close cart" type="button">
-        &times;
-      </button>
-    </div>
+  <button class="cart-close" id="cartClose" aria-label="Close cart" type="button">
+    &times;
+  </button>
+</div>
 
-    <div class="cart-drawer-body">
+<div id="cartFreeShippingGoal"></div>
+
+<div class="cart-drawer-body">
       <div class="cart-empty-state" id="cartEmptyState">
         Your cart is currently empty.
       </div>
