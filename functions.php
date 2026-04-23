@@ -11,6 +11,7 @@ $axiom_function_files = array(
     '/functions/core/assets.php',
 
     '/functions/shop/catalog.php',
+    '/functions/shop/variation-stock-labels.php',
 
     '/functions/cart/ajax-cart.php',
     '/functions/cart/cart-page.php',
