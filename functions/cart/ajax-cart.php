@@ -160,11 +160,14 @@ function axiom_get_cart_drawer_payload() {
 
     if (!function_exists('WC') || !WC()->cart) {
         return array(
-            'count'         => 0,
-            'subtotal'      => '$0.00',
-            'shippingLabel' => 'Calculated at checkout',
-            'items'         => array(),
-            'upsell'        => null,
+            'count'                => 0,
+            'subtotal'             => '$0.00',
+            'shippingLabel'        => 'Calculated at checkout',
+            'items'                => array(),
+            'upsell'               => null,
+            'freeShippingGoalHtml' => function_exists('axiom_get_cart_drawer_free_shipping_goal_html')
+                ? axiom_get_cart_drawer_free_shipping_goal_html()
+                : '',
         );
     }
 
@@ -224,11 +227,14 @@ function axiom_get_cart_drawer_payload() {
     }
 
     return array(
-        'count'         => WC()->cart->get_cart_contents_count(),
-        'subtotal'      => WC()->cart->get_cart_subtotal(),
-        'shippingLabel' => 'Calculated at checkout',
-        'items'         => $items,
-        'upsell'        => $upsell_data,
+        'count'                => WC()->cart->get_cart_contents_count(),
+        'subtotal'             => WC()->cart->get_cart_subtotal(),
+        'shippingLabel'        => 'Calculated at checkout',
+        'items'                => $items,
+        'upsell'               => $upsell_data,
+        'freeShippingGoalHtml' => function_exists('axiom_get_cart_drawer_free_shipping_goal_html')
+            ? axiom_get_cart_drawer_free_shipping_goal_html()
+            : '',
     );
 }
 
