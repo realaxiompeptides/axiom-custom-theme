@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartItemsList = document.getElementById("cartItemsList");
   const cartEmptyState = document.getElementById("cartEmptyState");
   const cartItemCountBadge = document.getElementById("cartItemCountBadge");
+  const cartFreeShippingGoal = document.getElementById("cartFreeShippingGoal");
 
   function openMenu() {
     if (!mobileMenu || !overlay) return;
@@ -150,6 +151,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (cartShippingValue) {
       cartShippingValue.textContent = data.shippingLabel || "Calculated at checkout";
+    }
+
+    if (cartFreeShippingGoal) {
+      cartFreeShippingGoal.innerHTML = count > 0 ? (data.freeShippingGoalHtml || "") : "";
+      cartFreeShippingGoal.style.display = count > 0 ? "block" : "none";
     }
 
     if (cartItemCountBadge) {
