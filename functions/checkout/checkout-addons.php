@@ -45,9 +45,9 @@ function axiom_get_checkout_addon_image($product_id, $fallback_icon = '🛡️')
 }
 
 /**
- * Show add-ons below coupon/discount area and above order summary.
+ * Show add-ons inside Order Summary, above products.
  */
-add_action('woocommerce_checkout_before_order_review', function () {
+add_action('woocommerce_review_order_before_cart_contents', function () {
     $shipping_id = axiom_get_product_id_by_slug('shipping-protection');
     $starter_id  = axiom_get_product_id_by_slug('research-starter-pack');
 
@@ -55,51 +55,55 @@ add_action('woocommerce_checkout_before_order_review', function () {
     $starter_checked  = axiom_cart_has_product($starter_id);
     ?>
 
-    <div class="axiom-checkout-addons">
-        <h3 class="axiom-addons-title">Complete Your Order</h3>
+    <tr class="axiom-checkout-addons-row">
+        <td colspan="2">
+            <div class="axiom-checkout-addons">
+                <h3 class="axiom-addons-title">Complete Your Order</h3>
 
-        <label class="axiom-addon-card <?php echo $shipping_checked ? 'is-selected' : ''; ?>">
-            <input
-                type="checkbox"
-                class="axiom-addon-toggle"
-                data-product-id="<?php echo esc_attr($shipping_id); ?>"
-                <?php checked($shipping_checked); ?>
-            >
+                <label class="axiom-addon-card <?php echo $shipping_checked ? 'is-selected' : ''; ?>">
+                    <input
+                        type="checkbox"
+                        class="axiom-addon-toggle"
+                        data-product-id="<?php echo esc_attr($shipping_id); ?>"
+                        <?php checked($shipping_checked); ?>
+                    >
 
-            <div class="axiom-addon-media">
-                <?php echo axiom_get_checkout_addon_image($shipping_id, '🛡️'); ?>
+                    <div class="axiom-addon-media">
+                        <?php echo axiom_get_checkout_addon_image($shipping_id, '🛡️'); ?>
+                    </div>
+
+                    <div class="axiom-addon-content">
+                        <div class="axiom-addon-top">
+                            <strong>Shipping Protection</strong>
+                            <span>$4.95</span>
+                        </div>
+                        <p>Protect your order against loss, theft, or damage during shipping.</p>
+                    </div>
+                </label>
+
+                <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
+                    <input
+                        type="checkbox"
+                        class="axiom-addon-toggle"
+                        data-product-id="<?php echo esc_attr($starter_id); ?>"
+                        <?php checked($starter_checked); ?>
+                    >
+
+                    <div class="axiom-addon-media">
+                        <?php echo axiom_get_checkout_addon_image($starter_id, '💧'); ?>
+                    </div>
+
+                    <div class="axiom-addon-content">
+                        <div class="axiom-addon-top">
+                            <strong>Research Starter Pack</strong>
+                            <span>$15.00</span>
+                        </div>
+                        <p>Includes 10 syringes, 10 alcohol pads, and 1× 10mL BAC water.</p>
+                    </div>
+                </label>
             </div>
-
-            <div class="axiom-addon-content">
-                <div class="axiom-addon-top">
-                    <strong>Shipping Protection</strong>
-                    <span>$4.95</span>
-                </div>
-                <p>Protect your order against loss, theft, or damage during shipping.</p>
-            </div>
-        </label>
-
-        <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
-            <input
-                type="checkbox"
-                class="axiom-addon-toggle"
-                data-product-id="<?php echo esc_attr($starter_id); ?>"
-                <?php checked($starter_checked); ?>
-            >
-
-            <div class="axiom-addon-media">
-                <?php echo axiom_get_checkout_addon_image($starter_id, '💧'); ?>
-            </div>
-
-            <div class="axiom-addon-content">
-                <div class="axiom-addon-top">
-                    <strong>Research Starter Pack</strong>
-                    <span>$15.00</span>
-                </div>
-                <p>Includes 10 syringes, 10 alcohol pads, and 1× 10mL BAC water.</p>
-            </div>
-        </label>
-    </div>
+        </td>
+    </tr>
 
     <?php
 }, 5);
@@ -179,8 +183,13 @@ add_action('wp_footer', function () {
     </script>
 
     <style>
+        .axiom-checkout-addons-row td {
+            padding: 0 !important;
+            border: 0 !important;
+        }
+
         .axiom-checkout-addons {
-            margin: 22px 0 24px;
+            margin: 0 0 18px;
         }
 
         .axiom-addons-title {
@@ -192,11 +201,11 @@ add_action('wp_footer', function () {
 
         .axiom-addon-card {
             display: grid;
-            grid-template-columns: 28px 70px 1fr;
-            gap: 14px;
+            grid-template-columns: 28px 68px 1fr;
+            gap: 12px;
             align-items: center;
-            padding: 16px;
-            margin-bottom: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
             border: 2px solid #dbe7f3;
             border-radius: 18px;
             background: #ffffff;
@@ -215,12 +224,11 @@ add_action('wp_footer', function () {
             width: 24px;
             height: 24px;
             accent-color: #0b4ea2;
-            flex: 0 0 auto;
         }
 
         .axiom-addon-media {
-            width: 70px;
-            height: 70px;
+            width: 68px;
+            height: 68px;
             border-radius: 16px;
             border: 1px solid #e5edf6;
             background: #f8fafc;
@@ -255,13 +263,13 @@ add_action('wp_footer', function () {
         }
 
         .axiom-addon-top strong {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 900;
             color: #08122b;
         }
 
         .axiom-addon-top span {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 900;
             color: #0b4ea2;
             white-space: nowrap;
@@ -269,34 +277,34 @@ add_action('wp_footer', function () {
 
         .axiom-addon-card p {
             margin: 0;
-            font-size: 14px;
-            line-height: 1.45;
+            font-size: 13px;
+            line-height: 1.4;
             color: #6b7280;
         }
 
         @media (max-width: 480px) {
             .axiom-addon-card {
-                grid-template-columns: 26px 58px 1fr;
+                grid-template-columns: 26px 56px 1fr;
                 gap: 10px;
-                padding: 14px;
+                padding: 12px;
             }
 
             .axiom-addon-media {
-                width: 58px;
-                height: 58px;
+                width: 56px;
+                height: 56px;
                 border-radius: 14px;
             }
 
             .axiom-addon-top strong {
-                font-size: 15px;
+                font-size: 14px;
             }
 
             .axiom-addon-top span {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             .axiom-addon-card p {
-                font-size: 13px;
+                font-size: 12px;
             }
         }
     </style>
