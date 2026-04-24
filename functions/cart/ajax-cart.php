@@ -475,6 +475,8 @@ function axiom_apply_cart_coupon() {
         wp_send_json_error(array('message' => 'Please enter a discount code.'));
     }
 
+    wc_clear_notices();
+
     if (WC()->cart->has_discount($coupon_code)) {
         wp_send_json_success(array(
             'message' => 'Discount already applied.',
@@ -492,18 +494,31 @@ function axiom_apply_cart_coupon() {
 
     if (!$applied) {
         $notices = wc_get_notices('error');
-        wc_clear_notices();
+        $message = 'Coupon could not be applied.';
 
-        $message = 'Discount code could not be applied.';
+        if (!empty($notices)) {
+            $first_notice = reset($notices);
 
-        if (!empty($notices[0]['notice'])) {
-            $message = wp_strip_all_tags($notices[0]['notice']);
+            if (is_array($first_notice) && !empty($first_notice['notice'])) {
+                $message = wp_strip_all_tags($first_notice['notice']);
+            } elseif (is_string($first_notice)) {
+                $message = wp_strip_all_tags($first_notice);
+            }
         }
 
-        wp_send_json_error(array('message' => $message));
+        wc_clear_notices();
+
+        wp_send_json_error(array(
+            'message' => $message,
+            'cart'    => axiom_get_cart_drawer_payload(),
+        ));
     }
 
     WC()->cart->calculate_totals();
+
+    if (WC()->session) {
+        WC()->session->set('refresh_totals', true);
+    }
 
     wc_clear_notices();
 
