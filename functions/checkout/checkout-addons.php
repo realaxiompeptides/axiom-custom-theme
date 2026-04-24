@@ -45,65 +45,72 @@ function axiom_get_checkout_addon_image($product_id, $fallback_icon = '🛡️')
 }
 
 /**
- * Show add-ons inside Order Summary, above products.
+ * IMPORTANT:
+ * This hook is manually placed inside:
+ * woocommerce/checkout/payment.php
+ * directly below coupon box and above Order summary.
  */
-add_action('woocommerce_review_order_before_cart_contents', function () {
+add_action('axiom_checkout_after_coupon_before_summary', function () {
     $shipping_id = axiom_get_product_id_by_slug('shipping-protection');
     $starter_id  = axiom_get_product_id_by_slug('research-starter-pack');
+
+    if (!$shipping_id && !$starter_id) {
+        return;
+    }
 
     $shipping_checked = axiom_cart_has_product($shipping_id);
     $starter_checked  = axiom_cart_has_product($starter_id);
     ?>
 
-    <tr class="axiom-checkout-addons-row">
-        <td colspan="2">
-            <div class="axiom-checkout-addons">
-                <h3 class="axiom-addons-title">Complete Your Order</h3>
+    <div class="axiom-checkout-addons">
+        <h3 class="axiom-addons-title">Complete Your Order</h3>
 
-                <label class="axiom-addon-card <?php echo $shipping_checked ? 'is-selected' : ''; ?>">
-                    <input
-                        type="checkbox"
-                        class="axiom-addon-toggle"
-                        data-product-id="<?php echo esc_attr($shipping_id); ?>"
-                        <?php checked($shipping_checked); ?>
-                    >
+        <?php if ($shipping_id) : ?>
+            <label class="axiom-addon-card <?php echo $shipping_checked ? 'is-selected' : ''; ?>">
+                <input
+                    type="checkbox"
+                    class="axiom-addon-toggle"
+                    data-product-id="<?php echo esc_attr($shipping_id); ?>"
+                    <?php checked($shipping_checked); ?>
+                >
 
-                    <div class="axiom-addon-media">
-                        <?php echo axiom_get_checkout_addon_image($shipping_id, '🛡️'); ?>
+                <div class="axiom-addon-media">
+                    <?php echo axiom_get_checkout_addon_image($shipping_id, '🛡️'); ?>
+                </div>
+
+                <div class="axiom-addon-content">
+                    <div class="axiom-addon-top">
+                        <strong>Shipping Protection</strong>
+                        <span>$4.95</span>
                     </div>
+                    <p>Protect your order against loss, theft, or damage during shipping.</p>
+                </div>
+            </label>
+        <?php endif; ?>
 
-                    <div class="axiom-addon-content">
-                        <div class="axiom-addon-top">
-                            <strong>Shipping Protection</strong>
-                            <span>$4.95</span>
-                        </div>
-                        <p>Protect your order against loss, theft, or damage during shipping.</p>
+        <?php if ($starter_id) : ?>
+            <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
+                <input
+                    type="checkbox"
+                    class="axiom-addon-toggle"
+                    data-product-id="<?php echo esc_attr($starter_id); ?>"
+                    <?php checked($starter_checked); ?>
+                >
+
+                <div class="axiom-addon-media">
+                    <?php echo axiom_get_checkout_addon_image($starter_id, '💧'); ?>
+                </div>
+
+                <div class="axiom-addon-content">
+                    <div class="axiom-addon-top">
+                        <strong>Research Starter Pack</strong>
+                        <span>$15.00</span>
                     </div>
-                </label>
-
-                <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
-                    <input
-                        type="checkbox"
-                        class="axiom-addon-toggle"
-                        data-product-id="<?php echo esc_attr($starter_id); ?>"
-                        <?php checked($starter_checked); ?>
-                    >
-
-                    <div class="axiom-addon-media">
-                        <?php echo axiom_get_checkout_addon_image($starter_id, '💧'); ?>
-                    </div>
-
-                    <div class="axiom-addon-content">
-                        <div class="axiom-addon-top">
-                            <strong>Research Starter Pack</strong>
-                            <span>$15.00</span>
-                        </div>
-                        <p>Includes 10 syringes, 10 alcohol pads, and 1× 10mL BAC water.</p>
-                    </div>
-                </label>
-            </div>
-        </td>
-    </tr>
+                    <p>Includes 10 syringes, 10 alcohol pads, and 1× 10mL BAC water.</p>
+                </div>
+            </label>
+        <?php endif; ?>
+    </div>
 
     <?php
 }, 5);
@@ -183,13 +190,8 @@ add_action('wp_footer', function () {
     </script>
 
     <style>
-        .axiom-checkout-addons-row td {
-            padding: 0 !important;
-            border: 0 !important;
-        }
-
         .axiom-checkout-addons {
-            margin: 0 0 18px;
+            margin: 22px 0 24px;
         }
 
         .axiom-addons-title {
