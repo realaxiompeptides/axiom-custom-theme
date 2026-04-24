@@ -69,6 +69,8 @@ $shipping_packages = ( WC()->cart && WC()->cart->needs_shipping() ) ? WC()->ship
 		</div>
 	</div>
 
+	<?php do_action( 'axiom_checkout_after_coupon_before_summary' ); ?>
+
 	<div class="axiom-payment-subtotal-section">
 		<h3 class="axiom-payment-section-title"><?php esc_html_e( 'Order summary', 'woocommerce' ); ?></h3>
 
