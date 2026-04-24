@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  * Your BTC address.
  */
 function axiom_crypto_btc_address() {
-    return 'bc1qa2c4nfzakewrxf9jcj3m8ql3n436jhzn0spgfr';
+    return 'bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp';
 }
 
 /**
