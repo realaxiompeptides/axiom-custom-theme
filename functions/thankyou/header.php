@@ -232,7 +232,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <span>Bitcoin (BTC) address</span>';
         echo '              <div class="axiom-payment-copy-row">';
         echo '                  <strong style="font-size:14px; word-break:break-all;">bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp</strong>';
-        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'bc1qa2c4nfzakewrxf9jcj3m8ql3n436jhzn0spgfr\')">Copy</button>';
+        echo '                  <button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp\')">Copy</button>';
         echo '              </div>';
         echo '          </div>';
 
