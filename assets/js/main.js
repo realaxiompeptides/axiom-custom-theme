@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartItemCountBadge = document.getElementById("cartItemCountBadge");
   const cartFreeShippingGoal = document.getElementById("cartFreeShippingGoal");
 
+  const qtyUpdateTimers = {};
+
   function openMenu() {
     if (!mobileMenu || !overlay) return;
     mobileMenu.classList.add("active");
@@ -96,6 +98,26 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
+  function renderCartCoupon() {
+    return `
+      <div class="cart-coupon-box">
+        <div class="cart-coupon-row">
+          <input
+            type="text"
+            class="cart-coupon-input"
+            id="cartCouponInput"
+            placeholder="Discount code"
+            autocomplete="off"
+          >
+          <button type="button" class="cart-coupon-apply" id="cartCouponApply">
+            Apply
+          </button>
+        </div>
+        <div class="cart-coupon-message" id="cartCouponMessage"></div>
+      </div>
+    `;
+  }
+
   function renderCartItem(item) {
     return `
       <div class="cart-item-card" data-cart-key="${item.key}">
@@ -123,7 +145,17 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="cart-item-bottom-row">
             <div class="cart-qty-control">
               <button type="button" class="cart-qty-btn" data-qty-action="decrease" data-cart-key="${item.key}">−</button>
-              <span class="cart-qty-value">${item.quantity}</span>
+
+              <input
+                type="number"
+                class="cart-qty-input"
+                data-cart-key="${item.key}"
+                value="${item.quantity}"
+                min="1"
+                step="1"
+                inputmode="numeric"
+              >
+
               <button type="button" class="cart-qty-btn" data-qty-action="increase" data-cart-key="${item.key}">+</button>
             </div>
 
@@ -183,6 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ${items.map(renderCartItem).join("")}
       </div>
       ${data.upsell ? renderUpsell(data.upsell) : ""}
+      ${renderCartCoupon()}
     `;
   }
 
@@ -211,6 +244,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function updateCartQuantityDebounced(cartKey, quantity) {
+    if (qtyUpdateTimers[cartKey]) {
+      clearTimeout(qtyUpdateTimers[cartKey]);
+    }
+
+    qtyUpdateTimers[cartKey] = setTimeout(function () {
+      updateCartQuantity(cartKey, quantity);
+    }, 350);
+  }
+
   async function removeCartItem(cartKey) {
     try {
       const result = await postAjax("axiom_remove_cart_item", {
@@ -221,6 +264,71 @@ document.addEventListener("DOMContentLoaded", function () {
       renderCartDrawer(result.data);
     } catch (error) {
       console.error("Remove item failed:", error);
+    }
+  }
+
+  async function applyCartCoupon(code) {
+    const messageEl = document.getElementById("cartCouponMessage");
+    const inputEl = document.getElementById("cartCouponInput");
+    const buttonEl = document.getElementById("cartCouponApply");
+
+    if (!code || !code.trim()) {
+      if (messageEl) {
+        messageEl.textContent = "Enter a discount code.";
+        messageEl.className = "cart-coupon-message is-error";
+      }
+      return;
+    }
+
+    try {
+      if (buttonEl) {
+        buttonEl.disabled = true;
+        buttonEl.textContent = "Applying...";
+      }
+
+      if (messageEl) {
+        messageEl.textContent = "";
+        messageEl.className = "cart-coupon-message";
+      }
+
+      const result = await postAjax("axiom_apply_cart_coupon", {
+        coupon_code: code.trim(),
+      });
+
+      if (!result || !result.success) {
+        if (messageEl) {
+          messageEl.textContent = result && result.data && result.data.message ? result.data.message : "Coupon could not be applied.";
+          messageEl.className = "cart-coupon-message is-error";
+        }
+        return;
+      }
+
+      if (messageEl) {
+        messageEl.textContent = result.data && result.data.message ? result.data.message : "Discount applied.";
+        messageEl.className = "cart-coupon-message is-success";
+      }
+
+      if (inputEl) {
+        inputEl.value = "";
+      }
+
+      if (result.data && result.data.cart) {
+        renderCartDrawer(result.data.cart);
+      } else {
+        await refreshCartDrawer();
+      }
+    } catch (error) {
+      console.error("Coupon apply failed:", error);
+
+      if (messageEl) {
+        messageEl.textContent = "Something went wrong. Try again.";
+        messageEl.className = "cart-coupon-message is-error";
+      }
+    } finally {
+      if (buttonEl) {
+        buttonEl.disabled = false;
+        buttonEl.textContent = "Apply";
+      }
     }
   }
 
@@ -316,21 +424,26 @@ document.addEventListener("DOMContentLoaded", function () {
       const qtyBtn = e.target.closest(".cart-qty-btn");
       const removeBtn = e.target.closest("[data-remove-cart-key]");
       const addBtn = e.target.closest("[data-add-product-id]");
+      const couponBtn = e.target.closest("#cartCouponApply");
 
       if (qtyBtn) {
         e.preventDefault();
 
         const cartKey = qtyBtn.getAttribute("data-cart-key");
         const card = qtyBtn.closest(".cart-item-card");
-        const valueEl = card ? card.querySelector(".cart-qty-value") : null;
-        const currentQty = valueEl ? parseInt(valueEl.textContent, 10) || 1 : 1;
+        const inputEl = card ? card.querySelector(".cart-qty-input") : null;
+        const currentQty = inputEl ? parseInt(inputEl.value, 10) || 1 : 1;
         const action = qtyBtn.getAttribute("data-qty-action");
 
         let nextQty = currentQty;
         if (action === "increase") nextQty = currentQty + 1;
-        if (action === "decrease") nextQty = Math.max(0, currentQty - 1);
+        if (action === "decrease") nextQty = Math.max(1, currentQty - 1);
 
-        await updateCartQuantity(cartKey, nextQty);
+        if (inputEl) {
+          inputEl.value = String(nextQty);
+        }
+
+        updateCartQuantityDebounced(cartKey, nextQty);
         return;
       }
 
@@ -344,6 +457,37 @@ document.addEventListener("DOMContentLoaded", function () {
       if (addBtn) {
         e.preventDefault();
         await addUpsellProduct(addBtn);
+        return;
+      }
+
+      if (couponBtn) {
+        e.preventDefault();
+        const inputEl = document.getElementById("cartCouponInput");
+        await applyCartCoupon(inputEl ? inputEl.value : "");
+      }
+    });
+
+    cartItemsList.addEventListener("input", function (e) {
+      const qtyInput = e.target.closest(".cart-qty-input");
+      if (!qtyInput) return;
+
+      const cartKey = qtyInput.getAttribute("data-cart-key");
+      let nextQty = parseInt(qtyInput.value, 10);
+
+      if (!nextQty || nextQty < 1) {
+        nextQty = 1;
+      }
+
+      qtyInput.value = String(nextQty);
+      updateCartQuantityDebounced(cartKey, nextQty);
+    });
+
+    cartItemsList.addEventListener("keydown", async function (e) {
+      const couponInput = e.target.closest("#cartCouponInput");
+
+      if (couponInput && e.key === "Enter") {
+        e.preventDefault();
+        await applyCartCoupon(couponInput.value);
       }
     });
   }
