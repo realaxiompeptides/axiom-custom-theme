@@ -34,10 +34,20 @@ function axiom_remove_product_from_cart($product_id) {
     }
 }
 
+function axiom_get_checkout_addon_image($product_id, $fallback_icon = '🛡️') {
+    $image_url = $product_id ? get_the_post_thumbnail_url($product_id, 'thumbnail') : '';
+
+    if ($image_url) {
+        return '<img class="axiom-addon-img" src="' . esc_url($image_url) . '" alt="">';
+    }
+
+    return '<span class="axiom-addon-fallback-icon">' . esc_html($fallback_icon) . '</span>';
+}
+
 /**
- * Show add-ons directly above order summary.
+ * Show add-ons below coupon/discount area and above order summary.
  */
-add_action('woocommerce_checkout_before_order_review_heading', function () {
+add_action('woocommerce_checkout_before_order_review', function () {
     $shipping_id = axiom_get_product_id_by_slug('shipping-protection');
     $starter_id  = axiom_get_product_id_by_slug('research-starter-pack');
 
@@ -48,13 +58,17 @@ add_action('woocommerce_checkout_before_order_review_heading', function () {
     <div class="axiom-checkout-addons">
         <h3 class="axiom-addons-title">Complete Your Order</h3>
 
-        <label class="axiom-addon-card">
+        <label class="axiom-addon-card <?php echo $shipping_checked ? 'is-selected' : ''; ?>">
             <input
                 type="checkbox"
                 class="axiom-addon-toggle"
                 data-product-id="<?php echo esc_attr($shipping_id); ?>"
                 <?php checked($shipping_checked); ?>
             >
+
+            <div class="axiom-addon-media">
+                <?php echo axiom_get_checkout_addon_image($shipping_id, '🛡️'); ?>
+            </div>
 
             <div class="axiom-addon-content">
                 <div class="axiom-addon-top">
@@ -65,13 +79,17 @@ add_action('woocommerce_checkout_before_order_review_heading', function () {
             </div>
         </label>
 
-        <label class="axiom-addon-card">
+        <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
             <input
                 type="checkbox"
                 class="axiom-addon-toggle"
                 data-product-id="<?php echo esc_attr($starter_id); ?>"
                 <?php checked($starter_checked); ?>
             >
+
+            <div class="axiom-addon-media">
+                <?php echo axiom_get_checkout_addon_image($starter_id, '💧'); ?>
+            </div>
 
             <div class="axiom-addon-content">
                 <div class="axiom-addon-top">
@@ -84,7 +102,7 @@ add_action('woocommerce_checkout_before_order_review_heading', function () {
     </div>
 
     <?php
-});
+}, 5);
 
 /**
  * AJAX add/remove product.
@@ -96,14 +114,14 @@ function axiom_toggle_checkout_addon() {
     check_ajax_referer('axiom_checkout_addons_nonce', 'nonce');
 
     if (!WC()->cart) {
-        wp_send_json_error(['message' => 'Cart not available.']);
+        wp_send_json_error(array('message' => 'Cart not available.'));
     }
 
     $product_id = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
     $checked    = isset($_POST['checked']) && $_POST['checked'] === 'true';
 
     if (!$product_id) {
-        wp_send_json_error(['message' => 'Missing product ID.']);
+        wp_send_json_error(array('message' => 'Missing product ID.'));
     }
 
     if ($checked) {
@@ -130,8 +148,15 @@ add_action('wp_footer', function () {
     jQuery(function($) {
         $(document.body).on('change', '.axiom-addon-toggle', function() {
             const checkbox = $(this);
+            const card = checkbox.closest('.axiom-addon-card');
 
             checkbox.prop('disabled', true);
+
+            if (checkbox.is(':checked')) {
+                card.addClass('is-selected');
+            } else {
+                card.removeClass('is-selected');
+            }
 
             $.ajax({
                 url: '<?php echo esc_url(admin_url('admin-ajax.php')); ?>',
@@ -155,42 +180,70 @@ add_action('wp_footer', function () {
 
     <style>
         .axiom-checkout-addons {
-            margin: 0 0 22px;
+            margin: 22px 0 24px;
         }
 
         .axiom-addons-title {
             margin: 0 0 12px;
             font-size: 20px;
-            font-weight: 800;
-            color: #111827;
+            font-weight: 900;
+            color: #08122b;
         }
 
         .axiom-addon-card {
-            display: flex;
+            display: grid;
+            grid-template-columns: 28px 70px 1fr;
             gap: 14px;
-            align-items: flex-start;
+            align-items: center;
             padding: 16px;
-            margin-bottom: 12px;
-            border: 2px solid #0b4ea2;
-            border-radius: 14px;
+            margin-bottom: 14px;
+            border: 2px solid #dbe7f3;
+            border-radius: 18px;
             background: #ffffff;
             cursor: pointer;
+            transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
         }
 
-        .axiom-addon-card:hover {
+        .axiom-addon-card:hover,
+        .axiom-addon-card.is-selected {
+            border-color: #0b4ea2;
             background: #f8fbff;
+            box-shadow: 0 8px 24px rgba(11, 78, 162, 0.08);
         }
 
         .axiom-addon-card input {
-            width: 22px;
-            height: 22px;
-            margin-top: 3px;
+            width: 24px;
+            height: 24px;
             accent-color: #0b4ea2;
             flex: 0 0 auto;
         }
 
+        .axiom-addon-media {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            border: 1px solid #e5edf6;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .axiom-addon-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .axiom-addon-fallback-icon {
+            font-size: 32px;
+            line-height: 1;
+        }
+
         .axiom-addon-content {
-            flex: 1;
+            min-width: 0;
         }
 
         .axiom-addon-top {
@@ -202,13 +255,14 @@ add_action('wp_footer', function () {
         }
 
         .axiom-addon-top strong {
-            font-size: 16px;
-            color: #111827;
+            font-size: 17px;
+            font-weight: 900;
+            color: #08122b;
         }
 
         .axiom-addon-top span {
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 18px;
+            font-weight: 900;
             color: #0b4ea2;
             white-space: nowrap;
         }
@@ -218,6 +272,32 @@ add_action('wp_footer', function () {
             font-size: 14px;
             line-height: 1.45;
             color: #6b7280;
+        }
+
+        @media (max-width: 480px) {
+            .axiom-addon-card {
+                grid-template-columns: 26px 58px 1fr;
+                gap: 10px;
+                padding: 14px;
+            }
+
+            .axiom-addon-media {
+                width: 58px;
+                height: 58px;
+                border-radius: 14px;
+            }
+
+            .axiom-addon-top strong {
+                font-size: 15px;
+            }
+
+            .axiom-addon-top span {
+                font-size: 16px;
+            }
+
+            .axiom-addon-card p {
+                font-size: 13px;
+            }
         }
     </style>
 
