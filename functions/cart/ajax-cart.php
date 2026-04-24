@@ -459,3 +459,58 @@ function axiom_add_product_from_product_page() {
 }
 add_action('wp_ajax_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
 add_action('wp_ajax_nopriv_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
+
+function axiom_apply_cart_coupon() {
+    check_ajax_referer('axiom_cart_drawer', 'nonce');
+
+    if (!function_exists('WC') || !WC()->cart) {
+        wp_send_json_error(array('message' => 'Cart unavailable.'));
+    }
+
+    $coupon_code = isset($_POST['coupon_code'])
+        ? wc_format_coupon_code(wc_clean(wp_unslash($_POST['coupon_code'])))
+        : '';
+
+    if (!$coupon_code) {
+        wp_send_json_error(array('message' => 'Please enter a discount code.'));
+    }
+
+    if (WC()->cart->has_discount($coupon_code)) {
+        wp_send_json_success(array(
+            'message' => 'Discount already applied.',
+            'cart'    => axiom_get_cart_drawer_payload(),
+        ));
+    }
+
+    $coupon = new WC_Coupon($coupon_code);
+
+    if (!$coupon || !$coupon->get_id()) {
+        wp_send_json_error(array('message' => 'Invalid discount code.'));
+    }
+
+    $applied = WC()->cart->apply_coupon($coupon_code);
+
+    if (!$applied) {
+        $notices = wc_get_notices('error');
+        wc_clear_notices();
+
+        $message = 'Discount code could not be applied.';
+
+        if (!empty($notices[0]['notice'])) {
+            $message = wp_strip_all_tags($notices[0]['notice']);
+        }
+
+        wp_send_json_error(array('message' => $message));
+    }
+
+    WC()->cart->calculate_totals();
+
+    wc_clear_notices();
+
+    wp_send_json_success(array(
+        'message' => 'Discount applied.',
+        'cart'    => axiom_get_cart_drawer_payload(),
+    ));
+}
+add_action('wp_ajax_axiom_apply_cart_coupon', 'axiom_apply_cart_coupon');
+add_action('wp_ajax_nopriv_axiom_apply_cart_coupon', 'axiom_apply_cart_coupon');
