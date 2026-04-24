@@ -591,3 +591,111 @@
 .cart-coupon-message.is-error {
   color: #dc2626;
 }
+
+.cart-qty-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  min-width: 150px;
+  border: 2px solid #dbe7f3;
+  border-radius: 999px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.cart-qty-btn {
+  width: 48px;
+  height: 46px;
+  border: 0 !important;
+  background: transparent !important;
+  color: #2f9ae0 !important;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  padding: 0;
+}
+
+.cart-qty-input {
+  width: 50px !important;
+  height: 46px !important;
+  border: 0 !important;
+  outline: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  text-align: center;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  color: #08122b !important;
+  padding: 0 !important;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.cart-qty-input::-webkit-outer-spin-button,
+.cart-qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cart-coupon-box {
+  margin: 18px 0 8px;
+}
+
+.cart-coupon-row {
+  display: grid;
+  grid-template-columns: 1fr 118px;
+  gap: 12px;
+  align-items: center;
+}
+
+.cart-coupon-input {
+  width: 100% !important;
+  height: 58px !important;
+  border: 2px solid #dbe7f3 !important;
+  border-radius: 16px !important;
+  padding: 0 18px !important;
+  font-size: 18px !important;
+  font-weight: 600;
+  background: #fff !important;
+  color: #08122b !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.cart-coupon-apply {
+  height: 58px;
+  border: 0;
+  border-radius: 16px;
+  background: #eef4fb;
+  color: #0b4ea2;
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.cart-coupon-message {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.cart-coupon-message.is-success {
+  color: #16a34a;
+}
+
+.cart-coupon-message.is-error {
+  color: #dc2626;
+}
+
+.cart-item-card {
+  align-items: center;
+}
+
+.cart-item-image-wrap {
+  flex-shrink: 0;
+}
+
+.cart-item-bottom-row {
+  gap: 14px;
+}
