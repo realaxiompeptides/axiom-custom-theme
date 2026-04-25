@@ -1,0 +1,196 @@
+.axiom-card-3ds-open {
+    overflow: hidden;
+}
+
+.axiom-card-3ds-inline {
+    margin: 16px 0;
+    padding: 14px 16px;
+    border: 1px solid #bfd4ff;
+    background: #eef4ff;
+    color: #0f172a;
+    border-radius: 14px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.axiom-card-3ds-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    padding: 18px;
+}
+
+.axiom-card-3ds-modal.is-active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.axiom-card-3ds-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8, 12, 24, 0.72);
+    backdrop-filter: blur(6px);
+}
+
+.axiom-card-3ds-box {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    max-height: 88vh;
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    border: 1px solid #dbe7ff;
+    text-align: center;
+}
+
+.axiom-card-3ds-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    background: #f1f5f9;
+    color: #0f172a;
+    border-radius: 999px;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.axiom-card-3ds-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #eef4ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+}
+
+.axiom-card-3ds-kicker {
+    margin: 0 0 8px;
+    color: #3B6FE0;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.axiom-card-3ds-box h2 {
+    margin: 0 0 10px;
+    color: #07122f;
+    font-size: 28px;
+    line-height: 1.1;
+    font-weight: 900;
+}
+
+.axiom-card-3ds-lead {
+    margin: 0 0 18px;
+    color: #475569;
+    font-size: 15px;
+    line-height: 1.55;
+}
+
+.axiom-card-3ds-panel {
+    text-align: left;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px;
+    margin: 12px 0;
+}
+
+.axiom-card-3ds-panel-blue {
+    background: #eef4ff;
+    border-color: #bfd4ff;
+}
+
+.axiom-card-3ds-panel h3 {
+    margin: 0 0 10px;
+    color: #07122f;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.axiom-card-3ds-panel ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.axiom-card-3ds-panel li {
+    margin: 7px 0;
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.axiom-card-3ds-check {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    text-align: left;
+    margin: 16px 0;
+    padding: 14px;
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 14px;
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.45;
+    font-weight: 700;
+}
+
+.axiom-card-3ds-check input {
+    margin-top: 3px;
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+}
+
+.axiom-card-3ds-button {
+    width: 100%;
+    min-height: 54px;
+    border: 0;
+    border-radius: 999px;
+    background: #3B6FE0;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.axiom-card-3ds-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.axiom-card-3ds-small {
+    margin: 12px 0 0;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.45;
+}
+
+.axiom-processing-card-payment #place_order {
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .axiom-card-3ds-box {
+        max-width: 390px;
+        padding: 22px 18px;
+    }
+
+    .axiom-card-3ds-box h2 {
+        font-size: 25px;
+    }
+}
