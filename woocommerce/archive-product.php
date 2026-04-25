@@ -38,6 +38,32 @@ $tax_query = array(
     ),
 );
 
+/**
+ * Respect WooCommerce catalog visibility.
+ * This prevents products marked as:
+ * - Hidden
+ * - Exclude from catalog
+ * - Exclude from search
+ * from showing in the custom catalog grid.
+ */
+if (function_exists('wc_get_product_visibility_term_ids')) {
+    $product_visibility_terms = wc_get_product_visibility_term_ids();
+
+    $hidden_visibility_terms = array_filter(array(
+        isset($product_visibility_terms['exclude-from-catalog']) ? (int) $product_visibility_terms['exclude-from-catalog'] : 0,
+        isset($product_visibility_terms['exclude-from-search']) ? (int) $product_visibility_terms['exclude-from-search'] : 0,
+    ));
+
+    if (!empty($hidden_visibility_terms)) {
+        $tax_query[] = array(
+            'taxonomy' => 'product_visibility',
+            'field'    => 'term_taxonomy_id',
+            'terms'    => $hidden_visibility_terms,
+            'operator' => 'NOT IN',
+        );
+    }
+}
+
 if ($is_tax_archive && $current_term && !empty($current_term->term_id)) {
     $taxonomy = is_tax('product_tag') ? 'product_tag' : 'product_cat';
 
@@ -125,6 +151,19 @@ $catalog_terms = get_terms(array(
                     $product = wc_get_product(get_the_ID());
                     if (!$product) {
                         continue;
+                    }
+
+                    /**
+                     * Extra safety check.
+                     * Even if the query misses hidden products for any reason,
+                     * this skips anything WooCommerce says should not be visible.
+                     */
+                    if (method_exists($product, 'get_catalog_visibility')) {
+                        $catalog_visibility = $product->get_catalog_visibility();
+
+                        if (in_array($catalog_visibility, array('hidden', 'search'), true)) {
+                            continue;
+                        }
                     }
 
                     $product_id      = $product->get_id();
