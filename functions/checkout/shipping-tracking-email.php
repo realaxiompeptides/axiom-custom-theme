@@ -27,8 +27,6 @@ function axiom_add_tracking_to_customer_emails($order, $sent_to_admin, $plain_te
         echo "Track your package: " . esc_url($tracking['url']) . "\n";
         return;
     }
-
-    echo axiom_get_tracking_email_inner_html($order, $tracking, false);
 }
 
 function axiom_maybe_send_tracking_email_when_added($order_id) {
@@ -105,28 +103,6 @@ function axiom_get_order_tracking_details($order) {
         }
     }
 
-    $tracking_url_keys = array(
-        '_tracking_url',
-        'tracking_url',
-        '_usps_tracking_url',
-        'usps_tracking_url',
-        '_wcshipping_tracking_url',
-        '_shipping_tracking_url',
-        '_shipment_tracking_url',
-    );
-
-    foreach ($tracking_url_keys as $key) {
-        if (!empty($tracking_url)) {
-            break;
-        }
-
-        $value = $order->get_meta($key);
-
-        if (!empty($value) && is_string($value)) {
-            $tracking_url = trim($value);
-        }
-    }
-
     if (empty($tracking_url) && !empty($tracking_number)) {
         $tracking_url = 'https://tools.usps.com/go/TrackConfirmAction?tLabels=' . rawurlencode($tracking_number);
     }
@@ -160,6 +136,8 @@ function axiom_get_full_tracking_email_html($order, $tracking) {
     $first_name = $order->get_billing_first_name();
     $order_num  = $order->get_order_number();
 
+    $logo_url = get_template_directory_uri() . '/assets/images/axiom-menu-logo.PNG';
+
     ob_start();
     ?>
     <!DOCTYPE html>
@@ -168,42 +146,71 @@ function axiom_get_full_tracking_email_html($order, $tracking) {
         <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;padding:28px 12px;">
             <tr>
                 <td align="center">
-                    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background:#ffffff;border-radius:22px;overflow:hidden;border:1px solid #dbe4f0;">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background:#111827;border-radius:24px;overflow:hidden;border:1px solid #1e2b44;">
+                        
                         <tr>
-                            <td align="center" style="padding:30px 24px 18px;background:#ffffff;">
-                                <img src="https://axiomresearch.shop/wp-content/themes/axiom-custom-theme/assets/images/axiom-logo.PNG" alt="Axiom Peptides" style="max-width:240px;width:100%;height:auto;display:block;">
+                            <td align="center" style="padding:34px 32px 26px;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="border-top:2px solid #ffffff;width:28%;font-size:1px;line-height:1px;">&nbsp;</td>
+                                        <td align="center" style="width:44%;padding:0 18px;">
+                                            <div style="background:#ffffff;border-radius:999px;padding:12px 18px;display:inline-block;">
+                                                <img src="<?php echo esc_url($logo_url); ?>" alt="Axiom Peptides" style="width:150px;max-width:150px;height:auto;display:block;">
+                                            </div>
+                                        </td>
+                                        <td style="border-top:2px solid #ffffff;width:28%;font-size:1px;line-height:1px;">&nbsp;</td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
 
                         <tr>
-                            <td style="padding:10px 34px 8px;text-align:center;">
-                                <p style="margin:0 0 10px;color:#3B6FE0;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">
+                            <td align="center" style="padding:8px 34px 10px;">
+                                <p style="margin:0 0 14px;color:#9db7ff;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;">
                                     USPS Tracking Added
                                 </p>
 
-                                <h1 style="margin:0;color:#07122f;font-size:34px;line-height:1.15;font-weight:900;">
+                                <h1 style="margin:0;color:#ffffff;font-size:38px;line-height:1.12;font-weight:900;text-align:center;">
                                     Your order is on the way
                                 </h1>
 
-                                <p style="margin:18px 0 0;color:#475569;font-size:17px;line-height:1.65;">
+                                <p style="margin:22px auto 0;color:#cbd5e1;font-size:17px;line-height:1.65;text-align:center;max-width:470px;">
                                     Hi <?php echo esc_html($first_name ?: 'there'); ?>, your Axiom order
-                                    <strong>#<?php echo esc_html($order_num); ?></strong> has shipped.
+                                    <strong style="color:#ffffff;">#<?php echo esc_html($order_num); ?></strong> has shipped.
                                 </p>
                             </td>
                         </tr>
 
                         <tr>
-                            <td style="padding:22px 34px;">
+                            <td style="padding:28px 34px;">
                                 <?php echo axiom_get_tracking_card_html($tracking); ?>
                             </td>
                         </tr>
 
                         <tr>
-                            <td style="padding:4px 34px 24px;">
-                                <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fbff;border:1px solid #dbe8ff;border-radius:18px;">
+                            <td style="padding:0 34px 26px;">
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background:#172033;border:1px solid #24385f;border-radius:20px;">
                                     <tr>
-                                        <td style="padding:20px;">
-                                            <h2 style="margin:0 0 14px;color:#07122f;font-size:20px;font-weight:900;">
+                                        <td align="center" style="padding:22px 20px;text-align:center;">
+                                            <p style="margin:0 0 10px;color:#ffffff;font-size:18px;font-weight:900;text-align:center;">
+                                                Shipping Note
+                                            </p>
+                                            <p style="margin:0 auto;color:#cbd5e1;font-size:15px;line-height:1.7;text-align:center;max-width:460px;">
+                                                USPS may take a little time to show the first scan after the label is created.
+                                                Tracking usually updates once the package is scanned into the USPS network.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:0 34px 30px;">
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fbff;border:1px solid #dbe8ff;border-radius:20px;">
+                                    <tr>
+                                        <td style="padding:22px;">
+                                            <h2 style="margin:0 0 16px;color:#07122f;font-size:21px;font-weight:900;text-align:center;">
                                                 What’s in your order
                                             </h2>
 
@@ -215,34 +222,18 @@ function axiom_get_full_tracking_email_html($order, $tracking) {
                         </tr>
 
                         <tr>
-                            <td style="padding:0 34px 28px;">
-                                <table width="100%" cellpadding="0" cellspacing="0">
-                                    <tr>
-                                        <td style="padding:18px;background:#0f172a;border-radius:18px;">
-                                            <p style="margin:0 0 8px;color:#ffffff;font-size:16px;font-weight:900;">
-                                                Shipping note
-                                            </p>
-                                            <p style="margin:0;color:#cbd5e1;font-size:14px;line-height:1.6;">
-                                                USPS may take a little time to show the first scan after the label is created.
-                                                Most tracking pages update once the package is scanned into the USPS network.
-                                            </p>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <td align="center" style="padding:0 34px 34px;">
+                                <p style="margin:0 0 12px;color:#9db7ff;font-size:13px;font-weight:800;line-height:1.6;text-align:center;">
+                                    Lab-tested products • USA fulfilled • Research use only
+                                </p>
+                                <p style="margin:0;color:#94a3b8;font-size:12px;line-height:1.7;text-align:center;">
+                                    Axiom Peptides<br>
+                                    support@axiomresearch.shop<br>
+                                    axiomresearch.shop
+                                </p>
                             </td>
                         </tr>
 
-                        <tr>
-                            <td align="center" style="padding:0 34px 32px;">
-                                <p style="margin:0 0 10px;color:#64748b;font-size:13px;line-height:1.6;">
-                                    Lab-tested products • USA fulfilled • Research use only
-                                </p>
-                                <p style="margin:0;color:#94a3b8;font-size:12px;line-height:1.6;">
-                                    Axiom Peptides<br>
-                                    support@axiomresearch.shop
-                                </p>
-                            </td>
-                        </tr>
                     </table>
                 </td>
             </tr>
@@ -253,37 +244,21 @@ function axiom_get_full_tracking_email_html($order, $tracking) {
     return ob_get_clean();
 }
 
-function axiom_get_tracking_email_inner_html($order, $tracking, $include_items = true) {
-    ob_start();
-    ?>
-    <div style="margin:24px 0;">
-        <?php echo axiom_get_tracking_card_html($tracking); ?>
-
-        <?php if ($include_items) : ?>
-            <div style="margin-top:20px;">
-                <?php echo axiom_get_order_items_html($order); ?>
-            </div>
-        <?php endif; ?>
-    </div>
-    <?php
-    return ob_get_clean();
-}
-
 function axiom_get_tracking_card_html($tracking) {
     ob_start();
     ?>
-    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef4ff;border:1px solid #c9dafc;border-radius:20px;">
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef4ff;border:1px solid #bdd2ff;border-radius:22px;">
         <tr>
-            <td align="center" style="padding:26px 20px;">
-                <p style="margin:0 0 10px;color:#315bb8;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">
+            <td align="center" style="padding:30px 22px;text-align:center;">
+                <p style="margin:0 0 12px;color:#315bb8;font-size:13px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;text-align:center;">
                     USPS Tracking Number
                 </p>
 
-                <p style="margin:0 0 20px;color:#07122f;font-size:28px;line-height:1.25;font-weight:900;word-break:break-word;">
+                <p style="margin:0 0 24px;color:#07122f;font-size:30px;line-height:1.25;font-weight:900;word-break:break-word;text-align:center;">
                     <?php echo esc_html($tracking['number']); ?>
                 </p>
 
-                <a href="<?php echo esc_url($tracking['url']); ?>" target="_blank" rel="noopener" style="display:inline-block;background:#3B6FE0;color:#ffffff;text-decoration:none;padding:15px 30px;border-radius:999px;font-size:15px;font-weight:900;">
+                <a href="<?php echo esc_url($tracking['url']); ?>" target="_blank" rel="noopener" style="display:inline-block;background:#3B6FE0;color:#ffffff;text-decoration:none;padding:16px 34px;border-radius:999px;font-size:15px;font-weight:900;">
                     Track My Package
                 </a>
             </td>
@@ -309,15 +284,15 @@ function axiom_get_order_items_html($order) {
         $image_url    = $image_id ? wp_get_attachment_image_url($image_id, 'woocommerce_thumbnail') : wc_placeholder_img_src();
         $product_url  = get_permalink($product->get_id());
         ?>
-        <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px;background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px;background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;">
             <tr>
-                <td width="92" style="padding:12px;">
+                <td width="98" style="padding:14px;">
                     <a href="<?php echo esc_url($product_url); ?>" target="_blank" rel="noopener">
-                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" width="76" height="76" style="display:block;width:76px;height:76px;object-fit:cover;border-radius:12px;border:1px solid #e5e7eb;">
+                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" width="78" height="78" style="display:block;width:78px;height:78px;object-fit:cover;border-radius:14px;border:1px solid #e5e7eb;">
                     </a>
                 </td>
-                <td style="padding:12px 12px 12px 0;">
-                    <p style="margin:0 0 6px;color:#07122f;font-size:16px;line-height:1.35;font-weight:900;">
+                <td style="padding:14px 14px 14px 0;">
+                    <p style="margin:0 0 7px;color:#07122f;font-size:16px;line-height:1.35;font-weight:900;">
                         <?php echo esc_html($product_name); ?>
                     </p>
                     <p style="margin:0;color:#64748b;font-size:14px;">
