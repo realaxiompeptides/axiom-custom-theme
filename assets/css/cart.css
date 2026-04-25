@@ -618,3 +618,11 @@
     font-size: 16px;
   }
 }
+
+.cart-summary-row-discount {
+  color: #16a34a;
+}
+
+.cart-summary-row-discount strong {
+  color: #16a34a;
+}
