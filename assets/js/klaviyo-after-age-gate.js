@@ -1,10 +1,9 @@
 (function () {
-  const KLAVIYO_FORM_ID = "PASTE_FORM_ID_HERE";
+  const KLAVIYO_FORM_ID = "XpVBZ8";
   const AGE_GATE_KEY = "axiom_age_gate_accepted_v1";
   const POPUP_SHOWN_KEY = "axiom_klaviyo_popup_shown_v1";
 
   function openKlaviyoForm() {
-    if (!KLAVIYO_FORM_ID || KLAVIYO_FORM_ID === "PASTE_FORM_ID_HERE") return;
     if (sessionStorage.getItem(POPUP_SHOWN_KEY) === "true") return;
 
     window._klOnsite = window._klOnsite || [];
@@ -31,7 +30,7 @@
           if (localStorage.getItem(AGE_GATE_KEY) === "true") {
             schedulePopup();
           }
-        }, 300);
+        }, 500);
       });
     }
   });
