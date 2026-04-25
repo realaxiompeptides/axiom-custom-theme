@@ -2,7 +2,6 @@
     'use strict';
 
     var modalShown = false;
-    var confirmed = false;
 
     function isCardGatewaySelected() {
         var selected = $('input[name="payment_method"]:checked');
@@ -42,14 +41,15 @@
 
     function updateInlineNotice() {
         if (isCardGatewaySelected()) {
-            $('#axiomCard3dsNotice').slideDown(150);
+            $('#axiomCard3dsNotice').stop(true, true).slideDown(150);
 
             if (!modalShown) {
                 modalShown = true;
                 openModal();
             }
         } else {
-            $('#axiomCard3dsNotice').slideUp(150);
+            $('#axiomCard3dsNotice').stop(true, true).slideUp(150);
+            closeModal();
         }
     }
 
@@ -62,12 +62,10 @@
     });
 
     $(document).on('change', '#axiomCard3dsConfirm', function () {
-        confirmed = $(this).is(':checked');
-        $('#axiomCard3dsContinue').prop('disabled', !confirmed);
+        $('#axiomCard3dsContinue').prop('disabled', !$(this).is(':checked'));
     });
 
     $(document).on('click', '#axiomCard3dsContinue', function () {
-        confirmed = true;
         closeModal();
     });
 
@@ -75,12 +73,13 @@
         closeModal();
     });
 
-    $(document).on('checkout_place_order', function () {
-        if (isCardGatewaySelected() && !confirmed) {
-            openModal();
-            return false;
+    $(document).on('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeModal();
         }
+    });
 
+    $(document).on('checkout_place_order', function () {
         if (isCardGatewaySelected()) {
             $('body').addClass('axiom-processing-card-payment');
             $('#place_order').text('Processing secure verification...');
