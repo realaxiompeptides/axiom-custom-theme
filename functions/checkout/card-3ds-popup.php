@@ -17,36 +17,19 @@ function axiom_enqueue_card_3ds_popup_assets() {
         'axiom-card-3ds-popup',
         $theme_uri . '/assets/css/checkout/card-3ds-popup.css',
         array('axiom-base', 'axiom-checkout-layout'),
-        file_exists($theme_path . '/assets/css/checkout/card-3ds-popup.css')
-            ? filemtime($theme_path . '/assets/css/checkout/card-3ds-popup.css')
-            : '1.0.0'
+        file_exists($theme_path . '/assets/css/checkout/card-3ds-popup.css') ? filemtime($theme_path . '/assets/css/checkout/card-3ds-popup.css') : '1.0.0'
     );
 
     wp_enqueue_script(
         'axiom-card-3ds-popup',
         $theme_uri . '/assets/js/checkout/card-3ds-popup.js',
         array('jquery'),
-        file_exists($theme_path . '/assets/js/checkout/card-3ds-popup.js')
-            ? filemtime($theme_path . '/assets/js/checkout/card-3ds-popup.js')
-            : '1.0.0',
+        file_exists($theme_path . '/assets/js/checkout/card-3ds-popup.js') ? filemtime($theme_path . '/assets/js/checkout/card-3ds-popup.js') : '1.0.0',
         true
     );
 }
 
-add_action('woocommerce_review_order_before_submit', 'axiom_render_card_3ds_inline_notice', 20);
 add_action('wp_footer', 'axiom_render_card_3ds_popup_html', 20);
-
-function axiom_render_card_3ds_inline_notice() {
-    if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
-        return;
-    }
-    ?>
-    <div id="axiomCard3dsNotice" class="axiom-card-3ds-inline" style="display:none;">
-        <strong><i class="fa-solid fa-shield-halved"></i> Card payment verification required.</strong>
-        After placing your order, your bank may ask you to approve the payment. Keep the checkout page open until verification is complete.
-    </div>
-    <?php
-}
 
 function axiom_render_card_3ds_popup_html() {
     if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
@@ -70,7 +53,7 @@ function axiom_render_card_3ds_popup_html() {
             <h2 id="axiomCard3dsTitle">Bank verification is required</h2>
 
             <p class="axiom-card-3ds-lead">
-                To complete your order, your card payment may require approval through your bank’s secure 3D verification.
+                Your bank may require 3D Secure verification before your order can be received.
             </p>
 
             <div class="axiom-card-3ds-panel">
@@ -92,17 +75,12 @@ function axiom_render_card_3ds_popup_html() {
                 </ul>
             </div>
 
-            <label class="axiom-card-3ds-check">
-                <input type="checkbox" id="axiomCard3dsConfirm">
-                <span>I understand I may need to approve this payment through my bank.</span>
-            </label>
-
-            <button type="button" id="axiomCard3dsContinue" class="axiom-card-3ds-button" disabled>
+            <button type="button" id="axiomCard3dsContinue" class="axiom-card-3ds-button">
                 I Understand — Continue
             </button>
 
             <p class="axiom-card-3ds-small">
-                Completing bank verification is required for card payments. If skipped, the payment may fail automatically.
+                This does not charge your card. It only explains the bank verification step.
             </p>
         </div>
     </div>
