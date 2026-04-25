@@ -20,6 +20,7 @@ $axiom_function_files = array(
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
     '/functions/checkout/shipping-tracking-email.php',
+    '/functions/checkout/card-3ds-popup.php',
     '/functions/checkout/hide-ground-when-free.php',
     '/functions/checkout/coupons.php',
     '/functions/checkout/payment-discounts.php',
@@ -67,16 +68,16 @@ foreach ($axiom_function_files as $axiom_file) {
 add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
 
 function axiom_enqueue_reviews_page_assets() {
-    if (!is_page_template('page-reviews.php')) {
+    if (!function_exists('is_page_template') || !is_page_template('page-reviews.php')) {
         return;
     }
+
+    $reviews_css_path = get_template_directory() . '/assets/css/reviews-page.css';
 
     wp_enqueue_style(
         'axiom-reviews-page',
         get_template_directory_uri() . '/assets/css/reviews-page.css',
         array(),
-        file_exists(get_template_directory() . '/assets/css/reviews-page.css')
-            ? filemtime(get_template_directory() . '/assets/css/reviews-page.css')
-            : '1.0.0'
+        file_exists($reviews_css_path) ? filemtime($reviews_css_path) : '1.0.0'
     );
 }
