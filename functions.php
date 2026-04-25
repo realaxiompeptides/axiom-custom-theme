@@ -45,6 +45,8 @@ $axiom_function_files = array(
     '/functions/coa/coa-map.php',
 
     '/functions/calculator/peptide-calculator.php',
+
+    '/functions/emails/axiom-email-system.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
