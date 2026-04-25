@@ -2,7 +2,6 @@
     'use strict';
 
     var modalShown = false;
-    var modalManuallyClosed = false;
 
     function isCardGatewaySelected() {
         var selected = $('input[name="payment_method"]:checked');
@@ -38,48 +37,16 @@
     function closeModal() {
         $('#axiomCard3dsModal').removeClass('is-active').attr('aria-hidden', 'true');
         $('body').removeClass('axiom-card-3ds-open');
-        modalManuallyClosed = true;
-    }
-
-    function syncInlineNotice() {
-        if (isCardGatewaySelected()) {
-            $('#axiomCard3dsNotice').stop(true, true).show();
-        } else {
-            $('#axiomCard3dsNotice').stop(true, true).hide();
-        }
-    }
-
-    function handlePaymentMethodSelected() {
-        syncInlineNotice();
-
-        if (isCardGatewaySelected() && !modalShown && !modalManuallyClosed) {
-            modalShown = true;
-            openModal();
-        }
     }
 
     $(document).on('change click', 'input[name="payment_method"]', function () {
-        handlePaymentMethodSelected();
+        if (isCardGatewaySelected() && !modalShown) {
+            modalShown = true;
+            openModal();
+        }
     });
 
-    $(document.body).on('updated_checkout', function () {
-        syncInlineNotice();
-
-        // IMPORTANT:
-        // Do NOT close the modal here.
-        // WooCommerce refreshes checkout after payment selection,
-        // and closing here makes the popup disappear instantly.
-    });
-
-    $(document).on('change', '#axiomCard3dsConfirm', function () {
-        $('#axiomCard3dsContinue').prop('disabled', !$(this).is(':checked'));
-    });
-
-    $(document).on('click', '#axiomCard3dsContinue', function () {
-        closeModal();
-    });
-
-    $(document).on('click', '.axiom-card-3ds-close', function () {
+    $(document).on('click', '.axiom-card-3ds-close, #axiomCard3dsContinue', function () {
         closeModal();
     });
 
@@ -90,10 +57,6 @@
         }
 
         return true;
-    });
-
-    $(function () {
-        syncInlineNotice();
     });
 
 })(jQuery);
