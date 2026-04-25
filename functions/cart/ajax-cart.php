@@ -487,8 +487,13 @@ function axiom_apply_cart_coupon() {
     $coupon = new WC_Coupon($coupon_code);
 
     if (!$coupon || !$coupon->get_id()) {
-        wp_send_json_error(array('message' => 'Invalid discount code.'));
+        wp_send_json_error(array(
+            'message' => 'Invalid discount code.',
+            'cart'    => axiom_get_cart_drawer_payload(),
+        ));
     }
+
+    WC()->cart->calculate_totals();
 
     $applied = WC()->cart->apply_coupon($coupon_code);
 
@@ -497,12 +502,12 @@ function axiom_apply_cart_coupon() {
         $message = 'Coupon could not be applied.';
 
         if (!empty($notices)) {
-            $first_notice = reset($notices);
+            $notice = reset($notices);
 
-            if (is_array($first_notice) && !empty($first_notice['notice'])) {
-                $message = wp_strip_all_tags($first_notice['notice']);
-            } elseif (is_string($first_notice)) {
-                $message = wp_strip_all_tags($first_notice);
+            if (is_array($notice) && !empty($notice['notice'])) {
+                $message = wp_strip_all_tags($notice['notice']);
+            } elseif (is_string($notice)) {
+                $message = wp_strip_all_tags($notice);
             }
         }
 
@@ -517,6 +522,7 @@ function axiom_apply_cart_coupon() {
     WC()->cart->calculate_totals();
 
     if (WC()->session) {
+        WC()->session->set('applied_coupons', WC()->cart->get_applied_coupons());
         WC()->session->set('refresh_totals', true);
     }
 
