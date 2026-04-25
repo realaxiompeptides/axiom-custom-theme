@@ -33,15 +33,30 @@ function axiom_enqueue_card_3ds_popup_assets() {
     );
 }
 
-add_action('woocommerce_review_order_before_submit', 'axiom_render_card_3ds_popup_html', 20);
+/**
+ * Inline notice stays inside checkout review area.
+ * Modal is rendered in wp_footer so WooCommerce checkout refreshes do NOT delete it.
+ */
+add_action('woocommerce_review_order_before_submit', 'axiom_render_card_3ds_inline_notice', 20);
+add_action('wp_footer', 'axiom_render_card_3ds_popup_html', 20);
 
-function axiom_render_card_3ds_popup_html() {
+function axiom_render_card_3ds_inline_notice() {
+    if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
+        return;
+    }
     ?>
     <div id="axiomCard3dsNotice" class="axiom-card-3ds-inline" style="display:none;">
         <strong><i class="fa-solid fa-shield-halved"></i> Card payment verification required.</strong>
         After placing your order, your bank may ask you to approve the payment. Keep the checkout page open until verification is complete.
     </div>
+    <?php
+}
 
+function axiom_render_card_3ds_popup_html() {
+    if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
+        return;
+    }
+    ?>
     <div id="axiomCard3dsModal" class="axiom-card-3ds-modal" aria-hidden="true">
         <div class="axiom-card-3ds-overlay"></div>
 
