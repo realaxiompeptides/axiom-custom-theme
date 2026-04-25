@@ -4,9 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Axiom - Shipping Tracking Email Automation
- * 1. Adds tracking info inside normal WooCommerce customer emails.
- * 2. Automatically sends a separate tracking email when tracking is added to an order.
+ * Axiom - Premium Shipping Tracking Email Automation
  */
 
 add_action('woocommerce_email_after_order_table', 'axiom_add_tracking_to_customer_emails', 10, 4);
@@ -30,7 +28,7 @@ function axiom_add_tracking_to_customer_emails($order, $sent_to_admin, $plain_te
         return;
     }
 
-    echo axiom_get_tracking_email_block($order, $tracking);
+    echo axiom_get_tracking_email_inner_html($order, $tracking, false);
 }
 
 function axiom_maybe_send_tracking_email_when_added($order_id) {
@@ -147,46 +145,189 @@ function axiom_send_tracking_email($order, $tracking) {
         return;
     }
 
-    $first_name = $order->get_billing_first_name();
-    $order_num  = $order->get_order_number();
-
     $subject = 'Your Axiom order has shipped';
-
-    $heading = 'Your order is on the way';
-
-    $message  = '<p>Hi ' . esc_html($first_name ?: 'there') . ',</p>';
-    $message .= '<p>Your Axiom order <strong>#' . esc_html($order_num) . '</strong> has shipped.</p>';
-    $message .= '<p>Your USPS tracking information is below.</p>';
-    $message .= axiom_get_tracking_email_block($order, $tracking);
-    $message .= '<p>Please allow USPS a little time to update the first scan after the label is created.</p>';
-    $message .= '<p>Thank you for ordering from Axiom.</p>';
-
-    $mailer  = WC()->mailer();
-    $wrapped = $mailer->wrap_message($heading, $message);
 
     $headers = array(
         'Content-Type: text/html; charset=UTF-8',
     );
 
-    $mailer->send($to, $subject, $wrapped, $headers);
+    $message = axiom_get_full_tracking_email_html($order, $tracking);
+
+    WC()->mailer()->send($to, $subject, $message, $headers);
 }
 
-function axiom_get_tracking_email_block($order, $tracking) {
+function axiom_get_full_tracking_email_html($order, $tracking) {
+    $first_name = $order->get_billing_first_name();
+    $order_num  = $order->get_order_number();
+
     ob_start();
     ?>
-    <div style="margin:24px 0;padding:22px;border:1px solid #d8e4ff;background:#eef4ff;border-radius:16px;text-align:center;">
-        <p style="margin:0 0 8px;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#3557a3;font-weight:800;">
-            USPS Tracking Number
-        </p>
+    <!DOCTYPE html>
+    <html>
+    <body style="margin:0;padding:0;background:#eef2f7;font-family:Arial,Helvetica,sans-serif;color:#0f172a;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef2f7;padding:28px 12px;">
+            <tr>
+                <td align="center">
+                    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:640px;background:#ffffff;border-radius:22px;overflow:hidden;border:1px solid #dbe4f0;">
+                        <tr>
+                            <td align="center" style="padding:30px 24px 18px;background:#ffffff;">
+                                <img src="https://axiomresearch.shop/wp-content/themes/axiom-custom-theme/assets/images/axiom-logo.PNG" alt="Axiom Peptides" style="max-width:240px;width:100%;height:auto;display:block;">
+                            </td>
+                        </tr>
 
-        <p style="margin:0 0 18px;font-size:24px;line-height:1.3;color:#0f172a;font-weight:900;">
-            <?php echo esc_html($tracking['number']); ?>
-        </p>
+                        <tr>
+                            <td style="padding:10px 34px 8px;text-align:center;">
+                                <p style="margin:0 0 10px;color:#3B6FE0;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;">
+                                    USPS Tracking Added
+                                </p>
 
-        <a href="<?php echo esc_url($tracking['url']); ?>" target="_blank" rel="noopener" style="background:#3B6FE0;color:#ffffff;text-decoration:none;padding:14px 24px;border-radius:999px;font-weight:800;display:inline-block;">
-            Track My Package
-        </a>
+                                <h1 style="margin:0;color:#07122f;font-size:34px;line-height:1.15;font-weight:900;">
+                                    Your order is on the way
+                                </h1>
+
+                                <p style="margin:18px 0 0;color:#475569;font-size:17px;line-height:1.65;">
+                                    Hi <?php echo esc_html($first_name ?: 'there'); ?>, your Axiom order
+                                    <strong>#<?php echo esc_html($order_num); ?></strong> has shipped.
+                                </p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:22px 34px;">
+                                <?php echo axiom_get_tracking_card_html($tracking); ?>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:4px 34px 24px;">
+                                <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fbff;border:1px solid #dbe8ff;border-radius:18px;">
+                                    <tr>
+                                        <td style="padding:20px;">
+                                            <h2 style="margin:0 0 14px;color:#07122f;font-size:20px;font-weight:900;">
+                                                What’s in your order
+                                            </h2>
+
+                                            <?php echo axiom_get_order_items_html($order); ?>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding:0 34px 28px;">
+                                <table width="100%" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="padding:18px;background:#0f172a;border-radius:18px;">
+                                            <p style="margin:0 0 8px;color:#ffffff;font-size:16px;font-weight:900;">
+                                                Shipping note
+                                            </p>
+                                            <p style="margin:0;color:#cbd5e1;font-size:14px;line-height:1.6;">
+                                                USPS may take a little time to show the first scan after the label is created.
+                                                Most tracking pages update once the package is scanned into the USPS network.
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td align="center" style="padding:0 34px 32px;">
+                                <p style="margin:0 0 10px;color:#64748b;font-size:13px;line-height:1.6;">
+                                    Lab-tested products • USA fulfilled • Research use only
+                                </p>
+                                <p style="margin:0;color:#94a3b8;font-size:12px;line-height:1.6;">
+                                    Axiom Peptides<br>
+                                    support@axiomresearch.shop
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </body>
+    </html>
+    <?php
+    return ob_get_clean();
+}
+
+function axiom_get_tracking_email_inner_html($order, $tracking, $include_items = true) {
+    ob_start();
+    ?>
+    <div style="margin:24px 0;">
+        <?php echo axiom_get_tracking_card_html($tracking); ?>
+
+        <?php if ($include_items) : ?>
+            <div style="margin-top:20px;">
+                <?php echo axiom_get_order_items_html($order); ?>
+            </div>
+        <?php endif; ?>
     </div>
     <?php
+    return ob_get_clean();
+}
+
+function axiom_get_tracking_card_html($tracking) {
+    ob_start();
+    ?>
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#eef4ff;border:1px solid #c9dafc;border-radius:20px;">
+        <tr>
+            <td align="center" style="padding:26px 20px;">
+                <p style="margin:0 0 10px;color:#315bb8;font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;">
+                    USPS Tracking Number
+                </p>
+
+                <p style="margin:0 0 20px;color:#07122f;font-size:28px;line-height:1.25;font-weight:900;word-break:break-word;">
+                    <?php echo esc_html($tracking['number']); ?>
+                </p>
+
+                <a href="<?php echo esc_url($tracking['url']); ?>" target="_blank" rel="noopener" style="display:inline-block;background:#3B6FE0;color:#ffffff;text-decoration:none;padding:15px 30px;border-radius:999px;font-size:15px;font-weight:900;">
+                    Track My Package
+                </a>
+            </td>
+        </tr>
+    </table>
+    <?php
+    return ob_get_clean();
+}
+
+function axiom_get_order_items_html($order) {
+    ob_start();
+
+    foreach ($order->get_items() as $item_id => $item) {
+        $product = $item->get_product();
+
+        if (!$product) {
+            continue;
+        }
+
+        $product_name = $item->get_name();
+        $quantity     = $item->get_quantity();
+        $image_id     = $product->get_image_id();
+        $image_url    = $image_id ? wp_get_attachment_image_url($image_id, 'woocommerce_thumbnail') : wc_placeholder_img_src();
+        $product_url  = get_permalink($product->get_id());
+        ?>
+        <table width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 14px;background:#ffffff;border:1px solid #e5e7eb;border-radius:14px;">
+            <tr>
+                <td width="92" style="padding:12px;">
+                    <a href="<?php echo esc_url($product_url); ?>" target="_blank" rel="noopener">
+                        <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" width="76" height="76" style="display:block;width:76px;height:76px;object-fit:cover;border-radius:12px;border:1px solid #e5e7eb;">
+                    </a>
+                </td>
+                <td style="padding:12px 12px 12px 0;">
+                    <p style="margin:0 0 6px;color:#07122f;font-size:16px;line-height:1.35;font-weight:900;">
+                        <?php echo esc_html($product_name); ?>
+                    </p>
+                    <p style="margin:0;color:#64748b;font-size:14px;">
+                        Quantity: <?php echo esc_html($quantity); ?>
+                    </p>
+                </td>
+            </tr>
+        </table>
+        <?php
+    }
+
     return ob_get_clean();
 }
