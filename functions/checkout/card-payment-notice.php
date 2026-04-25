@@ -14,19 +14,32 @@ function axiom_render_card_payment_notice() {
         return;
     }
     ?>
-    <div id="axiom-card-payment-notice" class="axiom-card-payment-notice" style="display:none;" aria-hidden="true">
-        <div class="axiom-card-payment-notice__icon" aria-hidden="true">
-            <i class="fa-solid fa-triangle-exclamation"></i>
+    <div id="axiom-card-payment-notice" class="axiom-card-payment-notice-wrap" style="display:none;" aria-hidden="true">
+
+        <div class="axiom-card-payment-notice axiom-card-payment-notice-red">
+            <div class="axiom-card-payment-notice__icon" aria-hidden="true">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+
+            <div class="axiom-card-payment-notice__text">
+                <strong>Important:</strong>
+                For credit or debit card payments,
+                <strong>international payments</strong> and
+                <strong>online purchases</strong> must be enabled with your bank to avoid declined transactions.
+            </div>
         </div>
 
-        <div class="axiom-card-payment-notice__text">
-            <strong>Important:</strong>
-            For credit or debit card payments,
-            <strong>international payments</strong> and
-            <strong>online purchases</strong> must be enabled with your bank.
-            You may need to approve the payment in your banking app, by SMS code,
-            or through a secure verification window after clicking Place Order.
+        <div class="axiom-card-payment-notice axiom-card-payment-notice-blue">
+            <div class="axiom-card-payment-notice__icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div class="axiom-card-payment-notice__text">
+                <strong>Bank verification may be required:</strong>
+                After clicking Place Order, you may need to approve the payment through your banking app, SMS code, email code, or secure verification window.
+            </div>
         </div>
+
     </div>
     <?php
 }
@@ -42,21 +55,39 @@ function axiom_card_payment_notice_assets() {
     }
     ?>
     <style>
-        .axiom-card-payment-notice {
+        .axiom-card-payment-notice-wrap {
             display: none;
+            margin: 18px 0 14px;
+        }
+
+        .axiom-card-payment-notice-wrap.is-visible {
+            display: block !important;
+        }
+
+        .axiom-card-payment-notice {
+            display: flex;
             align-items: flex-start;
             gap: 14px;
-            margin: 18px 0 14px;
+            margin: 0 0 14px;
             padding: 18px;
-            border: 1px solid #f6d1d1;
             border-radius: 16px;
-            background: #fef2f2;
-            color: #7f1d1d;
             box-sizing: border-box;
         }
 
-        .axiom-card-payment-notice.is-visible {
-            display: flex !important;
+        .axiom-card-payment-notice:last-child {
+            margin-bottom: 0;
+        }
+
+        .axiom-card-payment-notice-red {
+            border: 1px solid #f6d1d1;
+            background: #fef2f2;
+            color: #7f1d1d;
+        }
+
+        .axiom-card-payment-notice-blue {
+            border: 1px solid #bfd4ff;
+            background: #eef4ff;
+            color: #0f172a;
         }
 
         .axiom-card-payment-notice__icon {
@@ -66,28 +97,47 @@ function axiom_card_payment_notice_assets() {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: #f4b63f;
             font-size: 22px;
             line-height: 1;
             margin-top: 2px;
         }
 
+        .axiom-card-payment-notice-red .axiom-card-payment-notice__icon {
+            color: #f4b63f;
+        }
+
+        .axiom-card-payment-notice-blue .axiom-card-payment-notice__icon {
+            color: #3B6FE0;
+        }
+
         .axiom-card-payment-notice__text {
             font-size: 15px;
             line-height: 1.65;
-            color: #7f1d1d;
             font-weight: 500;
         }
 
         .axiom-card-payment-notice__text strong {
-            color: #7f1d1d;
             font-weight: 900;
         }
 
+        .axiom-card-payment-notice-red .axiom-card-payment-notice__text,
+        .axiom-card-payment-notice-red .axiom-card-payment-notice__text strong {
+            color: #7f1d1d;
+        }
+
+        .axiom-card-payment-notice-blue .axiom-card-payment-notice__text,
+        .axiom-card-payment-notice-blue .axiom-card-payment-notice__text strong {
+            color: #0f172a;
+        }
+
         @media (max-width: 767px) {
+            .axiom-card-payment-notice-wrap {
+                margin: 16px 0 12px;
+            }
+
             .axiom-card-payment-notice {
                 gap: 12px;
-                margin: 16px 0 12px;
+                margin: 0 0 12px;
                 padding: 16px 14px;
                 border-radius: 14px;
             }
