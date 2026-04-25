@@ -29,25 +29,97 @@
         );
     }
 
+    function modalExists() {
+        return $('#axiomCard3dsModal').length > 0;
+    }
+
     function openModal() {
-        $('#axiomCard3dsModal').addClass('is-active').attr('aria-hidden', 'false');
+        if (!modalExists()) {
+            return;
+        }
+
+        $('#axiomCard3dsModal')
+            .addClass('is-active')
+            .attr('aria-hidden', 'false');
+
         $('body').addClass('axiom-card-3ds-open');
     }
 
     function closeModal() {
-        $('#axiomCard3dsModal').removeClass('is-active').attr('aria-hidden', 'true');
+        $('#axiomCard3dsModal')
+            .removeClass('is-active')
+            .attr('aria-hidden', 'true');
+
         $('body').removeClass('axiom-card-3ds-open');
     }
 
-    $(document).on('change click', 'input[name="payment_method"]', function () {
-        if (isCardGatewaySelected() && !modalShown) {
-            modalShown = true;
-            openModal();
+    function showCardPopupOnce() {
+        if (!isCardGatewaySelected()) {
+            return;
         }
+
+        if (modalShown) {
+            return;
+        }
+
+        modalShown = true;
+        openModal();
+    }
+
+    function resetIfNonCardSelected() {
+        if (!isCardGatewaySelected()) {
+            closeModal();
+        }
+    }
+
+    $(document).on('change', 'input[name="payment_method"]', function () {
+        showCardPopupOnce();
+        resetIfNonCardSelected();
     });
 
-    $(document).on('click', '.axiom-card-3ds-close, #axiomCard3dsContinue', function () {
+    $(document).on('click', 'input[name="payment_method"]', function () {
+        showCardPopupOnce();
+        resetIfNonCardSelected();
+    });
+
+    $(document.body).on('updated_checkout', function () {
+        /*
+         * Important:
+         * Do NOT close or reopen the modal here.
+         * WooCommerce refreshes checkout after payment method changes.
+         * The popup is rendered in wp_footer so it stays on screen.
+         */
+    });
+
+    $(document).on('click', '.axiom-card-3ds-close', function () {
         closeModal();
+    });
+
+    $(document).on('click', '#axiomCard3dsContinue', function () {
+        closeModal();
+    });
+
+    $(document).on('click', '.axiom-card-3ds-overlay', function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        /*
+         * Do nothing.
+         * Customer must close with X or the Continue button.
+         */
+        return false;
+    });
+
+    $(document).on('keydown', function (event) {
+        if (event.key === 'Escape' && $('#axiomCard3dsModal').hasClass('is-active')) {
+            event.preventDefault();
+
+            /*
+             * Do nothing.
+             * Customer must close with X or the Continue button.
+             */
+            return false;
+        }
     });
 
     $(document).on('checkout_place_order', function () {
@@ -57,6 +129,19 @@
         }
 
         return true;
+    });
+
+    $(document.body).on('checkout_error', function () {
+        $('body').removeClass('axiom-processing-card-payment');
+        $('#place_order').text('Place order');
+    });
+
+    $(function () {
+        /*
+         * Do not auto-open on checkout page load.
+         * Popup only opens when customer clicks/selects card payment.
+         */
+        resetIfNonCardSelected();
     });
 
 })(jQuery);
