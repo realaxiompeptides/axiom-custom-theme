@@ -255,3 +255,16 @@ function axiom_custom_theme_assets() {
     ));
 }
 add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
+
+    /**
+     * Klaviyo popup after age gate.
+     */
+    if (file_exists($theme_path . '/assets/js/klaviyo-after-age-gate.js')) {
+        wp_enqueue_script(
+            'axiom-klaviyo-after-age-gate',
+            $theme_uri . '/assets/js/klaviyo-after-age-gate.js',
+            array('axiom-main'),
+            filemtime($theme_path . '/assets/js/klaviyo-after-age-gate.js'),
+            true
+        );
+    }
