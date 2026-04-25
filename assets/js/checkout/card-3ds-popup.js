@@ -39,7 +39,16 @@
         $('body').removeClass('axiom-card-3ds-open');
     }
 
-    function updateInlineNotice() {
+    function showInlineNoticeOnly() {
+        if (isCardGatewaySelected()) {
+            $('#axiomCard3dsNotice').stop(true, true).show();
+        } else {
+            $('#axiomCard3dsNotice').stop(true, true).hide();
+            closeModal();
+        }
+    }
+
+    function handlePaymentMethodClick() {
         if (isCardGatewaySelected()) {
             $('#axiomCard3dsNotice').stop(true, true).slideDown(150);
 
@@ -53,12 +62,12 @@
         }
     }
 
-    $(document).on('change', 'input[name="payment_method"]', function () {
-        updateInlineNotice();
+    $(document).on('change click', 'input[name="payment_method"]', function () {
+        handlePaymentMethodClick();
     });
 
     $(document.body).on('updated_checkout', function () {
-        updateInlineNotice();
+        showInlineNoticeOnly();
     });
 
     $(document).on('change', '#axiomCard3dsConfirm', function () {
@@ -69,14 +78,8 @@
         closeModal();
     });
 
-    $(document).on('click', '[data-axiom-3ds-close]', function () {
+    $(document).on('click', '.axiom-card-3ds-close', function () {
         closeModal();
-    });
-
-    $(document).on('keydown', function (e) {
-        if (e.key === 'Escape') {
-            closeModal();
-        }
     });
 
     $(document).on('checkout_place_order', function () {
@@ -89,7 +92,7 @@
     });
 
     $(function () {
-        updateInlineNotice();
+        showInlineNoticeOnly();
     });
 
 })(jQuery);
