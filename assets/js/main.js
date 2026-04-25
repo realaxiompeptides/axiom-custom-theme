@@ -98,7 +98,10 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
-  function renderCartCoupon() {
+  function renderCartCoupon(data = {}) {
+    const appliedCoupons = Array.isArray(data.appliedCoupons) ? data.appliedCoupons : [];
+    const discountTotal = data.discountTotal || "";
+
     return `
       <div class="cart-coupon-box">
         <div class="cart-coupon-row">
@@ -113,7 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
             Apply
           </button>
         </div>
-        <div class="cart-coupon-message" id="cartCouponMessage"></div>
+
+        ${
+          appliedCoupons.length
+            ? `<div class="cart-coupon-message is-success" id="cartCouponMessage">Applied: ${appliedCoupons.join(", ")}${discountTotal ? " — -" + discountTotal : ""}</div>`
+            : `<div class="cart-coupon-message" id="cartCouponMessage"></div>`
+        }
       </div>
     `;
   }
@@ -178,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (cartSubtotal) {
-      cartSubtotal.innerHTML = data.subtotal || "$0.00";
+      cartSubtotal.innerHTML = data.total || data.subtotal || "$0.00";
     }
 
     if (cartShippingValue) {
@@ -215,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ${items.map(renderCartItem).join("")}
       </div>
       ${data.upsell ? renderUpsell(data.upsell) : ""}
-      ${renderCartCoupon()}
+      ${renderCartCoupon(data)}
     `;
   }
 
@@ -301,11 +309,6 @@ document.addEventListener("DOMContentLoaded", function () {
           messageEl.className = "cart-coupon-message is-error";
         }
         return;
-      }
-
-      if (messageEl) {
-        messageEl.textContent = result.data && result.data.message ? result.data.message : "Discount applied.";
-        messageEl.className = "cart-coupon-message is-success";
       }
 
       if (inputEl) {
