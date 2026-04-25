@@ -1,536 +1,586 @@
-<?php
-if (!defined('ABSPATH')) {
-    exit;
-}
+document.addEventListener("DOMContentLoaded", function () {
+  const body = document.body;
+  const overlay = document.getElementById("siteOverlay");
 
-function axiom_cart_variation_text($cart_item) {
-    if (empty($cart_item['variation']) || !is_array($cart_item['variation'])) {
-        return '';
-    }
+  const menuToggle = document.getElementById("menuToggle");
+  const menuClose = document.getElementById("menuClose");
+  const mobileMenu = document.getElementById("mobileMenu");
 
-    $parts = array();
+  const cartToggle = document.getElementById("cartToggle");
+  const cartClose = document.getElementById("cartClose");
+  const cartDrawer = document.getElementById("cartDrawer");
+  const cartCount = document.getElementById("cartCount");
+  const cartSubtotal = document.getElementById("cartSubtotal");
+  const cartShippingValue = document.getElementById("cartShippingValue");
+  const cartItemsList = document.getElementById("cartItemsList");
+  const cartEmptyState = document.getElementById("cartEmptyState");
+  const cartItemCountBadge = document.getElementById("cartItemCountBadge");
+  const cartFreeShippingGoal = document.getElementById("cartFreeShippingGoal");
 
-    foreach ($cart_item['variation'] as $key => $value) {
-        if (!$value) continue;
+  const qtyUpdateTimers = {};
 
-        $label = wc_attribute_label(str_replace('attribute_', '', $key));
-        $parts[] = $label . ': ' . $value;
-    }
+  function openMenu() {
+    if (!mobileMenu || !overlay) return;
+    mobileMenu.classList.add("active");
+    overlay.classList.add("active");
+    body.style.overflow = "hidden";
+  }
 
-    return implode(' • ', $parts);
-}
+  function closeMenu() {
+    if (!mobileMenu || !overlay) return;
+    mobileMenu.classList.remove("active");
+    overlay.classList.remove("active");
+    body.style.overflow = "";
+  }
 
-function axiom_product_in_cart_by_product_or_parent($product_id) {
-    if (!function_exists('WC') || !WC()->cart) return false;
+  function openCart() {
+    if (!cartDrawer || !overlay) return;
+    cartDrawer.classList.add("active");
+    overlay.classList.add("active");
+    body.style.overflow = "hidden";
+  }
 
-    foreach (WC()->cart->get_cart() as $cart_item) {
-        $cart_product_id   = isset($cart_item['product_id']) ? (int) $cart_item['product_id'] : 0;
-        $cart_variation_id = isset($cart_item['variation_id']) ? (int) $cart_item['variation_id'] : 0;
+  function closeCart() {
+    if (!cartDrawer || !overlay) return;
+    cartDrawer.classList.remove("active");
+    overlay.classList.remove("active");
+    body.style.overflow = "";
+  }
 
-        if ($cart_product_id === (int) $product_id || $cart_variation_id === (int) $product_id) {
-            return true;
+  async function postAjax(action, extra = {}) {
+    const params = new URLSearchParams();
+    params.append("action", action);
+    params.append("nonce", AXIOM_THEME.nonce);
+
+    Object.keys(extra).forEach((key) => {
+      params.append(key, extra[key]);
+    });
+
+    const response = await fetch(AXIOM_THEME.ajaxUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+      },
+      body: params.toString(),
+      credentials: "same-origin",
+    });
+
+    return response.json();
+  }
+
+  function renderUpsell(upsell) {
+    if (!upsell) return "";
+
+    return `
+      <div class="cart-upsell-card" id="cartUpsellCard">
+        <div class="cart-upsell-image-wrap">
+          <img src="${upsell.image}" alt="${upsell.name}">
+        </div>
+
+        <div class="cart-upsell-copy">
+          <span class="cart-upsell-kicker">RECOMMENDED ADD-ON</span>
+          <h3 class="cart-upsell-title">${upsell.name}</h3>
+          <div class="cart-upsell-price">${upsell.priceHtml}</div>
+        </div>
+
+        <div class="cart-upsell-right">
+          <button
+            class="cart-upsell-btn"
+            type="button"
+            data-add-product-id="${upsell.productId}"
+            data-add-variation-id="${upsell.variationId || ""}"
+            data-add-attributes='${upsell.attributes ? JSON.stringify(upsell.attributes) : "{}"}'
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCartCoupon(data = {}) {
+    const appliedCoupons = Array.isArray(data.appliedCoupons) ? data.appliedCoupons : [];
+    const discountTotal = data.discountTotal || "";
+
+    return `
+      <div class="cart-coupon-box">
+        <div class="cart-coupon-row">
+          <input
+            type="text"
+            class="cart-coupon-input"
+            id="cartCouponInput"
+            placeholder="Discount code"
+            autocomplete="off"
+          >
+          <button type="button" class="cart-coupon-apply" id="cartCouponApply">
+            Apply
+          </button>
+        </div>
+
+        ${
+          appliedCoupons.length
+            ? `<div class="cart-coupon-message is-success" id="cartCouponMessage">Applied: ${appliedCoupons.join(", ")}${discountTotal ? " — -" + discountTotal : ""}</div>`
+            : `<div class="cart-coupon-message" id="cartCouponMessage"></div>`
         }
+      </div>
+    `;
+  }
+
+  function renderCartItem(item) {
+    return `
+      <div class="cart-item-card" data-cart-key="${item.key}">
+        <a class="cart-item-image-wrap" href="${item.link || "#"}">
+          <img src="${item.image}" alt="${item.name}">
+        </a>
+
+        <div class="cart-item-main">
+          <div class="cart-item-top-row">
+            <div class="cart-item-meta">
+              <h3 class="cart-item-name">${item.name}</h3>
+              ${item.variant ? `<p class="cart-item-variant">${item.variant}</p>` : ""}
+            </div>
+
+            <button
+              class="cart-remove-btn"
+              type="button"
+              aria-label="Remove item"
+              data-remove-cart-key="${item.key}"
+            >
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+
+          <div class="cart-item-bottom-row">
+            <div class="cart-qty-control">
+              <button type="button" class="cart-qty-btn" data-qty-action="decrease" data-cart-key="${item.key}">−</button>
+
+              <input
+                type="number"
+                class="cart-qty-input"
+                data-cart-key="${item.key}"
+                value="${item.quantity}"
+                min="1"
+                step="1"
+                inputmode="numeric"
+              >
+
+              <button type="button" class="cart-qty-btn" data-qty-action="increase" data-cart-key="${item.key}">+</button>
+            </div>
+
+            <div class="cart-item-price-wrap">
+              <span class="cart-item-price">${item.subtotal}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function syncCartDiscountRow(data = {}) {
+    if (!cartSubtotal) return;
+
+    const subtotalRow = cartSubtotal.closest(".cart-summary-row");
+    const existingDiscountRow = document.querySelector(".cart-summary-row-discount");
+
+    if (existingDiscountRow) {
+      existingDiscountRow.remove();
     }
 
-    return false;
-}
+    if (data.discountTotal && subtotalRow && subtotalRow.parentNode) {
+      const discountRow = document.createElement("div");
+      discountRow.className = "cart-summary-row cart-summary-row-discount";
+      discountRow.innerHTML = `
+        <span>Discount</span>
+        <strong>-${data.discountTotal}</strong>
+      `;
 
-function axiom_get_single_variation_for_upsell($product) {
-    if (!$product || !$product->is_type('variable')) return null;
+      subtotalRow.parentNode.insertBefore(discountRow, subtotalRow);
+    }
+  }
 
-    $available_variations = $product->get_available_variations();
+  function renderCartDrawer(data) {
+    const items = Array.isArray(data.items) ? data.items : [];
+    const count = Number(data.count || 0);
 
-    if (empty($available_variations) || !is_array($available_variations)) return null;
-    if (count($available_variations) !== 1) return null;
-
-    $variation_data = reset($available_variations);
-
-    if (empty($variation_data['variation_id'])) return null;
-
-    $variation = wc_get_product($variation_data['variation_id']);
-
-    if (
-        !$variation ||
-        !$variation->is_purchasable() ||
-        (!$variation->is_in_stock() && !$variation->backorders_allowed())
-    ) {
-        return null;
+    if (cartCount) {
+      cartCount.textContent = String(count);
+      cartCount.style.display = count > 0 ? "flex" : "none";
     }
 
-    return array(
-        'variation_id' => (int) $variation->get_id(),
-        'attributes'   => isset($variation_data['attributes']) && is_array($variation_data['attributes'])
-            ? $variation_data['attributes']
-            : array(),
+    if (cartSubtotal) {
+      cartSubtotal.innerHTML = data.total || data.subtotal || "$0.00";
+      syncCartDiscountRow(data);
+    }
+
+    if (cartShippingValue) {
+      cartShippingValue.textContent = data.shippingLabel || "Calculated at checkout";
+    }
+
+    if (cartFreeShippingGoal) {
+      cartFreeShippingGoal.innerHTML = count > 0 ? (data.freeShippingGoalHtml || "") : "";
+      cartFreeShippingGoal.style.display = count > 0 ? "block" : "none";
+    }
+
+    if (cartItemCountBadge) {
+      if (count > 0) {
+        cartItemCountBadge.hidden = false;
+        cartItemCountBadge.textContent = `${count} item${count === 1 ? "" : "s"}`;
+      } else {
+        cartItemCountBadge.hidden = true;
+        cartItemCountBadge.textContent = "";
+      }
+    }
+
+    if (!cartItemsList || !cartEmptyState) return;
+
+    if (!items.length) {
+      cartEmptyState.style.display = "block";
+      cartItemsList.innerHTML = data.upsell ? renderUpsell(data.upsell) : "";
+      syncCartDiscountRow(data);
+      return;
+    }
+
+    cartEmptyState.style.display = "none";
+
+    cartItemsList.innerHTML = `
+      <div class="cart-items-stack">
+        ${items.map(renderCartItem).join("")}
+      </div>
+      ${data.upsell ? renderUpsell(data.upsell) : ""}
+      ${renderCartCoupon(data)}
+    `;
+  }
+
+  async function refreshCartDrawer() {
+    try {
+      const result = await postAjax("axiom_get_cart_drawer");
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+    } catch (error) {
+      console.error("Cart drawer refresh failed:", error);
+    }
+  }
+
+  async function updateCartQuantity(cartKey, quantity) {
+    try {
+      const result = await postAjax("axiom_update_cart_item_quantity", {
+        cart_key: cartKey,
+        quantity: quantity,
+      });
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+    } catch (error) {
+      console.error("Update quantity failed:", error);
+    }
+  }
+
+  function updateCartQuantityDebounced(cartKey, quantity) {
+    if (qtyUpdateTimers[cartKey]) {
+      clearTimeout(qtyUpdateTimers[cartKey]);
+    }
+
+    qtyUpdateTimers[cartKey] = setTimeout(function () {
+      updateCartQuantity(cartKey, quantity);
+    }, 350);
+  }
+
+  async function removeCartItem(cartKey) {
+    try {
+      const result = await postAjax("axiom_remove_cart_item", {
+        cart_key: cartKey,
+      });
+
+      if (!result || !result.success || !result.data) return;
+      renderCartDrawer(result.data);
+    } catch (error) {
+      console.error("Remove item failed:", error);
+    }
+  }
+
+  async function applyCartCoupon(code) {
+    const messageEl = document.getElementById("cartCouponMessage");
+    const inputEl = document.getElementById("cartCouponInput");
+    const buttonEl = document.getElementById("cartCouponApply");
+
+    if (!code || !code.trim()) {
+      if (messageEl) {
+        messageEl.textContent = "Enter a discount code.";
+        messageEl.className = "cart-coupon-message is-error";
+      }
+      return;
+    }
+
+    try {
+      if (buttonEl) {
+        buttonEl.disabled = true;
+        buttonEl.textContent = "Applying...";
+      }
+
+      if (messageEl) {
+        messageEl.textContent = "";
+        messageEl.className = "cart-coupon-message";
+      }
+
+      const result = await postAjax("axiom_apply_cart_coupon", {
+        coupon_code: code.trim(),
+      });
+
+      if (!result || !result.success) {
+        if (messageEl) {
+          messageEl.textContent = result && result.data && result.data.message ? result.data.message : "Coupon could not be applied.";
+          messageEl.className = "cart-coupon-message is-error";
+        }
+        return;
+      }
+
+      if (inputEl) {
+        inputEl.value = "";
+      }
+
+      if (result.data && result.data.cart) {
+        renderCartDrawer(result.data.cart);
+      } else {
+        await refreshCartDrawer();
+      }
+    } catch (error) {
+      console.error("Coupon apply failed:", error);
+
+      if (messageEl) {
+        messageEl.textContent = "Something went wrong. Try again.";
+        messageEl.className = "cart-coupon-message is-error";
+      }
+    } finally {
+      if (buttonEl) {
+        buttonEl.disabled = false;
+        buttonEl.textContent = "Apply";
+      }
+    }
+  }
+
+  async function addUpsellProduct(button) {
+    if (!button) return;
+
+    const productId = button.getAttribute("data-add-product-id");
+    const variationId = button.getAttribute("data-add-variation-id") || "";
+    const attributesRaw = button.getAttribute("data-add-attributes") || "{}";
+
+    let attributes = {};
+    try {
+      attributes = JSON.parse(attributesRaw);
+    } catch (error) {
+      console.error("Failed to parse upsell attributes:", error);
+    }
+
+    const originalText = button.textContent;
+
+    try {
+      button.disabled = true;
+      button.textContent = "Adding...";
+
+      const payload = {
+        product_id: productId,
+      };
+
+      if (variationId) {
+        payload.variation_id = variationId;
+      }
+
+      Object.keys(attributes).forEach((key) => {
+        payload[key] = attributes[key];
+      });
+
+      const result = await postAjax("axiom_add_simple_product_to_cart", payload);
+
+      if (!result || !result.success || !result.data) {
+        if (result && result.data && result.data.message) {
+          alert(result.data.message);
+        }
+        return;
+      }
+
+      renderCartDrawer(result.data);
+      openCart();
+    } catch (error) {
+      console.error("Upsell add failed:", error);
+    } finally {
+      button.disabled = false;
+      button.textContent = originalText;
+    }
+  }
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", function (e) {
+      e.preventDefault();
+      openMenu();
+    });
+  }
+
+  if (menuClose) {
+    menuClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeMenu();
+    });
+  }
+
+  if (cartToggle) {
+    cartToggle.addEventListener("click", async function (e) {
+      e.preventDefault();
+      await refreshCartDrawer();
+      openCart();
+    });
+  }
+
+  if (cartClose) {
+    cartClose.addEventListener("click", function (e) {
+      e.preventDefault();
+      closeCart();
+    });
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", function () {
+      closeMenu();
+      closeCart();
+    });
+  }
+
+  if (cartItemsList) {
+    cartItemsList.addEventListener("click", async function (e) {
+      const qtyBtn = e.target.closest(".cart-qty-btn");
+      const removeBtn = e.target.closest("[data-remove-cart-key]");
+      const addBtn = e.target.closest("[data-add-product-id]");
+      const couponBtn = e.target.closest("#cartCouponApply");
+
+      if (qtyBtn) {
+        e.preventDefault();
+
+        const cartKey = qtyBtn.getAttribute("data-cart-key");
+        const card = qtyBtn.closest(".cart-item-card");
+        const inputEl = card ? card.querySelector(".cart-qty-input") : null;
+        const currentQty = inputEl ? parseInt(inputEl.value, 10) || 1 : 1;
+        const action = qtyBtn.getAttribute("data-qty-action");
+
+        let nextQty = currentQty;
+        if (action === "increase") nextQty = currentQty + 1;
+        if (action === "decrease") nextQty = Math.max(1, currentQty - 1);
+
+        if (inputEl) {
+          inputEl.value = String(nextQty);
+        }
+
+        updateCartQuantityDebounced(cartKey, nextQty);
+        return;
+      }
+
+      if (removeBtn) {
+        e.preventDefault();
+        const cartKey = removeBtn.getAttribute("data-remove-cart-key");
+        await removeCartItem(cartKey);
+        return;
+      }
+
+      if (addBtn) {
+        e.preventDefault();
+        await addUpsellProduct(addBtn);
+        return;
+      }
+
+      if (couponBtn) {
+        e.preventDefault();
+        const inputEl = document.getElementById("cartCouponInput");
+        await applyCartCoupon(inputEl ? inputEl.value : "");
+      }
+    });
+
+    cartItemsList.addEventListener("input", function (e) {
+      const qtyInput = e.target.closest(".cart-qty-input");
+      if (!qtyInput) return;
+
+      const cartKey = qtyInput.getAttribute("data-cart-key");
+      let nextQty = parseInt(qtyInput.value, 10);
+
+      if (!nextQty || nextQty < 1) {
+        nextQty = 1;
+      }
+
+      qtyInput.value = String(nextQty);
+      updateCartQuantityDebounced(cartKey, nextQty);
+    });
+
+    cartItemsList.addEventListener("keydown", async function (e) {
+      const couponInput = e.target.closest("#cartCouponInput");
+
+      if (couponInput && e.key === "Enter") {
+        e.preventDefault();
+        await applyCartCoupon(couponInput.value);
+      }
+    });
+  }
+
+  document.body.addEventListener("added_to_cart", function () {
+    refreshCartDrawer();
+  });
+
+  if (window.jQuery) {
+    jQuery(document.body).on(
+      "added_to_cart removed_from_cart updated_cart_totals wc_fragments_refreshed",
+      function () {
+        refreshCartDrawer();
+      }
     );
-}
+  }
 
-function axiom_find_bac_water_upsell_product() {
-    $candidate_slugs = array(
-        'bac-water-10ml',
-        'bac-water-10mL',
-        'bac-water',
-    );
+  function initAgeGate() {
+    const STORAGE_KEY = "axiom_age_gate_accepted_v1";
+    const gateOverlay = document.getElementById("ageGateOverlay");
+    const ageCheck = document.getElementById("ageGateAgeCheck");
+    const useCheck = document.getElementById("ageGateUseCheck");
+    const enterBtn = document.getElementById("ageGateEnterBtn");
+    const exitBtn = document.getElementById("ageGateExitBtn");
+    const logo = document.getElementById("ageGateLogo");
 
-    foreach ($candidate_slugs as $slug) {
-        $page = get_page_by_path($slug, OBJECT, 'product');
-        if (!$page) continue;
+    if (!gateOverlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) return;
 
-        $product = wc_get_product($page->ID);
+    logo.src = AXIOM_THEME.themeUrl + "/assets/images/axiom-menu-logo.PNG";
 
-        if (!$product || !$product->is_purchasable()) continue;
-
-        if ($product->is_type('variable')) {
-            $single_variation = axiom_get_single_variation_for_upsell($product);
-
-            if ($single_variation) {
-                return array(
-                    'product'      => $product,
-                    'variation_id' => $single_variation['variation_id'],
-                    'attributes'   => $single_variation['attributes'],
-                );
-            }
-        } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-            return array(
-                'product'      => $product,
-                'variation_id' => 0,
-                'attributes'   => array(),
-            );
-        }
+    function syncButton() {
+      enterBtn.disabled = !(ageCheck.checked && useCheck.checked);
     }
 
-    $query = new WP_Query(array(
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
-        'posts_per_page' => 5,
-        's'              => 'BAC Water',
-    ));
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $product = wc_get_product(get_the_ID());
-
-            if (!$product || !$product->is_purchasable()) continue;
-
-            if ($product->is_type('variable')) {
-                $single_variation = axiom_get_single_variation_for_upsell($product);
-
-                if ($single_variation) {
-                    wp_reset_postdata();
-
-                    return array(
-                        'product'      => $product,
-                        'variation_id' => $single_variation['variation_id'],
-                        'attributes'   => $single_variation['attributes'],
-                    );
-                }
-            } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-                wp_reset_postdata();
-
-                return array(
-                    'product'      => $product,
-                    'variation_id' => 0,
-                    'attributes'   => array(),
-                );
-            }
-        }
-
-        wp_reset_postdata();
+    function openGate() {
+      gateOverlay.classList.add("active");
+      body.classList.add("age-gate-locked");
     }
 
-    return null;
-}
-
-function axiom_get_cart_drawer_payload() {
-    $items = array();
-
-    if (!function_exists('WC') || !WC()->cart) {
-        return array(
-            'count'                => 0,
-            'subtotal'             => '$0.00',
-            'total'                => '$0.00',
-            'discountTotal'        => '',
-            'appliedCoupons'       => array(),
-            'shippingLabel'        => 'Calculated at checkout',
-            'items'                => array(),
-            'upsell'               => null,
-            'freeShippingGoalHtml' => function_exists('axiom_get_cart_drawer_free_shipping_goal_html')
-                ? axiom_get_cart_drawer_free_shipping_goal_html()
-                : '',
-        );
+    function closeGate() {
+      gateOverlay.classList.remove("active");
+      body.classList.remove("age-gate-locked");
     }
 
-    WC()->cart->calculate_totals();
-
-    foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
-        $product = isset($cart_item['data']) ? $cart_item['data'] : null;
-
-        if (!$product || !is_a($product, 'WC_Product')) continue;
-
-        $display_product_id = isset($cart_item['product_id']) ? (int) $cart_item['product_id'] : $product->get_id();
-        $image              = wp_get_attachment_image_url($product->get_image_id(), 'woocommerce_thumbnail');
-        $quantity           = isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
-        $line_subtotal      = WC()->cart->get_product_subtotal($product, $quantity);
-        $variant            = axiom_cart_variation_text($cart_item);
-
-        $items[] = array(
-            'key'       => $cart_item_key,
-            'productId' => $display_product_id,
-            'name'      => $product->get_name(),
-            'image'     => $image ? $image : wc_placeholder_img_src(),
-            'quantity'  => $quantity,
-            'subtotal'  => $line_subtotal,
-            'priceHtml' => $product->get_price_html(),
-            'variant'   => $variant,
-            'link'      => get_permalink($display_product_id),
-        );
-    }
-
-    $upsell_data = null;
-    $upsell_wrap = axiom_find_bac_water_upsell_product();
-
-    if ($upsell_wrap && !empty($upsell_wrap['product']) && is_a($upsell_wrap['product'], 'WC_Product')) {
-        $upsell       = $upsell_wrap['product'];
-        $variation_id = !empty($upsell_wrap['variation_id']) ? (int) $upsell_wrap['variation_id'] : 0;
-        $attributes   = !empty($upsell_wrap['attributes']) && is_array($upsell_wrap['attributes'])
-            ? $upsell_wrap['attributes']
-            : array();
-
-        if (
-            !axiom_product_in_cart_by_product_or_parent($upsell->get_id()) &&
-            (!$variation_id || !axiom_product_in_cart_by_product_or_parent($variation_id))
-        ) {
-            $upsell_image         = wp_get_attachment_image_url($upsell->get_image_id(), 'woocommerce_thumbnail');
-            $upsell_price_product = $variation_id ? wc_get_product($variation_id) : $upsell;
-
-            $upsell_data = array(
-                'productId'   => $upsell->get_id(),
-                'variationId' => $variation_id,
-                'attributes'  => $attributes,
-                'name'        => $upsell->get_name(),
-                'image'       => $upsell_image ? $upsell_image : wc_placeholder_img_src(),
-                'priceHtml'   => $upsell_price_product ? $upsell_price_product->get_price_html() : $upsell->get_price_html(),
-                'link'        => get_permalink($upsell->get_id()),
-            );
-        }
-    }
-
-    $discount_total = (float) WC()->cart->get_discount_total();
-
-    return array(
-        'count'                => WC()->cart->get_cart_contents_count(),
-        'subtotal'             => WC()->cart->get_cart_subtotal(),
-        'total'                => WC()->cart->get_total(),
-        'discountTotal'        => $discount_total > 0 ? wc_price($discount_total) : '',
-        'appliedCoupons'       => WC()->cart->get_applied_coupons(),
-        'shippingLabel'        => 'Calculated at checkout',
-        'items'                => $items,
-        'upsell'               => $upsell_data,
-        'freeShippingGoalHtml' => function_exists('axiom_get_cart_drawer_free_shipping_goal_html')
-            ? axiom_get_cart_drawer_free_shipping_goal_html()
-            : '',
-    );
-}
-
-function axiom_get_cart_drawer_data() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    wp_send_json_success(axiom_get_cart_drawer_payload());
-}
-add_action('wp_ajax_axiom_get_cart_drawer', 'axiom_get_cart_drawer_data');
-add_action('wp_ajax_nopriv_axiom_get_cart_drawer', 'axiom_get_cart_drawer_data');
-
-function axiom_update_cart_item_quantity() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    $cart_key = isset($_POST['cart_key']) ? wc_clean(wp_unslash($_POST['cart_key'])) : '';
-    $quantity = isset($_POST['quantity']) ? absint($_POST['quantity']) : 0;
-
-    if (!$cart_key) {
-        wp_send_json_error(array('message' => 'Missing cart key.'));
-    }
-
-    if ($quantity <= 0) {
-        WC()->cart->remove_cart_item($cart_key);
+    if (localStorage.getItem(STORAGE_KEY) === "true") {
+      closeGate();
     } else {
-        WC()->cart->set_quantity($cart_key, $quantity, true);
+      openGate();
     }
 
-    WC()->cart->calculate_totals();
-
-    wp_send_json_success(axiom_get_cart_drawer_payload());
-}
-add_action('wp_ajax_axiom_update_cart_item_quantity', 'axiom_update_cart_item_quantity');
-add_action('wp_ajax_nopriv_axiom_update_cart_item_quantity', 'axiom_update_cart_item_quantity');
-
-function axiom_remove_cart_item() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    $cart_key = isset($_POST['cart_key']) ? wc_clean(wp_unslash($_POST['cart_key'])) : '';
-
-    if (!$cart_key) {
-        wp_send_json_error(array('message' => 'Missing cart key.'));
-    }
-
-    WC()->cart->remove_cart_item($cart_key);
-    WC()->cart->calculate_totals();
-
-    wp_send_json_success(axiom_get_cart_drawer_payload());
-}
-add_action('wp_ajax_axiom_remove_cart_item', 'axiom_remove_cart_item');
-add_action('wp_ajax_nopriv_axiom_remove_cart_item', 'axiom_remove_cart_item');
-
-function axiom_add_simple_product_to_cart() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    $product_id   = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
-    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
-
-    if (!$product_id) {
-        wp_send_json_error(array('message' => 'Missing product ID.'));
-    }
-
-    $product = wc_get_product($product_id);
-
-    if (!$product || !$product->is_purchasable()) {
-        wp_send_json_error(array('message' => 'Product unavailable.'));
-    }
-
-    $added = false;
-
-    if ($variation_id) {
-        $variation = wc_get_product($variation_id);
-
-        if (!$variation || !$variation->is_purchasable()) {
-            wp_send_json_error(array('message' => 'Variation unavailable.'));
-        }
-
-        if (!$variation->is_in_stock() && !$variation->backorders_allowed()) {
-            wp_send_json_error(array('message' => 'Variation unavailable.'));
-        }
-
-        $variation_data = array();
-
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, 'attribute_') === 0) {
-                $variation_data[wc_clean(wp_unslash($key))] = wc_clean(wp_unslash($value));
-            }
-        }
-
-        $added = WC()->cart->add_to_cart($product_id, 1, $variation_id, $variation_data);
-    } else {
-        if ($product->is_type('variable')) {
-            wp_send_json_error(array('message' => 'Variable product requires options.'));
-        }
-
-        if (!$product->is_in_stock() && !$product->backorders_allowed()) {
-            wp_send_json_error(array('message' => 'Product unavailable.'));
-        }
-
-        $added = WC()->cart->add_to_cart($product_id, 1);
-    }
-
-    if (!$added) {
-        wp_send_json_error(array('message' => 'Could not add product.'));
-    }
-
-    WC()->cart->calculate_totals();
-
-    wp_send_json_success(axiom_get_cart_drawer_payload());
-}
-add_action('wp_ajax_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
-add_action('wp_ajax_nopriv_axiom_add_simple_product_to_cart', 'axiom_add_simple_product_to_cart');
-
-function axiom_add_product_from_product_page() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    $product_id   = isset($_POST['product_id']) ? absint($_POST['product_id']) : 0;
-    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0;
-    $quantity     = isset($_POST['quantity']) ? absint($_POST['quantity']) : 1;
-
-    if (!$product_id || $quantity < 1) {
-        wp_send_json_error(array('message' => 'Invalid product data.'));
-    }
-
-    $product = wc_get_product($product_id);
-
-    if (!$product) {
-        wp_send_json_error(array('message' => 'Product not found.'));
-    }
-
-    $added = false;
-
-    if ($product->is_type('variable')) {
-        if (!$variation_id) {
-            wp_send_json_error(array('message' => 'Please select a variation.'));
-        }
-
-        $variation = wc_get_product($variation_id);
-
-        if (!$variation || !$variation->is_purchasable()) {
-            wp_send_json_error(array('message' => 'Variation unavailable.'));
-        }
-
-        if (!$variation->is_in_stock() && !$variation->backorders_allowed()) {
-            wp_send_json_error(array('message' => 'This variation is out of stock.'));
-        }
-
-        if ($variation->managing_stock() && !$variation->backorders_allowed()) {
-            $stock_qty = (int) $variation->get_stock_quantity();
-
-            if ($stock_qty < 1) {
-                wp_send_json_error(array('message' => 'This variation is out of stock.'));
-            }
-
-            if ($quantity > $stock_qty) {
-                wp_send_json_error(array(
-                    'message' => sprintf('You can only add up to %d of this variation.', $stock_qty),
-                ));
-            }
-        }
-
-        $variation_data = array();
-
-        foreach ($_POST as $key => $value) {
-            if (strpos($key, 'attribute_') === 0) {
-                $variation_data[wc_clean(wp_unslash($key))] = wc_clean(wp_unslash($value));
-            }
-        }
-
-        $added = WC()->cart->add_to_cart($product_id, $quantity, $variation_id, $variation_data);
-    } else {
-        if (!$product->is_purchasable()) {
-            wp_send_json_error(array('message' => 'Product unavailable.'));
-        }
-
-        if (!$product->is_in_stock() && !$product->backorders_allowed()) {
-            wp_send_json_error(array('message' => 'This product is out of stock.'));
-        }
-
-        if ($product->managing_stock() && !$product->backorders_allowed()) {
-            $stock_qty = (int) $product->get_stock_quantity();
-
-            if ($stock_qty < 1) {
-                wp_send_json_error(array('message' => 'This product is out of stock.'));
-            }
-
-            if ($quantity > $stock_qty) {
-                wp_send_json_error(array(
-                    'message' => sprintf('You can only add up to %d of this product.', $stock_qty),
-                ));
-            }
-        }
-
-        $added = WC()->cart->add_to_cart($product_id, $quantity);
-    }
-
-    if (!$added) {
-        wp_send_json_error(array('message' => 'Could not add product to cart.'));
-    }
-
-    WC()->cart->calculate_totals();
-
-    wp_send_json_success(array(
-        'message' => 'Added to cart.',
-        'cart'    => axiom_get_cart_drawer_payload(),
-    ));
-}
-add_action('wp_ajax_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
-add_action('wp_ajax_nopriv_axiom_add_product_from_product_page', 'axiom_add_product_from_product_page');
-
-function axiom_apply_cart_coupon() {
-    check_ajax_referer('axiom_cart_drawer', 'nonce');
-
-    if (!function_exists('WC') || !WC()->cart) {
-        wp_send_json_error(array('message' => 'Cart unavailable.'));
-    }
-
-    $coupon_code = isset($_POST['coupon_code'])
-        ? wc_format_coupon_code(wc_clean(wp_unslash($_POST['coupon_code'])))
-        : '';
-
-    if (!$coupon_code) {
-        wp_send_json_error(array('message' => 'Please enter a discount code.'));
-    }
-
-    wc_clear_notices();
-
-    if (WC()->cart->has_discount($coupon_code)) {
-        wp_send_json_success(array(
-            'message' => 'Discount already applied.',
-            'cart'    => axiom_get_cart_drawer_payload(),
-        ));
-    }
-
-    $coupon = new WC_Coupon($coupon_code);
-
-    if (!$coupon || !$coupon->get_id()) {
-        wp_send_json_error(array(
-            'message' => 'Invalid discount code.',
-            'cart'    => axiom_get_cart_drawer_payload(),
-        ));
-    }
-
-    WC()->cart->calculate_totals();
-
-    $applied = WC()->cart->apply_coupon($coupon_code);
-
-    if (!$applied) {
-        $notices = wc_get_notices('error');
-        $message = 'Coupon could not be applied.';
-
-        if (!empty($notices)) {
-            $notice = reset($notices);
-
-            if (is_array($notice) && !empty($notice['notice'])) {
-                $message = wp_strip_all_tags($notice['notice']);
-            } elseif (is_string($notice)) {
-                $message = wp_strip_all_tags($notice);
-            }
-        }
-
-        wc_clear_notices();
-
-        wp_send_json_error(array(
-            'message' => $message,
-            'cart'    => axiom_get_cart_drawer_payload(),
-        ));
-    }
-
-    WC()->cart->calculate_totals();
-
-    if (WC()->session) {
-        WC()->session->set('applied_coupons', WC()->cart->get_applied_coupons());
-        WC()->session->set('refresh_totals', true);
-    }
-
-    wc_clear_notices();
-
-    wp_send_json_success(array(
-        'message' => 'Discount applied.',
-        'cart'    => axiom_get_cart_drawer_payload(),
-    ));
-}
-add_action('wp_ajax_axiom_apply_cart_coupon', 'axiom_apply_cart_coupon');
-add_action('wp_ajax_nopriv_axiom_apply_cart_coupon', 'axiom_apply_cart_coupon');
+    ageCheck.addEventListener("change", syncButton);
+    useCheck.addEventListener("change", syncButton);
+
+    enterBtn.addEventListener("click", function () {
+      if (enterBtn.disabled) return;
+      localStorage.setItem(STORAGE_KEY, "true");
+      closeGate();
+    });
+
+    exitBtn.addEventListener("click", function () {
+      window.location.href = "https://www.google.com";
+    });
+
+    syncButton();
+  }
+
+  initAgeGate();
+  refreshCartDrawer();
+});
