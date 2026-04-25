@@ -38,28 +38,32 @@ add_action('woocommerce_review_order_before_submit', 'axiom_render_card_3ds_popu
 function axiom_render_card_3ds_popup_html() {
     ?>
     <div id="axiomCard3dsNotice" class="axiom-card-3ds-inline" style="display:none;">
-        <strong>Card payment verification required.</strong>
-        After placing your order, your bank may ask you to approve the payment. Please do not close the checkout page until verification is complete.
+        <strong><i class="fa-solid fa-shield-halved"></i> Card payment verification required.</strong>
+        After placing your order, your bank may ask you to approve the payment. Keep the checkout page open until verification is complete.
     </div>
 
     <div id="axiomCard3dsModal" class="axiom-card-3ds-modal" aria-hidden="true">
         <div class="axiom-card-3ds-overlay" data-axiom-3ds-close></div>
 
         <div class="axiom-card-3ds-box" role="dialog" aria-modal="true" aria-labelledby="axiomCard3dsTitle">
-            <button type="button" class="axiom-card-3ds-close" data-axiom-3ds-close aria-label="Close">×</button>
+            <button type="button" class="axiom-card-3ds-close" data-axiom-3ds-close aria-label="Close popup">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-            <div class="axiom-card-3ds-icon">🔐</div>
+            <div class="axiom-card-3ds-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
 
             <p class="axiom-card-3ds-kicker">Secure Card Payment</p>
 
             <h2 id="axiomCard3dsTitle">Bank verification is required</h2>
 
             <p class="axiom-card-3ds-lead">
-                To complete your order, your card payment may require approval through your bank’s 3D Secure verification.
+                To complete your order, your card payment may require approval through your bank’s secure 3D verification.
             </p>
 
             <div class="axiom-card-3ds-panel">
-                <h3>After clicking “Place Order”</h3>
+                <h3><i class="fa-solid fa-credit-card"></i> After clicking “Place Order”</h3>
                 <ul>
                     <li>Keep this checkout page open.</li>
                     <li>Check your banking app for an approval request.</li>
@@ -69,7 +73,7 @@ function axiom_render_card_3ds_popup_html() {
             </div>
 
             <div class="axiom-card-3ds-panel axiom-card-3ds-panel-blue">
-                <h3>For international cards</h3>
+                <h3><i class="fa-solid fa-globe"></i> For international cards</h3>
                 <ul>
                     <li>Make sure international payments are enabled.</li>
                     <li>Make sure online purchases are enabled.</li>
@@ -79,7 +83,7 @@ function axiom_render_card_3ds_popup_html() {
 
             <label class="axiom-card-3ds-check">
                 <input type="checkbox" id="axiomCard3dsConfirm">
-                <span>I understand I must complete bank verification so my order is received.</span>
+                <span>I understand I may need to approve this payment through my bank.</span>
             </label>
 
             <button type="button" id="axiomCard3dsContinue" class="axiom-card-3ds-button" disabled>
@@ -87,7 +91,7 @@ function axiom_render_card_3ds_popup_html() {
             </button>
 
             <p class="axiom-card-3ds-small">
-                If verification is skipped or closed too early, the payment may fail automatically.
+                You can close this popup with the X, but completing bank verification is still required for card payments.
             </p>
         </div>
     </div>
