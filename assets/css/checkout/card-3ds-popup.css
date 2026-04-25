@@ -30,7 +30,7 @@
 .axiom-card-3ds-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(8, 12, 24, 0.72);
+    background: rgba(8, 12, 24, 0.64);
     backdrop-filter: blur(6px);
 }
 
@@ -42,25 +42,32 @@
     overflow-y: auto;
     background: #ffffff;
     border-radius: 22px;
-    padding: 24px;
-    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    padding: 26px 24px 24px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
     border: 1px solid #dbe7ff;
     text-align: center;
 }
 
 .axiom-card-3ds-close {
     position: absolute;
-    top: 12px;
+    top: 14px;
     right: 14px;
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     border: 0;
     background: #f1f5f9;
     color: #0f172a;
     border-radius: 999px;
-    font-size: 24px;
+    font-size: 18px;
     line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+}
+
+.axiom-card-3ds-close:hover {
+    background: #e2e8f0;
 }
 
 .axiom-card-3ds-icon {
@@ -69,10 +76,11 @@
     margin: 0 auto 12px;
     border-radius: 50%;
     background: #eef4ff;
+    color: #3B6FE0;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 28px;
+    font-size: 26px;
 }
 
 .axiom-card-3ds-kicker {
@@ -118,6 +126,14 @@
     color: #07122f;
     font-size: 15px;
     font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.axiom-card-3ds-panel h3 i {
+    color: #3B6FE0;
+    font-size: 15px;
 }
 
 .axiom-card-3ds-panel ul {
@@ -153,6 +169,7 @@
     width: 18px;
     height: 18px;
     flex: 0 0 auto;
+    accent-color: #3B6FE0;
 }
 
 .axiom-card-3ds-button {
@@ -165,6 +182,10 @@
     font-size: 16px;
     font-weight: 900;
     cursor: pointer;
+}
+
+.axiom-card-3ds-button:hover {
+    background: #2F5FBF;
 }
 
 .axiom-card-3ds-button:disabled {
@@ -181,16 +202,29 @@
 
 .axiom-processing-card-payment #place_order {
     opacity: 0.9;
-    pointer-events: none;
 }
 
 @media (max-width: 480px) {
+    .axiom-card-3ds-modal {
+        padding: 14px;
+    }
+
     .axiom-card-3ds-box {
         max-width: 390px;
-        padding: 22px 18px;
+        padding: 24px 18px 20px;
+        border-radius: 20px;
     }
 
     .axiom-card-3ds-box h2 {
         font-size: 25px;
+    }
+
+    .axiom-card-3ds-panel {
+        padding: 14px;
+    }
+
+    .axiom-card-3ds-button {
+        min-height: 52px;
+        font-size: 15px;
     }
 }
