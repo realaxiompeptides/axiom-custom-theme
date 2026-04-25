@@ -43,10 +43,10 @@ function axiom_render_card_3ds_popup_html() {
     </div>
 
     <div id="axiomCard3dsModal" class="axiom-card-3ds-modal" aria-hidden="true">
-        <div class="axiom-card-3ds-overlay" data-axiom-3ds-close></div>
+        <div class="axiom-card-3ds-overlay"></div>
 
         <div class="axiom-card-3ds-box" role="dialog" aria-modal="true" aria-labelledby="axiomCard3dsTitle">
-            <button type="button" class="axiom-card-3ds-close" data-axiom-3ds-close aria-label="Close popup">
+            <button type="button" class="axiom-card-3ds-close" aria-label="Close popup">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
@@ -91,7 +91,7 @@ function axiom_render_card_3ds_popup_html() {
             </button>
 
             <p class="axiom-card-3ds-small">
-                You can close this popup with the X, but completing bank verification is still required for card payments.
+                Completing bank verification is required for card payments. If skipped, the payment may fail automatically.
             </p>
         </div>
     </div>
