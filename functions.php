@@ -26,7 +26,6 @@ $axiom_function_files = array(
     '/functions/checkout/coupons.php',
     '/functions/checkout/payment-discounts.php',
     '/functions/checkout/card-payment-notice.php',
-    '/functions/checkout/payment-instruction-emails.php',
     '/functions/checkout/manual-payment-instructions-email.php',
     '/functions/checkout/kit-crypto-only.php',
     '/functions/checkout/checkout-addons.php',
