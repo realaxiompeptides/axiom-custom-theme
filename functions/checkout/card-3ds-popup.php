@@ -33,10 +33,6 @@ function axiom_enqueue_card_3ds_popup_assets() {
     );
 }
 
-/**
- * Inline notice stays inside checkout review area.
- * Modal is rendered in wp_footer so WooCommerce checkout refreshes do NOT delete it.
- */
 add_action('woocommerce_review_order_before_submit', 'axiom_render_card_3ds_inline_notice', 20);
 add_action('wp_footer', 'axiom_render_card_3ds_popup_html', 20);
 
@@ -88,10 +84,10 @@ function axiom_render_card_3ds_popup_html() {
             </div>
 
             <div class="axiom-card-3ds-panel axiom-card-3ds-panel-blue">
-                <h3><i class="fa-solid fa-globe"></i> For international cards</h3>
+                <h3><i class="fa-solid fa-building-columns"></i> Card bank settings</h3>
                 <ul>
-                    <li>Make sure international payments are enabled.</li>
-                    <li>Make sure online purchases are enabled.</li>
+                    <li>International payments must be enabled.</li>
+                    <li>Online purchases must be enabled.</li>
                     <li>If your bank blocks the payment, approve it in your bank app and try again.</li>
                 </ul>
             </div>
