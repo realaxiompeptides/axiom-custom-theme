@@ -390,3 +390,58 @@
     font-size: 12px;
   }
 }
+
+.axiom-contact-faq-list {
+  display: grid;
+  gap: 14px;
+}
+
+.axiom-contact-faq-item {
+  border: 1px solid #dfeaf6;
+  border-radius: 22px;
+  background: #f8fbff;
+  overflow: hidden;
+}
+
+.axiom-contact-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 20px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  font-size: 18px;
+  font-weight: 900;
+  color: #07142d;
+}
+
+.axiom-contact-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.axiom-contact-faq-item summary i {
+  color: #5aa9df;
+  transition: transform 0.2s ease;
+}
+
+.axiom-contact-faq-item[open] summary i {
+  transform: rotate(180deg);
+}
+
+.axiom-contact-faq-answer {
+  padding: 0 22px 22px;
+  color: #66738a;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.axiom-contact-faq-answer a {
+  color: #4fa2dc;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.axiom-contact-faq-answer a:hover {
+  text-decoration: underline;
+}
