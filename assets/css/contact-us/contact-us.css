@@ -308,3 +308,85 @@
     width: 100%;
   }
 }
+
+.axiom-contact-info-item-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.axiom-contact-info-item-link:hover {
+  transform: translateY(-2px);
+  border-color: #9fd4f3;
+  background: #ffffff;
+  box-shadow: 0 14px 35px rgba(15, 43, 79, 0.08);
+}
+
+.axiom-contact-info-copy small {
+  display: block;
+  margin-top: 5px;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.axiom-contact-arrow {
+  margin-left: auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5aa9df;
+  background: rgba(90, 169, 223, 0.1);
+  flex: 0 0 34px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.axiom-contact-info-item-link:hover .axiom-contact-arrow {
+  transform: translateX(3px);
+  background: rgba(90, 169, 223, 0.16);
+}
+
+.axiom-contact-whatsapp .axiom-contact-info-icon {
+  background: #e7f8ee;
+  color: #22c55e;
+}
+
+.axiom-contact-telegram .axiom-contact-info-icon {
+  background: #e5f3ff;
+  color: #229ed9;
+}
+
+.axiom-contact-discord .axiom-contact-info-icon {
+  background: #eef2ff;
+  color: #5865f2;
+}
+
+.axiom-contact-faq-card .axiom-contact-help-item {
+  background: #f8fbff;
+  border: 1px solid #e1ecf7;
+}
+
+@media (max-width: 767px) {
+  .axiom-contact-info-item-link {
+    gap: 13px;
+  }
+
+  .axiom-contact-arrow {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+
+  .axiom-contact-info-copy small {
+    font-size: 12px;
+  }
+}
