@@ -239,4 +239,23 @@ get_header();
   </section>
 </main>
 
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const faqItems = document.querySelectorAll('.axiom-contact-faq-item');
+
+  faqItems.forEach(function (item) {
+    item.addEventListener('toggle', function () {
+      if (item.open) {
+        faqItems.forEach(function (otherItem) {
+          if (otherItem !== item) {
+            otherItem.removeAttribute('open');
+          }
+        });
+      }
+    });
+  });
+});
+</script>
+
 <?php get_footer(); ?>
+
