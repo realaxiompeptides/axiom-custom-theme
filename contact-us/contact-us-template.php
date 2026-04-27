@@ -71,7 +71,27 @@ get_header();
                 </div>
                 <div class="axiom-contact-info-copy">
                   <span>Email</span>
-                  <strong><a href="mailto:realaxiompeptides@gmail.com">realaxiompeptides@gmail.com</a></strong>
+                  <strong><a href="mailto:support@axiomresearch.shop">support@axiomresearch.shop</a></strong>
+                </div>
+              </div>
+
+              <div class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-whatsapp">
+                <div class="axiom-contact-info-icon">
+                  <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div class="axiom-contact-info-copy">
+                  <span>WhatsApp</span>
+                  <strong><a href="https://wa.me/15307019349" target="_blank" rel="noopener">+1 (530) 701-9349</a></strong>
+                </div>
+              </div>
+
+              <div class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-telegram">
+                <div class="axiom-contact-info-icon">
+                  <i class="fa-brands fa-telegram"></i>
+                </div>
+                <div class="axiom-contact-info-copy">
+                  <span>Telegram</span>
+                  <strong><a href="https://t.me/axiompeptides" target="_blank" rel="noopener">@axiompeptides</a></strong>
                 </div>
               </div>
 
