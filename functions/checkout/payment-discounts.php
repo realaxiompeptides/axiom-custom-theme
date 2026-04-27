@@ -4,7 +4,7 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Your BTC address.
+ * BTC address.
  */
 function axiom_crypto_btc_address() {
     return 'bc1q5gwgacsd796tntenudj6janfnkt4ygzdzl4mn8';
@@ -25,7 +25,7 @@ function axiom_zelle_display_value() {
 }
 
 /**
- * Get current chosen payment method safely.
+ * Get chosen payment method safely.
  */
 function axiom_get_current_chosen_payment_method() {
     if (!empty($_POST['payment_method'])) {
@@ -34,6 +34,7 @@ function axiom_get_current_chosen_payment_method() {
 
     if (function_exists('WC') && WC()->session) {
         $session_method = WC()->session->get('chosen_payment_method');
+
         if (!empty($session_method)) {
             return $session_method;
         }
@@ -43,7 +44,7 @@ function axiom_get_current_chosen_payment_method() {
 }
 
 /**
- * Get gateway object by ID.
+ * Get gateway object.
  */
 function axiom_get_gateway_object_by_id($gateway_id) {
     if (!$gateway_id || !function_exists('WC')) {
@@ -51,6 +52,7 @@ function axiom_get_gateway_object_by_id($gateway_id) {
     }
 
     $payment_gateways = WC()->payment_gateways();
+
     if (!$payment_gateways || !method_exists($payment_gateways, 'payment_gateways')) {
         return null;
     }
@@ -61,7 +63,7 @@ function axiom_get_gateway_object_by_id($gateway_id) {
 }
 
 /**
- * Detect discount type from gateway title / description / id.
+ * Detect discount payment type.
  */
 function axiom_get_discount_payment_type($gateway_id = '') {
     if (!$gateway_id) {
@@ -108,7 +110,7 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 }
 
 /**
- * Add clearer description text on checkout.
+ * Add checkout description text.
  */
 add_filter('woocommerce_gateway_description', 'axiom_gateway_description_with_discount', 20, 2);
 
@@ -123,11 +125,15 @@ function axiom_gateway_description_with_discount($description, $gateway_id) {
         $description .= '<p class="axiom-payment-discount-copy">Pay with Cash App Bitcoin and receive an automatic 5% discount on your order subtotal.</p>';
     }
 
+    if ($type === 'crypto') {
+        $description .= '<p class="axiom-payment-discount-copy">Pay with crypto and receive an automatic 5% discount on your order subtotal.</p>';
+    }
+
     return $description;
 }
 
 /**
- * Apply 5% discount based on chosen payment method.
+ * Apply 5% discount based on payment method.
  */
 add_action('woocommerce_cart_calculate_fees', 'axiom_apply_payment_method_discount', 20, 1);
 
@@ -171,7 +177,8 @@ function axiom_apply_payment_method_discount($cart) {
 }
 
 /**
- * Refresh checkout totals when payment method changes.
+ * Refresh checkout totals only once when payment method actually changes.
+ * This prevents the infinite checkout reload loop.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_checkout_discount_script');
 
@@ -183,8 +190,8 @@ function axiom_enqueue_checkout_discount_script() {
     wp_register_script(
         'axiom-checkout-payment-discount',
         false,
-        array('jquery'),
-        '1.0.3',
+        array('jquery', 'wc-checkout'),
+        '1.0.5',
         true
     );
 
@@ -192,11 +199,30 @@ function axiom_enqueue_checkout_discount_script() {
 
     wp_add_inline_script(
         'axiom-checkout-payment-discount',
-        "jQuery(function($){
-            $('form.checkout').on('change click', 'input[name=\"payment_method\"]', function(){
-                $('body').trigger('update_checkout');
+        "
+        jQuery(function($) {
+            var axiomLastPaymentMethod = $('input[name=\"payment_method\"]:checked').val() || '';
+            var axiomDiscountRefreshTimer = null;
+
+            $('form.checkout').on('change', 'input[name=\"payment_method\"]', function() {
+                var newPaymentMethod = $('input[name=\"payment_method\"]:checked').val() || '';
+
+                if (newPaymentMethod === axiomLastPaymentMethod) {
+                    return;
+                }
+
+                axiomLastPaymentMethod = newPaymentMethod;
+
+                clearTimeout(axiomDiscountRefreshTimer);
+
+                axiomDiscountRefreshTimer = setTimeout(function() {
+                    if (!$('body').hasClass('processing')) {
+                        $('body').trigger('update_checkout');
+                    }
+                }, 250);
             });
-        });"
+        });
+        "
     );
 }
 
@@ -210,7 +236,7 @@ function axiom_custom_coupon_label($label, $coupon) {
 }
 
 /**
- * Style checkout discount copy only.
+ * Small checkout style.
  */
 add_action('wp_head', 'axiom_checkout_discount_styles');
 
@@ -220,18 +246,18 @@ function axiom_checkout_discount_styles() {
     }
     ?>
     <style>
-      .axiom-payment-discount-copy{
-        margin:8px 0 0;
-        color:#64748b;
-        font-size:14px;
-        line-height:1.5;
-      }
+        .axiom-payment-discount-copy {
+            margin: 8px 0 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.5;
+        }
     </style>
     <?php
 }
 
 /**
- * Save custom payment method title and instructions on order.
+ * Save payment method display/instructions on order.
  */
 add_action('woocommerce_checkout_create_order', 'axiom_store_payment_instruction_meta', 20, 2);
 
