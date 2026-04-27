@@ -16,12 +16,12 @@ get_header();
         <p class="axiom-contact-kicker">Contact Axiom Peptides</p>
         <h1>We’re here to help</h1>
         <p class="axiom-contact-subtitle">
-          Need help with an order, tracking, COAs, shipping, or payment confirmation? Contact our support team below.
+          Need help with an order, tracking, COAs, shipping, bulk orders, or payment confirmation? Contact our support team below.
         </p>
 
         <div class="axiom-contact-hero-badges">
           <div class="axiom-contact-hero-badge">
-            <i class="fa-solid fa-envelope"></i>
+            <i class="fa-solid fa-headset"></i>
             <span>Fast support</span>
           </div>
           <div class="axiom-contact-hero-badge">
@@ -40,6 +40,7 @@ get_header();
   <section class="axiom-contact-main">
     <div class="container">
       <div class="axiom-contact-grid">
+
         <div class="axiom-contact-form-card">
           <div class="axiom-contact-section-head">
             <p class="axiom-contact-section-kicker">Send a message</p>
@@ -60,6 +61,7 @@ get_header();
         </div>
 
         <aside class="axiom-contact-sidebar">
+
           <div class="axiom-contact-info-card">
             <p class="axiom-contact-section-kicker">Support details</p>
             <h3>Contact information</h3>
@@ -122,6 +124,14 @@ get_header();
                 </div>
               </a>
 
+            </div>
+          </div>
+
+          <div class="axiom-contact-info-card axiom-contact-service-card">
+            <p class="axiom-contact-section-kicker">Service details</p>
+            <h3>Support & shipping</h3>
+
+            <div class="axiom-contact-info-list">
               <div class="axiom-contact-info-item">
                 <div class="axiom-contact-info-icon">
                   <i class="fa-solid fa-clock"></i>
@@ -142,6 +152,15 @@ get_header();
                 </div>
               </div>
 
+              <div class="axiom-contact-info-item">
+                <div class="axiom-contact-info-icon">
+                  <i class="fa-solid fa-box-open"></i>
+                </div>
+                <div class="axiom-contact-info-copy">
+                  <span>Order support</span>
+                  <strong>Include your order number for faster help</strong>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -149,26 +168,60 @@ get_header();
             <p class="axiom-contact-section-kicker">Frequently asked questions</p>
             <h3>Quick answers</h3>
 
-            <div class="axiom-contact-help-list">
-              <div class="axiom-contact-help-item">
-                <strong>Where can I find COAs?</strong>
-                <span>COAs are available on product pages when provided. If you need help finding one, contact support with the product name.</span>
-              </div>
+            <div class="axiom-contact-faq-list">
 
-              <div class="axiom-contact-help-item">
-                <strong>How do I track my order?</strong>
-                <span>Tracking details are sent after fulfillment. Please include your order number if you need a tracking update.</span>
-              </div>
+              <details class="axiom-contact-faq-item">
+                <summary>
+                  <span>Where can I find COAs?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="axiom-contact-faq-answer">
+                  COAs can be viewed on our COA page here:
+                  <a href="https://axiomresearch.shop/coa-page" target="_blank" rel="noopener">View COAs</a>.
+                  If you need help finding a specific COA, contact support with the product name.
+                </div>
+              </details>
 
-              <div class="axiom-contact-help-item">
-                <strong>How long does shipping take?</strong>
-                <span>Most orders ship through USPS. Delivery time depends on the service selected and USPS transit speed.</span>
-              </div>
+              <details class="axiom-contact-faq-item">
+                <summary>
+                  <span>How do I track my order?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="axiom-contact-faq-answer">
+                  Tracking details are sent after your order is fulfilled. If you need a tracking update, contact support with your order number.
+                </div>
+              </details>
 
-              <div class="axiom-contact-help-item">
-                <strong>What payment methods do you support?</strong>
-                <span>We support multiple payment options. For payment confirmation, include your order number and payment method.</span>
-              </div>
+              <details class="axiom-contact-faq-item">
+                <summary>
+                  <span>How long does shipping take?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="axiom-contact-faq-answer">
+                  Most orders ship through USPS with tracking. Delivery speed depends on the shipping service selected and USPS transit times.
+                </div>
+              </details>
+
+              <details class="axiom-contact-faq-item">
+                <summary>
+                  <span>What payment methods do you accept?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="axiom-contact-faq-answer">
+                  We currently accept Venmo, Zelle, same-day bank payment, Cash App, Bitcoin, and credit/debit card payments.
+                </div>
+              </details>
+
+              <details class="axiom-contact-faq-item">
+                <summary>
+                  <span>Do you offer bulk orders?</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+                <div class="axiom-contact-faq-answer">
+                  Yes, bulk orders may be available depending on the product and quantity requested. Contact support with the products and quantities you are interested in.
+                </div>
+              </details>
+
             </div>
           </div>
 
@@ -179,6 +232,7 @@ get_header();
               All products sold by Axiom Peptides are intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.
             </p>
           </div>
+
         </aside>
       </div>
     </div>
