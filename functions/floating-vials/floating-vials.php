@@ -1,0 +1,26 @@
+<?php
+if (!defined('ABSPATH')) exit;
+
+add_action('wp_enqueue_scripts', function () {
+    if (!is_page_template('page-floating-vials.php')) {
+        return;
+    }
+
+    $theme_uri  = get_template_directory_uri();
+    $theme_path = get_template_directory();
+
+    wp_enqueue_style(
+        'axiom-floating-vials-test',
+        $theme_uri . '/assets/css/floating-vials-test.css',
+        array(),
+        filemtime($theme_path . '/assets/css/floating-vials-test.css')
+    );
+
+    wp_enqueue_script(
+        'axiom-floating-vials-test',
+        $theme_uri . '/assets/js/floating-vials-test.js',
+        array(),
+        filemtime($theme_path . '/assets/js/floating-vials-test.js'),
+        true
+    );
+});
