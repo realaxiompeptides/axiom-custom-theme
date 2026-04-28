@@ -1,128 +1,73 @@
-.axiom-floating-test-page {
-    background: #050b10;
-    color: #fff;
-    min-height: 100vh;
+.axiom-floating-page {
+    background: #fff !important;
 }
 
-.axiom-floating-hero {
-    position: relative;
-    overflow: hidden;
-    padding: 70px 20px 90px;
-    min-height: 720px;
-    background:
-        radial-gradient(circle at center, rgba(59, 111, 224, 0.16), transparent 35%),
-        radial-gradient(circle at left, rgba(58, 255, 156, 0.16), transparent 32%),
-        linear-gradient(180deg, #061017 0%, #05080d 100%);
-    border: 1px solid rgba(58, 255, 156, 0.25);
-}
-
-.axiom-floating-bg-glow {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    box-shadow:
-        inset 0 0 80px rgba(56, 255, 150, 0.22),
-        inset 0 0 160px rgba(56, 255, 150, 0.12);
-}
-
-.axiom-floating-stats {
-    position: relative;
-    z-index: 2;
-    max-width: 760px;
-    margin: 0 auto 25px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 22px 60px;
-    text-align: center;
-}
-
-.axiom-floating-stats strong {
-    display: block;
-    font-size: 28px;
-    font-weight: 900;
-}
-
-.axiom-floating-stats span {
-    display: block;
-    margin-top: 7px;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 15px;
-}
-
-.axiom-floating-proof {
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    color: rgba(255, 255, 255, 0.55);
-    font-weight: 700;
-    margin: 0 auto 50px;
-    max-width: 760px;
+.axiom-floating-white-section {
+    background: #fff !important;
+    padding: 45px 10px 65px !important;
+    overflow: hidden !important;
 }
 
 .axiom-vial-stage {
-    position: relative;
-    z-index: 2;
-    max-width: 900px;
-    height: 360px;
-    margin: 0 auto;
+    width: 100% !important;
+    max-width: 920px !important;
+    height: 260px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    overflow: visible !important;
 }
 
 .axiom-floating-vial {
-    position: absolute;
-    display: block;
-    animation-name: axiomVialFloat;
-    animation-timing-function: ease-in-out;
-    animation-iteration-count: infinite;
-    will-change: transform;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 18% !important;
+    width: 18% !important;
+    max-width: 135px !important;
+    height: 230px !important;
+    text-decoration: none !important;
+    animation: axiomVialFloat 3.4s ease-in-out infinite !important;
+    will-change: transform !important;
 }
 
 .axiom-floating-vial img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: contain;
-    filter: drop-shadow(0 22px 24px rgba(0, 0, 0, 0.45));
+    width: 100% !important;
+    max-width: 135px !important;
+    max-height: 230px !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+    filter: drop-shadow(0 16px 18px rgba(0,0,0,0.18));
 }
 
-/* Each vial has different timing so it keeps looking natural */
-.vial-1 {
-    left: 4%;
-    top: 145px;
-    width: 112px;
-    animation-duration: 3.4s;
-    animation-delay: 0s;
+.axiom-floating-vial:nth-child(1) {
+    animation-duration: 3.2s !important;
+    animation-delay: 0s !important;
 }
 
-.vial-2 {
-    left: 24%;
-    top: 130px;
-    width: 118px;
-    animation-duration: 3.8s;
-    animation-delay: -0.8s;
+.axiom-floating-vial:nth-child(2) {
+    animation-duration: 3.7s !important;
+    animation-delay: -0.6s !important;
 }
 
-.vial-3 {
-    left: 44%;
-    top: 70px;
-    width: 132px;
-    animation-duration: 3.2s;
-    animation-delay: -1.4s;
+.axiom-floating-vial:nth-child(3) {
+    animation-duration: 3.3s !important;
+    animation-delay: -1.1s !important;
 }
 
-.vial-4 {
-    left: 64%;
-    top: 105px;
-    width: 122px;
-    animation-duration: 3.7s;
-    animation-delay: -0.4s;
+.axiom-floating-vial:nth-child(4) {
+    animation-duration: 3.9s !important;
+    animation-delay: -0.3s !important;
 }
 
-.vial-5 {
-    right: 3%;
-    top: 125px;
-    width: 116px;
-    animation-duration: 3.5s;
-    animation-delay: -1.1s;
+.axiom-floating-vial:nth-child(5) {
+    animation-duration: 3.5s !important;
+    animation-delay: -1.4s !important;
 }
 
 @keyframes axiomVialFloat {
@@ -131,7 +76,7 @@
     }
 
     50% {
-        transform: translateY(-34px);
+        transform: translateY(-28px);
     }
 
     100% {
@@ -140,56 +85,25 @@
 }
 
 @media (max-width: 768px) {
-    .axiom-floating-hero {
-        padding: 50px 16px 70px;
-        min-height: 620px;
-    }
-
-    .axiom-floating-stats {
-        gap: 18px 30px;
-    }
-
-    .axiom-floating-stats strong {
-        font-size: 24px;
-    }
-
-    .axiom-floating-proof {
-        font-size: 14px;
-        margin-bottom: 35px;
+    .axiom-floating-white-section {
+        padding: 30px 6px 45px !important;
     }
 
     .axiom-vial-stage {
-        height: 320px;
+        height: 190px !important;
+        gap: 5px !important;
     }
 
-    .vial-1 {
-        left: 2%;
-        top: 150px;
-        width: 78px;
+    .axiom-floating-vial {
+        flex: 0 0 19% !important;
+        width: 19% !important;
+        max-width: 78px !important;
+        height: 170px !important;
     }
 
-    .vial-2 {
-        left: 22%;
-        top: 120px;
-        width: 82px;
-    }
-
-    .vial-3 {
-        left: 42%;
-        top: 70px;
-        width: 92px;
-    }
-
-    .vial-4 {
-        left: 63%;
-        top: 118px;
-        width: 84px;
-    }
-
-    .vial-5 {
-        right: 1%;
-        top: 135px;
-        width: 80px;
+    .axiom-floating-vial img {
+        max-width: 78px !important;
+        max-height: 170px !important;
     }
 
     @keyframes axiomVialFloat {
@@ -198,17 +112,11 @@
         }
 
         50% {
-            transform: translateY(-24px);
+            transform: translateY(-18px);
         }
 
         100% {
             transform: translateY(0);
         }
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .axiom-floating-vial {
-        animation: none !important;
     }
 }
