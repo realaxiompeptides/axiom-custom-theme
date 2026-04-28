@@ -1,26 +1,33 @@
 <?php
+/**
+ * Template Name: Floating Vials
+ */
+
 if (!defined('ABSPATH')) exit;
 
-add_action('wp_enqueue_scripts', function () {
-    if (!is_page_template('floating-vials.php')) {
-        return;
-    }
+get_header();
 
-    $theme_uri  = get_template_directory_uri();
-    $theme_path = get_template_directory();
+$random_products = wc_get_products(array(
+    'status'  => 'publish',
+    'limit'   => 5,
+    'orderby' => 'rand',
+    'return'  => 'objects',
+));
+?>
 
-    wp_enqueue_style(
-        'axiom-floating-vials-test',
-        $theme_uri . '/assets/css/floating-vials-test.css',
-        array(),
-        filemtime($theme_path . '/assets/css/floating-vials-test.css')
-    );
+<main class="axiom-floating-page">
+    <section class="axiom-floating-white-section">
+        <div class="axiom-vial-stage">
+            <?php foreach ($random_products as $product) :
+                $image_id  = $product->get_image_id();
+                $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'large') : wc_placeholder_img_src();
+            ?>
+                <a class="axiom-floating-vial" href="<?php echo esc_url(get_permalink($product->get_id())); ?>">
+                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr($product->get_name()); ?>">
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </section>
+</main>
 
-    wp_enqueue_script(
-        'axiom-floating-vials-test',
-        $theme_uri . '/assets/js/floating-vials-test.js',
-        array(),
-        filemtime($theme_path . '/assets/js/floating-vials-test.js'),
-        true
-    );
-});
+<?php get_footer(); ?>
