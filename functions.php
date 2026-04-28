@@ -49,8 +49,11 @@ $axiom_function_files = array(
 
     '/functions/emails/axiom-email-system.php',
 
-    // Floating vials test page assets
+    // Floating vials homepage/test page assets
     '/functions/floating-vials/floating-vials.php',
+
+    // Enhanced product research data system
+    '/product-page/helpers/enhanced-product-data-loader.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
