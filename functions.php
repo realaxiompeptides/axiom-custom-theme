@@ -48,6 +48,9 @@ $axiom_function_files = array(
     '/functions/calculator/peptide-calculator.php',
 
     '/functions/emails/axiom-email-system.php',
+
+    // Floating vials test page assets
+    '/functions/floating-vials/floating-vials.php',
 );
 
 foreach ($axiom_function_files as $axiom_file) {
