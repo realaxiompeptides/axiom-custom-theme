@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) exit;
 
 add_action('wp_enqueue_scripts', function () {
-    if (!is_page_template('page-floating-vials.php')) {
+    if (!is_page_template('floating-vials.php')) {
         return;
     }
 
