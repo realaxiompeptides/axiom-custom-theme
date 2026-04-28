@@ -141,6 +141,15 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-description', $theme_uri . '/assets/css/product-page/description.css', array('axiom-base', 'axiom-product-layout'), '1.2');
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
+        if (file_exists($theme_path . '/assets/css/product-page/enhanced-product.css')) {
+            wp_enqueue_style(
+                'axiom-enhanced-product',
+                $theme_uri . '/assets/css/product-page/enhanced-product.css',
+                array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
+                filemtime($theme_path . '/assets/css/product-page/enhanced-product.css')
+            );
+        }
+
         if (file_exists($theme_path . '/assets/js/product-page.js')) {
             wp_enqueue_script('axiom-product-page', $theme_uri . '/assets/js/product-page.js', array('jquery'), '1.4', true);
         }
