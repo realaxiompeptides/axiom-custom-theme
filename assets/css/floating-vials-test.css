@@ -136,3 +136,64 @@
         contrast(1.08)
         drop-shadow(0 16px 18px rgba(0,0,0,0.18)) !important;
 }
+
+/* Cleaner floating vial row */
+.axiom-floating-white-section {
+    background:
+        radial-gradient(circle at center, rgba(59, 111, 224, 0.28) 0%, rgba(59, 111, 224, 0.12) 28%, rgba(255,255,255,1) 65%) !important;
+    padding: 55px 0 70px !important;
+}
+
+.axiom-vial-stage {
+    max-width: 760px !important;
+    height: 230px !important;
+    gap: 0 !important;
+    justify-content: center !important;
+}
+
+.axiom-floating-vial {
+    flex: 0 0 15.5% !important;
+    width: 15.5% !important;
+    max-width: 110px !important;
+    height: 190px !important;
+    margin: 0 -4px !important;
+}
+
+.axiom-floating-vial img {
+    max-width: 110px !important;
+    max-height: 190px !important;
+
+    /* helps white image boxes blend into white/blue background */
+    mix-blend-mode: multiply !important;
+    opacity: 0.96 !important;
+
+    filter:
+        brightness(1.04)
+        contrast(1.12)
+        drop-shadow(0 18px 22px rgba(59, 111, 224, 0.42)) !important;
+}
+
+@media (max-width: 768px) {
+    .axiom-floating-white-section {
+        padding: 45px 0 55px !important;
+    }
+
+    .axiom-vial-stage {
+        max-width: 100% !important;
+        height: 185px !important;
+        gap: 0 !important;
+    }
+
+    .axiom-floating-vial {
+        flex: 0 0 18% !important;
+        width: 18% !important;
+        max-width: 72px !important;
+        height: 155px !important;
+        margin: 0 -2px !important;
+    }
+
+    .axiom-floating-vial img {
+        max-width: 72px !important;
+        max-height: 155px !important;
+    }
+}
