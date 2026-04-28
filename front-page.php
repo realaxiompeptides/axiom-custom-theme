@@ -69,6 +69,13 @@
     </div>
   </section>
 
+  <?php
+  $floating_vials_section = get_template_directory() . '/homepage/floating-vials-section.php';
+  if (file_exists($floating_vials_section)) {
+      include $floating_vials_section;
+  }
+  ?>
+
   <section class="homepage-collection section-pad" id="homepage-collection">
     <div class="container">
       <div class="section-heading homepage-collection-heading">
