@@ -1,6 +1,6 @@
 .axiom-floating-test-page {
     background: #050b10;
-    color: #ffffff;
+    color: #fff;
     min-height: 100vh;
 }
 
@@ -40,7 +40,6 @@
     display: block;
     font-size: 28px;
     font-weight: 900;
-    line-height: 1.05;
 }
 
 .axiom-floating-stats span {
@@ -54,7 +53,7 @@
     position: relative;
     z-index: 2;
     text-align: center;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.55);
     font-weight: 700;
     margin: 0 auto 50px;
     max-width: 760px;
@@ -70,17 +69,22 @@
 
 .axiom-floating-vial {
     position: absolute;
-    width: 120px;
-    height: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 22px 24px rgba(0, 0, 0, 0.45));
+    display: block;
     animation-name: axiomVialFloat;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     will-change: transform;
 }
 
-/* Vial positions */
+.axiom-floating-vial img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    filter: drop-shadow(0 22px 24px rgba(0, 0, 0, 0.45));
+}
+
+/* Each vial has different timing so it keeps looking natural */
 .vial-1 {
     left: 4%;
     top: 145px;
@@ -123,21 +127,22 @@
 
 @keyframes axiomVialFloat {
     0% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
+
     50% {
         transform: translateY(-34px);
     }
+
     100% {
-        transform: translateY(0px);
+        transform: translateY(0);
     }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
     .axiom-floating-hero {
-        padding: 55px 16px 70px;
-        min-height: 650px;
+        padding: 50px 16px 70px;
+        min-height: 620px;
     }
 
     .axiom-floating-stats {
@@ -145,7 +150,7 @@
     }
 
     .axiom-floating-stats strong {
-        font-size: 25px;
+        font-size: 24px;
     }
 
     .axiom-floating-proof {
@@ -154,11 +159,7 @@
     }
 
     .axiom-vial-stage {
-        height: 330px;
-    }
-
-    .axiom-floating-vial {
-        width: 82px;
+        height: 320px;
     }
 
     .vial-1 {
@@ -193,18 +194,19 @@
 
     @keyframes axiomVialFloat {
         0% {
-            transform: translateY(0px);
+            transform: translateY(0);
         }
+
         50% {
             transform: translateY(-24px);
         }
+
         100% {
-            transform: translateY(0px);
+            transform: translateY(0);
         }
     }
 }
 
-/* Accessibility: stop animation if user prefers reduced motion */
 @media (prefers-reduced-motion: reduce) {
     .axiom-floating-vial {
         animation: none !important;
