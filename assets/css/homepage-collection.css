@@ -253,3 +253,12 @@
     margin-top: 24px;
   }
 }
+
+/* Pull Shop Best Sellers closer to floating vials */
+.axiom-home-floating-vials {
+    margin-bottom: -18px !important;
+}
+
+.homepage-collection.section-pad {
+    padding-top: 32px !important;
+}
