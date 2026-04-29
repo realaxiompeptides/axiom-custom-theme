@@ -121,6 +121,13 @@
   </div>
 </div>
 
+<?php
+$axiom_mobile_bottom_nav = get_template_directory() . '/template-parts/mobile-bottom-nav.php';
+if (file_exists($axiom_mobile_bottom_nav)) {
+    include $axiom_mobile_bottom_nav;
+}
+?>
+
 <?php wp_footer(); ?>
 </body>
 </html>
