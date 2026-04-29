@@ -53,6 +53,10 @@ $axiom_function_files = array(
 
     '/functions/emails/axiom-email-system.php',
 
+    // 🔥 NEW: Abandoned Cart System
+    '/functions/email/abandoned-cart-email.php',
+    '/functions/abandoned-cart/abandoned-cart-core.php',
+
     // Floating vials homepage/test page assets
     '/functions/floating-vials/floating-vials.php',
 
@@ -77,7 +81,6 @@ foreach ($axiom_function_files as $axiom_file) {
 /**
  * TEMP TEST HELPER:
  * Shows an "Open thank-you page" link inside WooCommerce order admin.
- * Remove this after testing the Venmo/Zelle fallback.
  */
 add_action('woocommerce_admin_order_data_after_order_details', 'axiom_show_admin_thankyou_test_link');
 
@@ -86,12 +89,16 @@ function axiom_show_admin_thankyou_test_link($order) {
         return;
     }
 
-    echo '<p style="margin-top:12px;"><strong>Thank You Page:</strong> <a target="_blank" rel="noopener noreferrer" href="' . esc_url($order->get_checkout_order_received_url()) . '">Open thank-you page</a></p>';
+    echo '<p style="margin-top:12px;">
+        <strong>Thank You Page:</strong> 
+        <a target="_blank" rel="noopener noreferrer" href="' . esc_url($order->get_checkout_order_received_url()) . '">
+            Open thank-you page
+        </a>
+    </p>';
 }
 
 /**
  * Enqueue Reviews page stylesheet.
- * Loads only on the custom reviews page template.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
 
