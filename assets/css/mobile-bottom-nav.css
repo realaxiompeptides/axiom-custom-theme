@@ -1,0 +1,100 @@
+.axiom-mobile-bottom-nav {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 86px;
+    }
+
+    .axiom-mobile-bottom-nav {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 99999;
+        height: 78px;
+        padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+        background: rgba(255, 255, 255, 0.92);
+        border-top: 1px solid rgba(59, 111, 224, 0.16);
+        box-shadow:
+            0 -18px 42px rgba(60, 150, 255, 0.20),
+            0 -6px 18px rgba(59, 111, 224, 0.10);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        align-items: center;
+    }
+
+    .axiom-mobile-bottom-nav::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 76px;
+        pointer-events: none;
+        background:
+            radial-gradient(circle at 50% 100%, rgba(90, 170, 255, 0.34), transparent 62%),
+            linear-gradient(to top, rgba(59, 111, 224, 0.12), transparent);
+        z-index: -1;
+    }
+
+    .axiom-mobile-bottom-nav-link {
+        border: none;
+        background: transparent;
+        text-decoration: none;
+        color: #8a98a8;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+        min-width: 0;
+    }
+
+    .axiom-mobile-bottom-nav-link i {
+        font-size: 21px;
+        line-height: 1;
+    }
+
+    .axiom-mobile-bottom-nav-link span {
+        white-space: nowrap;
+    }
+
+    .axiom-mobile-bottom-nav-link:hover,
+    .axiom-mobile-bottom-nav-link:focus,
+    .axiom-mobile-bottom-nav-link:active {
+        color: #3b6fe0;
+    }
+
+    .axiom-mobile-bottom-cart-icon {
+        position: relative;
+        display: inline-flex;
+    }
+
+    .axiom-mobile-bottom-cart-icon em {
+        position: absolute;
+        top: -9px;
+        right: -12px;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        border-radius: 999px;
+        background: #3b6fe0;
+        color: #ffffff;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(59, 111, 224, 0.35);
+    }
+}
