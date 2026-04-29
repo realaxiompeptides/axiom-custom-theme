@@ -160,7 +160,23 @@ function axiom_custom_theme_assets() {
         }
 
         if (file_exists($theme_path . '/assets/js/product-page.js')) {
-            wp_enqueue_script('axiom-product-page', $theme_uri . '/assets/js/product-page.js', array('jquery'), '1.4', true);
+            wp_enqueue_script(
+                'axiom-product-page',
+                $theme_uri . '/assets/js/product-page.js',
+                array('jquery'),
+                filemtime($theme_path . '/assets/js/product-page.js'),
+                true
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/js/product-page/sticky-add-to-cart.js')) {
+            wp_enqueue_script(
+                'axiom-sticky-add-to-cart',
+                $theme_uri . '/assets/js/product-page/sticky-add-to-cart.js',
+                array('jquery', 'axiom-product-page', 'axiom-main'),
+                filemtime($theme_path . '/assets/js/product-page/sticky-add-to-cart.js'),
+                true
+            );
         }
 
         $axiom_current_product = null;
@@ -235,7 +251,7 @@ function axiom_custom_theme_assets() {
                 'axiom-checkout',
                 $theme_uri . '/assets/js/checkout-page.js',
                 array('jquery', 'wc-checkout'),
-                '1.5',
+                filemtime($theme_path . '/assets/js/checkout-page.js'),
                 true
             );
 
@@ -273,9 +289,6 @@ function axiom_custom_theme_assets() {
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
 
-    /**
-     * Klaviyo popup after age gate.
-     */
     if (file_exists($theme_path . '/assets/js/klaviyo-after-age-gate.js')) {
         wp_enqueue_script(
             'axiom-klaviyo-after-age-gate',
