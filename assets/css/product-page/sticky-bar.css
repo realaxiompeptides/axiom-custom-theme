@@ -162,3 +162,15 @@ body.has-sticky-product-bar {
         padding-bottom: 112px !important;
     }
 }
+
+@media (max-width: 768px) {
+    .sticky-product-bar {
+        bottom: 86px !important;
+        z-index: 99998 !important;
+    }
+
+    .sticky-product-bar-inner {
+        margin: 0 14px !important;
+        border-radius: 22px !important;
+    }
+}
