@@ -150,6 +150,15 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-description', $theme_uri . '/assets/css/product-page/description.css', array('axiom-base', 'axiom-product-layout'), '1.2');
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
+        if (file_exists($theme_path . '/assets/css/product-page/why-choose-us.css')) {
+            wp_enqueue_style(
+                'axiom-product-why-choose-us',
+                $theme_uri . '/assets/css/product-page/why-choose-us.css',
+                array('axiom-base', 'axiom-product-layout', 'axiom-product-description'),
+                filemtime($theme_path . '/assets/css/product-page/why-choose-us.css')
+            );
+        }
+
         if (file_exists($theme_path . '/assets/css/product-page/product-image-trust-icons.css')) {
             wp_enqueue_style(
                 'axiom-product-image-trust-icons',
