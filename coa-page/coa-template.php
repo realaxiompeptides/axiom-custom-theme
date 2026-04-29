@@ -58,14 +58,12 @@ if (!function_exists('axiom_coa_template_get_map_config_for_product_name')) {
 
         $normalized_product_name = axiom_coa_template_normalize_text($product_name);
 
-        // 1. Exact normalized key match.
         foreach ($map as $map_key => $config) {
             if (axiom_coa_template_normalize_text($map_key) === $normalized_product_name) {
                 return is_array($config) ? $config : null;
             }
         }
 
-        // 2. Alias match against the actual product name.
         foreach ($map as $map_key => $config) {
             if (empty($config['product_aliases']) || !is_array($config['product_aliases'])) {
                 continue;
@@ -86,7 +84,6 @@ if (!function_exists('axiom_coa_template_get_map_config_for_product_name')) {
             }
         }
 
-        // 3. Fallback loose key match.
         foreach ($map as $map_key => $config) {
             $normalized_map_key = axiom_coa_template_normalize_text($map_key);
 
@@ -121,7 +118,6 @@ if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
             ? array_map('axiom_coa_template_normalize_text', (array) $config['variant_aliases'])
             : array();
 
-        // Always include the actual product name as an alias too.
         $product_aliases[] = axiom_coa_template_normalize_text($product_name);
         $product_aliases = array_values(array_unique(array_filter($product_aliases)));
 
@@ -139,6 +135,7 @@ if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
             }
 
             $product_hit = false;
+
             foreach ($product_aliases as $alias) {
                 if ($alias && strpos($haystack, $alias) !== false) {
                     $product_hit = true;
@@ -150,20 +147,15 @@ if (!function_exists('axiom_coa_template_get_mapped_attachments')) {
                 continue;
             }
 
-            // If there are variants, prefer those, but still allow a product-only match.
             if (!empty($variant_aliases)) {
-                $variant_hit = false;
-
                 foreach ($variant_aliases as $variant) {
                     if ($variant && strpos($haystack, $variant) !== false) {
-                        $variant_hit = true;
-                        break;
+                        $matches[] = $attachment->ID;
+                        continue 2;
                     }
                 }
 
-                if ($variant_hit || !$variant_hit) {
-                    $matches[] = $attachment->ID;
-                }
+                $matches[] = $attachment->ID;
             } else {
                 $matches[] = $attachment->ID;
             }
@@ -199,10 +191,6 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 
         $label = strtoupper(str_replace('-', ' ', $base));
 
-        /*
-         * Only liquid products should keep ML in the label.
-         * Everything else should remove ML amounts.
-         */
         $liquid_products = array(
             'BAC WATER',
             'LEMON BOTTLE',
@@ -222,7 +210,6 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 
 /*
  * Build product list and exclude anything that should not show on the COA page.
- * This hides kits, Research Starter Pack, Shipping Protection, and checkout add-ons.
  */
 $products = array();
 
@@ -252,7 +239,7 @@ if (function_exists('wc_get_products')) {
         'shipment-protection',
     );
 
-    $excluded_product_names = array(
+    $excluded_product_name_phrases = array(
         'research starter pack',
         'starter pack',
         'shipping protection',
@@ -273,12 +260,8 @@ if (function_exists('wc_get_products')) {
                 continue;
             }
 
-            if (in_array($product_name, $excluded_product_names, true)) {
-                continue;
-            }
-
-            foreach ($excluded_product_names as $excluded_name) {
-                if ($excluded_name && strpos($product_name, $excluded_name) !== false) {
+            foreach ($excluded_product_name_phrases as $excluded_phrase) {
+                if ($excluded_phrase && strpos($product_name, $excluded_phrase) !== false) {
                     continue 2;
                 }
             }
@@ -291,15 +274,6 @@ if (function_exists('wc_get_products')) {
                         continue 2;
                     }
                 }
-            }
-
-            $products[] = $product;
-        }
-    }
-}
-
-            if ($is_kit_product) {
-                continue;
             }
 
             $products[] = $product;
@@ -432,7 +406,7 @@ if (file_exists($coa_css_path)) {
       <?php else : ?>
         <div class="axiom-coa-card">
           <h2>No products found</h2>
-          <p>No published non-kit products were found yet.</p>
+          <p>No published products were found for the COA page.</p>
         </div>
       <?php endif; ?>
     </section>
