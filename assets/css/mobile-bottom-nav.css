@@ -3,64 +3,86 @@
 }
 
 @media (max-width: 768px) {
+
+    /* 🔹 Reduce page offset so nav doesn’t feel oversized */
     body {
-        padding-bottom: 86px;
+        padding-bottom: 65px; /* was 86px */
     }
 
+    /* 🔹 Main nav bar (tight + premium) */
     .axiom-mobile-bottom-nav {
         position: fixed;
         left: 0;
         right: 0;
         bottom: 0;
         z-index: 99999;
-        height: 78px;
-        padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+
+        height: 60px; /* was 78px */
+        padding: 4px 6px calc(4px + env(safe-area-inset-bottom));
+
         background: rgba(255, 255, 255, 0.92);
-        border-top: 1px solid rgba(59, 111, 224, 0.16);
+        border-top: 1px solid rgba(59, 111, 224, 0.14);
+
         box-shadow:
-            0 -18px 42px rgba(60, 150, 255, 0.20),
-            0 -6px 18px rgba(59, 111, 224, 0.10);
+            0 -12px 28px rgba(60, 150, 255, 0.16),
+            0 -4px 12px rgba(59, 111, 224, 0.08);
+
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
+
         display: grid;
-        grid-template-columns: repeat(5, 1fr);
+
+        /* 🔥 THIS FIXES THE SPACING ISSUE */
+        grid-template-columns: repeat(5, auto); /* was 1fr */
+        justify-content: space-around;
+
         align-items: center;
     }
 
+    /* 🔹 Glow effect (slightly tighter) */
     .axiom-mobile-bottom-nav::before {
         content: "";
         position: absolute;
         left: 0;
         right: 0;
         bottom: 0;
-        height: 76px;
+        height: 60px; /* match new height */
         pointer-events: none;
+
         background:
-            radial-gradient(circle at 50% 100%, rgba(90, 170, 255, 0.34), transparent 62%),
-            linear-gradient(to top, rgba(59, 111, 224, 0.12), transparent);
+            radial-gradient(circle at 50% 100%, rgba(90, 170, 255, 0.28), transparent 60%),
+            linear-gradient(to top, rgba(59, 111, 224, 0.10), transparent);
+
         z-index: -1;
     }
 
+    /* 🔹 Nav buttons (tight + clean) */
     .axiom-mobile-bottom-nav-link {
         border: none;
         background: transparent;
         text-decoration: none;
+
         color: #8a98a8;
+
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 5px;
+
+        gap: 2px; /* was 5px */
+
         font-family: inherit;
-        font-size: 11px;
+        font-size: 10px; /* was 11px */
         font-weight: 700;
         line-height: 1;
+
         cursor: pointer;
         min-width: 0;
     }
 
+    /* 🔹 Icon sizing (cleaner look) */
     .axiom-mobile-bottom-nav-link i {
-        font-size: 21px;
+        font-size: 18px; /* was 21px */
         line-height: 1;
     }
 
@@ -68,33 +90,42 @@
         white-space: nowrap;
     }
 
+    /* 🔹 Hover / active */
     .axiom-mobile-bottom-nav-link:hover,
     .axiom-mobile-bottom-nav-link:focus,
     .axiom-mobile-bottom-nav-link:active {
         color: #3b6fe0;
     }
 
+    /* 🔹 Cart icon wrapper */
     .axiom-mobile-bottom-cart-icon {
         position: relative;
         display: inline-flex;
     }
 
+    /* 🔹 Cart badge (slightly tighter) */
     .axiom-mobile-bottom-cart-icon em {
         position: absolute;
-        top: -9px;
-        right: -12px;
-        min-width: 18px;
-        height: 18px;
-        padding: 0 5px;
+        top: -7px; /* tighter */
+        right: -10px;
+
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+
         border-radius: 999px;
+
         background: #3b6fe0;
         color: #ffffff;
-        font-size: 10px;
+
+        font-size: 9px;
         font-style: normal;
         font-weight: 900;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(59, 111, 224, 0.35);
+
+        box-shadow: 0 3px 8px rgba(59, 111, 224, 0.30);
     }
 }
