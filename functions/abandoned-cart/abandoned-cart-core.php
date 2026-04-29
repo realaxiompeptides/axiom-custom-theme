@@ -1,81 +1,144 @@
 <?php
-if (!defined('ABSPATH')) exit;
+if (!defined('ABSPATH')) {
+    exit;
+}
 
 /**
- * CAPTURE CART + EMAIL
+ * SAVE EMAIL INPUT
  */
-add_action('woocommerce_checkout_update_order_review', function($post_data) {
-    parse_str($post_data, $data);
-
-    if (empty($data['billing_email'])) return;
-
-    $email = sanitize_email($data['billing_email']);
-
-    if (!WC()->cart) return;
-
-    $cart = WC()->cart->get_cart();
-    if (empty($cart)) return;
-
-    $key = md5($email);
-
-    update_option('axiom_abandoned_' . $key, [
-        'email' => $email,
-        'time' => time(),
-        'step1' => false,
-        'step2' => false,
-        'step3' => false,
-    ]);
+add_action('woocommerce_after_checkout_form', function () {
+?>
+<script>
+document.addEventListener('input', function(e){
+    if(e.target.name === "billing_email"){
+        localStorage.setItem('axiom_email', e.target.value);
+    }
+});
+</script>
+<?php
 });
 
 /**
- * CRON JOB
+ * SAVE CART ON EXIT
  */
-add_action('axiom_abandoned_cart_cron', function() {
+add_action('wp_footer', function () {
+    if (!is_checkout()) return;
+?>
+<script>
+window.addEventListener('beforeunload', function () {
+
+    let email = localStorage.getItem('axiom_email');
+    if (!email) return;
+
+    fetch('<?php echo admin_url("admin-ajax.php"); ?>', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'action=axiom_save_abandoned_cart&email=' + encodeURIComponent(email)
+    });
+
+});
+</script>
+<?php
+});
+
+/**
+ * SAVE CART DATA
+ */
+add_action('wp_ajax_nopriv_axiom_save_abandoned_cart', 'axiom_save_abandoned_cart');
+add_action('wp_ajax_axiom_save_abandoned_cart', 'axiom_save_abandoned_cart');
+
+function axiom_save_abandoned_cart() {
+
+    if (!function_exists('WC')) return;
+
+    $email = sanitize_email($_POST['email']);
+    if (!$email) return;
+
+    $cart = WC()->cart->get_cart();
+
+    update_option('axiom_cart_' . md5($email), array(
+        'email' => $email,
+        'cart'  => $cart,
+        'time'  => time(),
+        'sent'  => array() // track sent emails
+    ));
+}
+
+/**
+ * CRON
+ */
+add_filter('cron_schedules', function ($schedules) {
+    $schedules['minute'] = array(
+        'interval' => 60,
+        'display'  => 'Every Minute'
+    );
+    return $schedules;
+});
+
+add_action('init', function () {
+    if (!wp_next_scheduled('axiom_abandoned_cart_cron')) {
+        wp_schedule_event(time(), 'minute', 'axiom_abandoned_cart_cron');
+    }
+});
+
+add_action('axiom_abandoned_cart_cron', function () {
 
     global $wpdb;
 
-    $rows = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'axiom_abandoned_%'");
+    $rows = $wpdb->get_results("SELECT option_name, option_value FROM $wpdb->options WHERE option_name LIKE 'axiom_cart_%'");
 
     foreach ($rows as $row) {
+
         $data = maybe_unserialize($row->option_value);
+        if (!$data) continue;
 
-        if (empty($data['email'])) continue;
+        $email = $data['email'];
+        $cart  = $data['cart'];
+        $time  = $data['time'];
+        $sent  = $data['sent'];
 
-        $elapsed = time() - $data['time'];
+        $elapsed = time() - $time;
 
-        if ($elapsed > 900 && !$data['step1']) {
-            axiom_send_abandoned_cart_email($data['email'], 1);
-            $data['step1'] = true;
+        // STAGE 1 (15 MIN)
+        if ($elapsed > 900 && !in_array(1, $sent)) {
+            axiom_send_abandoned_email($email, $cart, 1);
+            $sent[] = 1;
         }
 
-        if ($elapsed > 7200 && !$data['step2']) {
-            axiom_send_abandoned_cart_email($data['email'], 2);
-            $data['step2'] = true;
+        // STAGE 2 (2 HOURS)
+        if ($elapsed > 7200 && !in_array(2, $sent)) {
+            axiom_send_abandoned_email($email, $cart, 2);
+            $sent[] = 2;
         }
 
-        if ($elapsed > 86400 && !$data['step3']) {
-            axiom_send_abandoned_cart_email($data['email'], 3);
-            $data['step3'] = true;
+        // STAGE 3 (24 HOURS)
+        if ($elapsed > 86400 && !in_array(3, $sent)) {
+            axiom_send_abandoned_email($email, $cart, 3);
+            $sent[] = 3;
         }
 
-        update_option($row->option_name, $data);
+        update_option($row->option_name, array(
+            'email' => $email,
+            'cart'  => $cart,
+            'time'  => $time,
+            'sent'  => $sent
+        ));
     }
 });
 
 /**
- * CRON INTERVAL
+ * SEND EMAIL
  */
-add_filter('cron_schedules', function($schedules) {
-    $schedules['every_minute'] = [
-        'interval' => 60,
-        'display' => 'Every Minute'
-    ];
-    return $schedules;
-});
+function axiom_send_abandoned_email($email, $cart, $stage) {
 
-/**
- * REGISTER CRON
- */
-if (!wp_next_scheduled('axiom_abandoned_cart_cron')) {
-    wp_schedule_event(time(), 'every_minute', 'axiom_abandoned_cart_cron');
+    if (!$email || empty($cart)) return;
+
+    $email_data = axiom_abandoned_cart_email_template($email, $cart, $stage);
+
+    wp_mail(
+        $email,
+        $email_data['subject'],
+        $email_data['message'],
+        array('Content-Type: text/html; charset=UTF-8')
+    );
 }
