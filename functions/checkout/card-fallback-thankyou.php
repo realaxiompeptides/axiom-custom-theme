@@ -38,6 +38,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
 
     $order_number    = $order->get_order_number();
     $order_total     = wc_format_decimal($order->get_total(), 2);
+    $order_total_raw = (float) $order->get_total();
 
     $venmo_username  = '@thomas-harris-axiom';
     $venmo_link      = 'https://venmo.com/code?user_id=4564578725790758651&created=1777431398.570389&printed=1';
@@ -45,6 +46,12 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     $zelle_phone     = '916-233-5312';
 
     $bitcoin_address = 'bc1qtaef69mdkj8q25z32cjw3h3kayv207ydcgejsy';
+    $btc_usd_price   = axiom_get_live_btc_usd_price();
+    $btc_amount      = '';
+
+    if ($btc_usd_price > 0 && $order_total_raw > 0) {
+        $btc_amount = rtrim(rtrim(number_format($order_total_raw / $btc_usd_price, 8, '.', ''), '0'), '.');
+    }
 
     $theme_uri       = get_template_directory_uri();
     $venmo_icon      = $theme_uri . '/assets/images/venmo.jpg';
@@ -66,7 +73,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             </button>
 
             <button type="button" class="axiom-fallback-action-btn" data-copy-target="axiomFallbackOrderTotal">
-                <span>Total</span>
+                <span>Total USD</span>
                 <strong id="axiomFallbackOrderTotal"><?php echo esc_html($order_total); ?></strong>
                 <em>Tap to copy</em>
             </button>
@@ -112,9 +119,27 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
                     <img src="<?php echo esc_url($bitcoin_icon); ?>" alt="Bitcoin" class="fallback-method-icon">
                     <div>
                         <h3>Bitcoin</h3>
-                        <p>Send the exact total in BTC equivalent. Use order #<?php echo esc_html($order_number); ?> when contacting support after payment.</p>
+
+                        <?php if ($btc_amount) : ?>
+                            <p>
+                                Send exactly <strong><?php echo esc_html($btc_amount); ?> BTC</strong>.
+                                This live amount is based on your order total of $<?php echo esc_html($order_total); ?>.
+                            </p>
+                        <?php else : ?>
+                            <p>
+                                Send the BTC equivalent of $<?php echo esc_html($order_total); ?>.
+                                Live BTC amount could not be loaded automatically.
+                            </p>
+                        <?php endif; ?>
                     </div>
                 </div>
+
+                <?php if ($btc_amount) : ?>
+                    <div class="axiom-card-fallback-copy-row bitcoin-btc-row">
+                        <span id="axiomFallbackBitcoinAmount"><?php echo esc_html($btc_amount); ?></span>
+                        <button type="button" class="axiom-card-fallback-copy" data-copy-target="axiomFallbackBitcoinAmount">Copy BTC Amount</button>
+                    </div>
+                <?php endif; ?>
 
                 <div class="axiom-card-fallback-copy-row bitcoin-address-row">
                     <span id="axiomFallbackBitcoinAddress"><?php echo esc_html($bitcoin_address); ?></span>
@@ -191,6 +216,38 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     </script>
 
     <?php
+}
+
+function axiom_get_live_btc_usd_price() {
+    $cached_price = get_transient('axiom_live_btc_usd_price');
+
+    if ($cached_price !== false && (float) $cached_price > 0) {
+        return (float) $cached_price;
+    }
+
+    $response = wp_remote_get(
+        'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd',
+        array(
+            'timeout' => 8,
+        )
+    );
+
+    if (is_wp_error($response)) {
+        return 0;
+    }
+
+    $body = wp_remote_retrieve_body($response);
+    $data = json_decode($body, true);
+
+    if (!isset($data['bitcoin']['usd']) || (float) $data['bitcoin']['usd'] <= 0) {
+        return 0;
+    }
+
+    $price = (float) $data['bitcoin']['usd'];
+
+    set_transient('axiom_live_btc_usd_price', $price, 5 * MINUTE_IN_SECONDS);
+
+    return $price;
 }
 
 function axiom_enqueue_card_fallback_assets() {
