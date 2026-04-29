@@ -1,11 +1,11 @@
 <?php
 /**
- * Product Page - Why Choose Us Section
+ * Product Page - Why Choose Axiom Section
  *
  * Location:
  * /product-page/why-choose-us.php
  *
- * This section is designed to appear below the product description
+ * This section appears below the product description
  * and above the Research Use Only disclaimer.
  */
 
@@ -14,88 +14,93 @@ if (!defined('ABSPATH')) {
 }
 ?>
 
-<section class="axiom-product-why-choose">
-  <div class="axiom-product-why-header">
-    <span class="axiom-product-why-pill">
-      <i class="fa-solid fa-shield-check"></i>
-      Why Choose Axiom
-    </span>
+<section class="axiom-product-compare-section">
+  <div class="axiom-product-compare-header">
+    <p class="axiom-product-compare-kicker">How We Compare</p>
 
-    <h3>Research-Grade Quality You Can Verify</h3>
+    <h3>Why Researchers Choose Axiom Peptides</h3>
 
     <p>
-      Every order is backed by transparent documentation, careful fulfillment,
-      and research-use quality standards.
+      Built for transparent research-use quality, domestic fulfillment, and clear batch documentation.
     </p>
   </div>
 
-  <div class="axiom-product-why-grid">
+  <div class="axiom-product-compare-table" role="table" aria-label="Why researchers choose Axiom Peptides">
+    <div class="axiom-product-compare-top" role="row">
+      <div class="axiom-product-compare-feature-head" role="columnheader">
+        Feature
+      </div>
 
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-brand-head" role="columnheader">
+        <strong>Axiom Peptides</strong>
+        <span><i class="fa-solid fa-star"></i> Recommended</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        Independent 3rd-Party COA
+      </div>
+
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>Janoshik Tested</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        Minimum 99%+ Purity Guarantee
       </div>
 
-      <div class="axiom-product-why-content">
-        <h4>Janoshik Tested</h4>
-        <p>Third-party testing documentation available for supported batches.</p>
-      </div>
-    </article>
-
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>Every Batch</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        US-Based &amp; Shipped
       </div>
 
-      <div class="axiom-product-why-content">
-        <h4>99%+ Purity Target</h4>
-        <p>Products are selected around high-purity research-use quality standards.</p>
-      </div>
-    </article>
-
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>California</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        Free Shipping Threshold
       </div>
 
-      <div class="axiom-product-why-content">
-        <h4>Ships from California</h4>
-        <p>US-based fulfillment for faster domestic processing and tracking.</p>
-      </div>
-    </article>
-
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>$250+</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        Fast Fulfillment
       </div>
 
-      <div class="axiom-product-why-content">
-        <h4>Discreet Packaging</h4>
-        <p>Orders are packed carefully with privacy-focused fulfillment.</p>
-      </div>
-    </article>
-
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>Same-Day</span>
+      </div>
+    </div>
+
+    <div class="axiom-product-compare-row" role="row">
+      <div class="axiom-product-compare-feature" role="cell">
+        Packaging
       </div>
 
-      <div class="axiom-product-why-content">
-        <h4>COA Transparency</h4>
-        <p>Batch documentation is prioritized so researchers can verify quality.</p>
-      </div>
-    </article>
-
-    <article class="axiom-product-why-card">
-      <div class="axiom-product-why-icon">
+      <div class="axiom-product-compare-answer" role="cell">
         <i class="fa-solid fa-check"></i>
+        <span>Discreet</span>
       </div>
-
-      <div class="axiom-product-why-content">
-        <h4>Fast Fulfillment</h4>
-        <p>Orders are processed quickly after payment confirmation and review.</p>
-      </div>
-    </article>
-
+    </div>
   </div>
 </section>
