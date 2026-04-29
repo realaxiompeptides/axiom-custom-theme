@@ -39,6 +39,10 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     $venmo_username = '@thomas-harris-axiom';
     $venmo_link     = 'https://venmo.com/code?user_id=4564578725790758651&created=1777431398.570389&printed=1';
     $zelle_phone    = '916-233-5312';
+
+    $theme_uri      = get_template_directory_uri();
+    $venmo_icon     = $theme_uri . '/assets/images/venmo.jpg';
+    $zelle_icon     = $theme_uri . '/assets/images/zelle.jpg';
     ?>
 
     <section class="axiom-card-fallback-box" id="axiomCardFallbackBox">
@@ -48,15 +52,29 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         </div>
 
         <div class="axiom-card-fallback-mini">
-            <span>Order #<?php echo esc_html($order_number); ?></span>
-            <strong><?php echo wp_kses_post($order_total); ?></strong>
+            <div>
+                <span>Order</span>
+                <strong id="axiomFallbackOrderNumber">#<?php echo esc_html($order_number); ?></strong>
+            </div>
+
+            <button type="button" class="axiom-card-fallback-copy small-copy" data-copy-target="axiomFallbackOrderNumber">
+                Copy Order #
+            </button>
+
+            <div class="fallback-total">
+                <span>Total</span>
+                <strong><?php echo wp_kses_post($order_total); ?></strong>
+            </div>
         </div>
 
         <div class="axiom-card-fallback-grid">
             <div class="axiom-card-fallback-method">
-                <div>
-                    <h3>Venmo</h3>
-                    <p>Send exact total. Use order #<?php echo esc_html($order_number); ?> as the note.</p>
+                <div class="fallback-method-top">
+                    <img src="<?php echo esc_url($venmo_icon); ?>" alt="Venmo" class="fallback-method-icon">
+                    <div>
+                        <h3>Venmo</h3>
+                        <p>Send exact total. Use order #<?php echo esc_html($order_number); ?> as the note.</p>
+                    </div>
                 </div>
 
                 <div class="axiom-card-fallback-copy-row">
@@ -70,9 +88,12 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             </div>
 
             <div class="axiom-card-fallback-method">
-                <div>
-                    <h3>Zelle</h3>
-                    <p>Send exact total. Add order #<?php echo esc_html($order_number); ?> if your bank allows notes.</p>
+                <div class="fallback-method-top">
+                    <img src="<?php echo esc_url($zelle_icon); ?>" alt="Zelle" class="fallback-method-icon">
+                    <div>
+                        <h3>Zelle</h3>
+                        <p>Send exact total. Add order #<?php echo esc_html($order_number); ?> if your bank allows notes.</p>
+                    </div>
                 </div>
 
                 <div class="axiom-card-fallback-copy-row">
@@ -85,8 +106,8 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
 
     <style>
         .axiom-card-fallback-box {
-            margin: 16px 0 20px !important;
-            padding: 16px !important;
+            margin: 14px 0 18px !important;
+            padding: 14px !important;
             border-radius: 20px !important;
             border: 1px solid rgba(59,111,224,.22) !important;
             background: #f7fbff !important;
@@ -94,9 +115,9 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         }
 
         .axiom-card-fallback-head h2 {
-            margin: 0 0 6px !important;
+            margin: 0 0 5px !important;
             color: #07111f !important;
-            font-size: 22px !important;
+            font-size: 20px !important;
             line-height: 1.15 !important;
             font-weight: 900 !important;
             letter-spacing: -0.03em !important;
@@ -105,26 +126,38 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         .axiom-card-fallback-head p {
             margin: 0 !important;
             color: #667085 !important;
-            font-size: 14px !important;
-            line-height: 1.45 !important;
+            font-size: 13px !important;
+            line-height: 1.4 !important;
         }
 
         .axiom-card-fallback-mini {
             margin: 12px 0 !important;
-            padding: 11px 13px !important;
+            padding: 10px !important;
             border-radius: 14px !important;
             background: #ffffff !important;
-            display: flex !important;
-            justify-content: space-between !important;
+            display: grid !important;
+            grid-template-columns: 1fr auto 1fr !important;
             align-items: center !important;
-            gap: 10px !important;
-            font-size: 14px !important;
+            gap: 8px !important;
             color: #07111f !important;
         }
 
+        .axiom-card-fallback-mini span {
+            display: block !important;
+            color: #667085 !important;
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: .04em !important;
+        }
+
         .axiom-card-fallback-mini strong {
-            font-size: 16px !important;
+            font-size: 15px !important;
             font-weight: 900 !important;
+        }
+
+        .fallback-total {
+            text-align: right !important;
         }
 
         .axiom-card-fallback-grid {
@@ -134,24 +167,40 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         }
 
         .axiom-card-fallback-method {
-            padding: 13px !important;
+            padding: 12px !important;
             border-radius: 17px !important;
             background: #ffffff !important;
             border: 1px solid rgba(7,17,31,.08) !important;
         }
 
+        .fallback-method-top {
+            display: flex !important;
+            gap: 10px !important;
+            align-items: flex-start !important;
+            margin-bottom: 10px !important;
+        }
+
+        .fallback-method-icon {
+            width: 34px !important;
+            height: 34px !important;
+            object-fit: cover !important;
+            border-radius: 10px !important;
+            flex: 0 0 auto !important;
+            box-shadow: 0 6px 14px rgba(7,17,31,.08) !important;
+        }
+
         .axiom-card-fallback-method h3 {
-            margin: 0 0 5px !important;
+            margin: 0 0 3px !important;
             color: #07111f !important;
-            font-size: 17px !important;
+            font-size: 16px !important;
             font-weight: 900 !important;
         }
 
         .axiom-card-fallback-method p {
-            margin: 0 0 10px !important;
+            margin: 0 !important;
             color: #667085 !important;
-            font-size: 13px !important;
-            line-height: 1.45 !important;
+            font-size: 12px !important;
+            line-height: 1.35 !important;
         }
 
         .axiom-card-fallback-copy-row {
@@ -159,12 +208,12 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             align-items: center !important;
             justify-content: space-between !important;
             gap: 8px !important;
-            padding: 10px !important;
+            padding: 9px !important;
             border-radius: 12px !important;
             background: #eef6ff !important;
             color: #07111f !important;
             font-weight: 800 !important;
-            font-size: 13px !important;
+            font-size: 12px !important;
             word-break: break-word !important;
         }
 
@@ -172,10 +221,10 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         .axiom-card-fallback-open {
             border: none !important;
             border-radius: 999px !important;
-            padding: 8px 11px !important;
+            padding: 7px 10px !important;
             background: #3b6fe0 !important;
             color: #ffffff !important;
-            font-size: 12px !important;
+            font-size: 11px !important;
             font-weight: 900 !important;
             cursor: pointer !important;
             text-decoration: none !important;
@@ -183,26 +232,43 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             flex: 0 0 auto !important;
         }
 
+        .small-copy {
+            padding: 8px 10px !important;
+            white-space: nowrap !important;
+        }
+
         .axiom-card-fallback-open {
-            margin-top: 10px !important;
+            margin-top: 9px !important;
             width: 100% !important;
             text-align: center !important;
         }
 
         @media (max-width: 768px) {
             .axiom-card-fallback-box {
-                margin: 14px 0 18px !important;
-                padding: 14px !important;
-                border-radius: 18px !important;
+                padding: 13px !important;
             }
 
             .axiom-card-fallback-head h2 {
-                font-size: 20px !important;
+                font-size: 19px !important;
             }
 
             .axiom-card-fallback-grid {
                 grid-template-columns: 1fr !important;
-                gap: 10px !important;
+                gap: 9px !important;
+            }
+
+            .axiom-card-fallback-mini {
+                grid-template-columns: 1fr !important;
+                text-align: left !important;
+            }
+
+            .fallback-total {
+                text-align: left !important;
+            }
+
+            .small-copy {
+                width: 100% !important;
+                text-align: center !important;
             }
         }
     </style>
