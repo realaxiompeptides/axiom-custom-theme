@@ -23,6 +23,12 @@ $order_id = $order->get_id();
 			axiom_render_custom_thankyou_header( $order_id );
 		}
 
+		/**
+		 * Required so custom thank-you add-ons can display.
+		 * This is what loads the Venmo/Zelle fallback box.
+		 */
+		do_action( 'woocommerce_thankyou', $order_id );
+
 		$order_details_template = get_stylesheet_directory() . '/woocommerce/order/order-details.php';
 		if ( file_exists( $order_details_template ) ) {
 			include $order_details_template;
