@@ -411,6 +411,13 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
           <?php echo wp_kses_post(wpautop($product_long)); ?>
         </div>
 
+        <?php
+        $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
+        if (file_exists($why_choose)) {
+            include $why_choose;
+        }
+        ?>
+
         <div class="product-disclaimer-box product-disclaimer-below-description">
           <div class="product-disclaimer-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -421,13 +428,6 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
           </div>
         </div>
       </section>
-
-      <?php
-      $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
-      if (file_exists($why_choose)) {
-          include $why_choose;
-      }
-      ?>
     </div>
   </section>
 
