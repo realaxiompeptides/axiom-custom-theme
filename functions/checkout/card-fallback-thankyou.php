@@ -35,7 +35,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     }
 
     $order_number   = $order->get_order_number();
-    $order_total    = $order->get_formatted_order_total();
+    $order_total    = wc_format_decimal($order->get_total(), 2);
     $venmo_username = '@thomas-harris-axiom';
     $venmo_link     = 'https://venmo.com/code?user_id=4564578725790758651&created=1777431398.570389&printed=1';
     $zelle_phone    = '916-233-5312';
@@ -48,23 +48,21 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     <section class="axiom-card-fallback-box" id="axiomCardFallbackBox">
         <div class="axiom-card-fallback-head">
             <h2>Card payment did not complete</h2>
-            <p>Complete this order with Venmo or Zelle to avoid delays.</p>
+            <p>Use Venmo or Zelle below to complete your order without delay.</p>
         </div>
 
-        <div class="axiom-card-fallback-mini">
-            <div>
-                <span>Order</span>
+        <div class="axiom-fallback-quick-actions">
+            <button type="button" class="axiom-fallback-action-btn" data-copy-target="axiomFallbackOrderNumber">
+                <span>Order Number</span>
                 <strong id="axiomFallbackOrderNumber">#<?php echo esc_html($order_number); ?></strong>
-            </div>
-
-            <button type="button" class="axiom-card-fallback-copy small-copy" data-copy-target="axiomFallbackOrderNumber">
-                Copy Order #
+                <em>Tap to copy</em>
             </button>
 
-            <div class="fallback-total">
+            <button type="button" class="axiom-fallback-action-btn" data-copy-target="axiomFallbackOrderTotal">
                 <span>Total</span>
-                <strong><?php echo wp_kses_post($order_total); ?></strong>
-            </div>
+                <strong id="axiomFallbackOrderTotal"><?php echo esc_html($order_total); ?></strong>
+                <em>Tap to copy</em>
+            </button>
         </div>
 
         <div class="axiom-card-fallback-grid">
@@ -73,7 +71,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
                     <img src="<?php echo esc_url($venmo_icon); ?>" alt="Venmo" class="fallback-method-icon">
                     <div>
                         <h3>Venmo</h3>
-                        <p>Send exact total. Use order #<?php echo esc_html($order_number); ?> as the note.</p>
+                        <p>Send the exact total. Use order #<?php echo esc_html($order_number); ?> as the note.</p>
                     </div>
                 </div>
 
@@ -92,7 +90,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
                     <img src="<?php echo esc_url($zelle_icon); ?>" alt="Zelle" class="fallback-method-icon">
                     <div>
                         <h3>Zelle</h3>
-                        <p>Send exact total. Add order #<?php echo esc_html($order_number); ?> if your bank allows notes.</p>
+                        <p>Send the exact total. Add order #<?php echo esc_html($order_number); ?> if your bank allows notes.</p>
                     </div>
                 </div>
 
@@ -110,8 +108,12 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             padding: 14px !important;
             border-radius: 20px !important;
             border: 1px solid rgba(59,111,224,.22) !important;
-            background: #f7fbff !important;
+            background: linear-gradient(180deg, #f8fbff 0%, #f3f8ff 100%) !important;
             box-shadow: 0 10px 24px rgba(7,17,31,.06) !important;
+        }
+
+        .axiom-card-fallback-head {
+            margin-bottom: 12px !important;
         }
 
         .axiom-card-fallback-head h2 {
@@ -130,39 +132,60 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             line-height: 1.4 !important;
         }
 
-        .axiom-card-fallback-mini {
-            margin: 12px 0 !important;
-            padding: 10px !important;
-            border-radius: 14px !important;
-            background: #ffffff !important;
+        .axiom-fallback-quick-actions {
             display: grid !important;
-            grid-template-columns: 1fr auto 1fr !important;
-            align-items: center !important;
-            gap: 8px !important;
-            color: #07111f !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            margin: 0 0 12px !important;
         }
 
-        .axiom-card-fallback-mini span {
+        .axiom-fallback-action-btn {
+            width: 100% !important;
+            border: 1px solid rgba(59,111,224,.16) !important;
+            border-radius: 15px !important;
+            background: #ffffff !important;
+            padding: 11px 12px !important;
+            text-align: left !important;
+            cursor: pointer !important;
+            box-shadow: 0 6px 16px rgba(7,17,31,.04) !important;
+        }
+
+        .axiom-fallback-action-btn span {
             display: block !important;
             color: #667085 !important;
-            font-size: 11px !important;
-            font-weight: 700 !important;
-            text-transform: uppercase !important;
-            letter-spacing: .04em !important;
-        }
-
-        .axiom-card-fallback-mini strong {
-            font-size: 15px !important;
+            font-size: 10px !important;
             font-weight: 900 !important;
+            text-transform: uppercase !important;
+            letter-spacing: .06em !important;
+            margin-bottom: 4px !important;
         }
 
-        .fallback-total {
-            text-align: right !important;
+        .axiom-fallback-action-btn strong {
+            display: block !important;
+            color: #07111f !important;
+            font-size: 17px !important;
+            line-height: 1.1 !important;
+            font-weight: 900 !important;
+            margin-bottom: 5px !important;
+        }
+
+        .axiom-fallback-action-btn em {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            min-height: 22px !important;
+            padding: 4px 9px !important;
+            border-radius: 999px !important;
+            background: #eef6ff !important;
+            color: #3b6fe0 !important;
+            font-size: 10px !important;
+            font-style: normal !important;
+            font-weight: 900 !important;
         }
 
         .axiom-card-fallback-grid {
             display: grid !important;
-            grid-template-columns: repeat(2, 1fr) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 10px !important;
         }
 
@@ -171,6 +194,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             border-radius: 17px !important;
             background: #ffffff !important;
             border: 1px solid rgba(7,17,31,.08) !important;
+            box-shadow: 0 6px 16px rgba(7,17,31,.035) !important;
         }
 
         .fallback-method-top {
@@ -193,6 +217,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             margin: 0 0 3px !important;
             color: #07111f !important;
             font-size: 16px !important;
+            line-height: 1.1 !important;
             font-weight: 900 !important;
         }
 
@@ -232,11 +257,6 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             flex: 0 0 auto !important;
         }
 
-        .small-copy {
-            padding: 8px 10px !important;
-            white-space: nowrap !important;
-        }
-
         .axiom-card-fallback-open {
             margin-top: 9px !important;
             width: 100% !important;
@@ -246,29 +266,29 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         @media (max-width: 768px) {
             .axiom-card-fallback-box {
                 padding: 13px !important;
+                border-radius: 18px !important;
             }
 
             .axiom-card-fallback-head h2 {
                 font-size: 19px !important;
             }
 
+            .axiom-fallback-quick-actions {
+                grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+                gap: 8px !important;
+            }
+
+            .axiom-fallback-action-btn {
+                padding: 10px !important;
+            }
+
+            .axiom-fallback-action-btn strong {
+                font-size: 16px !important;
+            }
+
             .axiom-card-fallback-grid {
                 grid-template-columns: 1fr !important;
                 gap: 9px !important;
-            }
-
-            .axiom-card-fallback-mini {
-                grid-template-columns: 1fr !important;
-                text-align: left !important;
-            }
-
-            .fallback-total {
-                text-align: left !important;
-            }
-
-            .small-copy {
-                width: 100% !important;
-                text-align: center !important;
             }
         }
     </style>
@@ -296,7 +316,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     });
 
     document.addEventListener('click', function(event) {
-        var button = event.target.closest('.axiom-card-fallback-copy');
+        var button = event.target.closest('.axiom-card-fallback-copy, .axiom-fallback-action-btn');
 
         if (!button) {
             return;
@@ -310,11 +330,29 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         }
 
         navigator.clipboard.writeText(target.textContent.trim()).then(function() {
-            var originalText = button.textContent;
+            var oldText = '';
+
+            if (button.classList.contains('axiom-fallback-action-btn')) {
+                var em = button.querySelector('em');
+                if (!em) {
+                    return;
+                }
+
+                oldText = em.textContent;
+                em.textContent = 'Copied';
+
+                setTimeout(function() {
+                    em.textContent = oldText;
+                }, 1400);
+
+                return;
+            }
+
+            oldText = button.textContent;
             button.textContent = 'Copied';
 
             setTimeout(function() {
-                button.textContent = originalText;
+                button.textContent = oldText;
             }, 1400);
         });
     });
