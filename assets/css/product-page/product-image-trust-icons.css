@@ -1,0 +1,55 @@
+.axiom-product-image-trust-icons {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    margin: 12px 0 20px !important;
+}
+
+.axiom-product-image-trust-item {
+    min-height: 70px !important;
+    padding: 12px 8px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(7, 17, 31, 0.08) !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    box-shadow: 0 8px 20px rgba(7, 17, 31, 0.04) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    text-align: center !important;
+}
+
+.axiom-product-image-trust-item i {
+    color: #07111f !important;
+    font-size: 19px !important;
+    line-height: 1 !important;
+}
+
+.axiom-product-image-trust-item span {
+    color: #344054 !important;
+    font-size: 13px !important;
+    line-height: 1.1 !important;
+    font-weight: 800 !important;
+}
+
+@media (max-width: 768px) {
+    .axiom-product-image-trust-icons {
+        gap: 8px !important;
+        margin: 10px 0 18px !important;
+    }
+
+    .axiom-product-image-trust-item {
+        min-height: 64px !important;
+        padding: 10px 6px !important;
+        border-radius: 14px !important;
+    }
+
+    .axiom-product-image-trust-item i {
+        font-size: 18px !important;
+    }
+
+    .axiom-product-image-trust-item span {
+        font-size: 12px !important;
+    }
+}
