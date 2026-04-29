@@ -213,3 +213,13 @@
         text-align: center !important;
     }
 }
+
+.bitcoin-btc-row {
+    margin-bottom: 8px !important;
+}
+
+.bitcoin-btc-row span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+}
