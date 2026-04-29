@@ -134,3 +134,31 @@
     display: none;
   }
 }
+
+.sticky-product-bar {
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 9998 !important;
+    transform: translateY(120%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: transform 0.25s ease, opacity 0.25s ease !important;
+}
+
+.sticky-product-bar.is-visible {
+    transform: translateY(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+}
+
+body.has-sticky-product-bar {
+    padding-bottom: 92px !important;
+}
+
+@media (max-width: 768px) {
+    body.has-sticky-product-bar {
+        padding-bottom: 112px !important;
+    }
+}
