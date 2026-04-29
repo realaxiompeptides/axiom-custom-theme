@@ -1,0 +1,215 @@
+.axiom-card-fallback-box {
+    margin: 14px 0 18px !important;
+    padding: 14px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(59, 111, 224, 0.22) !important;
+    background: linear-gradient(180deg, #f8fbff 0%, #f3f8ff 100%) !important;
+    box-shadow: 0 10px 24px rgba(7, 17, 31, 0.06) !important;
+}
+
+.axiom-card-fallback-head {
+    margin-bottom: 12px !important;
+}
+
+.axiom-card-fallback-head h2 {
+    margin: 0 0 5px !important;
+    color: #07111f !important;
+    font-size: 20px !important;
+    line-height: 1.15 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.03em !important;
+}
+
+.axiom-card-fallback-head p {
+    margin: 0 !important;
+    color: #667085 !important;
+    font-size: 13px !important;
+    line-height: 1.4 !important;
+}
+
+.axiom-fallback-quick-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+    margin: 0 0 12px !important;
+}
+
+.axiom-fallback-action-btn {
+    width: 100% !important;
+    border: 1px solid rgba(59, 111, 224, 0.16) !important;
+    border-radius: 15px !important;
+    background: #ffffff !important;
+    padding: 11px 12px !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    box-shadow: 0 6px 16px rgba(7, 17, 31, 0.04) !important;
+}
+
+.axiom-fallback-action-btn span {
+    display: block !important;
+    color: #667085 !important;
+    font-size: 10px !important;
+    font-weight: 900 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.06em !important;
+    margin-bottom: 4px !important;
+}
+
+.axiom-fallback-action-btn strong {
+    display: block !important;
+    color: #07111f !important;
+    font-size: 17px !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+    margin-bottom: 5px !important;
+}
+
+.axiom-fallback-action-btn em {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 22px !important;
+    padding: 4px 9px !important;
+    border-radius: 999px !important;
+    background: #eef6ff !important;
+    color: #3b6fe0 !important;
+    font-size: 10px !important;
+    font-style: normal !important;
+    font-weight: 900 !important;
+}
+
+.axiom-card-fallback-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+}
+
+.axiom-card-fallback-method {
+    padding: 12px !important;
+    border-radius: 17px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(7, 17, 31, 0.08) !important;
+    box-shadow: 0 6px 16px rgba(7, 17, 31, 0.035) !important;
+}
+
+.axiom-card-fallback-method-wide {
+    grid-column: 1 / -1 !important;
+}
+
+.fallback-method-top {
+    display: flex !important;
+    gap: 10px !important;
+    align-items: flex-start !important;
+    margin-bottom: 10px !important;
+}
+
+.fallback-method-icon {
+    width: 34px !important;
+    height: 34px !important;
+    object-fit: cover !important;
+    border-radius: 10px !important;
+    flex: 0 0 auto !important;
+    box-shadow: 0 6px 14px rgba(7, 17, 31, 0.08) !important;
+}
+
+.axiom-card-fallback-method h3 {
+    margin: 0 0 3px !important;
+    color: #07111f !important;
+    font-size: 16px !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+}
+
+.axiom-card-fallback-method p {
+    margin: 0 !important;
+    color: #667085 !important;
+    font-size: 12px !important;
+    line-height: 1.35 !important;
+}
+
+.axiom-card-fallback-copy-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 9px !important;
+    border-radius: 12px !important;
+    background: #eef6ff !important;
+    color: #07111f !important;
+    font-weight: 800 !important;
+    font-size: 12px !important;
+    word-break: break-word !important;
+}
+
+.bitcoin-address-row {
+    align-items: flex-start !important;
+}
+
+.bitcoin-address-row span {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+}
+
+.axiom-card-fallback-copy,
+.axiom-card-fallback-open {
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 7px 10px !important;
+    background: #3b6fe0 !important;
+    color: #ffffff !important;
+    font-size: 11px !important;
+    font-weight: 900 !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+}
+
+.axiom-card-fallback-open {
+    margin-top: 9px !important;
+    width: 100% !important;
+    text-align: center !important;
+}
+
+@media (max-width: 768px) {
+    .axiom-card-fallback-box {
+        padding: 13px !important;
+        border-radius: 18px !important;
+    }
+
+    .axiom-card-fallback-head h2 {
+        font-size: 19px !important;
+    }
+
+    .axiom-fallback-quick-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 8px !important;
+    }
+
+    .axiom-fallback-action-btn {
+        padding: 10px !important;
+    }
+
+    .axiom-fallback-action-btn strong {
+        font-size: 16px !important;
+    }
+
+    .axiom-card-fallback-grid {
+        grid-template-columns: 1fr !important;
+        gap: 9px !important;
+    }
+
+    .axiom-card-fallback-method-wide {
+        grid-column: auto !important;
+    }
+
+    .bitcoin-address-row {
+        flex-direction: column !important;
+    }
+
+    .bitcoin-address-row .axiom-card-fallback-copy {
+        width: 100% !important;
+        text-align: center !important;
+    }
+}
