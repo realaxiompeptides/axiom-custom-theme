@@ -30,6 +30,15 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
+    if (file_exists($theme_path . '/assets/css/mobile-bottom-nav.css')) {
+        wp_enqueue_style(
+            'axiom-mobile-bottom-nav',
+            $theme_uri . '/assets/css/mobile-bottom-nav.css',
+            array('axiom-base'),
+            filemtime($theme_path . '/assets/css/mobile-bottom-nav.css')
+        );
+    }
+
     if ((function_exists('is_front_page') && is_front_page()) || (function_exists('is_home') && is_home())) {
         if (file_exists($theme_path . '/assets/css/homepage/coa-trust-section.css')) {
             wp_enqueue_style(
