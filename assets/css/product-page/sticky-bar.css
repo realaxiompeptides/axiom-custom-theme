@@ -1,27 +1,30 @@
 .sticky-product-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: -220px;
-  z-index: 95;
-  padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-  transition: bottom 0.22s ease, opacity 0.22s ease, visibility 0.22s ease;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 56px !important; /* closer to the new shorter mobile bottom nav */
+  z-index: 9998 !important;
+  padding: 0 12px !important;
+  transform: translateY(130%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s ease !important;
 }
 
-.sticky-product-bar.active {
-  bottom: 0;
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+.sticky-product-bar.active,
+.sticky-product-bar.is-visible {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
 }
 
-.sticky-product-bar[aria-hidden="true"] {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+.sticky-product-bar[aria-hidden="true"]:not(.active):not(.is-visible) {
+  transform: translateY(130%) !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .sticky-product-bar-inner {
@@ -33,6 +36,7 @@
   color: #ffffff;
   border-radius: 22px;
   padding: 12px;
+  margin: 0 2px !important;
   box-shadow: 0 18px 40px rgba(25, 80, 130, 0.28);
 }
 
@@ -40,7 +44,7 @@
   width: 52px;
   height: 52px;
   border-radius: 14px;
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -66,7 +70,7 @@
 }
 
 #stickyProductVariant {
-  color: rgba(255,255,255,0.9);
+  color: rgba(255, 255, 255, 0.9);
   font-size: 12px;
   font-weight: 700;
 }
@@ -91,8 +95,8 @@
   min-height: 46px;
   border-radius: 999px;
   overflow: hidden;
-  background: rgba(255,255,255,0.16);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
 .sticky-product-bar-qty button {
@@ -129,48 +133,38 @@
   cursor: not-allowed;
 }
 
+body.has-sticky-product-bar {
+  padding-bottom: 92px !important;
+}
+
 @media (min-width: 961px) {
   .sticky-product-bar {
-    display: none;
+    display: none !important;
   }
 }
 
-.sticky-product-bar {
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
+@media (max-width: 768px) {
+  .sticky-product-bar {
+    bottom: 58px !important; /* main mobile position */
     z-index: 9998 !important;
-    transform: translateY(120%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: transform 0.25s ease, opacity 0.25s ease !important;
+    padding: 0 10px !important;
+  }
+
+  .sticky-product-bar-inner {
+    margin: 0 4px !important;
+    border-radius: 22px !important;
+  }
+
+  body.has-sticky-product-bar {
+    padding-bottom: 128px !important;
+  }
 }
 
-.sticky-product-bar.is-visible {
-    transform: translateY(0) !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
-}
-
-body.has-sticky-product-bar {
-    padding-bottom: 92px !important;
-}
-
-@media (max-width: 768px) {
-    body.has-sticky-product-bar {
-        padding-bottom: 112px !important;
-    }
-}
-
-@media (max-width: 768px) {
+/* iPhone safe-area support */
+@supports (bottom: env(safe-area-inset-bottom)) {
+  @media (max-width: 768px) {
     .sticky-product-bar {
-        bottom: 86px !important;
-        z-index: 99998 !important;
+      bottom: calc(58px + env(safe-area-inset-bottom)) !important;
     }
-
-    .sticky-product-bar-inner {
-        margin: 0 14px !important;
-        border-radius: 22px !important;
-    }
+  }
 }
