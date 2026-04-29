@@ -141,6 +141,15 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-description', $theme_uri . '/assets/css/product-page/description.css', array('axiom-base', 'axiom-product-layout'), '1.2');
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
+        if (file_exists($theme_path . '/assets/css/product-page/product-image-trust-icons.css')) {
+            wp_enqueue_style(
+                'axiom-product-image-trust-icons',
+                $theme_uri . '/assets/css/product-page/product-image-trust-icons.css',
+                array('axiom-base', 'axiom-product-layout'),
+                filemtime($theme_path . '/assets/css/product-page/product-image-trust-icons.css')
+            );
+        }
+
         if (file_exists($theme_path . '/assets/css/product-page/enhanced-product.css')) {
             wp_enqueue_style(
                 'axiom-enhanced-product',
@@ -205,6 +214,7 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-checkout-payment', $theme_uri . '/assets/css/checkout/checkout-payment.css', array('axiom-base', 'axiom-checkout-layout'), '1.1');
         wp_enqueue_style('axiom-checkout-shipping-methods', $theme_uri . '/assets/css/checkout/checkout-shipping-methods.css', array('axiom-base', 'axiom-checkout-layout'), '1.0');
         wp_enqueue_style('axiom-checkout-research-box', $theme_uri . '/assets/css/checkout/checkout-research-box.css', array('axiom-base', 'axiom-checkout-layout', 'axiom-checkout-payment'), '1.0');
+
         wp_enqueue_style(
             'axiom-checkout-mobile',
             $theme_uri . '/assets/css/checkout/checkout-mobile.css',
@@ -262,8 +272,6 @@ function axiom_custom_theme_assets() {
         'ajaxUrl'     => admin_url('admin-ajax.php'),
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
-}
-add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
 
     /**
      * Klaviyo popup after age gate.
@@ -277,3 +285,6 @@ add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
             true
         );
     }
+}
+
+add_action('wp_enqueue_scripts', 'axiom_custom_theme_assets');
