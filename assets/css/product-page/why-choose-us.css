@@ -1,0 +1,253 @@
+/* =========================================================
+   PRODUCT PAGE - AXIOM COMPARISON / WHY CHOOSE US
+   File: /assets/css/product-page/why-choose-us.css
+========================================================= */
+
+.axiom-product-compare-section {
+  margin: 30px 0 28px;
+  padding: 28px 22px;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top center, rgba(59, 111, 224, 0.14), transparent 38%),
+    linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.axiom-product-compare-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 26px;
+}
+
+.axiom-product-compare-kicker {
+  margin: 0 0 10px;
+  color: #2f84bf;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.axiom-product-compare-header h3 {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: 30px;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.axiom-product-compare-header p {
+  margin: 0 auto;
+  max-width: 620px;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.axiom-product-compare-table {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(160px, 0.85fr);
+  max-width: 760px;
+  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.06);
+}
+
+.axiom-product-compare-top,
+.axiom-product-compare-row {
+  display: contents;
+}
+
+.axiom-product-compare-feature-head,
+.axiom-product-compare-brand-head,
+.axiom-product-compare-feature,
+.axiom-product-compare-answer {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.axiom-product-compare-feature-head {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.axiom-product-compare-brand-head {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(135deg, #2f84bf 0%, #3b6fe0 100%);
+  border-left: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.axiom-product-compare-brand-head strong {
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.axiom-product-compare-brand-head span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+.axiom-product-compare-brand-head i {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 11px;
+}
+
+.axiom-product-compare-feature {
+  color: #334155;
+  font-size: 15px;
+  font-weight: 850;
+  line-height: 1.28;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.axiom-product-compare-answer {
+  justify-content: center;
+  gap: 9px;
+  color: #15803d;
+  font-size: 15px;
+  font-weight: 950;
+  line-height: 1.25;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(34, 197, 94, 0.10), rgba(34, 197, 94, 0.035));
+  border-left: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.axiom-product-compare-answer i {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  border-radius: 999px;
+  background: #16a34a;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.24);
+}
+
+.axiom-product-compare-answer span {
+  display: inline-block;
+}
+
+.axiom-product-compare-row:last-child .axiom-product-compare-feature,
+.axiom-product-compare-row:last-child .axiom-product-compare-answer {
+  border-bottom: none;
+}
+
+@media (max-width: 767px) {
+  .axiom-product-compare-section {
+    margin: 24px 0 24px;
+    padding: 24px 14px;
+    border-radius: 24px;
+  }
+
+  .axiom-product-compare-header {
+    margin-bottom: 22px;
+  }
+
+  .axiom-product-compare-kicker {
+    font-size: 11px;
+    margin-bottom: 9px;
+  }
+
+  .axiom-product-compare-header h3 {
+    font-size: 25px;
+    line-height: 1.08;
+  }
+
+  .axiom-product-compare-header p {
+    font-size: 14px;
+    line-height: 1.48;
+  }
+
+  .axiom-product-compare-table {
+    grid-template-columns: minmax(0, 1.28fr) minmax(128px, 0.72fr);
+    border-radius: 20px;
+  }
+
+  .axiom-product-compare-feature-head,
+  .axiom-product-compare-brand-head,
+  .axiom-product-compare-feature,
+  .axiom-product-compare-answer {
+    min-height: 70px;
+    padding: 14px 11px;
+  }
+
+  .axiom-product-compare-feature-head {
+    font-size: 11px;
+  }
+
+  .axiom-product-compare-brand-head {
+    gap: 5px;
+  }
+
+  .axiom-product-compare-brand-head strong {
+    font-size: 14px;
+  }
+
+  .axiom-product-compare-brand-head span {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+  }
+
+  .axiom-product-compare-feature {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .axiom-product-compare-answer {
+    gap: 6px;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .axiom-product-compare-answer i {
+    width: 19px;
+    height: 19px;
+    flex: 0 0 19px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 390px) {
+  .axiom-product-compare-table {
+    grid-template-columns: minmax(0, 1.22fr) minmax(112px, 0.78fr);
+  }
+
+  .axiom-product-compare-feature,
+  .axiom-product-compare-answer {
+    font-size: 12px;
+  }
+
+  .axiom-product-compare-brand-head strong {
+    font-size: 13px;
+  }
+}
