@@ -36,8 +36,9 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
 
     $order_number   = $order->get_order_number();
     $order_total    = $order->get_formatted_order_total();
-    $venmo_username = '@YOUR-VENMO-HERE';
-    $zelle_email    = 'YOUR-ZELLE-EMAIL-HERE';
+    $venmo_username = '@thomas-harris-axiom';
+    $venmo_link     = 'https://venmo.com/code?user_id=4564578725790758651&created=1777431398.570389&printed=1';
+    $zelle_phone    = '916-233-5312';
     ?>
 
     <section class="axiom-card-fallback-box" id="axiomCardFallbackBox">
@@ -62,6 +63,10 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
                     <span id="axiomFallbackVenmoUsername"><?php echo esc_html($venmo_username); ?></span>
                     <button type="button" class="axiom-card-fallback-copy" data-copy-target="axiomFallbackVenmoUsername">Copy</button>
                 </div>
+
+                <a class="axiom-card-fallback-open" href="<?php echo esc_url($venmo_link); ?>" target="_blank" rel="noopener noreferrer">
+                    Open Venmo
+                </a>
             </div>
 
             <div class="axiom-card-fallback-method">
@@ -71,8 +76,8 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
                 </div>
 
                 <div class="axiom-card-fallback-copy-row">
-                    <span id="axiomFallbackZelleEmail"><?php echo esc_html($zelle_email); ?></span>
-                    <button type="button" class="axiom-card-fallback-copy" data-copy-target="axiomFallbackZelleEmail">Copy</button>
+                    <span id="axiomFallbackZellePhone"><?php echo esc_html($zelle_phone); ?></span>
+                    <button type="button" class="axiom-card-fallback-copy" data-copy-target="axiomFallbackZellePhone">Copy</button>
                 </div>
             </div>
         </div>
@@ -80,9 +85,9 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
 
     <style>
         .axiom-card-fallback-box {
-            margin: 18px 0 22px !important;
-            padding: 18px !important;
-            border-radius: 22px !important;
+            margin: 16px 0 20px !important;
+            padding: 16px !important;
+            border-radius: 20px !important;
             border: 1px solid rgba(59,111,224,.22) !important;
             background: #f7fbff !important;
             box-shadow: 0 10px 24px rgba(7,17,31,.06) !important;
@@ -91,7 +96,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         .axiom-card-fallback-head h2 {
             margin: 0 0 6px !important;
             color: #07111f !important;
-            font-size: 24px !important;
+            font-size: 22px !important;
             line-height: 1.15 !important;
             font-weight: 900 !important;
             letter-spacing: -0.03em !important;
@@ -100,37 +105,37 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         .axiom-card-fallback-head p {
             margin: 0 !important;
             color: #667085 !important;
-            font-size: 15px !important;
+            font-size: 14px !important;
             line-height: 1.45 !important;
         }
 
         .axiom-card-fallback-mini {
-            margin: 14px 0 !important;
-            padding: 12px 14px !important;
+            margin: 12px 0 !important;
+            padding: 11px 13px !important;
             border-radius: 14px !important;
             background: #ffffff !important;
             display: flex !important;
             justify-content: space-between !important;
             align-items: center !important;
             gap: 10px !important;
-            font-size: 15px !important;
+            font-size: 14px !important;
             color: #07111f !important;
         }
 
         .axiom-card-fallback-mini strong {
-            font-size: 17px !important;
+            font-size: 16px !important;
             font-weight: 900 !important;
         }
 
         .axiom-card-fallback-grid {
             display: grid !important;
             grid-template-columns: repeat(2, 1fr) !important;
-            gap: 12px !important;
+            gap: 10px !important;
         }
 
         .axiom-card-fallback-method {
-            padding: 14px !important;
-            border-radius: 18px !important;
+            padding: 13px !important;
+            border-radius: 17px !important;
             background: #ffffff !important;
             border: 1px solid rgba(7,17,31,.08) !important;
         }
@@ -138,7 +143,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
         .axiom-card-fallback-method h3 {
             margin: 0 0 5px !important;
             color: #07111f !important;
-            font-size: 18px !important;
+            font-size: 17px !important;
             font-weight: 900 !important;
         }
 
@@ -163,7 +168,8 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             word-break: break-word !important;
         }
 
-        .axiom-card-fallback-copy {
+        .axiom-card-fallback-copy,
+        .axiom-card-fallback-open {
             border: none !important;
             border-radius: 999px !important;
             padding: 8px 11px !important;
@@ -172,7 +178,15 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             font-size: 12px !important;
             font-weight: 900 !important;
             cursor: pointer !important;
+            text-decoration: none !important;
+            display: inline-block !important;
             flex: 0 0 auto !important;
+        }
+
+        .axiom-card-fallback-open {
+            margin-top: 10px !important;
+            width: 100% !important;
+            text-align: center !important;
         }
 
         @media (max-width: 768px) {
@@ -183,7 +197,7 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
             }
 
             .axiom-card-fallback-head h2 {
-                font-size: 21px !important;
+                font-size: 20px !important;
             }
 
             .axiom-card-fallback-grid {
