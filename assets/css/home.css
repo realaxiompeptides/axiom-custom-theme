@@ -134,8 +134,29 @@
   transform: translateX(4px);
 }
 
+/* BENEFITS / PROOF SECTION */
 .axiom-proof-strip {
   background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+  padding-top: 48px;
+  padding-bottom: 38px;
+}
+
+.axiom-proof-header {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 26px;
+}
+
+.axiom-proof-header h2 {
+  margin: 16px 0 12px;
+}
+
+.axiom-proof-header p {
+  max-width: 680px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: 18px;
+  line-height: 1.55;
 }
 
 .axiom-proof-grid {
@@ -146,12 +167,14 @@
 
 .axiom-proof-card {
   display: flex;
+  align-items: center;
   gap: 16px;
-  padding: 24px;
+  padding: 22px 20px;
   border-radius: 22px;
   background: #ffffff;
   box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07);
   border: 1px solid rgba(15, 23, 42, 0.06);
+  min-height: 128px;
 }
 
 .axiom-proof-icon {
@@ -167,16 +190,22 @@
   font-size: 24px;
 }
 
+.axiom-proof-content {
+  min-width: 0;
+}
+
 .axiom-proof-content h3 {
-  margin: 0 0 8px;
-  font-size: 19px;
-  line-height: 1.2;
+  margin: 0 0 6px;
+  font-size: 20px;
+  line-height: 1.15;
+  color: #0f172a;
 }
 
 .axiom-proof-content p {
   margin: 0;
   color: #64748b;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.35;
 }
 
 @media (max-width: 991px) {
@@ -190,7 +219,16 @@
   }
 
   .axiom-proof-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .axiom-proof-card {
+    padding: 18px 16px;
+  }
+
+  .axiom-proof-content h3 {
+    font-size: 18px;
   }
 }
 
@@ -282,8 +320,59 @@
     font-size: 16px;
   }
 
+  /* MOBILE BENEFITS: 2 PER ROW */
+  .axiom-proof-strip {
+    padding-top: 34px;
+    padding-bottom: 24px;
+  }
+
+  .axiom-proof-header {
+    margin-bottom: 18px;
+  }
+
+  .axiom-proof-header h2 {
+    margin: 14px 0 10px;
+    font-size: 24px;
+    line-height: 1.1;
+  }
+
+  .axiom-proof-header p {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .axiom-proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
   .axiom-proof-card {
-    padding: 18px;
+    padding: 14px 10px;
     border-radius: 18px;
+    min-height: 132px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 9px;
+  }
+
+  .axiom-proof-icon {
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    border-radius: 14px;
+    font-size: 20px;
+  }
+
+  .axiom-proof-content h3 {
+    font-size: 15px;
+    margin: 0 0 4px;
+    line-height: 1.12;
+  }
+
+  .axiom-proof-content p {
+    font-size: 12px;
+    line-height: 1.25;
   }
 }
