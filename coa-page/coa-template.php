@@ -221,7 +221,8 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
 }
 
 /*
- * Build product list and exclude anything in the "kits" category.
+ * Build product list and exclude anything that should not show on the COA page.
+ * This hides kits, Research Starter Pack, Shipping Protection, and checkout add-ons.
  */
 $products = array();
 
@@ -234,23 +235,68 @@ if (function_exists('wc_get_products')) {
         'order'   => 'ASC',
     ));
 
+    $excluded_category_slugs = array(
+        'kits',
+        'kit',
+        'add-ons',
+        'addons',
+        'checkout-addons',
+        'checkout-add-ons',
+        'shipping-protection',
+    );
+
+    $excluded_product_slugs = array(
+        'research-starter-pack',
+        'starter-pack',
+        'shipping-protection',
+        'shipment-protection',
+    );
+
+    $excluded_product_names = array(
+        'research starter pack',
+        'starter pack',
+        'shipping protection',
+        'shipment protection',
+    );
+
     if (!empty($all_products)) {
         foreach ($all_products as $product) {
             if (!$product || !is_a($product, 'WC_Product')) {
                 continue;
             }
 
-            $product_terms = get_the_terms($product->get_id(), 'product_cat');
-            $is_kit_product = false;
+            $product_id   = $product->get_id();
+            $product_name = strtolower(trim((string) $product->get_name()));
+            $product_slug = strtolower(trim((string) $product->get_slug()));
+
+            if (in_array($product_slug, $excluded_product_slugs, true)) {
+                continue;
+            }
+
+            if (in_array($product_name, $excluded_product_names, true)) {
+                continue;
+            }
+
+            foreach ($excluded_product_names as $excluded_name) {
+                if ($excluded_name && strpos($product_name, $excluded_name) !== false) {
+                    continue 2;
+                }
+            }
+
+            $product_terms = get_the_terms($product_id, 'product_cat');
 
             if (!empty($product_terms) && !is_wp_error($product_terms)) {
                 foreach ($product_terms as $term) {
-                    if (!empty($term->slug) && $term->slug === 'kits') {
-                        $is_kit_product = true;
-                        break;
+                    if (!empty($term->slug) && in_array($term->slug, $excluded_category_slugs, true)) {
+                        continue 2;
                     }
                 }
             }
+
+            $products[] = $product;
+        }
+    }
+}
 
             if ($is_kit_product) {
                 continue;
