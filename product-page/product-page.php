@@ -211,6 +211,13 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
           </div>
         </div>
 
+        <?php
+        $product_image_trust_icons = get_template_directory() . '/product-page/product-image-trust-icons.php';
+        if (file_exists($product_image_trust_icons)) {
+            include $product_image_trust_icons;
+        }
+        ?>
+
         <div class="product-info-card">
           <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
 
