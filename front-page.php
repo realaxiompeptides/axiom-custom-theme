@@ -14,9 +14,21 @@
       <p class="hero-subtext">
         Research-grade peptides engineered for precision. 99%+ verified purity with independent third-party testing on every batch.
       </p>
+
+      <!-- ✅ UPDATED BUTTONS ONLY -->
       <div class="hero-actions">
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-white">Shop Now</a>
+
+        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-white">
+          Shop All Peptides
+          <span class="btn-arrow">→</span>
+        </a>
+
+        <a href="<?php echo esc_url(home_url('/coa-page/')); ?>" class="btn btn-outline">
+          View COA Library
+        </a>
+
       </div>
+
     </div>
   </section>
 
