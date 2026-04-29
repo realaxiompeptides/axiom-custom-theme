@@ -2,14 +2,22 @@
   position: fixed !important;
   left: 0 !important;
   right: 0 !important;
-  bottom: 56px !important; /* closer to the new shorter mobile bottom nav */
+
+  /* Slightly higher so it does not touch the mobile bottom nav */
+  bottom: 66px !important;
+
   z-index: 9998 !important;
   padding: 0 12px !important;
+
   transform: translateY(130%) !important;
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
-  transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s ease !important;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease,
+    visibility 0.25s ease !important;
 }
 
 .sticky-product-bar.active,
@@ -32,11 +40,14 @@
   grid-template-columns: 52px 1fr;
   gap: 10px;
   align-items: center;
+
   background: rgba(47, 132, 191, 0.98);
   color: #ffffff;
+
   border-radius: 22px;
   padding: 12px;
-  margin: 0 2px !important;
+  margin: 0 4px !important;
+
   box-shadow: 0 18px 40px rgba(25, 80, 130, 0.28);
 }
 
@@ -145,7 +156,7 @@ body.has-sticky-product-bar {
 
 @media (max-width: 768px) {
   .sticky-product-bar {
-    bottom: 58px !important; /* main mobile position */
+    bottom: 68px !important; /* small clean gap above bottom nav */
     z-index: 9998 !important;
     padding: 0 10px !important;
   }
@@ -156,7 +167,7 @@ body.has-sticky-product-bar {
   }
 
   body.has-sticky-product-bar {
-    padding-bottom: 128px !important;
+    padding-bottom: 138px !important;
   }
 }
 
@@ -164,7 +175,7 @@ body.has-sticky-product-bar {
 @supports (bottom: env(safe-area-inset-bottom)) {
   @media (max-width: 768px) {
     .sticky-product-bar {
-      bottom: calc(58px + env(safe-area-inset-bottom)) !important;
+      bottom: calc(68px + env(safe-area-inset-bottom)) !important;
     }
   }
 }
