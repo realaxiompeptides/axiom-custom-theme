@@ -41,7 +41,7 @@
         </span>
         <h2>Why Labs Choose Axiom</h2>
         <p>
-          Every peptide we ship is backed by rigorous testing, transparent documentation, and a commitment to high quality products.
+          High-quality products, transparent documentation, and fast reliable fulfillment.
         </p>
       </div>
 
@@ -50,31 +50,31 @@
           <div class="axiom-proof-icon"><i class="fa-solid fa-vial-circle-check"></i></div>
           <div class="axiom-proof-content">
             <h3>99%+ Purity</h3>
-            <p>Every batch is third-party tested, helping ensure research-grade quality and consistency.</p>
+            <p>Quality Verified</p>
           </div>
         </article>
 
         <article class="axiom-proof-card">
           <div class="axiom-proof-icon"><i class="fa-solid fa-file-circle-check"></i></div>
           <div class="axiom-proof-content">
-            <h3>COA Transparency</h3>
-            <p>Transparent documentation and batch quality focus for research-use products.</p>
+            <h3>Third-Party Lab Tested</h3>
+            <p>Independently Verified</p>
           </div>
         </article>
 
         <article class="axiom-proof-card">
           <div class="axiom-proof-icon"><i class="fa-solid fa-truck-fast"></i></div>
           <div class="axiom-proof-content">
-            <h3>Fast Fulfillment</h3>
-            <p>Fast order handling and clear tracking workflow once fulfilled.</p>
+            <h3>Same-Day Shipping</h3>
+            <p>Fast Order Dispatch</p>
           </div>
         </article>
 
         <article class="axiom-proof-card">
-          <div class="axiom-proof-icon"><i class="fa-solid fa-flag-usa"></i></div>
+          <div class="axiom-proof-icon"><i class="fa-solid fa-box"></i></div>
           <div class="axiom-proof-content">
-            <h3>USA Fulfilled</h3>
-            <p>Domestic fulfillment experience designed for speed and reliability.</p>
+            <h3>Discreet Packaging</h3>
+            <p>Private Delivery</p>
           </div>
         </article>
       </div>
