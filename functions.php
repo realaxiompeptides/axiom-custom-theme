@@ -26,6 +26,10 @@ $axiom_function_files = array(
     '/functions/checkout/coupons.php',
     '/functions/checkout/payment-discounts.php',
     '/functions/checkout/card-payment-notice.php',
+
+    // Shows Venmo/Zelle fallback on thank-you page for failed/pending card orders
+    '/functions/checkout/card-fallback-thankyou.php',
+
     '/functions/checkout/manual-payment-instructions-email.php',
     '/functions/checkout/kit-crypto-only.php',
     '/functions/checkout/checkout-addons.php',
