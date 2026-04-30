@@ -1,227 +1,143 @@
-/* ================================
-   AXIOM FLOATING DISCOUNT LAUNCHER
+/* =========================================
+   AXIOM POPUP FLOATING LAUNCHER
    File: /assets/css/popup/popup-launcher.css
-================================ */
+========================================= */
 
 .axiom-popup-launcher {
     position: fixed;
-    left: 20px;
-
-    /*
-     * Closer to the bottom navigation bar, but still safely above it.
-     * Increase this number if it touches the nav.
-     * Decrease it if you want it lower.
-     */
-    bottom: calc(82px + env(safe-area-inset-bottom));
-
-    z-index: 999998;
-    width: 68px;
-    height: 68px;
+    left: 16px;
+    bottom: calc(84px + env(safe-area-inset-bottom));
+    z-index: 999990;
+    width: 74px;
+    height: 74px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 999px;
     display: none;
     align-items: center;
     justify-content: center;
-    border: 0;
-    border-radius: 999px;
-    padding: 0;
-    cursor: pointer;
-    background: transparent;
     -webkit-tap-highlight-color: transparent;
-    animation: axiomLauncherFloatIn 280ms ease both;
-}
-
-.axiom-popup-launcher-outer {
-    width: 68px;
-    height: 68px;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background:
-        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.70), transparent 27%),
-        linear-gradient(135deg, #dceaff 0%, #8db4ff 42%, #3b6fe0 100%);
-    box-shadow:
-        0 18px 45px rgba(59, 111, 224, 0.42),
-        0 0 0 8px rgba(59, 111, 224, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.55);
-    position: relative;
-}
-
-.axiom-popup-launcher-outer::before {
-    content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: 999px;
-    background: rgba(59, 111, 224, 0.14);
-    filter: blur(10px);
-    z-index: -1;
+    animation: axiomLauncherIn 220ms ease-out;
 }
 
 .axiom-popup-launcher-inner {
-    width: 54px;
-    height: 54px;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background:
-        radial-gradient(circle at 35% 22%, rgba(255, 255, 255, 0.32), transparent 28%),
-        linear-gradient(135deg, #4f83ff 0%, #235ed8 100%);
-    color: #ffffff;
     position: relative;
-    box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.34),
-        inset 0 -8px 18px rgba(5, 18, 44, 0.28);
-}
-
-.axiom-popup-launcher-inner i {
-    position: absolute;
-    top: 11px;
-    left: 11px;
-    font-size: 27px;
-    color: rgba(255, 255, 255, 0.96);
-    transform: rotate(-13deg);
-    text-shadow: 0 3px 8px rgba(0, 0, 0, 0.16);
-}
-
-.axiom-popup-launcher-percent {
-    position: absolute;
-    right: 11px;
-    bottom: 8px;
-    color: #ffffff;
-    font-size: 25px;
-    line-height: 1;
-    font-weight: 950;
-    letter-spacing: -0.05em;
-    text-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.20),
-        0 0 18px rgba(255, 255, 255, 0.24);
-}
-
-.axiom-popup-launcher::after {
-    content: "Save";
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    min-width: 34px;
-    height: 20px;
-    padding: 0 7px;
+    width: 74px;
+    height: 74px;
+    border-radius: 999px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
-    color: #ffffff;
-    background: linear-gradient(135deg, #ff5f6d, #ff8a3d);
-    font-size: 10px;
-    line-height: 1;
-    font-weight: 950;
-    letter-spacing: 0.02em;
+    background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.28), transparent 34%),
+        linear-gradient(145deg, #78a8ff 0%, #4d7eff 42%, #2f66ea 100%);
+    border: 1px solid rgba(255, 255, 255, 0.42);
     box-shadow:
-        0 8px 18px rgba(255, 95, 109, 0.30),
-        inset 0 1px 0 rgba(255, 255, 255, 0.26);
+        0 18px 38px rgba(35, 77, 190, 0.34),
+        0 6px 14px rgba(9, 18, 42, 0.18),
+        inset 0 2px 6px rgba(255, 255, 255, 0.20),
+        inset 0 -8px 18px rgba(16, 36, 94, 0.14);
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        filter 0.18s ease;
+    overflow: hidden;
 }
 
-.axiom-popup-launcher:hover,
-.axiom-popup-launcher:focus-visible {
-    transform: translateY(-2px) scale(1.04);
+.axiom-popup-launcher-inner::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    pointer-events: none;
+}
+
+.axiom-popup-launcher-inner::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 12px;
+    width: 24px;
+    height: 16px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.22);
+    filter: blur(0.5px);
+    pointer-events: none;
+}
+
+.axiom-popup-launcher i {
+    position: relative;
+    z-index: 2;
+    color: #ffffff;
+    font-size: 31px;
+    line-height: 1;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+}
+
+.axiom-popup-launcher:hover .axiom-popup-launcher-inner,
+.axiom-popup-launcher:focus-visible .axiom-popup-launcher-inner {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow:
+        0 22px 42px rgba(35, 77, 190, 0.40),
+        0 8px 18px rgba(9, 18, 42, 0.22),
+        inset 0 2px 6px rgba(255, 255, 255, 0.22),
+        inset 0 -8px 18px rgba(16, 36, 94, 0.15);
+    filter: saturate(1.04);
     outline: none;
 }
 
-.axiom-popup-launcher:hover .axiom-popup-launcher-outer,
-.axiom-popup-launcher:focus-visible .axiom-popup-launcher-outer {
-    box-shadow:
-        0 22px 52px rgba(59, 111, 224, 0.52),
-        0 0 0 9px rgba(59, 111, 224, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.62);
+.axiom-popup-launcher:active .axiom-popup-launcher-inner {
+    transform: scale(0.97);
 }
 
-@keyframes axiomLauncherFloatIn {
+@keyframes axiomLauncherIn {
     from {
         opacity: 0;
-        transform: translateY(14px) scale(0.9);
+        transform: translateY(10px) scale(0.9);
     }
-
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
 
-/* Mobile spacing: closer to bottom nav but not touching */
+/* Slightly smaller on mobile if needed */
 @media (max-width: 430px) {
     .axiom-popup-launcher {
-        left: 18px;
-        bottom: calc(84px + env(safe-area-inset-bottom));
-        width: 66px;
-        height: 66px;
-    }
-
-    .axiom-popup-launcher-outer {
-        width: 66px;
-        height: 66px;
+        left: 14px;
+        bottom: calc(80px + env(safe-area-inset-bottom));
+        width: 68px;
+        height: 68px;
     }
 
     .axiom-popup-launcher-inner {
-        width: 53px;
-        height: 53px;
+        width: 68px;
+        height: 68px;
     }
 
-    .axiom-popup-launcher-inner i {
-        top: 11px;
-        left: 11px;
-        font-size: 26px;
-    }
-
-    .axiom-popup-launcher-percent {
-        right: 11px;
-        bottom: 8px;
-        font-size: 24px;
+    .axiom-popup-launcher i {
+        font-size: 28px;
     }
 }
 
-@media (max-width: 390px) {
-    .axiom-popup-launcher {
-        left: 16px;
-        bottom: calc(82px + env(safe-area-inset-bottom));
-        width: 62px;
-        height: 62px;
-    }
-
-    .axiom-popup-launcher-outer {
-        width: 62px;
-        height: 62px;
-    }
-
-    .axiom-popup-launcher-inner {
-        width: 50px;
-        height: 50px;
-    }
-
-    .axiom-popup-launcher-inner i {
-        top: 10px;
-        left: 10px;
-        font-size: 24px;
-    }
-
-    .axiom-popup-launcher-percent {
-        right: 10px;
-        bottom: 8px;
-        font-size: 23px;
-    }
-
-    .axiom-popup-launcher::after {
-        top: -7px;
-        right: -7px;
-        height: 19px;
-        font-size: 9.5px;
-    }
+/* Extra-safe spacing when mobile bottom nav exists */
+body.has-mobile-bottom-nav .axiom-popup-launcher,
+body.axiom-mobile-nav-active .axiom-popup-launcher {
+    bottom: calc(88px + env(safe-area-inset-bottom));
 }
 
-/* Never show where it can interfere */
-body.single-product .axiom-popup-launcher,
-body.product-template-default .axiom-popup-launcher,
-body.woocommerce-checkout .axiom-popup-launcher,
-body.woocommerce-cart .axiom-popup-launcher,
-body.checkout .axiom-popup-launcher,
-body.cart .axiom-popup-launcher,
-body.axiom-cart-drawer-open .axiom-popup-launcher,
+/* Never show launcher while popup is open */
 body.axiom-popup-open .axiom-popup-launcher {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Never show launcher on product and checkout pages if body classes exist */
+.single-product .axiom-popup-launcher,
+.woocommerce-checkout .axiom-popup-launcher,
+.woocommerce-cart .axiom-popup-launcher {
     display: none !important;
 }
