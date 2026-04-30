@@ -7,17 +7,22 @@ if (!defined('ABSPATH')) {
  * Load modular function files safely.
  */
 $axiom_function_files = array(
+
+    // CORE
     '/functions/core/setup.php',
     '/functions/core/assets.php',
 
+    // SHOP
     '/functions/shop/catalog.php',
     '/functions/shop/variation-stock-labels.php',
     '/functions/shop/stock-control.php',
 
+    // CART
     '/functions/cart/ajax-cart.php',
     '/functions/cart/cart-page.php',
     '/functions/cart/free-shipping-goal.php',
 
+    // CHECKOUT
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
     '/functions/checkout/shipping-tracking-email.php',
@@ -26,48 +31,57 @@ $axiom_function_files = array(
     '/functions/checkout/coupons.php',
     '/functions/checkout/payment-discounts.php',
     '/functions/checkout/card-payment-notice.php',
-
-    // Shows Venmo/Zelle fallback on thank-you page
     '/functions/checkout/card-fallback-thankyou.php',
-
     '/functions/checkout/manual-payment-instructions-email.php',
     '/functions/checkout/kit-crypto-only.php',
     '/functions/checkout/checkout-addons.php',
 
+    // THANK YOU
     '/functions/thankyou/templates.php',
     '/functions/thankyou/header.php',
     '/functions/thankyou/verification.php',
     '/functions/thankyou/payment-countdown.php',
 
+    // CONTACT
     '/functions/contact/contact-us.php',
 
+    // AFFILIATE
     '/functions/affiliate-program/affiliate-program.php',
 
+    // ACCOUNT
     '/functions/account/account.php',
     '/functions/account/default-endpoint.php',
 
+    // COA
     '/functions/coa/coa.php',
     '/functions/coa/coa-map.php',
 
+    // TOOLS
     '/functions/calculator/peptide-calculator.php',
 
     // 🔥 EMAIL SYSTEM
     '/functions/emails/axiom-email-system.php',
 
-    // 🔥 ABANDONED CART SYSTEM (fix path consistency)
+    // 🔥 ABANDONED CART
     '/functions/emails/abandoned-cart-email.php',
     '/functions/abandoned-cart/abandoned-cart-core.php',
 
-    // 🔥 NEW: LEADS + EMAIL/SMS STORAGE SYSTEM
+    // 🔥 LEADS + STORAGE
     '/functions/marketing/leads-system.php',
 
-    // Floating vials
+    // 🔥 POPUP SYSTEM (EMAIL + SMS FLOW)
+    '/functions/marketing/popup-capture.php',
+
+    // UI / VISUAL
     '/functions/floating-vials/floating-vials.php',
 
-    // Enhanced product system
+    // PRODUCT SYSTEM
     '/product-page/helpers/enhanced-product-data-loader.php',
 );
 
+/**
+ * Load all modules safely
+ */
 foreach ($axiom_function_files as $axiom_file) {
     $axiom_path = get_template_directory() . $axiom_file;
 
@@ -82,8 +96,9 @@ foreach ($axiom_function_files as $axiom_file) {
     }
 }
 
+
 /**
- * Admin helper: Open thank-you page
+ * ADMIN HELPER — Open thank-you page
  */
 add_action('woocommerce_admin_order_data_after_order_details', 'axiom_show_admin_thankyou_test_link');
 
@@ -100,8 +115,9 @@ function axiom_show_admin_thankyou_test_link($order) {
     </p>';
 }
 
+
 /**
- * Reviews page stylesheet
+ * REVIEWS PAGE CSS
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
 
@@ -119,3 +135,17 @@ function axiom_enqueue_reviews_page_assets() {
         file_exists($reviews_css_path) ? filemtime($reviews_css_path) : '1.0.0'
     );
 }
+
+
+/**
+ * OPTIONAL: GLOBAL BRAND COLORS (for consistency)
+ */
+add_action('wp_head', function () {
+    echo '<style>
+        :root {
+            --axiom-blue: #3B6FE0;
+            --axiom-blue-light: #5A8CFF;
+            --axiom-dark: #0c1220;
+        }
+    </style>';
+});
