@@ -33,16 +33,31 @@ function axiom_custom_theme_assets() {
     /**
      * Email/SMS popup capture styles.
      *
-     * File:
-     * /assets/css/popup.css
+     * New split CSS files:
+     * /assets/css/popup/popup-layout.css
+     * /assets/css/popup/popup-form.css
+     * /assets/css/popup/popup-success.css
+     * /assets/css/popup/popup-responsive.css
+     *
+     * IMPORTANT:
+     * The old /assets/css/popup.css is intentionally NOT loaded anymore.
      */
-    if (file_exists($theme_path . '/assets/css/popup.css')) {
-        wp_enqueue_style(
-            'axiom-popup',
-            $theme_uri . '/assets/css/popup.css',
-            array('axiom-base', 'axiom-age-gate'),
-            filemtime($theme_path . '/assets/css/popup.css')
-        );
+    $axiom_popup_css_files = array(
+        'axiom-popup-layout'     => '/assets/css/popup/popup-layout.css',
+        'axiom-popup-form'       => '/assets/css/popup/popup-form.css',
+        'axiom-popup-success'    => '/assets/css/popup/popup-success.css',
+        'axiom-popup-responsive' => '/assets/css/popup/popup-responsive.css',
+    );
+
+    foreach ($axiom_popup_css_files as $handle => $file_path) {
+        if (file_exists($theme_path . $file_path)) {
+            wp_enqueue_style(
+                $handle,
+                $theme_uri . $file_path,
+                array('axiom-base', 'axiom-age-gate'),
+                filemtime($theme_path . $file_path)
+            );
+        }
     }
 
     if (file_exists($theme_path . '/assets/css/mobile-bottom-nav.css')) {
