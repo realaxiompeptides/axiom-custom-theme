@@ -48,7 +48,10 @@ $axiom_function_files = array(
     // AFFILIATE
     '/functions/affiliate-program/affiliate-program.php',
 
-    // NEW: reduce affiliate commission by 5 percentage points for Cash App / Crypto / Zelle orders
+    // Blocks WELCOME10 / WELCOME15 / AXIOM15 popup coupons on affiliate traffic
+    '/functions/affiliate-program/affiliate-coupon-rules.php',
+
+    // Reduces affiliate commission by 5 percentage points for Cash App / Crypto / Zelle orders
     '/functions/affiliate-program/payment-method-commission-adjustment.php',
 
     // ACCOUNT
