@@ -48,6 +48,9 @@ $axiom_function_files = array(
     // AFFILIATE
     '/functions/affiliate-program/affiliate-program.php',
 
+    // NEW: reduce affiliate commission by 5 percentage points for Cash App / Crypto / Zelle orders
+    '/functions/affiliate-program/payment-method-commission-adjustment.php',
+
     // ACCOUNT
     '/functions/account/account.php',
     '/functions/account/default-endpoint.php',
