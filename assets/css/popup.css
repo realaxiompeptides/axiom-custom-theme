@@ -74,15 +74,18 @@
     border-bottom: 1px solid rgba(91, 140, 255, 0.28);
 }
 
-/* Removes old decorative question mark */
-.axiom-popup-hero::after {
+/* Remove old fake/question icon */
+.axiom-popup-hero::after,
+.axiom-popup-logo-badge {
     display: none !important;
     content: none !important;
 }
 
+/* REAL AXIOM LOGO */
 .axiom-popup-brand {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 11px;
     margin-bottom: 18px;
     font-weight: 950;
@@ -92,21 +95,29 @@
 }
 
 .axiom-popup-logo-wrap {
-    width: 38px;
-    height: 38px;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 230px;
+    max-width: 72%;
+    height: 54px;
+    padding: 8px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.13);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.12),
+        0 12px 30px rgba(0, 0, 0, 0.18);
     overflow: hidden;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.16);
-    border: 1px solid rgba(255, 255, 255, 0.28);
 }
 
 .axiom-popup-logo-wrap img {
-    width: 100%;
+    display: block;
+    width: auto;
+    max-width: 100%;
     height: 100%;
     object-fit: contain;
-    padding: 3px;
+    padding: 0;
 }
 
 .axiom-popup-discount-row {
@@ -225,18 +236,112 @@
     color: rgba(255, 255, 255, 0.50);
 }
 
+/* MAKE SMS ADD-ON LOOK LIKE A REAL BUTTON */
 .axiom-popup-sms-teaser {
     width: 100%;
     margin-top: 12px;
-    padding: 13px 12px;
+    padding: 14px 15px;
     border-radius: 17px;
-    color: #7fa8ff;
-    background: rgba(59, 111, 224, 0.10);
-    border: 1px dashed rgba(91, 140, 255, 0.50);
+    color: #ffffff;
+    background:
+        linear-gradient(135deg, rgba(59, 111, 224, 0.26), rgba(90, 140, 255, 0.14)),
+        rgba(59, 111, 224, 0.12);
+    border: 1.5px solid rgba(111, 156, 255, 0.75);
+    box-shadow:
+        0 12px 28px rgba(59, 111, 224, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
     font-size: 15px;
     line-height: 1.22;
     font-weight: 950;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.axiom-popup-sms-teaser::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+    transform: translateX(-105%);
+    transition: transform 0.5s ease;
+}
+
+.axiom-popup-sms-teaser:hover::before,
+.axiom-popup-sms-teaser:focus-visible::before {
+    transform: translateX(105%);
+}
+
+.axiom-popup-sms-teaser:hover,
+.axiom-popup-sms-teaser:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(145, 181, 255, 0.98);
+    box-shadow:
+        0 16px 36px rgba(59, 111, 224, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    outline: none;
+}
+
+.axiom-popup-sms-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3B6FE0, #5A8CFF);
+    box-shadow: 0 10px 22px rgba(59, 111, 224, 0.32);
+    font-size: 22px;
+    font-weight: 950;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-popup-sms-copy {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-popup-sms-copy strong {
+    color: #ffffff;
+    font-size: 14.5px;
+    line-height: 1.15;
+    font-weight: 950;
+}
+
+.axiom-popup-sms-copy small {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11.5px;
+    line-height: 1.15;
+    font-weight: 750;
+}
+
+.axiom-popup-sms-arrow {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 19px;
+    font-weight: 950;
+    position: relative;
+    z-index: 1;
 }
 
 .axiom-popup-main-btn {
@@ -447,8 +552,10 @@ body.axiom-popup-open {
     }
 
     .axiom-popup-logo-wrap {
-        width: 34px;
-        height: 34px;
+        width: 210px;
+        max-width: 70%;
+        height: 48px;
+        padding: 7px 10px;
     }
 
     .axiom-popup-discount-row {
@@ -484,6 +591,32 @@ body.axiom-popup-open {
     .axiom-popup-body {
         padding: 18px 20px;
     }
+
+    .axiom-popup-sms-teaser {
+        padding: 13px 13px;
+    }
+
+    .axiom-popup-sms-icon {
+        width: 31px;
+        height: 31px;
+        min-width: 31px;
+        font-size: 20px;
+    }
+
+    .axiom-popup-sms-copy strong {
+        font-size: 13.5px;
+    }
+
+    .axiom-popup-sms-copy small {
+        font-size: 10.8px;
+    }
+
+    .axiom-popup-sms-arrow {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        font-size: 18px;
+    }
 }
 
 @media (max-height: 740px) {
@@ -498,6 +631,12 @@ body.axiom-popup-open {
 
     .axiom-popup-brand {
         margin-bottom: 12px;
+    }
+
+    .axiom-popup-logo-wrap {
+        height: 43px;
+        width: 195px;
+        padding: 6px 9px;
     }
 
     .axiom-popup-discount-row {
@@ -535,8 +674,29 @@ body.axiom-popup-open {
     }
 
     .axiom-popup-sms-teaser {
-        padding: 11px 10px;
-        font-size: 13px;
+        padding: 10px 12px;
+    }
+
+    .axiom-popup-sms-icon {
+        width: 29px;
+        height: 29px;
+        min-width: 29px;
+        font-size: 18px;
+    }
+
+    .axiom-popup-sms-copy strong {
+        font-size: 12.8px;
+    }
+
+    .axiom-popup-sms-copy small {
+        display: none;
+    }
+
+    .axiom-popup-sms-arrow {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        font-size: 16px;
     }
 
     .axiom-popup-main-btn {
