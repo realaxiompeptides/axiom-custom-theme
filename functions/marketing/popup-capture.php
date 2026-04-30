@@ -129,24 +129,34 @@ add_action('wp_footer', function () {
 
                     <h3>You’re In!</h3>
 
-                    <div class="axiom-popup-code-box">
+                    <button type="button" class="axiom-popup-code-box axiom-copy-code-box" id="axiomCopyCodeBox" aria-label="Copy discount code">
                         <span>Your one-time code</span>
+
                         <strong id="axiomGeneratedCode">Loading...</strong>
-                        <small>One-time use • expires in 30 days</small>
-                    </div>
+
+                        <small>
+                            <i class="fa-regular fa-copy"></i>
+                            <span id="axiomCopyHint">Tap to copy • one-time use • expires in 30 days</span>
+                        </small>
+                    </button>
 
                     <p id="axiomSuccessText">
                         Apply this code at checkout.
                     </p>
 
                     <a href="<?php echo esc_url($shop_url); ?>" class="axiom-popup-main-btn axiom-popup-shop-btn" id="axiomShopNow">
-                        Shop Now →
+                        Shop Now <span>→</span>
                     </a>
                 </div>
 
             </div>
         </div>
     </div>
+
+    <!-- Floating discount launcher. JS shows this only after popup is closed. -->
+    <button type="button" id="axiom-popup-launcher" class="axiom-popup-launcher" aria-label="Open discount popup" style="display:none;">
+        <span>%</span>
+    </button>
 
     <?php
 });
