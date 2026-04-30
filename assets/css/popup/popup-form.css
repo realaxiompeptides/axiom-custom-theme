@@ -1,0 +1,260 @@
+.axiom-popup-field {
+    height: 56px;
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    padding: 0 16px;
+    border-radius: 17px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.17);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.axiom-popup-field i {
+    color: #6f9cff;
+    font-size: 19px;
+}
+
+.axiom-popup-field input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 650;
+}
+
+.axiom-popup-field input::placeholder {
+    color: rgba(255, 255, 255, 0.50);
+}
+
+.axiom-popup-sms-teaser {
+    width: 100%;
+    margin-top: 12px;
+    padding: 14px 15px;
+    border-radius: 17px;
+    color: #ffffff;
+    background:
+        linear-gradient(135deg, rgba(59, 111, 224, 0.26), rgba(90, 140, 255, 0.14)),
+        rgba(59, 111, 224, 0.12);
+    border: 1.5px solid rgba(111, 156, 255, 0.75);
+    box-shadow:
+        0 12px 28px rgba(59, 111, 224, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14);
+    font-size: 15px;
+    line-height: 1.22;
+    font-weight: 950;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.axiom-popup-sms-teaser::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.09), transparent);
+    transform: translateX(-105%);
+    transition: transform 0.5s ease;
+}
+
+.axiom-popup-sms-teaser:hover::before,
+.axiom-popup-sms-teaser:focus-visible::before {
+    transform: translateX(105%);
+}
+
+.axiom-popup-sms-teaser:hover,
+.axiom-popup-sms-teaser:focus-visible {
+    transform: translateY(-1px);
+    border-color: rgba(145, 181, 255, 0.98);
+    box-shadow:
+        0 16px 36px rgba(59, 111, 224, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    outline: none;
+}
+
+.axiom-popup-sms-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3B6FE0, #5A8CFF);
+    box-shadow: 0 10px 22px rgba(59, 111, 224, 0.32);
+    font-size: 22px;
+    font-weight: 950;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-popup-sms-copy {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-popup-sms-copy strong {
+    color: #ffffff;
+    font-size: 14.5px;
+    line-height: 1.15;
+    font-weight: 950;
+}
+
+.axiom-popup-sms-copy small {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11.5px;
+    line-height: 1.15;
+    font-weight: 750;
+}
+
+.axiom-popup-sms-arrow {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 19px;
+    font-weight: 950;
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-popup-main-btn {
+    width: 100%;
+    margin-top: 14px;
+    min-height: 56px;
+    border: 0;
+    border-radius: 17px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #3B6FE0, #5A8CFF);
+    font-size: 16px;
+    font-weight: 950;
+    cursor: pointer;
+    box-shadow:
+        0 18px 40px rgba(59, 111, 224, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.axiom-popup-main-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+        0 22px 48px rgba(59, 111, 224, 0.48),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.axiom-popup-main-btn:disabled,
+.axiom-popup-sms-teaser:disabled,
+.axiom-popup-skip-btn:disabled {
+    opacity: 0.62;
+    cursor: not-allowed;
+}
+
+.axiom-popup-skip-btn {
+    width: 100%;
+    margin-top: 10px;
+    border: 0;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.56);
+    font-size: 14px;
+    font-weight: 850;
+    cursor: pointer;
+}
+
+.axiom-popup-trust-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 7px;
+    margin-top: 14px;
+    color: rgba(255, 255, 255, 0.48);
+    font-size: 10.5px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.axiom-popup-limited {
+    margin: 10px 0 0;
+    color: #ff6b6b;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 950;
+}
+
+.axiom-popup-sms-title {
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.axiom-popup-sms-title h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 950;
+    letter-spacing: -0.03em;
+}
+
+.axiom-popup-sms-title p {
+    margin: 7px 0 0;
+    color: rgba(255,255,255,0.62);
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.axiom-phone-row {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+}
+
+.axiom-country-wrap {
+    height: 56px;
+    width: 104px;
+    flex: 0 0 104px;
+    display: flex;
+    align-items: center;
+    border-radius: 17px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.17);
+    overflow: hidden;
+}
+
+.axiom-country-wrap select {
+    width: 100%;
+    height: 100%;
+    padding: 0 8px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 850;
+    appearance: none;
+}
+
+.axiom-country-wrap select option {
+    color: #0f172a;
+}
+
+.axiom-phone-field {
+    flex: 1;
+    min-width: 0;
+}
