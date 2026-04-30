@@ -5,34 +5,27 @@ if (!defined('ABSPATH')) {
 
 /**
  * Axiom Email/SMS Popup HTML only.
+ *
  * CSS: /assets/css/popup.css
  * JS:  /assets/js/popup.js
- * Save/coupon logic: /functions/marketing/leads-system.php
+ * Lead/coupon generation: /functions/marketing/leads-system.php
  * SMS country data: /functions/marketing/sms-capture.php
  */
-
 add_action('wp_footer', function () {
     if (is_admin()) {
         return;
     }
 
-    $logo_url = '';
-
-    if (function_exists('get_theme_mod')) {
-        $custom_logo_id = get_theme_mod('custom_logo');
-
-        if ($custom_logo_id) {
-            $logo_image = wp_get_attachment_image_src($custom_logo_id, 'full');
-
-            if (!empty($logo_image[0])) {
-                $logo_url = $logo_image[0];
-            }
-        }
-    }
-
-    if (!$logo_url) {
-        $logo_url = get_template_directory_uri() . '/assets/images/logo.png';
-    }
+    /**
+     * REAL AXIOM LOGO
+     * Your GitHub screenshot shows:
+     * /assets/images/axiom-logo.PNG
+     *
+     * IMPORTANT:
+     * Keep the file name capitalization exactly:
+     * axiom-logo.PNG
+     */
+    $logo_url = get_template_directory_uri() . '/assets/images/axiom-logo.PNG';
     ?>
 
     <div id="axiom-popup" class="axiom-popup" aria-hidden="true" style="display:none;">
@@ -45,11 +38,11 @@ add_action('wp_footer', function () {
             </button>
 
             <div class="axiom-popup-hero">
+
                 <div class="axiom-popup-brand">
                     <span class="axiom-popup-logo-wrap">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Axiom Peptides">
+                        <img src="<?php echo esc_url($logo_url); ?>" alt="Axiom Peptides Logo">
                     </span>
-                    <span>Axiom Peptides</span>
                 </div>
 
                 <div class="axiom-popup-discount-row">
@@ -80,13 +73,21 @@ add_action('wp_footer', function () {
 
                 <!-- EMAIL STEP -->
                 <div id="axiomStepEmail" class="axiom-popup-step">
+
                     <label class="axiom-popup-field" for="axiomPopupEmail">
                         <i class="fa-regular fa-envelope"></i>
                         <input type="email" id="axiomPopupEmail" autocomplete="email" placeholder="Enter your email">
                     </label>
 
                     <button type="button" class="axiom-popup-sms-teaser" id="axiomShowSmsStep">
-                        + Add phone number for an extra 5% off
+                        <span class="axiom-popup-sms-icon">+</span>
+
+                        <span class="axiom-popup-sms-copy">
+                            <strong>Add phone number for an extra 5% off</strong>
+                            <small>Unlock the full 15% first-order discount</small>
+                        </span>
+
+                        <span class="axiom-popup-sms-arrow">→</span>
                     </button>
 
                     <button type="button" class="axiom-popup-main-btn" id="axiomClaim10">
@@ -157,6 +158,7 @@ add_action('wp_footer', function () {
                         Copy Code
                     </button>
                 </div>
+
             </div>
         </div>
     </div>
