@@ -31,7 +31,7 @@
     align-items: center;
     justify-content: center;
     background:
-        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.28), transparent 34%),
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.30), transparent 34%),
         linear-gradient(145deg, #78a8ff 0%, #4d7eff 42%, #2f66ea 100%);
     border: 1px solid rgba(255, 255, 255, 0.42);
     box-shadow:
@@ -68,13 +68,25 @@
     pointer-events: none;
 }
 
-.axiom-popup-launcher i {
+/* Single percent icon only */
+.axiom-popup-launcher-percent {
     position: relative;
     z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #ffffff;
-    font-size: 31px;
+    font-size: 36px;
+    font-weight: 900;
     line-height: 1;
+    letter-spacing: -0.04em;
+    transform: translateY(-1px);
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+}
+
+/* Safety: hide any old FontAwesome icon if cached PHP still outputs it */
+.axiom-popup-launcher i {
+    display: none !important;
 }
 
 .axiom-popup-launcher:hover .axiom-popup-launcher-inner,
@@ -98,13 +110,14 @@
         opacity: 0;
         transform: translateY(10px) scale(0.9);
     }
+
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
 }
 
-/* Slightly smaller on mobile if needed */
+/* Slightly smaller on mobile */
 @media (max-width: 430px) {
     .axiom-popup-launcher {
         left: 14px;
@@ -118,8 +131,8 @@
         height: 68px;
     }
 
-    .axiom-popup-launcher i {
-        font-size: 28px;
+    .axiom-popup-launcher-percent {
+        font-size: 32px;
     }
 }
 
@@ -135,9 +148,10 @@ body.axiom-popup-open .axiom-popup-launcher {
     pointer-events: none !important;
 }
 
-/* Never show launcher on product and checkout pages if body classes exist */
+/* Never show launcher on product, checkout, cart, and thank-you pages */
 .single-product .axiom-popup-launcher,
 .woocommerce-checkout .axiom-popup-launcher,
-.woocommerce-cart .axiom-popup-launcher {
+.woocommerce-cart .axiom-popup-launcher,
+.woocommerce-order-received .axiom-popup-launcher {
     display: none !important;
 }
