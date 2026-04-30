@@ -204,8 +204,7 @@ add_action('wp_footer', function () {
         >
             <span class="axiom-popup-launcher-outer">
                 <span class="axiom-popup-launcher-inner">
-                    <i class="fa-solid fa-tags" aria-hidden="true"></i>
-                    <span class="axiom-popup-launcher-percent">%</span>
+                    <span class="axiom-popup-launcher-percent" aria-hidden="true">%</span>
                 </span>
             </span>
         </button>
