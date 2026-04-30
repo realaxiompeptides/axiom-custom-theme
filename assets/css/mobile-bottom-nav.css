@@ -129,3 +129,41 @@
         box-shadow: 0 3px 8px rgba(59, 111, 224, 0.30);
     }
 }
+
+/* ==========================================================
+   Hide mobile bottom nav on checkout + cart drawer
+   ========================================================== */
+
+/* Hide bottom nav on checkout page */
+body.woocommerce-checkout .axiom-mobile-bottom-nav,
+body.woocommerce-checkout nav.axiom-mobile-bottom-nav,
+body.woocommerce-checkout .mobile-bottom-nav,
+body.woocommerce-checkout .bottom-mobile-nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Hide bottom nav when cart drawer is open */
+body.axiom-cart-drawer-open .axiom-mobile-bottom-nav,
+body.axiom-cart-drawer-open nav.axiom-mobile-bottom-nav,
+body.axiom-cart-drawer-open .mobile-bottom-nav,
+body.axiom-cart-drawer-open .bottom-mobile-nav {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Remove extra bottom spacing while cart drawer is open */
+body.axiom-cart-drawer-open {
+    padding-bottom: 0 !important;
+}
+
+/* Make sure cart drawer sits above everything */
+body.axiom-cart-drawer-open .axiom-cart-drawer,
+body.axiom-cart-drawer-open #axiom-cart-drawer,
+body.axiom-cart-drawer-open .cart-drawer,
+body.axiom-cart-drawer-open .side-cart,
+body.axiom-cart-drawer-open .drawer {
+    z-index: 999999 !important;
+}
