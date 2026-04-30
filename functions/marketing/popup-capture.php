@@ -16,17 +16,7 @@ add_action('wp_footer', function () {
         return;
     }
 
-    /**
-     * REAL AXIOM MENU LOGO
-     *
-     * Your GitHub files show:
-     * /assets/images/axiom-menu-logo.PNG
-     *
-     * IMPORTANT:
-     * Keep the file name capitalization exactly:
-     * axiom-menu-logo.PNG
-     */
-    $logo_url = get_template_directory_uri() . '/assets/images/axiom-menu-logo.PNG';
+    $shop_url = home_url('/shop/');
     ?>
 
     <div id="axiom-popup" class="axiom-popup" aria-hidden="true" style="display:none;">
@@ -39,12 +29,6 @@ add_action('wp_footer', function () {
             </button>
 
             <div class="axiom-popup-hero">
-
-                <div class="axiom-popup-brand">
-                    <span class="axiom-popup-logo-wrap">
-                        <img src="<?php echo esc_url($logo_url); ?>" alt="Axiom Peptides Logo">
-                    </span>
-                </div>
 
                 <div class="axiom-popup-discount-row">
                     <div class="axiom-popup-discount-pill">
@@ -77,12 +61,7 @@ add_action('wp_footer', function () {
 
                     <label class="axiom-popup-field" for="axiomPopupEmail">
                         <i class="fa-regular fa-envelope"></i>
-                        <input
-                            type="email"
-                            id="axiomPopupEmail"
-                            autocomplete="email"
-                            placeholder="Enter your email"
-                        >
+                        <input type="email" id="axiomPopupEmail" autocomplete="email" placeholder="Enter your email">
                     </label>
 
                     <button type="button" class="axiom-popup-sms-teaser" id="axiomShowSmsStep">
@@ -123,12 +102,7 @@ add_action('wp_footer', function () {
 
                         <label class="axiom-popup-field axiom-phone-field" for="axiomPopupPhone">
                             <i class="fa-solid fa-mobile-screen-button"></i>
-                            <input
-                                type="tel"
-                                id="axiomPopupPhone"
-                                autocomplete="tel"
-                                placeholder="Phone number"
-                            >
+                            <input type="tel" id="axiomPopupPhone" autocomplete="tel" placeholder="Phone number">
                         </label>
                     </div>
 
@@ -165,9 +139,9 @@ add_action('wp_footer', function () {
                         Apply this code at checkout.
                     </p>
 
-                    <button type="button" class="axiom-popup-main-btn" id="axiomCopyCode">
-                        Copy Code
-                    </button>
+                    <a href="<?php echo esc_url($shop_url); ?>" class="axiom-popup-main-btn axiom-popup-shop-btn" id="axiomShopNow">
+                        Shop Now →
+                    </a>
                 </div>
 
             </div>
