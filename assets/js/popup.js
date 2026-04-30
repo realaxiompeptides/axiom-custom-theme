@@ -1,11 +1,12 @@
 (function () {
     'use strict';
 
-    const POPUP_KEY = 'axiom_popup_seen_v7';
+    const POPUP_KEY = 'axiom_popup_seen_v8';
+    const AGE_GATE_KEY = 'axiom_age_gate_accepted_v1';
     const DELAY_AFTER_GATE_CLOSE = 3000;
 
     let popupTimeout = null;
-    let pollingInterval = null;
+    let ageGateWatchInterval = null;
 
     function getPopup() {
         return document.getElementById('axiom-popup');
@@ -13,105 +14,100 @@
 
     function hidePopup() {
         const popup = getPopup();
-        if (!popup) return;
+
+        if (!popup) {
+            return;
+        }
 
         popup.style.display = 'none';
         popup.setAttribute('aria-hidden', 'true');
         document.body.classList.remove('axiom-popup-open');
     }
 
+    function ageGateAccepted() {
+        return localStorage.getItem(AGE_GATE_KEY) === 'true';
+    }
+
+    function popupAlreadySeen() {
+        return localStorage.getItem(POPUP_KEY) === '1';
+    }
+
+    function schedulePopup() {
+        clearTimeout(popupTimeout);
+
+        if (popupAlreadySeen()) {
+            return;
+        }
+
+        popupTimeout = setTimeout(function () {
+            showPopup();
+        }, DELAY_AFTER_GATE_CLOSE);
+    }
+
     function showPopup() {
         const popup = getPopup();
-        if (!popup) return;
-        if (localStorage.getItem(POPUP_KEY)) return;
-        if (isAgeGateVisible()) return;
+
+        if (!popup) {
+            return;
+        }
+
+        if (popupAlreadySeen()) {
+            return;
+        }
+
+        /**
+         * Main safety rule:
+         * Do NOT show the popup unless the 21+ gate has been accepted.
+         */
+        if (!ageGateAccepted()) {
+            hidePopup();
+            waitForAgeGateAccepted();
+            return;
+        }
 
         popup.style.display = 'block';
         popup.setAttribute('aria-hidden', 'false');
         document.body.classList.add('axiom-popup-open');
     }
 
-    function isVisible(el) {
-        if (!el) return false;
-
-        const style = window.getComputedStyle(el);
-        const rect = el.getBoundingClientRect();
-
-        return (
-            style.display !== 'none' &&
-            style.visibility !== 'hidden' &&
-            parseFloat(style.opacity || '1') > 0 &&
-            rect.width > 0 &&
-            rect.height > 0
-        );
-    }
-
-    function isAgeGateVisible() {
-        const selectors = [
-            '#ageGateOverlay',
-            '.age-gate-overlay',
-            '.age-gate',
-            '.axiom-age-gate',
-            '[id*="ageGate"]',
-            '[class*="age-gate"]'
-        ];
-
-        for (let i = 0; i < selectors.length; i++) {
-            const gate = document.querySelector(selectors[i]);
-
-            if (!gate) continue;
-            if (gate.closest && gate.closest('#axiom-popup')) continue;
-
-            const ariaHidden = gate.getAttribute('aria-hidden');
-
-            if (ariaHidden === 'true') continue;
-
-            if (isVisible(gate)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    function schedulePopup() {
-        clearTimeout(popupTimeout);
-
-        popupTimeout = setTimeout(function () {
-            if (!isAgeGateVisible()) {
-                showPopup();
-            }
-        }, DELAY_AFTER_GATE_CLOSE);
-    }
-
-    function startSafeAgeGateWait() {
+    function waitForAgeGateAccepted() {
         hidePopup();
 
-        let tries = 0;
+        clearInterval(ageGateWatchInterval);
 
-        clearInterval(pollingInterval);
-
-        pollingInterval = setInterval(function () {
-            tries++;
-
-            if (isAgeGateVisible()) {
-                hidePopup();
+        ageGateWatchInterval = setInterval(function () {
+            if (popupAlreadySeen()) {
+                clearInterval(ageGateWatchInterval);
                 return;
             }
 
-            clearInterval(pollingInterval);
-            schedulePopup();
-
-            // Safety stop after 90 seconds
-            if (tries > 300) {
-                clearInterval(pollingInterval);
+            if (ageGateAccepted()) {
+                clearInterval(ageGateWatchInterval);
+                schedulePopup();
             }
         }, 300);
     }
 
+    function closePopup() {
+        const popup = getPopup();
+
+        if (!popup) {
+            return;
+        }
+
+        popup.style.display = 'none';
+        popup.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('axiom-popup-open');
+
+        localStorage.setItem(POPUP_KEY, '1');
+    }
+
     function showMessage(message) {
         const box = document.getElementById('axiomPopupMessage');
-        if (!box) return;
+
+        if (!box) {
+            return;
+        }
 
         box.textContent = message;
         box.style.display = 'block';
@@ -126,20 +122,34 @@
     }
 
     function getCountries() {
-        if (window.AXIOM_SMS_COUNTRIES && Array.isArray(window.AXIOM_SMS_COUNTRIES.countries)) {
+        if (
+            window.AXIOM_SMS_COUNTRIES &&
+            Array.isArray(window.AXIOM_SMS_COUNTRIES.countries)
+        ) {
             return window.AXIOM_SMS_COUNTRIES.countries;
         }
 
         return [
-            { code: 'US', name: 'United States', dial: '+1', min: 10, max: 10, flag: '🇺🇸' }
+            {
+                code: 'US',
+                name: 'United States',
+                dial: '+1',
+                min: 10,
+                max: 10,
+                flag: '🇺🇸'
+            }
         ];
     }
 
     function populateCountrySelector() {
         const select = document.getElementById('axiomPopupCountry');
-        if (!select) return;
+
+        if (!select) {
+            return;
+        }
 
         const countries = getCountries();
+
         const defaultCountry =
             window.AXIOM_SMS_COUNTRIES && window.AXIOM_SMS_COUNTRIES.defaultCountry
                 ? window.AXIOM_SMS_COUNTRIES.defaultCountry
@@ -224,15 +234,24 @@
 
         if (!isValidEmail(email)) {
             showMessage('Enter a valid email first.');
-            if (emailInput) emailInput.focus();
+
+            if (emailInput) {
+                emailInput.focus();
+            }
+
             return;
         }
 
         const emailStep = document.getElementById('axiomStepEmail');
         const smsStep = document.getElementById('axiomStepSms');
 
-        if (emailStep) emailStep.style.display = 'none';
-        if (smsStep) smsStep.style.display = 'block';
+        if (emailStep) {
+            emailStep.style.display = 'none';
+        }
+
+        if (smsStep) {
+            smsStep.style.display = 'block';
+        }
 
         const phoneInput = document.getElementById('axiomPopupPhone');
 
@@ -257,7 +276,11 @@
 
         if (!isValidEmail(email)) {
             showMessage('Enter a valid email.');
-            if (emailInput) emailInput.focus();
+
+            if (emailInput) {
+                emailInput.focus();
+            }
+
             return;
         }
 
@@ -266,10 +289,14 @@
         if (percent === 15) {
             if (!isValidPhoneForCountry()) {
                 const country = getSelectedCountry();
+
                 showMessage(`Enter a valid ${country.name} phone number.`);
 
                 const phoneInput = document.getElementById('axiomPopupPhone');
-                if (phoneInput) phoneInput.focus();
+
+                if (phoneInput) {
+                    phoneInput.focus();
+                }
 
                 return;
             }
@@ -311,6 +338,7 @@
                             ? data.data.message
                             : 'Could not create your code. Please try again.'
                     );
+
                     return;
                 }
 
@@ -323,10 +351,21 @@
                 const codeBox = document.getElementById('axiomGeneratedCode');
                 const successText = document.getElementById('axiomSuccessText');
 
-                if (emailStep) emailStep.style.display = 'none';
-                if (smsStep) smsStep.style.display = 'none';
-                if (successStep) successStep.style.display = 'block';
-                if (codeBox) codeBox.textContent = code;
+                if (emailStep) {
+                    emailStep.style.display = 'none';
+                }
+
+                if (smsStep) {
+                    smsStep.style.display = 'none';
+                }
+
+                if (successStep) {
+                    successStep.style.display = 'block';
+                }
+
+                if (codeBox) {
+                    codeBox.textContent = code;
+                }
 
                 if (successText) {
                     successText.innerHTML =
@@ -345,7 +384,9 @@
         const codeEl = document.getElementById('axiomGeneratedCode');
         const btn = document.getElementById('axiomCopyCode');
 
-        if (!codeEl || !btn) return;
+        if (!codeEl || !btn) {
+            return;
+        }
 
         const code = codeEl.textContent.trim();
 
@@ -382,11 +423,13 @@
         });
 
         const showSmsBtn = document.getElementById('axiomShowSmsStep');
+
         if (showSmsBtn) {
             showSmsBtn.addEventListener('click', goToSmsStep);
         }
 
         const claim10 = document.getElementById('axiomClaim10');
+
         if (claim10) {
             claim10.addEventListener('click', function () {
                 submitLead(10);
@@ -394,6 +437,7 @@
         }
 
         const claim15 = document.getElementById('axiomClaim15');
+
         if (claim15) {
             claim15.addEventListener('click', function () {
                 submitLead(15);
@@ -401,6 +445,7 @@
         }
 
         const skipSms = document.getElementById('axiomSkipSms');
+
         if (skipSms) {
             skipSms.addEventListener('click', function () {
                 submitLead(10);
@@ -408,31 +453,26 @@
         }
 
         const copyBtn = document.getElementById('axiomCopyCode');
+
         if (copyBtn) {
             copyBtn.addEventListener('click', copyCode);
         }
 
-        document.addEventListener('click', function (event) {
-            const target = event.target;
-            const clickable = target.closest
-                ? target.closest('button, a, [role="button"], input[type="button"], input[type="submit"]')
-                : null;
+        const ageEnterBtn = document.getElementById('ageGateEnterBtn');
 
-            if (!clickable) return;
-            if (clickable.closest && clickable.closest('#axiom-popup')) return;
-
-            const text = (clickable.innerText || clickable.value || '').trim().toLowerCase();
-
-            if (text === 'enter site') {
+        if (ageEnterBtn) {
+            ageEnterBtn.addEventListener('click', function () {
                 hidePopup();
 
-                clearTimeout(popupTimeout);
-
                 setTimeout(function () {
-                    startSafeAgeGateWait();
-                }, 600);
-            }
-        }, true);
+                    if (ageGateAccepted()) {
+                        schedulePopup();
+                    } else {
+                        waitForAgeGateAccepted();
+                    }
+                }, 500);
+            });
+        }
 
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape') {
@@ -446,13 +486,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+        hidePopup();
         populateCountrySelector();
         bindPopupEvents();
 
-        /**
-         * Do NOT immediately schedule popup.
-         * First wait for the age gate to be gone.
-         */
-        startSafeAgeGateWait();
+        if (popupAlreadySeen()) {
+            return;
+        }
+
+        if (ageGateAccepted()) {
+            schedulePopup();
+        } else {
+            waitForAgeGateAccepted();
+        }
     });
 })();
