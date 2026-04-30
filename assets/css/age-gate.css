@@ -11,14 +11,21 @@
     display: none;
     align-items: flex-start;
     justify-content: center;
+
+    /*
+     * Important:
+     * Bottom padding keeps the card away from your mobile bottom nav
+     * and Safari bottom bar.
+     */
     padding:
         calc(18px + env(safe-area-inset-top))
         14px
-        calc(138px + env(safe-area-inset-bottom));
+        calc(170px + env(safe-area-inset-bottom));
+
     overflow-y: auto;
     overflow-x: hidden;
     background:
-        radial-gradient(circle at 50% 0%, rgba(59, 111, 224, 0.30), transparent 38%),
+        radial-gradient(circle at 50% 0%, rgba(59, 111, 224, 0.28), transparent 38%),
         rgba(7, 17, 31, 0.78);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -32,9 +39,9 @@
 
 body.age-gate-locked {
     overflow: hidden !important;
-    touch-action: none;
 }
 
+/* Main white card */
 .age-gate-card,
 .age-gate-modal,
 #ageGateCard {
@@ -51,8 +58,8 @@ body.age-gate-locked {
 }
 
 /* Logo */
-.age-gate-logo-wrap,
-.age-gate-logo {
+.age-gate-logo,
+.age-gate-logo-wrap {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,8 +75,9 @@ body.age-gate-locked {
     object-fit: contain;
 }
 
-/* Header */
-.age-gate-kicker {
+/* Top text */
+.age-gate-kicker,
+.age-gate-subtitle {
     margin: 0 0 8px;
     text-align: center;
     color: #2d8ac2;
@@ -93,7 +101,8 @@ body.age-gate-locked {
 }
 
 .age-gate-description,
-.age-gate-card p {
+.age-gate-card > p,
+.age-gate-copy {
     margin: 0 auto 20px;
     max-width: 420px;
     color: #64748b;
@@ -103,15 +112,23 @@ body.age-gate-locked {
     font-weight: 500;
 }
 
-/* Info rows */
+/* ================================
+   KEEP ORIGINAL BLUE CHECK ROW STYLE
+================================ */
+
 .age-gate-list,
-.age-gate-items {
+.age-gate-items,
+.age-gate-benefits {
     display: grid;
     gap: 10px;
     margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
 }
 
-.age-gate-item {
+.age-gate-item,
+.age-gate-benefit,
+.age-gate-rule {
     min-height: 58px;
     display: flex;
     align-items: center;
@@ -126,7 +143,11 @@ body.age-gate-locked {
     font-weight: 700;
 }
 
-.age-gate-item-icon {
+/* Blue circle checkmarks */
+.age-gate-item-icon,
+.age-gate-benefit-icon,
+.age-gate-rule-icon,
+.age-gate-check-icon {
     width: 28px;
     height: 28px;
     min-width: 28px;
@@ -137,11 +158,33 @@ body.age-gate-locked {
     color: #ffffff;
     font-size: 14px;
     font-weight: 950;
+    line-height: 1;
 }
 
-/* Checkbox rows */
+/* If your HTML uses raw check icons */
+.age-gate-item i,
+.age-gate-benefit i,
+.age-gate-rule i {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: #2f8dc3;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 950;
+    line-height: 1;
+}
+
+/* ================================
+   CHECKBOX CONFIRMATION ROWS
+================================ */
+
 .age-gate-checkbox-row,
-.age-gate-check-row {
+.age-gate-check-row,
+.age-gate-confirm-row {
     min-height: 62px;
     display: flex;
     align-items: flex-start;
@@ -157,6 +200,7 @@ body.age-gate-locked {
 
 .age-gate-checkbox-row input,
 .age-gate-check-row input,
+.age-gate-confirm-row input,
 #ageGateAgeCheck,
 #ageGateUseCheck {
     width: 28px;
@@ -169,8 +213,10 @@ body.age-gate-locked {
 
 .age-gate-checkbox-row span,
 .age-gate-check-row span,
+.age-gate-confirm-row span,
 .age-gate-checkbox-row label,
-.age-gate-check-row label {
+.age-gate-check-row label,
+.age-gate-confirm-row label {
     color: #07111f;
     font-size: 16px;
     line-height: 1.35;
@@ -178,11 +224,15 @@ body.age-gate-locked {
 }
 
 .age-gate-checkbox-row strong,
-.age-gate-check-row strong {
+.age-gate-check-row strong,
+.age-gate-confirm-row strong {
     font-weight: 950;
 }
 
-/* Buttons */
+/* ================================
+   BUTTONS
+================================ */
+
 .age-gate-actions {
     display: grid;
     gap: 10px;
@@ -225,15 +275,27 @@ body.age-gate-locked {
     cursor: pointer;
 }
 
-/* Mobile bottom nav safety */
+.age-gate-footer,
+.age-gate-disclaimer {
+    margin: 18px 0 0;
+    color: #07111f;
+    font-size: 15px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+/* ================================
+   MOBILE FIX — SAME STYLE, BETTER FIT
+================================ */
+
 @media (max-width: 600px) {
     #ageGateOverlay,
     .age-gate-overlay {
         align-items: flex-start;
         padding:
-            calc(16px + env(safe-area-inset-top))
+            calc(14px + env(safe-area-inset-top))
             10px
-            calc(170px + env(safe-area-inset-bottom));
+            calc(185px + env(safe-area-inset-bottom));
     }
 
     .age-gate-card,
@@ -242,6 +304,11 @@ body.age-gate-locked {
         width: calc(100vw - 20px);
         border-radius: 24px;
         padding: 22px 16px 22px;
+    }
+
+    .age-gate-logo,
+    .age-gate-logo-wrap {
+        margin-bottom: 14px;
     }
 
     .age-gate-logo img,
@@ -257,13 +324,16 @@ body.age-gate-locked {
     }
 
     .age-gate-description,
-    .age-gate-card p {
+    .age-gate-card > p,
+    .age-gate-copy {
         font-size: 16px;
         line-height: 1.42;
         margin-bottom: 17px;
     }
 
-    .age-gate-item {
+    .age-gate-item,
+    .age-gate-benefit,
+    .age-gate-rule {
         min-height: 54px;
         padding: 12px 13px;
         font-size: 15px;
@@ -271,14 +341,17 @@ body.age-gate-locked {
     }
 
     .age-gate-checkbox-row,
-    .age-gate-check-row {
+    .age-gate-check-row,
+    .age-gate-confirm-row {
         padding: 14px 13px;
     }
 
     .age-gate-checkbox-row span,
     .age-gate-check-row span,
+    .age-gate-confirm-row span,
     .age-gate-checkbox-row label,
-    .age-gate-check-row label {
+    .age-gate-check-row label,
+    .age-gate-confirm-row label {
         font-size: 15px;
     }
 
@@ -293,11 +366,12 @@ body.age-gate-locked {
     }
 }
 
+/* Short iPhone screens */
 @media (max-height: 760px) {
     #ageGateOverlay,
     .age-gate-overlay {
         padding-top: calc(10px + env(safe-area-inset-top));
-        padding-bottom: calc(175px + env(safe-area-inset-bottom));
+        padding-bottom: calc(190px + env(safe-area-inset-bottom));
     }
 
     .age-gate-card,
@@ -307,8 +381,8 @@ body.age-gate-locked {
         padding-bottom: 18px;
     }
 
-    .age-gate-logo-wrap,
-    .age-gate-logo {
+    .age-gate-logo,
+    .age-gate-logo-wrap {
         margin-bottom: 10px;
     }
 
@@ -317,7 +391,8 @@ body.age-gate-locked {
         max-height: 52px;
     }
 
-    .age-gate-kicker {
+    .age-gate-kicker,
+    .age-gate-subtitle {
         font-size: 12px;
         margin-bottom: 6px;
     }
@@ -330,24 +405,34 @@ body.age-gate-locked {
     }
 
     .age-gate-description,
-    .age-gate-card p {
+    .age-gate-card > p,
+    .age-gate-copy {
         font-size: 15px;
         line-height: 1.35;
         margin-bottom: 13px;
     }
 
     .age-gate-list,
-    .age-gate-items {
+    .age-gate-items,
+    .age-gate-benefits {
         gap: 8px;
     }
 
-    .age-gate-item {
+    .age-gate-item,
+    .age-gate-benefit,
+    .age-gate-rule {
         min-height: 48px;
         padding: 10px 12px;
         font-size: 14px;
     }
 
-    .age-gate-item-icon {
+    .age-gate-item-icon,
+    .age-gate-benefit-icon,
+    .age-gate-rule-icon,
+    .age-gate-check-icon,
+    .age-gate-item i,
+    .age-gate-benefit i,
+    .age-gate-rule i {
         width: 25px;
         height: 25px;
         min-width: 25px;
@@ -355,13 +440,15 @@ body.age-gate-locked {
     }
 
     .age-gate-checkbox-row,
-    .age-gate-check-row {
+    .age-gate-check-row,
+    .age-gate-confirm-row {
         min-height: 54px;
         padding: 12px;
     }
 
     .age-gate-checkbox-row input,
     .age-gate-check-row input,
+    .age-gate-confirm-row input,
     #ageGateAgeCheck,
     #ageGateUseCheck {
         width: 25px;
@@ -379,23 +466,5 @@ body.age-gate-locked {
     .age-gate-exit,
     #ageGateExitBtn {
         min-height: 50px;
-    }
-}
-
-/* Extra small iPhones / short browser viewport */
-@media (max-height: 680px) {
-    #ageGateOverlay,
-    .age-gate-overlay {
-        padding-bottom: calc(190px + env(safe-area-inset-bottom));
-    }
-
-    .age-gate-logo-wrap,
-    .age-gate-logo {
-        display: none;
-    }
-
-    .age-gate-description,
-    .age-gate-card p {
-        font-size: 14px;
     }
 }
