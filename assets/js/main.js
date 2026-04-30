@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function openMenu() {
     if (!mobileMenu || !overlay) return;
+
     mobileMenu.classList.add("active");
     overlay.classList.add("active");
     body.style.overflow = "hidden";
@@ -28,27 +29,60 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function closeMenu() {
     if (!mobileMenu || !overlay) return;
+
     mobileMenu.classList.remove("active");
-    overlay.classList.remove("active");
-    body.style.overflow = "";
+
+    if (!cartDrawer || !cartDrawer.classList.contains("active")) {
+      overlay.classList.remove("active");
+      body.style.overflow = "";
+    }
   }
 
   function openCart() {
     if (!cartDrawer || !overlay) return;
+
     cartDrawer.classList.add("active");
     overlay.classList.add("active");
+
     body.style.overflow = "hidden";
+
+    /**
+     * IMPORTANT:
+     * This hides the mobile bottom nav only while the cart drawer is open.
+     */
+    body.classList.add("axiom-cart-drawer-open");
   }
 
   function closeCart() {
     if (!cartDrawer || !overlay) return;
+
     cartDrawer.classList.remove("active");
-    overlay.classList.remove("active");
-    body.style.overflow = "";
+
+    if (!mobileMenu || !mobileMenu.classList.contains("active")) {
+      overlay.classList.remove("active");
+      body.style.overflow = "";
+    }
+
+    /**
+     * IMPORTANT:
+     * This brings the mobile bottom nav back when the cart drawer closes.
+     */
+    body.classList.remove("axiom-cart-drawer-open");
   }
 
   async function postAjax(action, extra = {}) {
+    if (!window.AXIOM_THEME || !AXIOM_THEME.ajaxUrl || !AXIOM_THEME.nonce) {
+      console.error("AXIOM_THEME is missing. Check assets.php wp_localize_script.");
+      return {
+        success: false,
+        data: {
+          message: "Theme AJAX settings are missing.",
+        },
+      };
+    }
+
     const params = new URLSearchParams();
+
     params.append("action", action);
     params.append("nonce", AXIOM_THEME.nonce);
 
@@ -188,6 +222,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (data.discountTotal && subtotalRow && subtotalRow.parentNode) {
       const discountRow = document.createElement("div");
+
       discountRow.className = "cart-summary-row cart-summary-row-discount";
       discountRow.innerHTML = `
         <span>Discount</span>
@@ -217,7 +252,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (cartFreeShippingGoal) {
-      cartFreeShippingGoal.innerHTML = count > 0 ? (data.freeShippingGoalHtml || "") : "";
+      cartFreeShippingGoal.innerHTML = count > 0 ? data.freeShippingGoalHtml || "" : "";
       cartFreeShippingGoal.style.display = count > 0 ? "block" : "none";
     }
 
@@ -256,6 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const result = await postAjax("axiom_get_cart_drawer");
 
       if (!result || !result.success || !result.data) return;
+
       renderCartDrawer(result.data);
     } catch (error) {
       console.error("Cart drawer refresh failed:", error);
@@ -270,6 +306,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!result || !result.success || !result.data) return;
+
       renderCartDrawer(result.data);
     } catch (error) {
       console.error("Update quantity failed:", error);
@@ -293,6 +330,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       if (!result || !result.success || !result.data) return;
+
       renderCartDrawer(result.data);
     } catch (error) {
       console.error("Remove item failed:", error);
@@ -309,6 +347,7 @@ document.addEventListener("DOMContentLoaded", function () {
         messageEl.textContent = "Enter a discount code.";
         messageEl.className = "cart-coupon-message is-error";
       }
+
       return;
     }
 
@@ -329,9 +368,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!result || !result.success) {
         if (messageEl) {
-          messageEl.textContent = result && result.data && result.data.message ? result.data.message : "Coupon could not be applied.";
+          messageEl.textContent =
+            result && result.data && result.data.message
+              ? result.data.message
+              : "Coupon could not be applied.";
+
           messageEl.className = "cart-coupon-message is-error";
         }
+
         return;
       }
 
@@ -367,6 +411,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const attributesRaw = button.getAttribute("data-add-attributes") || "{}";
 
     let attributes = {};
+
     try {
       attributes = JSON.parse(attributesRaw);
     } catch (error) {
@@ -397,6 +442,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (result && result.data && result.data.message) {
           alert(result.data.message);
         }
+
         return;
       }
 
@@ -427,6 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (cartToggle) {
     cartToggle.addEventListener("click", async function (e) {
       e.preventDefault();
+
       await refreshCartDrawer();
       openCart();
     });
@@ -463,8 +510,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const action = qtyBtn.getAttribute("data-qty-action");
 
         let nextQty = currentQty;
-        if (action === "increase") nextQty = currentQty + 1;
-        if (action === "decrease") nextQty = Math.max(1, currentQty - 1);
+
+        if (action === "increase") {
+          nextQty = currentQty + 1;
+        }
+
+        if (action === "decrease") {
+          nextQty = Math.max(1, currentQty - 1);
+        }
 
         if (inputEl) {
           inputEl.value = String(nextQty);
@@ -476,26 +529,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (removeBtn) {
         e.preventDefault();
+
         const cartKey = removeBtn.getAttribute("data-remove-cart-key");
+
         await removeCartItem(cartKey);
         return;
       }
 
       if (addBtn) {
         e.preventDefault();
+
         await addUpsellProduct(addBtn);
         return;
       }
 
       if (couponBtn) {
         e.preventDefault();
+
         const inputEl = document.getElementById("cartCouponInput");
+
         await applyCartCoupon(inputEl ? inputEl.value : "");
       }
     });
 
     cartItemsList.addEventListener("input", function (e) {
       const qtyInput = e.target.closest(".cart-qty-input");
+
       if (!qtyInput) return;
 
       const cartKey = qtyInput.getAttribute("data-cart-key");
@@ -541,9 +600,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const exitBtn = document.getElementById("ageGateExitBtn");
     const logo = document.getElementById("ageGateLogo");
 
-    if (!gateOverlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) return;
+    if (!gateOverlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) {
+      return;
+    }
 
-    logo.src = AXIOM_THEME.themeUrl + "/assets/images/axiom-menu-logo.PNG";
+    if (window.AXIOM_THEME && AXIOM_THEME.themeUrl) {
+      logo.src = AXIOM_THEME.themeUrl + "/assets/images/axiom-menu-logo.PNG";
+    }
 
     function syncButton() {
       enterBtn.disabled = !(ageCheck.checked && useCheck.checked);
@@ -570,6 +633,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     enterBtn.addEventListener("click", function () {
       if (enterBtn.disabled) return;
+
       localStorage.setItem(STORAGE_KEY, "true");
       closeGate();
     });
@@ -584,97 +648,3 @@ document.addEventListener("DOMContentLoaded", function () {
   initAgeGate();
   refreshCartDrawer();
 });
-
-/**
- * Hide mobile bottom nav when cart drawer is open.
- * Shows it again when cart drawer closes.
- */
-(function () {
-    'use strict';
-
-    function axiomCartDrawerIsOpen() {
-        const drawerSelectors = [
-            '#axiom-cart-drawer',
-            '.axiom-cart-drawer',
-            '.cart-drawer',
-            '.side-cart',
-            '.drawer-cart',
-            '.woocommerce-mini-cart-drawer'
-        ];
-
-        for (let i = 0; i < drawerSelectors.length; i++) {
-            const drawer = document.querySelector(drawerSelectors[i]);
-
-            if (!drawer) {
-                continue;
-            }
-
-            const style = window.getComputedStyle(drawer);
-            const rect = drawer.getBoundingClientRect();
-
-            const visible =
-                style.display !== 'none' &&
-                style.visibility !== 'hidden' &&
-                parseFloat(style.opacity || '1') > 0 &&
-                rect.width > 0 &&
-                rect.height > 0;
-
-            const classOpen =
-                drawer.classList.contains('open') ||
-                drawer.classList.contains('active') ||
-                drawer.classList.contains('is-open') ||
-                drawer.classList.contains('show') ||
-                drawer.classList.contains('opened');
-
-            const ariaOpen =
-                drawer.getAttribute('aria-hidden') === 'false' ||
-                drawer.getAttribute('aria-expanded') === 'true';
-
-            if (visible && (classOpen || ariaOpen || rect.right > window.innerWidth - 30)) {
-                return true;
-            }
-        }
-
-        return (
-            document.body.classList.contains('cart-drawer-open') ||
-            document.body.classList.contains('drawer-open') ||
-            document.body.classList.contains('mini-cart-open') ||
-            document.body.classList.contains('woocommerce-cart-drawer-open')
-        );
-    }
-
-    function axiomUpdateBottomNavForCartDrawer() {
-        if (axiomCartDrawerIsOpen()) {
-            document.body.classList.add('axiom-cart-drawer-open');
-        } else {
-            document.body.classList.remove('axiom-cart-drawer-open');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        axiomUpdateBottomNavForCartDrawer();
-
-        document.addEventListener('click', function () {
-            setTimeout(axiomUpdateBottomNavForCartDrawer, 80);
-            setTimeout(axiomUpdateBottomNavForCartDrawer, 250);
-            setTimeout(axiomUpdateBottomNavForCartDrawer, 600);
-        }, true);
-
-        document.addEventListener('updated_wc_div', axiomUpdateBottomNavForCartDrawer);
-        document.addEventListener('wc_fragments_refreshed', axiomUpdateBottomNavForCartDrawer);
-        document.addEventListener('wc_fragment_refresh', axiomUpdateBottomNavForCartDrawer);
-
-        const observer = new MutationObserver(function () {
-            axiomUpdateBottomNavForCartDrawer();
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            attributeFilter: ['class', 'style', 'aria-hidden', 'aria-expanded']
-        });
-
-        setInterval(axiomUpdateBottomNavForCartDrawer, 800);
-    });
-})();
