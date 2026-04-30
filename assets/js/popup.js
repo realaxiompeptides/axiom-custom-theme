@@ -1,17 +1,37 @@
 (function () {
     'use strict';
 
-    const POPUP_KEY = 'axiom_popup_seen_v6';
-    const DELAY_AFTER_AGE_GATE = 3000;
+    const POPUP_KEY = 'axiom_popup_seen_v7';
+    const DELAY_AFTER_GATE_CLOSE = 3000;
 
-    let popupTimer = null;
-    let observerStarted = false;
+    let popupTimeout = null;
+    let pollingInterval = null;
 
     function getPopup() {
         return document.getElementById('axiom-popup');
     }
 
-    function elementIsVisible(el) {
+    function hidePopup() {
+        const popup = getPopup();
+        if (!popup) return;
+
+        popup.style.display = 'none';
+        popup.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('axiom-popup-open');
+    }
+
+    function showPopup() {
+        const popup = getPopup();
+        if (!popup) return;
+        if (localStorage.getItem(POPUP_KEY)) return;
+        if (isAgeGateVisible()) return;
+
+        popup.style.display = 'block';
+        popup.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('axiom-popup-open');
+    }
+
+    function isVisible(el) {
         if (!el) return false;
 
         const style = window.getComputedStyle(el);
@@ -26,98 +46,27 @@
         );
     }
 
-    function elementText(el) {
-        return (el && el.innerText ? el.innerText : '').replace(/\s+/g, ' ').trim().toLowerCase();
-    }
-
-    function isInsideAxiomPopup(el) {
-        return !!(el && el.closest && el.closest('#axiom-popup'));
-    }
-
-    /**
-     * VERY STRICT AGE GATE DETECTION
-     * This checks selectors, visible text, and the Enter Site button.
-     */
-    function isAgeGateActive() {
-        const gateSelectors = [
+    function isAgeGateVisible() {
+        const selectors = [
             '#ageGateOverlay',
-            '#age-gate-overlay',
-            '#ageGate',
-            '#age-gate',
             '.age-gate-overlay',
             '.age-gate',
             '.axiom-age-gate',
-            '.age-verification',
-            '.age-verification-overlay',
-            '[data-age-gate]',
-            '[data-agegate]',
             '[id*="ageGate"]',
-            '[id*="age-gate"]',
-            '[class*="ageGate"]',
             '[class*="age-gate"]'
         ];
 
-        for (let i = 0; i < gateSelectors.length; i++) {
-            const matches = document.querySelectorAll(gateSelectors[i]);
+        for (let i = 0; i < selectors.length; i++) {
+            const gate = document.querySelector(selectors[i]);
 
-            for (let j = 0; j < matches.length; j++) {
-                const el = matches[j];
+            if (!gate) continue;
+            if (gate.closest && gate.closest('#axiom-popup')) continue;
 
-                if (isInsideAxiomPopup(el)) continue;
+            const ariaHidden = gate.getAttribute('aria-hidden');
 
-                const ariaHidden = el.getAttribute('aria-hidden');
+            if (ariaHidden === 'true') continue;
 
-                if (ariaHidden === 'true') continue;
-
-                if (elementIsVisible(el)) {
-                    return true;
-                }
-            }
-        }
-
-        /**
-         * Detect visible "Enter Site" button.
-         * This is the most important part for your current age gate.
-         */
-        const clickableEls = document.querySelectorAll('button, a, input[type="button"], input[type="submit"], [role="button"]');
-
-        for (let i = 0; i < clickableEls.length; i++) {
-            const el = clickableEls[i];
-
-            if (isInsideAxiomPopup(el)) continue;
-
-            const txt = elementText(el);
-            const val = (el.value || '').toLowerCase();
-
-            if ((txt === 'enter site' || val === 'enter site') && elementIsVisible(el)) {
-                return true;
-            }
-
-            if ((txt === 'exit' || val === 'exit') && elementIsVisible(el)) {
-                return true;
-            }
-        }
-
-        /**
-         * Detect visible modal content from the agreement.
-         */
-        const allEls = document.querySelectorAll('body *');
-
-        for (let i = 0; i < allEls.length; i++) {
-            const el = allEls[i];
-
-            if (isInsideAxiomPopup(el)) continue;
-            if (!elementIsVisible(el)) continue;
-
-            const txt = elementText(el);
-
-            if (
-                txt.includes('21+ access agreement') ||
-                txt.includes('research access notice') ||
-                txt.includes('i confirm that i am 21 years of age') ||
-                txt.includes('in-vitro laboratory research only') ||
-                txt.includes('not for human consumption')
-            ) {
+            if (isVisible(gate)) {
                 return true;
             }
         }
@@ -125,16 +74,39 @@
         return false;
     }
 
-    function forceHidePopupWhileAgeGateActive() {
-        const popup = getPopup();
+    function schedulePopup() {
+        clearTimeout(popupTimeout);
 
-        if (!popup) return;
+        popupTimeout = setTimeout(function () {
+            if (!isAgeGateVisible()) {
+                showPopup();
+            }
+        }, DELAY_AFTER_GATE_CLOSE);
+    }
 
-        if (isAgeGateActive()) {
-            popup.style.display = 'none';
-            popup.setAttribute('aria-hidden', 'true');
-            document.body.classList.remove('axiom-popup-open');
-        }
+    function startSafeAgeGateWait() {
+        hidePopup();
+
+        let tries = 0;
+
+        clearInterval(pollingInterval);
+
+        pollingInterval = setInterval(function () {
+            tries++;
+
+            if (isAgeGateVisible()) {
+                hidePopup();
+                return;
+            }
+
+            clearInterval(pollingInterval);
+            schedulePopup();
+
+            // Safety stop after 90 seconds
+            if (tries > 300) {
+                clearInterval(pollingInterval);
+            }
+        }, 300);
     }
 
     function showMessage(message) {
@@ -154,10 +126,7 @@
     }
 
     function getCountries() {
-        if (
-            window.AXIOM_SMS_COUNTRIES &&
-            Array.isArray(window.AXIOM_SMS_COUNTRIES.countries)
-        ) {
+        if (window.AXIOM_SMS_COUNTRIES && Array.isArray(window.AXIOM_SMS_COUNTRIES.countries)) {
             return window.AXIOM_SMS_COUNTRIES.countries;
         }
 
@@ -171,7 +140,6 @@
         if (!select) return;
 
         const countries = getCountries();
-
         const defaultCountry =
             window.AXIOM_SMS_COUNTRIES && window.AXIOM_SMS_COUNTRIES.defaultCountry
                 ? window.AXIOM_SMS_COUNTRIES.defaultCountry
@@ -250,84 +218,6 @@
         return length >= phone.country.min && length <= phone.country.max;
     }
 
-    function showPopup() {
-        const popup = getPopup();
-
-        if (!popup) return;
-        if (localStorage.getItem(POPUP_KEY)) return;
-
-        /**
-         * FINAL BLOCKER:
-         * If the 21+ agreement is still visible, DO NOT show.
-         */
-        if (isAgeGateActive()) {
-            forceHidePopupWhileAgeGateActive();
-            waitForAgeGateToClose();
-            return;
-        }
-
-        popup.style.display = 'block';
-        popup.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('axiom-popup-open');
-    }
-
-    function schedulePopupAfterGate() {
-        clearTimeout(popupTimer);
-
-        popupTimer = setTimeout(function () {
-            if (!isAgeGateActive()) {
-                showPopup();
-            } else {
-                forceHidePopupWhileAgeGateActive();
-                waitForAgeGateToClose();
-            }
-        }, DELAY_AFTER_AGE_GATE);
-    }
-
-    function waitForAgeGateToClose() {
-        forceHidePopupWhileAgeGateActive();
-
-        const interval = setInterval(function () {
-            forceHidePopupWhileAgeGateActive();
-
-            if (!isAgeGateActive()) {
-                clearInterval(interval);
-                schedulePopupAfterGate();
-            }
-        }, 300);
-    }
-
-    function startAgeGateObserver() {
-        if (observerStarted) return;
-        observerStarted = true;
-
-        const observer = new MutationObserver(function () {
-            forceHidePopupWhileAgeGateActive();
-
-            if (!isAgeGateActive()) {
-                schedulePopupAfterGate();
-            }
-        });
-
-        observer.observe(document.body, {
-            attributes: true,
-            childList: true,
-            subtree: true,
-            characterData: true
-        });
-    }
-
-    function closePopup() {
-        const popup = getPopup();
-        if (!popup) return;
-
-        popup.style.display = 'none';
-        popup.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('axiom-popup-open');
-
-        localStorage.setItem(POPUP_KEY, '1');
-    }
-
     function goToSmsStep() {
         const emailInput = document.getElementById('axiomPopupEmail');
         const email = emailInput ? emailInput.value.trim() : '';
@@ -338,8 +228,11 @@
             return;
         }
 
-        document.getElementById('axiomStepEmail').style.display = 'none';
-        document.getElementById('axiomStepSms').style.display = 'block';
+        const emailStep = document.getElementById('axiomStepEmail');
+        const smsStep = document.getElementById('axiomStepSms');
+
+        if (emailStep) emailStep.style.display = 'none';
+        if (smsStep) smsStep.style.display = 'block';
 
         const phoneInput = document.getElementById('axiomPopupPhone');
 
@@ -424,13 +317,21 @@
                 const code = data.data.code;
                 const finalPercent = data.data.discount_percent || percent;
 
-                document.getElementById('axiomStepEmail').style.display = 'none';
-                document.getElementById('axiomStepSms').style.display = 'none';
-                document.getElementById('axiomStepSuccess').style.display = 'block';
+                const emailStep = document.getElementById('axiomStepEmail');
+                const smsStep = document.getElementById('axiomStepSms');
+                const successStep = document.getElementById('axiomStepSuccess');
+                const codeBox = document.getElementById('axiomGeneratedCode');
+                const successText = document.getElementById('axiomSuccessText');
 
-                document.getElementById('axiomGeneratedCode').textContent = code;
-                document.getElementById('axiomSuccessText').innerHTML =
-                    'Apply at checkout for <strong>' + finalPercent + '% off</strong> your first order.';
+                if (emailStep) emailStep.style.display = 'none';
+                if (smsStep) smsStep.style.display = 'none';
+                if (successStep) successStep.style.display = 'block';
+                if (codeBox) codeBox.textContent = code;
+
+                if (successText) {
+                    successText.innerHTML =
+                        'Apply at checkout for <strong>' + finalPercent + '% off</strong> your first order.';
+                }
 
                 localStorage.setItem(POPUP_KEY, '1');
             })
@@ -475,46 +376,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        populateCountrySelector();
-
-        /**
-         * Start hidden every time.
-         */
-        forceHidePopupWhileAgeGateActive();
-
-        /**
-         * Watch for the age gate closing.
-         */
-        startAgeGateObserver();
-        waitForAgeGateToClose();
-
-        /**
-         * Also listen specifically for Enter Site click.
-         */
-        document.addEventListener('click', function (event) {
-            const target = event.target;
-            const clickable = target.closest ? target.closest('button, a, [role="button"], input[type="button"], input[type="submit"]') : null;
-
-            if (!clickable) return;
-            if (isInsideAxiomPopup(clickable)) return;
-
-            const txt = elementText(clickable);
-            const val = (clickable.value || '').toLowerCase();
-
-            if (txt === 'enter site' || val === 'enter site') {
-                clearTimeout(popupTimer);
-
-                setTimeout(function () {
-                    if (!isAgeGateActive()) {
-                        schedulePopupAfterGate();
-                    } else {
-                        waitForAgeGateToClose();
-                    }
-                }, 500);
-            }
-        }, true);
-
+    function bindPopupEvents() {
         document.querySelectorAll('[data-axiom-popup-close]').forEach(function (el) {
             el.addEventListener('click', closePopup);
         });
@@ -550,6 +412,28 @@
             copyBtn.addEventListener('click', copyCode);
         }
 
+        document.addEventListener('click', function (event) {
+            const target = event.target;
+            const clickable = target.closest
+                ? target.closest('button, a, [role="button"], input[type="button"], input[type="submit"]')
+                : null;
+
+            if (!clickable) return;
+            if (clickable.closest && clickable.closest('#axiom-popup')) return;
+
+            const text = (clickable.innerText || clickable.value || '').trim().toLowerCase();
+
+            if (text === 'enter site') {
+                hidePopup();
+
+                clearTimeout(popupTimeout);
+
+                setTimeout(function () {
+                    startSafeAgeGateWait();
+                }, 600);
+            }
+        }, true);
+
         document.addEventListener('keydown', function (event) {
             if (event.key === 'Escape') {
                 const popup = getPopup();
@@ -559,5 +443,16 @@
                 }
             }
         });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        populateCountrySelector();
+        bindPopupEvents();
+
+        /**
+         * Do NOT immediately schedule popup.
+         * First wait for the age gate to be gone.
+         */
+        startSafeAgeGateWait();
     });
 })();
