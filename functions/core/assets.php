@@ -30,6 +30,21 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
+    /**
+     * Email/SMS popup capture styles.
+     *
+     * File:
+     * /assets/css/popup.css
+     */
+    if (file_exists($theme_path . '/assets/css/popup.css')) {
+        wp_enqueue_style(
+            'axiom-popup',
+            $theme_uri . '/assets/css/popup.css',
+            array('axiom-base', 'axiom-age-gate'),
+            filemtime($theme_path . '/assets/css/popup.css')
+        );
+    }
+
     if (file_exists($theme_path . '/assets/css/mobile-bottom-nav.css')) {
         wp_enqueue_style(
             'axiom-mobile-bottom-nav',
@@ -306,6 +321,29 @@ function axiom_custom_theme_assets() {
         'ajaxUrl'     => admin_url('admin-ajax.php'),
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
+
+    /**
+     * Email/SMS popup capture script.
+     *
+     * File:
+     * /assets/js/popup.js
+     *
+     * This must load after axiom-main so global site behavior is already available.
+     */
+    if (file_exists($theme_path . '/assets/js/popup.js')) {
+        wp_enqueue_script(
+            'axiom-popup',
+            $theme_uri . '/assets/js/popup.js',
+            array('jquery', 'axiom-main'),
+            filemtime($theme_path . '/assets/js/popup.js'),
+            true
+        );
+
+        wp_localize_script('axiom-popup', 'axiom_ajax', array(
+            'ajax_url' => admin_url('admin-ajax.php'),
+            'nonce'    => wp_create_nonce('axiom_popup_capture'),
+        ));
+    }
 
     if (file_exists($theme_path . '/assets/js/klaviyo-after-age-gate.js')) {
         wp_enqueue_script(
