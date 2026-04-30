@@ -6,7 +6,6 @@
     const DELAY_AFTER_GATE_CLOSE = 3000;
 
     /**
-     * NEW:
      * If visitor came from an affiliate/referral link, never show email/SMS popup.
      */
     const AFFILIATE_TRAFFIC_KEY = 'axiom_affiliate_traffic_v1';
@@ -18,8 +17,28 @@
         return document.getElementById('axiom-popup');
     }
 
+    function getLauncher() {
+        return document.getElementById('axiom-popup-launcher');
+    }
+
+    function isBlockedLauncherPage() {
+        const body = document.body;
+
+        if (!body) {
+            return false;
+        }
+
+        return (
+            body.classList.contains('single-product') ||
+            body.classList.contains('product-template-default') ||
+            body.classList.contains('woocommerce-checkout') ||
+            body.classList.contains('woocommerce-cart') ||
+            body.classList.contains('checkout') ||
+            body.classList.contains('cart')
+        );
+    }
+
     /**
-     * NEW:
      * Detect affiliate traffic from URL params or SliceWP cookies.
      */
     function isAffiliateTraffic() {
@@ -58,6 +77,43 @@
         return localStorage.getItem(AFFILIATE_TRAFFIC_KEY) === '1';
     }
 
+    function hideLauncher() {
+        const launcher = getLauncher();
+
+        if (!launcher) {
+            return;
+        }
+
+        launcher.style.display = 'none';
+        launcher.setAttribute('aria-hidden', 'true');
+    }
+
+    function showLauncher() {
+        const launcher = getLauncher();
+
+        if (!launcher) {
+            return;
+        }
+
+        if (isAffiliateTraffic()) {
+            hideLauncher();
+            return;
+        }
+
+        if (isBlockedLauncherPage()) {
+            hideLauncher();
+            return;
+        }
+
+        if (!ageGateAccepted()) {
+            hideLauncher();
+            return;
+        }
+
+        launcher.style.display = 'flex';
+        launcher.setAttribute('aria-hidden', 'false');
+    }
+
     function hidePopup() {
         const popup = getPopup();
 
@@ -85,12 +141,9 @@
             return;
         }
 
-        /**
-         * NEW:
-         * Do not schedule popup for affiliate traffic.
-         */
         if (isAffiliateTraffic()) {
             hidePopup();
+            hideLauncher();
             return;
         }
 
@@ -110,24 +163,50 @@
             return;
         }
 
-        /**
-         * NEW:
-         * Do not show popup on affiliate/referral traffic.
-         */
         if (isAffiliateTraffic()) {
             hidePopup();
+            hideLauncher();
             return;
         }
 
-        /**
-         * Main safety rule:
-         * Do NOT show the popup unless the 21+ gate has been accepted.
-         */
         if (!ageGateAccepted()) {
             hidePopup();
             waitForAgeGateAccepted();
             return;
         }
+
+        hideLauncher();
+
+        popup.style.display = 'block';
+        popup.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('axiom-popup-open');
+    }
+
+    /**
+     * Opens popup from floating % icon.
+     * This ignores POPUP_KEY because the visitor manually reopened it.
+     */
+    function reopenPopupFromLauncher() {
+        const popup = getPopup();
+
+        if (!popup) {
+            return;
+        }
+
+        if (isAffiliateTraffic()) {
+            hidePopup();
+            hideLauncher();
+            return;
+        }
+
+        if (!ageGateAccepted()) {
+            hidePopup();
+            hideLauncher();
+            waitForAgeGateAccepted();
+            return;
+        }
+
+        hideLauncher();
 
         popup.style.display = 'block';
         popup.setAttribute('aria-hidden', 'false');
@@ -136,6 +215,7 @@
 
     function waitForAgeGateAccepted() {
         hidePopup();
+        hideLauncher();
 
         clearInterval(ageGateWatchInterval);
 
@@ -145,13 +225,10 @@
                 return;
             }
 
-            /**
-             * NEW:
-             * Stop watching if affiliate traffic is detected.
-             */
             if (isAffiliateTraffic()) {
                 clearInterval(ageGateWatchInterval);
                 hidePopup();
+                hideLauncher();
                 return;
             }
 
@@ -174,6 +251,12 @@
         document.body.classList.remove('axiom-popup-open');
 
         localStorage.setItem(POPUP_KEY, '1');
+
+        /**
+         * Show floating % icon after the user closes popup,
+         * except on product/cart/checkout pages.
+         */
+        showLauncher();
     }
 
     function showMessage(message) {
@@ -447,6 +530,7 @@
                 }
 
                 localStorage.setItem(POPUP_KEY, '1');
+                hideLauncher();
             })
             .catch(function () {
                 setLoading(false);
@@ -529,6 +613,14 @@
             el.addEventListener('click', closePopup);
         });
 
+        const launcher = getLauncher();
+
+        if (launcher) {
+            launcher.addEventListener('click', function () {
+                reopenPopupFromLauncher();
+            });
+        }
+
         const showSmsBtn = document.getElementById('axiomShowSmsStep');
 
         if (showSmsBtn) {
@@ -565,10 +657,6 @@
             copyBtn.addEventListener('click', copyCode);
         }
 
-        /**
-         * NEW:
-         * Click the whole coupon code box to copy the generated code.
-         */
         const copyCodeBox = document.getElementById('axiomCopyCodeBox');
 
         if (copyCodeBox) {
@@ -580,10 +668,12 @@
         if (ageEnterBtn) {
             ageEnterBtn.addEventListener('click', function () {
                 hidePopup();
+                hideLauncher();
 
                 setTimeout(function () {
                     if (isAffiliateTraffic()) {
                         hidePopup();
+                        hideLauncher();
                         return;
                     }
 
@@ -609,19 +699,18 @@
 
     document.addEventListener('DOMContentLoaded', function () {
         hidePopup();
+        hideLauncher();
         populateCountrySelector();
         bindPopupEvents();
 
-        if (popupAlreadySeen()) {
+        if (isAffiliateTraffic()) {
+            hidePopup();
+            hideLauncher();
             return;
         }
 
-        /**
-         * NEW:
-         * Do not show email/SMS popup for affiliate traffic.
-         */
-        if (isAffiliateTraffic()) {
-            hidePopup();
+        if (popupAlreadySeen()) {
+            showLauncher();
             return;
         }
 
