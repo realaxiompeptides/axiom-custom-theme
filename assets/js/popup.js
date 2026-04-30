@@ -5,11 +5,57 @@
     const AGE_GATE_KEY = 'axiom_age_gate_accepted_v1';
     const DELAY_AFTER_GATE_CLOSE = 3000;
 
+    /**
+     * NEW:
+     * If visitor came from an affiliate/referral link, never show email/SMS popup.
+     */
+    const AFFILIATE_TRAFFIC_KEY = 'axiom_affiliate_traffic_v1';
+
     let popupTimeout = null;
     let ageGateWatchInterval = null;
 
     function getPopup() {
         return document.getElementById('axiom-popup');
+    }
+
+    /**
+     * NEW:
+     * Detect affiliate traffic from URL params or SliceWP cookies.
+     */
+    function isAffiliateTraffic() {
+        const params = new URLSearchParams(window.location.search);
+
+        const affiliateParams = [
+            'ref',
+            'aff',
+            'affiliate',
+            'affiliate_id',
+            'referral',
+            'slicewp_ref',
+            'swp_ref',
+            'slicewp_affiliate',
+            'affiliate_code'
+        ];
+
+        for (let i = 0; i < affiliateParams.length; i++) {
+            if (params.get(affiliateParams[i])) {
+                localStorage.setItem(AFFILIATE_TRAFFIC_KEY, '1');
+                return true;
+            }
+        }
+
+        const cookies = String(document.cookie || '').toLowerCase();
+
+        if (
+            cookies.indexOf('slicewp') !== -1 ||
+            cookies.indexOf('affiliate') !== -1 ||
+            cookies.indexOf('referral') !== -1
+        ) {
+            localStorage.setItem(AFFILIATE_TRAFFIC_KEY, '1');
+            return true;
+        }
+
+        return localStorage.getItem(AFFILIATE_TRAFFIC_KEY) === '1';
     }
 
     function hidePopup() {
@@ -39,6 +85,15 @@
             return;
         }
 
+        /**
+         * NEW:
+         * Do not schedule popup for affiliate traffic.
+         */
+        if (isAffiliateTraffic()) {
+            hidePopup();
+            return;
+        }
+
         popupTimeout = setTimeout(function () {
             showPopup();
         }, DELAY_AFTER_GATE_CLOSE);
@@ -52,6 +107,15 @@
         }
 
         if (popupAlreadySeen()) {
+            return;
+        }
+
+        /**
+         * NEW:
+         * Do not show popup on affiliate/referral traffic.
+         */
+        if (isAffiliateTraffic()) {
+            hidePopup();
             return;
         }
 
@@ -78,6 +142,16 @@
         ageGateWatchInterval = setInterval(function () {
             if (popupAlreadySeen()) {
                 clearInterval(ageGateWatchInterval);
+                return;
+            }
+
+            /**
+             * NEW:
+             * Stop watching if affiliate traffic is detected.
+             */
+            if (isAffiliateTraffic()) {
+                clearInterval(ageGateWatchInterval);
+                hidePopup();
                 return;
             }
 
@@ -465,6 +539,11 @@
                 hidePopup();
 
                 setTimeout(function () {
+                    if (isAffiliateTraffic()) {
+                        hidePopup();
+                        return;
+                    }
+
                     if (ageGateAccepted()) {
                         schedulePopup();
                     } else {
@@ -491,6 +570,15 @@
         bindPopupEvents();
 
         if (popupAlreadySeen()) {
+            return;
+        }
+
+        /**
+         * NEW:
+         * Do not show email/SMS popup for affiliate traffic.
+         */
+        if (isAffiliateTraffic()) {
+            hidePopup();
             return;
         }
 
