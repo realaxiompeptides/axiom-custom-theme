@@ -6,7 +6,7 @@ if (!defined('ABSPATH')) exit;
  */
 add_action('wp_footer', function () {
 ?>
-<div id="axiom-popup" class="axiom-hidden">
+<div id="axiom-popup" style="display:none;">
 
     <div class="axiom-overlay"></div>
 
@@ -18,7 +18,7 @@ add_action('wp_footer', function () {
             <p>Join Axiom Peptides for exclusive research offers.</p>
 
             <input type="email" id="axiom-email" placeholder="Enter your email">
-            <button onclick="axiomNextStep()">Continue</button>
+            <button type="button" onclick="axiomNextStep()">Continue</button>
         </div>
 
         <!-- STEP 2 SMS -->
@@ -27,7 +27,7 @@ add_action('wp_footer', function () {
             <p>Add your phone to get VIP access (15% total)</p>
 
             <input type="tel" id="axiom-phone" placeholder="Enter your phone">
-            <button onclick="axiomSubmitLead()">Get My Discount</button>
+            <button type="button" onclick="axiomSubmitLead()">Get My Discount</button>
         </div>
 
         <!-- STEP 3 SUCCESS -->
@@ -43,8 +43,6 @@ add_action('wp_footer', function () {
 </div>
 
 <style>
-.axiom-hidden { display:none; }
-
 #axiom-popup {
     position:fixed;
     top:0; left:0;
@@ -66,7 +64,7 @@ add_action('wp_footer', function () {
     background:#0c1220;
     padding:30px;
     border-radius:16px;
-    width:90%;
+    width:92%;
     max-width:420px;
     text-align:center;
     color:#fff;
@@ -77,6 +75,7 @@ add_action('wp_footer', function () {
 .axiom-modal h2 {
     font-size:24px;
     font-weight:800;
+    margin-bottom:8px;
 }
 
 .axiom-modal p {
@@ -129,28 +128,37 @@ add_action('wp_footer', function () {
 
 <script>
 /**
- * Show popup AFTER age gate
+ * SHOW POPUP AFTER AGE GATE (FIXED)
  */
 function axiomWaitForAgeGate() {
+
     let check = setInterval(() => {
-        if (!document.querySelector('.age-gate-overlay')) {
+
+        let gate = document.getElementById('ageGateOverlay');
+
+        // ✅ Correct condition for YOUR age gate
+        if (!gate || gate.getAttribute('aria-hidden') === 'true') {
+
             clearInterval(check);
 
-            // Only show if not already shown
             if (!localStorage.getItem('axiom_popup_seen')) {
+
                 setTimeout(() => {
-                    document.getElementById('axiom-popup').classList.remove('axiom-hidden');
+                    let popup = document.getElementById('axiom-popup');
+                    if (popup) popup.style.display = 'block';
                 }, 3000);
+
             }
         }
-    }, 500);
+
+    }, 400);
 }
 
 document.addEventListener("DOMContentLoaded", axiomWaitForAgeGate);
 
 
 /**
- * Step 1 → Step 2
+ * STEP 1 → STEP 2
  */
 function axiomNextStep() {
     let email = document.getElementById('axiom-email').value;
@@ -164,8 +172,9 @@ function axiomNextStep() {
     document.getElementById('axiom-step-sms').style.display = 'block';
 }
 
+
 /**
- * Submit BOTH email + SMS
+ * SUBMIT LEAD
  */
 function axiomSubmitLead() {
     let email = document.getElementById('axiom-email').value;
@@ -174,7 +183,7 @@ function axiomSubmitLead() {
     fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:`action=axiom_save_lead&email=${email}&phone=${phone}`
+        body:`action=axiom_save_lead&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
     });
 
     document.getElementById('axiom-step-sms').style.display = 'none';
@@ -183,8 +192,9 @@ function axiomSubmitLead() {
     localStorage.setItem('axiom_popup_seen', '1');
 }
 
+
 /**
- * Close popup
+ * CLOSE POPUP
  */
 function axiomClose() {
     document.getElementById('axiom-popup').style.display = 'none';
@@ -197,7 +207,7 @@ function axiomClose() {
 
 
 /**
- * Save lead to DB
+ * SAVE LEAD TO DB
  */
 add_action('wp_ajax_axiom_save_lead', 'axiom_save_lead');
 add_action('wp_ajax_nopriv_axiom_save_lead', 'axiom_save_lead');
@@ -205,16 +215,16 @@ add_action('wp_ajax_nopriv_axiom_save_lead', 'axiom_save_lead');
 function axiom_save_lead() {
     global $wpdb;
 
-    $email = sanitize_email($_POST['email']);
-    $phone = sanitize_text_field($_POST['phone']);
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
 
     if (!$email) wp_die();
 
     $wpdb->insert(
         $wpdb->prefix . 'axiom_leads',
         [
-            'email' => $email,
-            'phone' => $phone,
+            'email'  => $email,
+            'phone'  => $phone,
             'source' => 'popup'
         ]
     );
