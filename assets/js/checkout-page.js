@@ -34,6 +34,14 @@ jQuery(function ($) {
     return String($field.val() || "").trim();
   }
 
+  /**
+   * Used for popup-generated WELCOME10 / WELCOME15 coupons.
+   * This sends the checkout email to PHP before coupon validation.
+   */
+  function getBillingEmailForCoupon() {
+    return getFieldValue("#billing_email");
+  }
+
   function usingSeparateShippingAddress() {
     return $("#ship-to-different-address-checkbox").is(":checked");
   }
@@ -271,6 +279,7 @@ jQuery(function ($) {
       var $couponBox = $(".axiom-payment-coupon-box").first();
       var $input = $couponBox.find('input[name="coupon_code"]').first();
       var couponCode = String($input.val() || "").trim();
+      var billingEmail = getBillingEmailForCoupon();
 
       if (!couponCode) {
         showCouponMessage("Please enter a discount code.", "error");
@@ -296,7 +305,15 @@ jQuery(function ($) {
         data: {
           action: AXIOM_CHECKOUT.applyCouponAction,
           nonce: AXIOM_CHECKOUT.applyCouponNonce,
-          coupon_code: couponCode
+          coupon_code: couponCode,
+
+          /**
+           * NEW:
+           * Sends the visible checkout email to PHP before WooCommerce
+           * validates generated WELCOME10 / WELCOME15 coupons.
+           */
+          axiom_billing_email: billingEmail,
+          billing_email: billingEmail
         }
       })
         .done(function (response) {
@@ -315,6 +332,11 @@ jQuery(function ($) {
               "success"
             );
             $input.val("");
+
+            /**
+             * Refresh checkout totals after coupon applies.
+             */
+            queueCheckoutUpdate(100);
           } else {
             showCouponMessage(
               response.data && response.data.message
