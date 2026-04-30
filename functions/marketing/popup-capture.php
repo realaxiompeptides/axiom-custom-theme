@@ -6,10 +6,21 @@ if (!defined('ABSPATH')) {
 /**
  * Axiom Email/SMS Popup HTML only.
  *
- * CSS: /assets/css/popup.css
- * JS:  /assets/js/popup.js
- * Lead/coupon generation: /functions/marketing/leads-system.php
- * SMS country data: /functions/marketing/sms-capture.php
+ * CSS:
+ * /assets/css/popup/popup-layout.css
+ * /assets/css/popup/popup-form.css
+ * /assets/css/popup/popup-success.css
+ * /assets/css/popup/popup-responsive.css
+ * /assets/css/popup/popup-launcher.css
+ *
+ * JS:
+ * /assets/js/popup.js
+ *
+ * Lead/coupon generation:
+ * /functions/marketing/leads-system.php
+ *
+ * SMS country data:
+ * /functions/marketing/sms-capture.php
  */
 add_action('wp_footer', function () {
     if (is_admin()) {
@@ -17,6 +28,26 @@ add_action('wp_footer', function () {
     }
 
     $shop_url = home_url('/shop/');
+
+    /**
+     * Do NOT render the floating launcher on:
+     * - product pages
+     * - cart
+     * - checkout
+     * - order received / thank you
+     *
+     * This avoids interfering with sticky add-to-cart and checkout UI.
+     */
+    $show_popup_launcher = true;
+
+    if (
+        (function_exists('is_product') && is_product()) ||
+        (function_exists('is_cart') && is_cart()) ||
+        (function_exists('is_checkout') && is_checkout()) ||
+        (function_exists('is_order_received_page') && is_order_received_page())
+    ) {
+        $show_popup_launcher = false;
+    }
     ?>
 
     <div id="axiom-popup" class="axiom-popup" aria-hidden="true" style="display:none;">
@@ -129,7 +160,12 @@ add_action('wp_footer', function () {
 
                     <h3>You’re In!</h3>
 
-                    <button type="button" class="axiom-popup-code-box axiom-copy-code-box" id="axiomCopyCodeBox" aria-label="Copy discount code">
+                    <button
+                        type="button"
+                        class="axiom-popup-code-box axiom-copy-code-box"
+                        id="axiomCopyCodeBox"
+                        aria-label="Copy discount code"
+                    >
                         <span>Your one-time code</span>
 
                         <strong id="axiomGeneratedCode">Loading...</strong>
@@ -144,19 +180,36 @@ add_action('wp_footer', function () {
                         Apply this code at checkout.
                     </p>
 
-                    <a href="<?php echo esc_url($shop_url); ?>" class="axiom-popup-main-btn axiom-popup-shop-btn" id="axiomShopNow">
-                        Shop Now <span>→</span>
+                    <a
+                        href="<?php echo esc_url($shop_url); ?>"
+                        class="axiom-popup-main-btn axiom-popup-shop-btn"
+                        id="axiomShopNow"
+                    >
+                        <span>Shop Now</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- Floating discount launcher. JS shows this only after popup is closed. -->
-    <button type="button" id="axiom-popup-launcher" class="axiom-popup-launcher" aria-label="Open discount popup" style="display:none;">
-        <span>%</span>
-    </button>
+    <?php if ($show_popup_launcher) : ?>
+        <!-- Floating discount launcher -->
+        <button
+            type="button"
+            id="axiom-popup-launcher"
+            class="axiom-popup-launcher"
+            aria-label="Open discount popup"
+            style="display:none;"
+        >
+            <span class="axiom-popup-launcher-outer">
+                <span class="axiom-popup-launcher-inner">
+                    <i class="fa-solid fa-tags" aria-hidden="true"></i>
+                    <span class="axiom-popup-launcher-percent">%</span>
+                </span>
+            </span>
+        </button>
+    <?php endif; ?>
 
     <?php
 });
