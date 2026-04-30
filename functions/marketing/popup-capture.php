@@ -17,15 +17,16 @@ add_action('wp_footer', function () {
     }
 
     /**
-     * REAL AXIOM LOGO
-     * Your GitHub screenshot shows:
-     * /assets/images/axiom-logo.PNG
+     * REAL AXIOM MENU LOGO
+     *
+     * Your GitHub files show:
+     * /assets/images/axiom-menu-logo.PNG
      *
      * IMPORTANT:
      * Keep the file name capitalization exactly:
-     * axiom-logo.PNG
+     * axiom-menu-logo.PNG
      */
-    $logo_url = get_template_directory_uri() . '/assets/images/axiom-logo.PNG';
+    $logo_url = get_template_directory_uri() . '/assets/images/axiom-menu-logo.PNG';
     ?>
 
     <div id="axiom-popup" class="axiom-popup" aria-hidden="true" style="display:none;">
@@ -76,7 +77,12 @@ add_action('wp_footer', function () {
 
                     <label class="axiom-popup-field" for="axiomPopupEmail">
                         <i class="fa-regular fa-envelope"></i>
-                        <input type="email" id="axiomPopupEmail" autocomplete="email" placeholder="Enter your email">
+                        <input
+                            type="email"
+                            id="axiomPopupEmail"
+                            autocomplete="email"
+                            placeholder="Enter your email"
+                        >
                     </label>
 
                     <button type="button" class="axiom-popup-sms-teaser" id="axiomShowSmsStep">
@@ -117,7 +123,12 @@ add_action('wp_footer', function () {
 
                         <label class="axiom-popup-field axiom-phone-field" for="axiomPopupPhone">
                             <i class="fa-solid fa-mobile-screen-button"></i>
-                            <input type="tel" id="axiomPopupPhone" autocomplete="tel" placeholder="Phone number">
+                            <input
+                                type="tel"
+                                id="axiomPopupPhone"
+                                autocomplete="tel"
+                                placeholder="Phone number"
+                            >
                         </label>
                     </div>
 
