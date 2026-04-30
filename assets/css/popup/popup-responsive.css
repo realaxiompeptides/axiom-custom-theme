@@ -1,0 +1,204 @@
+@media (max-width: 430px) {
+    .axiom-popup-modal {
+        width: calc(100vw - 26px);
+        max-height: calc(100svh - 116px);
+        border-radius: 25px;
+    }
+
+    .axiom-popup-hero {
+        padding: 22px 22px 20px;
+    }
+
+    .axiom-popup-discount-row {
+        gap: 8px;
+        margin-bottom: 16px;
+        padding-right: 38px;
+    }
+
+    .axiom-popup-discount-pill {
+        min-height: 50px;
+        padding: 7px 8px;
+    }
+
+    .axiom-popup-discount-pill strong {
+        font-size: 25px;
+    }
+
+    .axiom-popup-discount-pill span {
+        font-size: 11px;
+    }
+
+    .axiom-popup-plus {
+        font-size: 25px;
+    }
+
+    .axiom-popup-hero h2 {
+        font-size: 34px;
+    }
+
+    .axiom-popup-hero p {
+        font-size: 13px;
+    }
+
+    .axiom-popup-body {
+        padding: 18px 20px;
+    }
+
+    .axiom-popup-sms-teaser {
+        padding: 13px 13px;
+    }
+
+    .axiom-popup-sms-icon {
+        width: 31px;
+        height: 31px;
+        min-width: 31px;
+        font-size: 20px;
+    }
+
+    .axiom-popup-sms-copy strong {
+        font-size: 13.5px;
+    }
+
+    .axiom-popup-sms-copy small {
+        font-size: 10.8px;
+    }
+
+    .axiom-popup-sms-arrow {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        font-size: 18px;
+    }
+
+    .axiom-popup-launcher {
+        left: 16px;
+        bottom: calc(104px + env(safe-area-inset-bottom));
+        width: 56px;
+        height: 56px;
+    }
+}
+
+@media (max-width: 390px) {
+    .axiom-popup-launcher {
+        left: 14px;
+        bottom: calc(108px + env(safe-area-inset-bottom));
+        width: 52px;
+        height: 52px;
+    }
+
+    .axiom-popup-launcher span {
+        font-size: 24px;
+    }
+}
+
+@media (max-height: 740px) {
+    .axiom-popup-modal {
+        max-height: calc(100svh - 82px);
+    }
+
+    .axiom-popup-hero {
+        padding-top: 18px;
+        padding-bottom: 16px;
+    }
+
+    .axiom-popup-discount-row {
+        margin-bottom: 12px;
+    }
+
+    .axiom-popup-discount-pill {
+        min-height: 44px;
+    }
+
+    .axiom-popup-discount-pill strong {
+        font-size: 22px;
+    }
+
+    .axiom-popup-discount-pill span {
+        font-size: 10.5px;
+    }
+
+    .axiom-popup-hero h2 {
+        font-size: 30px;
+    }
+
+    .axiom-popup-hero p {
+        font-size: 12px;
+        margin-top: 7px;
+    }
+
+    .axiom-popup-body {
+        padding: 15px 18px;
+    }
+
+    .axiom-popup-field,
+    .axiom-country-wrap {
+        height: 48px;
+    }
+
+    .axiom-popup-sms-teaser {
+        padding: 10px 12px;
+    }
+
+    .axiom-popup-sms-icon {
+        width: 29px;
+        height: 29px;
+        min-width: 29px;
+        font-size: 18px;
+    }
+
+    .axiom-popup-sms-copy strong {
+        font-size: 12.8px;
+    }
+
+    .axiom-popup-sms-copy small {
+        display: none;
+    }
+
+    .axiom-popup-sms-arrow {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        font-size: 16px;
+    }
+
+    .axiom-popup-main-btn {
+        min-height: 48px;
+        font-size: 14px;
+    }
+
+    .axiom-popup-trust-row,
+    .axiom-popup-limited {
+        display: none;
+    }
+
+    .axiom-popup-check {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        font-size: 24px;
+    }
+
+    .axiom-popup-success h3 {
+        font-size: 27px;
+        margin-bottom: 10px;
+    }
+
+    .axiom-popup-code-box {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .axiom-popup-code-box strong {
+        font-size: 22px;
+    }
+
+    .axiom-popup-code-box small {
+        font-size: 10px;
+    }
+
+    .axiom-popup-shop-btn {
+        min-height: 48px;
+        font-size: 14px;
+        margin-top: 10px;
+    }
+}
