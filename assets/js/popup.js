@@ -456,39 +456,72 @@
 
     function copyCode() {
         const codeEl = document.getElementById('axiomGeneratedCode');
-        const btn = document.getElementById('axiomCopyCode');
+        const hintEl = document.getElementById('axiomCopyHint');
+        const boxEl = document.getElementById('axiomCopyCodeBox');
 
-        if (!codeEl || !btn) {
+        if (!codeEl) {
             return;
         }
 
         const code = codeEl.textContent.trim();
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(code).then(function () {
-                btn.textContent = 'Copied ✓';
+        if (!code || code === 'Loading...' || code === 'Copied ✓') {
+            return;
+        }
 
-                setTimeout(function () {
-                    btn.textContent = 'Copy Code';
-                }, 1800);
-            });
-        } else {
-            const temp = document.createElement('textarea');
+        const originalCodeText = code;
+        const originalHintText = hintEl
+            ? hintEl.textContent
+            : 'Tap to copy • one-time use • expires in 30 days';
 
-            temp.value = code;
-            document.body.appendChild(temp);
-            temp.select();
+        function showCopied() {
+            codeEl.textContent = 'Copied ✓';
 
-            document.execCommand('copy');
+            if (hintEl) {
+                hintEl.textContent = 'Discount code copied';
+            }
 
-            document.body.removeChild(temp);
-
-            btn.textContent = 'Copied ✓';
+            if (boxEl) {
+                boxEl.classList.add('is-copied');
+            }
 
             setTimeout(function () {
-                btn.textContent = 'Copy Code';
-            }, 1800);
+                codeEl.textContent = originalCodeText;
+
+                if (hintEl) {
+                    hintEl.textContent = originalHintText;
+                }
+
+                if (boxEl) {
+                    boxEl.classList.remove('is-copied');
+                }
+            }, 1400);
         }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(originalCodeText).then(showCopied).catch(function () {
+                fallbackCopy(originalCodeText);
+                showCopied();
+            });
+        } else {
+            fallbackCopy(originalCodeText);
+            showCopied();
+        }
+    }
+
+    function fallbackCopy(code) {
+        const temp = document.createElement('textarea');
+
+        temp.value = code;
+        temp.setAttribute('readonly', 'readonly');
+        temp.style.position = 'fixed';
+        temp.style.left = '-9999px';
+        temp.style.top = '-9999px';
+
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
     }
 
     function bindPopupEvents() {
@@ -530,6 +563,16 @@
 
         if (copyBtn) {
             copyBtn.addEventListener('click', copyCode);
+        }
+
+        /**
+         * NEW:
+         * Click the whole coupon code box to copy the generated code.
+         */
+        const copyCodeBox = document.getElementById('axiomCopyCodeBox');
+
+        if (copyCodeBox) {
+            copyCodeBox.addEventListener('click', copyCode);
         }
 
         const ageEnterBtn = document.getElementById('ageGateEnterBtn');
