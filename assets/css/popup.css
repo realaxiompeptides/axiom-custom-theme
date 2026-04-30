@@ -6,35 +6,32 @@
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.axiom-popup__overlay {
+.axiom-popup-overlay {
     position: absolute;
     inset: 0;
     background:
-        radial-gradient(circle at 50% 100%, rgba(59, 111, 224, 0.34), transparent 38%),
-        rgba(2, 6, 23, 0.78);
+        radial-gradient(circle at 50% 100%, rgba(59, 111, 224, 0.34), transparent 42%),
+        rgba(8, 15, 28, 0.62);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
 
-.axiom-popup__shell {
+.axiom-popup-modal {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: min(92vw, 460px);
-    max-height: min(86vh, 760px);
+    width: min(92vw, 450px);
+    max-height: calc(100svh - 92px);
     overflow: hidden;
-    transform: translate(-50%, -50%) scale(0.98);
+    transform: translate(-50%, -50%);
+    border-radius: 26px;
     color: #ffffff;
-    border-radius: 30px;
-    border: 1px solid rgba(91, 140, 255, 0.38);
-    background:
-        linear-gradient(180deg, rgba(15, 33, 70, 0.96), rgba(4, 8, 18, 0.98)),
-        #08111f;
+    background: #07111f;
+    border: 1px solid rgba(91, 140, 255, 0.35);
     box-shadow:
-        0 0 0 1px rgba(59, 111, 224, 0.18),
-        0 34px 110px rgba(0, 0, 0, 0.72),
-        0 0 80px rgba(59, 111, 224, 0.34);
-    animation: axiomPopupIn 260ms ease forwards;
+        0 35px 110px rgba(15, 23, 42, 0.48),
+        0 0 70px rgba(59, 111, 224, 0.24);
+    animation: axiomPopupIn 260ms ease both;
 }
 
 @keyframes axiomPopupIn {
@@ -48,209 +45,210 @@
     }
 }
 
-.axiom-popup__close {
+.axiom-popup-close {
     position: absolute;
-    top: 18px;
-    right: 18px;
-    width: 42px;
-    height: 42px;
-    border: 1px solid rgba(255, 255, 255, 0.20);
+    top: 14px;
+    right: 14px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.30);
+    background: rgba(255, 255, 255, 0.10);
     color: #ffffff;
     font-size: 30px;
     line-height: 1;
     cursor: pointer;
-    z-index: 5;
 }
 
-.axiom-popup__hero {
+.axiom-popup-hero {
     position: relative;
-    padding: 34px 28px 30px;
+    padding: 26px 26px 24px;
+    color: #ffffff;
     background:
-        linear-gradient(rgba(59, 111, 224, 0.11) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59, 111, 224, 0.11) 1px, transparent 1px),
-        radial-gradient(circle at 80% 20%, rgba(90, 140, 255, 0.26), transparent 32%),
-        linear-gradient(135deg, #102c62, #061326 72%);
-    background-size: 34px 34px, 34px 34px, auto, auto;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        linear-gradient(rgba(255,255,255,0.075) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.075) 1px, transparent 1px),
+        radial-gradient(circle at 78% 20%, rgba(255,255,255,0.18), transparent 34%),
+        linear-gradient(135deg, #123d86 0%, #2f6fe8 46%, #081d46 100%);
+    background-size: 36px 36px, 36px 36px, auto, auto;
+    border-bottom: 1px solid rgba(91, 140, 255, 0.28);
 }
 
-.axiom-popup__hero::after {
+.axiom-popup-hero::after {
     content: "?";
     position: absolute;
-    right: 48px;
-    top: 112px;
+    right: 58px;
+    top: 111px;
     width: 24px;
     height: 24px;
     display: grid;
     place-items: center;
+    border-radius: 7px;
     color: #ffffff;
-    font-weight: 900;
-    border-radius: 6px;
-    background: linear-gradient(135deg, #3B6FE0, #5A8CFF);
-    box-shadow: 0 12px 30px rgba(59, 111, 224, 0.42);
-    transform: rotate(-9deg);
-    opacity: 0.9;
+    font-weight: 950;
+    background: rgba(91, 140, 255, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    transform: rotate(-10deg);
+    box-shadow: 0 12px 26px rgba(59, 111, 224, 0.35);
 }
 
-.axiom-popup__brand {
+.axiom-popup-brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 26px;
-    color: #ffffff;
+    margin-bottom: 22px;
+    font-weight: 950;
     font-size: 17px;
-    font-weight: 900;
     letter-spacing: 0.02em;
     text-transform: uppercase;
 }
 
-.axiom-popup__mark {
+.axiom-popup-logo-badge {
     width: 34px;
     height: 34px;
     display: grid;
     place-items: center;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.10);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: #8fb3ff;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     font-size: 13px;
-    font-weight: 900;
+    color: #bcd2ff;
 }
 
-.axiom-popup__offer-row {
+.axiom-popup-discount-row {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 26px;
+    gap: 10px;
+    margin-bottom: 22px;
 }
 
-.axiom-popup__pill {
-    min-width: 128px;
+.axiom-popup-discount-pill {
+    flex: 1;
+    min-height: 58px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 16px;
+    padding: 8px 10px;
     border-radius: 999px;
-    background: rgba(59, 111, 224, 0.20);
-    border: 1px solid rgba(90, 140, 255, 0.42);
+    background: rgba(91, 140, 255, 0.18);
+    border: 1px solid rgba(126, 164, 255, 0.48);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
 }
 
-.axiom-popup__pill strong {
-    color: #75a2ff;
-    font-size: 31px;
+.axiom-popup-discount-pill-alt {
+    background: rgba(91, 140, 255, 0.09);
+    border-style: dashed;
+}
+
+.axiom-popup-discount-pill strong {
+    font-size: 30px;
     line-height: 1;
     font-weight: 950;
+    color: #78a3ff;
 }
 
-.axiom-popup__pill span {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 14px;
-    line-height: 1.1;
-    font-weight: 700;
+.axiom-popup-discount-pill span {
+    font-size: 13px;
+    line-height: 1.08;
+    font-weight: 850;
+    color: rgba(255, 255, 255, 0.78);
     text-align: left;
 }
 
-.axiom-popup__pill--ghost {
-    border-style: dashed;
-    background: rgba(90, 140, 255, 0.10);
+.axiom-popup-plus {
+    font-size: 31px;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.42);
 }
 
-.axiom-popup__plus {
-    color: rgba(255, 255, 255, 0.32);
-    font-size: 34px;
-    font-weight: 800;
-}
-
-.axiom-popup__hero h2 {
+.axiom-popup-hero h2 {
     margin: 0;
-    color: #ffffff;
-    font-size: clamp(38px, 7vw, 50px);
+    font-size: clamp(34px, 6.4vw, 46px);
     line-height: 1.02;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.052em;
     font-weight: 950;
 }
 
-.axiom-popup__hero h2 span {
-    color: #5A8CFF;
-    text-shadow: 0 0 34px rgba(90, 140, 255, 0.34);
+.axiom-popup-hero h2 span {
+    color: #6f9cff;
+    text-shadow: 0 0 30px rgba(91, 140, 255, 0.32);
 }
 
-.axiom-popup__hero p {
-    margin: 14px 0 0;
-    color: rgba(255, 255, 255, 0.62);
-    font-size: 16px;
-    line-height: 1.5;
+.axiom-popup-hero p {
+    margin: 12px 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 15px;
+    line-height: 1.42;
 }
 
-.axiom-popup__body {
-    padding: 28px;
+.axiom-popup-body {
+    padding: 24px 26px 22px;
     background:
-        radial-gradient(circle at 50% 100%, rgba(59, 111, 224, 0.22), transparent 45%),
-        linear-gradient(180deg, #070b14, #090d16);
+        radial-gradient(circle at 50% 100%, rgba(59, 111, 224, 0.20), transparent 46%),
+        linear-gradient(180deg, #050a13, #07111f);
 }
 
-.axiom-popup__message {
-    margin-bottom: 14px;
-    padding: 12px 14px;
+.axiom-popup-message {
+    margin-bottom: 12px;
+    padding: 11px 13px;
     border-radius: 14px;
     color: #ffffff;
     background: rgba(239, 68, 68, 0.16);
     border: 1px solid rgba(239, 68, 68, 0.28);
-    font-size: 14px;
-    font-weight: 700;
+    font-size: 13px;
+    font-weight: 800;
 }
 
-.axiom-popup__input-wrap {
-    height: 66px;
+.axiom-popup-field {
+    height: 62px;
     display: flex;
     align-items: center;
     gap: 14px;
     padding: 0 18px;
     border-radius: 18px;
-    background: rgba(255, 255, 255, 0.055);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.17);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.axiom-popup__input-wrap i {
-    color: #5A8CFF;
+.axiom-popup-field i {
+    color: #6f9cff;
     font-size: 20px;
 }
 
-.axiom-popup__input-wrap input {
+.axiom-popup-field input {
     width: 100%;
     border: 0;
     outline: 0;
     background: transparent;
     color: #ffffff;
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 650;
 }
 
-.axiom-popup__input-wrap input::placeholder {
+.axiom-popup-field input::placeholder {
     color: rgba(255, 255, 255, 0.50);
 }
 
-.axiom-popup__sms-teaser {
+.axiom-popup-sms-teaser {
     width: 100%;
-    margin-top: 14px;
-    padding: 17px 16px;
+    margin-top: 13px;
+    padding: 15px 14px;
     border-radius: 18px;
-    color: #7ca6ff;
+    color: #7fa8ff;
     background: rgba(59, 111, 224, 0.10);
-    border: 1px dashed rgba(90, 140, 255, 0.42);
+    border: 1px dashed rgba(91, 140, 255, 0.50);
     font-size: 16px;
-    font-weight: 900;
+    line-height: 1.25;
+    font-weight: 950;
     cursor: pointer;
 }
 
-.axiom-popup__btn {
+.axiom-popup-main-btn {
     width: 100%;
-    margin-top: 18px;
-    min-height: 66px;
+    margin-top: 16px;
+    min-height: 62px;
     border: 0;
     border-radius: 18px;
     color: #ffffff;
@@ -263,151 +261,323 @@
         inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
-.axiom-popup__btn:disabled {
+.axiom-popup-main-btn:disabled,
+.axiom-popup-sms-teaser:disabled,
+.axiom-popup-skip-btn:disabled {
     opacity: 0.62;
     cursor: not-allowed;
 }
 
-.axiom-popup__skip {
+.axiom-popup-skip-btn {
     width: 100%;
-    margin-top: 14px;
+    margin-top: 12px;
     border: 0;
     background: transparent;
     color: rgba(255, 255, 255, 0.56);
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 850;
     cursor: pointer;
 }
 
-.axiom-popup__trust {
+.axiom-popup-trust-row {
     display: flex;
     justify-content: space-between;
-    gap: 8px;
-    margin-top: 22px;
+    gap: 7px;
+    margin-top: 18px;
     color: rgba(255, 255, 255, 0.48);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
     white-space: nowrap;
 }
 
-.axiom-popup__limited {
-    margin: 18px 0 0;
+.axiom-popup-limited {
+    margin: 13px 0 0;
     color: #ff6b6b;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 950;
 }
 
-.axiom-popup__success {
+.axiom-popup-success {
     text-align: center;
-    padding: 18px 0 8px;
+    padding: 6px 0 0;
 }
 
-.axiom-popup__check {
-    width: 92px;
-    height: 92px;
+.axiom-popup-check {
+    width: 76px;
+    height: 76px;
     display: grid;
     place-items: center;
-    margin: 0 auto 24px;
+    margin: 0 auto 18px;
     border-radius: 999px;
-    color: #5A8CFF;
+    color: #6f9cff;
     background: rgba(59, 111, 224, 0.12);
-    border: 2px solid rgba(90, 140, 255, 0.42);
-    font-size: 42px;
+    border: 2px solid rgba(91, 140, 255, 0.42);
+    font-size: 36px;
 }
 
-.axiom-popup__success h3 {
-    margin: 0 0 20px;
+.axiom-popup-success h3 {
+    margin: 0 0 16px;
     color: #ffffff;
-    font-size: 42px;
+    font-size: 38px;
     line-height: 1;
     letter-spacing: -0.04em;
     font-weight: 950;
 }
 
-.axiom-popup__code-box {
-    margin: 0 auto 20px;
-    padding: 22px 16px;
+.axiom-popup-code-box {
+    margin: 0 auto 16px;
+    padding: 17px 14px;
     border-radius: 20px;
     background: rgba(59, 111, 224, 0.10);
-    border: 2px dashed rgba(90, 140, 255, 0.48);
+    border: 2px dashed rgba(91, 140, 255, 0.52);
 }
 
-.axiom-popup__code-box span {
+.axiom-popup-code-box span {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     color: rgba(255, 255, 255, 0.44);
-    font-size: 13px;
+    font-size: 12px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     font-weight: 950;
 }
 
-.axiom-popup__code-box strong {
+.axiom-popup-code-box strong {
     display: block;
-    color: #5A8CFF;
-    font-size: 36px;
-    letter-spacing: 0.12em;
+    color: #6f9cff;
+    font-size: clamp(26px, 6vw, 36px);
+    line-height: 1.12;
+    letter-spacing: 0.08em;
     font-weight: 950;
     word-break: break-word;
 }
 
-.axiom-popup__code-box small {
+.axiom-popup-code-box small {
     display: block;
-    margin-top: 12px;
+    margin-top: 9px;
     color: rgba(255, 255, 255, 0.46);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
 }
 
 #axiomSuccessText {
+    margin: 0 0 14px;
     color: rgba(255, 255, 255, 0.64);
-    font-size: 17px;
-    line-height: 1.45;
+    font-size: 16px;
+    line-height: 1.42;
 }
 
 #axiomSuccessText strong {
-    color: #5A8CFF;
+    color: #6f9cff;
 }
 
+body.axiom-popup-open {
+    overflow: hidden;
+}
+
+/* Mobile fit fix */
 @media (max-width: 430px) {
-    .axiom-popup__shell {
-        width: calc(100vw - 24px);
-        border-radius: 26px;
+    .axiom-popup-modal {
+        width: calc(100vw - 26px);
+        max-height: calc(100svh - 112px);
+        border-radius: 25px;
     }
 
-    .axiom-popup__hero {
-        padding: 30px 20px 26px;
+    .axiom-popup-hero {
+        padding: 24px 22px 22px;
     }
 
-    .axiom-popup__body {
+    .axiom-popup-brand {
+        margin-bottom: 18px;
+        font-size: 15px;
+    }
+
+    .axiom-popup-logo-badge {
+        width: 32px;
+        height: 32px;
+    }
+
+    .axiom-popup-discount-row {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+
+    .axiom-popup-discount-pill {
+        min-height: 54px;
+        padding: 8px 9px;
+    }
+
+    .axiom-popup-discount-pill strong {
+        font-size: 27px;
+    }
+
+    .axiom-popup-discount-pill span {
+        font-size: 11.5px;
+    }
+
+    .axiom-popup-plus {
+        font-size: 28px;
+    }
+
+    .axiom-popup-hero h2 {
+        font-size: 39px;
+    }
+
+    .axiom-popup-hero p {
+        font-size: 14px;
+        line-height: 1.38;
+    }
+
+    .axiom-popup-body {
         padding: 22px;
     }
 
-    .axiom-popup__offer-row {
-        gap: 8px;
+    .axiom-popup-field {
+        height: 58px;
+        border-radius: 17px;
     }
 
-    .axiom-popup__pill {
-        min-width: 0;
-        flex: 1;
-        padding: 10px 10px;
+    .axiom-popup-field input {
+        font-size: 16px;
     }
 
-    .axiom-popup__pill strong {
-        font-size: 26px;
+    .axiom-popup-sms-teaser {
+        margin-top: 12px;
+        padding: 14px 12px;
+        font-size: 15px;
     }
 
-    .axiom-popup__pill span {
+    .axiom-popup-main-btn {
+        min-height: 58px;
+        margin-top: 14px;
+        font-size: 16px;
+    }
+
+    .axiom-popup-trust-row {
+        margin-top: 15px;
+        font-size: 10px;
+        gap: 5px;
+    }
+
+    .axiom-popup-limited {
+        margin-top: 10px;
         font-size: 12px;
     }
 
-    .axiom-popup__hero h2 {
-        font-size: 40px;
+    .axiom-popup-check {
+        width: 66px;
+        height: 66px;
+        margin-bottom: 14px;
+        font-size: 31px;
     }
 
-    .axiom-popup__trust {
-        font-size: 10px;
-        gap: 5px;
+    .axiom-popup-success h3 {
+        font-size: 34px;
+        margin-bottom: 13px;
+    }
+
+    .axiom-popup-code-box {
+        padding: 14px 12px;
+        margin-bottom: 12px;
+    }
+
+    .axiom-popup-code-box strong {
+        font-size: 27px;
+        letter-spacing: 0.055em;
+    }
+
+    .axiom-popup-code-box small {
+        font-size: 12px;
+    }
+
+    #axiomSuccessText {
+        font-size: 14px;
+        margin-bottom: 11px;
+    }
+}
+
+/* Extra short iPhones / browser bars visible */
+@media (max-height: 740px) {
+    .axiom-popup-modal {
+        max-height: calc(100svh - 82px);
+    }
+
+    .axiom-popup-hero {
+        padding-top: 20px;
+        padding-bottom: 18px;
+    }
+
+    .axiom-popup-brand {
+        margin-bottom: 14px;
+    }
+
+    .axiom-popup-discount-row {
+        margin-bottom: 15px;
+    }
+
+    .axiom-popup-discount-pill {
+        min-height: 48px;
+    }
+
+    .axiom-popup-discount-pill strong {
+        font-size: 24px;
+    }
+
+    .axiom-popup-hero h2 {
+        font-size: 34px;
+    }
+
+    .axiom-popup-hero p {
+        font-size: 13px;
+        margin-top: 9px;
+    }
+
+    .axiom-popup-body {
+        padding: 18px 20px;
+    }
+
+    .axiom-popup-field {
+        height: 52px;
+    }
+
+    .axiom-popup-sms-teaser {
+        padding: 12px 11px;
+        font-size: 14px;
+    }
+
+    .axiom-popup-main-btn {
+        min-height: 52px;
+        font-size: 15px;
+    }
+
+    .axiom-popup-trust-row,
+    .axiom-popup-limited {
+        display: none;
+    }
+
+    .axiom-popup-check {
+        width: 58px;
+        height: 58px;
+        margin-bottom: 12px;
+        font-size: 28px;
+    }
+
+    .axiom-popup-success h3 {
+        font-size: 30px;
+        margin-bottom: 12px;
+    }
+
+    .axiom-popup-code-box {
+        padding: 12px 10px;
+    }
+
+    .axiom-popup-code-box strong {
+        font-size: 24px;
+    }
+
+    .axiom-popup-code-box small {
+        font-size: 11px;
+        margin-top: 7px;
     }
 }
