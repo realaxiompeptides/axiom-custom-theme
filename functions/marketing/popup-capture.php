@@ -1,9 +1,6 @@
 <?php
 if (!defined('ABSPATH')) exit;
 
-/**
- * Inject popup HTML
- */
 add_action('wp_footer', function () {
 ?>
 <div id="axiom-popup" style="display:none;">
@@ -12,186 +9,37 @@ add_action('wp_footer', function () {
 
     <div class="axiom-modal">
 
-        <!-- STEP 1 EMAIL -->
+        <!-- HEADER -->
+        <div class="axiom-header">
+            <h2>Unlock Up to 15% Off</h2>
+            <p>10% email + 5% SMS — first order only</p>
+        </div>
+
+        <!-- EMAIL STEP -->
         <div id="axiom-step-email">
-            <h2>Unlock 10% Off</h2>
-            <p>Join Axiom Peptides for exclusive research offers.</p>
-
             <input type="email" id="axiom-email" placeholder="Enter your email">
-            <button type="button" onclick="axiomNextStep()">Continue</button>
+            <button onclick="axiomNextStep()">Claim 10% Discount →</button>
         </div>
 
-        <!-- STEP 2 SMS -->
+        <!-- SMS STEP -->
         <div id="axiom-step-sms" style="display:none;">
-            <h2>Unlock Extra 5%</h2>
-            <p>Add your phone to get VIP access (15% total)</p>
-
-            <input type="tel" id="axiom-phone" placeholder="Enter your phone">
-            <button type="button" onclick="axiomSubmitLead()">Get My Discount</button>
+            <input type="tel" id="axiom-phone" placeholder="Add phone for +5%">
+            <button onclick="axiomSubmitLead()">Unlock Full 15%</button>
         </div>
 
-        <!-- STEP 3 SUCCESS -->
+        <!-- SUCCESS -->
         <div id="axiom-step-done" style="display:none;">
-            <h2>Your Code</h2>
-            <div class="axiom-code">AXIOM15</div>
-            <p>Use at checkout</p>
+            <div class="axiom-check">✔</div>
+            <h3>You're In</h3>
+
+            <div class="axiom-code">WELCOME10</div>
+
+            <p>Apply at checkout</p>
         </div>
 
         <span class="axiom-close" onclick="axiomClose()">×</span>
+
     </div>
-
 </div>
-
-<style>
-#axiom-popup {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    z-index:9999;
-}
-
-.axiom-overlay {
-    position:absolute;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.75);
-    backdrop-filter: blur(4px);
-}
-
-.axiom-modal {
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%, -50%);
-    background:#0c1220;
-    padding:30px;
-    border-radius:16px;
-    width:92%;
-    max-width:420px;
-    text-align:center;
-    color:#fff;
-    border:1px solid rgba(59,111,224,0.3);
-    box-shadow:0 30px 80px rgba(0,0,0,0.6);
-}
-
-.axiom-modal input {
-    width:100%;
-    padding:14px;
-    margin-top:12px;
-    border-radius:10px;
-    border:none;
-    background:#121a30;
-    color:#fff;
-}
-
-.axiom-modal button {
-    width:100%;
-    padding:14px;
-    margin-top:14px;
-    border:none;
-    border-radius:10px;
-    font-weight:700;
-    background:linear-gradient(135deg,#3B6FE0,#5A8CFF);
-    color:#fff;
-}
-
-.axiom-code {
-    font-size:30px;
-    font-weight:900;
-    margin-top:10px;
-    color:#5A8CFF;
-}
-
-.axiom-close {
-    position:absolute;
-    top:12px;
-    right:14px;
-    cursor:pointer;
-    font-size:22px;
-}
-</style>
-
-<script>
-/**
- * WAIT FOR AGE GATE (ROBUST VERSION)
- */
-function axiomWaitForAgeGate() {
-
-    let tries = 0;
-
-    let check = setInterval(() => {
-
-        tries++;
-
-        let gate =
-            document.getElementById('ageGateOverlay') ||
-            document.querySelector('.age-gate-overlay') ||
-            document.querySelector('[id*="age"]');
-
-        let gateVisible = gate && gate.offsetParent !== null;
-
-        if (!gateVisible || tries > 50) {
-
-            clearInterval(check);
-
-            if (!localStorage.getItem('axiom_popup_seen')) {
-
-                setTimeout(() => {
-                    let popup = document.getElementById('axiom-popup');
-                    if (popup) popup.style.display = 'block';
-                }, 3000);
-
-            }
-        }
-
-    }, 300);
-}
-
-document.addEventListener("DOMContentLoaded", axiomWaitForAgeGate);
-
-
-/**
- * STEP 1 → STEP 2
- */
-function axiomNextStep() {
-    let email = document.getElementById('axiom-email').value;
-
-    if (!email || !email.includes('@')) {
-        alert('Enter a valid email');
-        return;
-    }
-
-    document.getElementById('axiom-step-email').style.display = 'none';
-    document.getElementById('axiom-step-sms').style.display = 'block';
-}
-
-
-/**
- * SUBMIT LEAD (USES EXISTING SYSTEM)
- */
-function axiomSubmitLead() {
-    let email = document.getElementById('axiom-email').value;
-    let phone = document.getElementById('axiom-phone').value;
-
-    fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:`action=axiom_save_lead&email=${encodeURIComponent(email)}&phone=${encodeURIComponent(phone)}`
-    });
-
-    document.getElementById('axiom-step-sms').style.display = 'none';
-    document.getElementById('axiom-step-done').style.display = 'block';
-
-    localStorage.setItem('axiom_popup_seen', '1');
-}
-
-
-/**
- * CLOSE POPUP
- */
-function axiomClose() {
-    document.getElementById('axiom-popup').style.display = 'none';
-    localStorage.setItem('axiom_popup_seen', '1');
-}
-</script>
-
 <?php
 });
