@@ -584,3 +584,97 @@ document.addEventListener("DOMContentLoaded", function () {
   initAgeGate();
   refreshCartDrawer();
 });
+
+/**
+ * Hide mobile bottom nav when cart drawer is open.
+ * Shows it again when cart drawer closes.
+ */
+(function () {
+    'use strict';
+
+    function axiomCartDrawerIsOpen() {
+        const drawerSelectors = [
+            '#axiom-cart-drawer',
+            '.axiom-cart-drawer',
+            '.cart-drawer',
+            '.side-cart',
+            '.drawer-cart',
+            '.woocommerce-mini-cart-drawer'
+        ];
+
+        for (let i = 0; i < drawerSelectors.length; i++) {
+            const drawer = document.querySelector(drawerSelectors[i]);
+
+            if (!drawer) {
+                continue;
+            }
+
+            const style = window.getComputedStyle(drawer);
+            const rect = drawer.getBoundingClientRect();
+
+            const visible =
+                style.display !== 'none' &&
+                style.visibility !== 'hidden' &&
+                parseFloat(style.opacity || '1') > 0 &&
+                rect.width > 0 &&
+                rect.height > 0;
+
+            const classOpen =
+                drawer.classList.contains('open') ||
+                drawer.classList.contains('active') ||
+                drawer.classList.contains('is-open') ||
+                drawer.classList.contains('show') ||
+                drawer.classList.contains('opened');
+
+            const ariaOpen =
+                drawer.getAttribute('aria-hidden') === 'false' ||
+                drawer.getAttribute('aria-expanded') === 'true';
+
+            if (visible && (classOpen || ariaOpen || rect.right > window.innerWidth - 30)) {
+                return true;
+            }
+        }
+
+        return (
+            document.body.classList.contains('cart-drawer-open') ||
+            document.body.classList.contains('drawer-open') ||
+            document.body.classList.contains('mini-cart-open') ||
+            document.body.classList.contains('woocommerce-cart-drawer-open')
+        );
+    }
+
+    function axiomUpdateBottomNavForCartDrawer() {
+        if (axiomCartDrawerIsOpen()) {
+            document.body.classList.add('axiom-cart-drawer-open');
+        } else {
+            document.body.classList.remove('axiom-cart-drawer-open');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        axiomUpdateBottomNavForCartDrawer();
+
+        document.addEventListener('click', function () {
+            setTimeout(axiomUpdateBottomNavForCartDrawer, 80);
+            setTimeout(axiomUpdateBottomNavForCartDrawer, 250);
+            setTimeout(axiomUpdateBottomNavForCartDrawer, 600);
+        }, true);
+
+        document.addEventListener('updated_wc_div', axiomUpdateBottomNavForCartDrawer);
+        document.addEventListener('wc_fragments_refreshed', axiomUpdateBottomNavForCartDrawer);
+        document.addEventListener('wc_fragment_refresh', axiomUpdateBottomNavForCartDrawer);
+
+        const observer = new MutationObserver(function () {
+            axiomUpdateBottomNavForCartDrawer();
+        });
+
+        observer.observe(document.body, {
+            attributes: true,
+            childList: true,
+            subtree: true,
+            attributeFilter: ['class', 'style', 'aria-hidden', 'aria-expanded']
+        });
+
+        setInterval(axiomUpdateBottomNavForCartDrawer, 800);
+    });
+})();
