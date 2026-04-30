@@ -27,7 +27,7 @@ $axiom_function_files = array(
     '/functions/checkout/payment-discounts.php',
     '/functions/checkout/card-payment-notice.php',
 
-    // Shows Venmo/Zelle fallback on thank-you page for failed/pending card orders
+    // Shows Venmo/Zelle fallback on thank-you page
     '/functions/checkout/card-fallback-thankyou.php',
 
     '/functions/checkout/manual-payment-instructions-email.php',
@@ -51,16 +51,20 @@ $axiom_function_files = array(
 
     '/functions/calculator/peptide-calculator.php',
 
+    // 🔥 EMAIL SYSTEM
     '/functions/emails/axiom-email-system.php',
 
-    // 🔥 NEW: Abandoned Cart System
-    '/functions/email/abandoned-cart-email.php',
+    // 🔥 ABANDONED CART SYSTEM (fix path consistency)
+    '/functions/emails/abandoned-cart-email.php',
     '/functions/abandoned-cart/abandoned-cart-core.php',
 
-    // Floating vials homepage/test page assets
+    // 🔥 NEW: LEADS + EMAIL/SMS STORAGE SYSTEM
+    '/functions/marketing/leads-system.php',
+
+    // Floating vials
     '/functions/floating-vials/floating-vials.php',
 
-    // Enhanced product research data system
+    // Enhanced product system
     '/product-page/helpers/enhanced-product-data-loader.php',
 );
 
@@ -79,8 +83,7 @@ foreach ($axiom_function_files as $axiom_file) {
 }
 
 /**
- * TEMP TEST HELPER:
- * Shows an "Open thank-you page" link inside WooCommerce order admin.
+ * Admin helper: Open thank-you page
  */
 add_action('woocommerce_admin_order_data_after_order_details', 'axiom_show_admin_thankyou_test_link');
 
@@ -98,7 +101,7 @@ function axiom_show_admin_thankyou_test_link($order) {
 }
 
 /**
- * Enqueue Reviews page stylesheet.
+ * Reviews page stylesheet
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
 
