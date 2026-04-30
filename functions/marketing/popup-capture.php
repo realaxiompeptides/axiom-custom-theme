@@ -72,17 +72,6 @@ add_action('wp_footer', function () {
     box-shadow:0 30px 80px rgba(0,0,0,0.6);
 }
 
-.axiom-modal h2 {
-    font-size:24px;
-    font-weight:800;
-    margin-bottom:8px;
-}
-
-.axiom-modal p {
-    font-size:14px;
-    opacity:0.8;
-}
-
 .axiom-modal input {
     width:100%;
     padding:14px;
@@ -102,12 +91,6 @@ add_action('wp_footer', function () {
     font-weight:700;
     background:linear-gradient(135deg,#3B6FE0,#5A8CFF);
     color:#fff;
-    transition:0.2s;
-}
-
-.axiom-modal button:hover {
-    transform:scale(1.03);
-    box-shadow:0 10px 25px rgba(59,111,224,0.5);
 }
 
 .axiom-code {
@@ -128,16 +111,24 @@ add_action('wp_footer', function () {
 
 <script>
 /**
- * SHOW POPUP AFTER AGE GATE (FIXED)
+ * WAIT FOR AGE GATE (ROBUST VERSION)
  */
 function axiomWaitForAgeGate() {
 
+    let tries = 0;
+
     let check = setInterval(() => {
 
-        let gate = document.getElementById('ageGateOverlay');
+        tries++;
 
-        // ✅ Correct condition for YOUR age gate
-        if (!gate || gate.getAttribute('aria-hidden') === 'true') {
+        let gate =
+            document.getElementById('ageGateOverlay') ||
+            document.querySelector('.age-gate-overlay') ||
+            document.querySelector('[id*="age"]');
+
+        let gateVisible = gate && gate.offsetParent !== null;
+
+        if (!gateVisible || tries > 50) {
 
             clearInterval(check);
 
@@ -151,7 +142,7 @@ function axiomWaitForAgeGate() {
             }
         }
 
-    }, 400);
+    }, 300);
 }
 
 document.addEventListener("DOMContentLoaded", axiomWaitForAgeGate);
@@ -174,7 +165,7 @@ function axiomNextStep() {
 
 
 /**
- * SUBMIT LEAD
+ * SUBMIT LEAD (USES EXISTING SYSTEM)
  */
 function axiomSubmitLead() {
     let email = document.getElementById('axiom-email').value;
@@ -204,30 +195,3 @@ function axiomClose() {
 
 <?php
 });
-
-
-/**
- * SAVE LEAD TO DB
- */
-add_action('wp_ajax_axiom_save_lead', 'axiom_save_lead');
-add_action('wp_ajax_nopriv_axiom_save_lead', 'axiom_save_lead');
-
-function axiom_save_lead() {
-    global $wpdb;
-
-    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
-    $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
-
-    if (!$email) wp_die();
-
-    $wpdb->insert(
-        $wpdb->prefix . 'axiom_leads',
-        [
-            'email'  => $email,
-            'phone'  => $phone,
-            'source' => 'popup'
-        ]
-    );
-
-    wp_die();
-}
