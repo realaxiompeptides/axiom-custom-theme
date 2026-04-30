@@ -59,18 +59,21 @@ $axiom_function_files = array(
     // TOOLS
     '/functions/calculator/peptide-calculator.php',
 
-    // 🔥 EMAIL SYSTEM
+    // EMAIL SYSTEM
     '/functions/emails/axiom-email-system.php',
 
-    // 🔥 ABANDONED CART
+    // ABANDONED CART
     '/functions/emails/abandoned-cart-email.php',
     '/functions/abandoned-cart/abandoned-cart-core.php',
 
-    // 🔥 LEADS + STORAGE
+    // LEADS + STORAGE
     '/functions/marketing/leads-system.php',
 
-    // 🔥 POPUP SYSTEM (EMAIL + SMS FLOW)
+    // POPUP SYSTEM
     '/functions/marketing/popup-capture.php',
+
+    // SMS COUNTRY DATA FOR POPUP
+    '/functions/marketing/sms-capture.php',
 
     // UI / VISUAL
     '/functions/floating-vials/floating-vials.php',
@@ -96,7 +99,6 @@ foreach ($axiom_function_files as $axiom_file) {
     }
 }
 
-
 /**
  * ADMIN HELPER — Open thank-you page
  */
@@ -114,7 +116,6 @@ function axiom_show_admin_thankyou_test_link($order) {
         </a>
     </p>';
 }
-
 
 /**
  * REVIEWS PAGE CSS
@@ -136,9 +137,8 @@ function axiom_enqueue_reviews_page_assets() {
     );
 }
 
-
 /**
- * OPTIONAL: GLOBAL BRAND COLORS (for consistency)
+ * OPTIONAL: GLOBAL BRAND COLORS
  */
 add_action('wp_head', function () {
     echo '<style>
