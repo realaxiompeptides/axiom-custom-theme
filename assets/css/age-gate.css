@@ -3,16 +3,14 @@
   inset: 0;
   z-index: 999997;
   display: none;
-
-  /* NEW: let the whole gate scroll cleanly */
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-bottom: calc(130px + env(safe-area-inset-bottom));
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  background: rgba(2, 6, 23, 0.78);
 }
 
 .age-gate-overlay.active {
-  display: block;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
 }
 
 .age-gate-backdrop {
@@ -27,16 +25,10 @@
   position: relative;
   z-index: 2;
   width: min(720px, calc(100% - 24px));
-
-  /*
-   * CHANGED:
-   * Old was max-height: calc(100dvh - 24px);
-   * This gives room for Safari + your bottom nav area.
-   */
-  max-height: calc(100dvh - 150px);
-
+  height: calc(100svh - 24px);
+  max-height: calc(100svh - 24px);
   overflow-y: auto;
-  margin: 12px auto calc(130px + env(safe-area-inset-bottom));
+  margin: 12px auto;
   padding: 28px 24px;
   border-radius: 28px;
   background: #ffffff;
@@ -180,7 +172,10 @@
   line-height: 1.55;
 }
 
-/* NEW: hide your mobile bottom nav while age gate is open */
+body.age-gate-locked {
+  overflow: hidden !important;
+}
+
 body.age-gate-locked .axiom-mobile-bottom-nav,
 body.age-gate-locked .mobile-bottom-nav,
 body.age-gate-locked #mobileBottomNav,
@@ -189,28 +184,17 @@ body.age-gate-locked .bottom-nav {
   display: none !important;
 }
 
-/* NEW: stop background/body scroll while age gate is open */
-body.age-gate-locked {
-  overflow: hidden !important;
-}
-
 @media (max-width: 767px) {
-  .age-gate-overlay {
-    padding-bottom: calc(160px + env(safe-area-inset-bottom));
+  .age-gate-overlay.active {
+    align-items: stretch;
   }
 
   .age-gate-modal {
-    width: calc(100% - 16px);
-
-    /*
-     * CHANGED:
-     * Old was max-height: calc(100dvh - 16px);
-     * This keeps it above Safari/browser/nav area.
-     */
-    max-height: calc(100dvh - 145px);
-
-    margin: 8px auto calc(150px + env(safe-area-inset-bottom));
-    padding: 18px 14px 20px;
+    width: calc(100% - 18px);
+    height: calc(100svh - 18px);
+    max-height: calc(100svh - 18px);
+    margin: 9px auto;
+    padding: 18px 14px 24px;
     border-radius: 22px;
   }
 
@@ -224,7 +208,7 @@ body.age-gate-locked {
   }
 
   .age-gate-title {
-    font-size: 24px;
+    font-size: 28px;
     line-height: 1.08;
     margin-bottom: 10px;
   }
@@ -286,5 +270,6 @@ body.age-gate-locked {
 
   .age-gate-footer {
     font-size: 12px;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom));
   }
 }
