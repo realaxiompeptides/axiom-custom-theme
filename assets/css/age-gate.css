@@ -390,3 +390,151 @@ body.age-gate-open .bottom-nav {
     line-height: 1.32;
   }
 }
+
+/* =========================================
+   FORCE AGE GATE TRUE FULL SCREEN
+   Add this at the VERY BOTTOM of age-gate.css
+========================================= */
+
+html body .age-gate-overlay,
+html body #ageGateOverlay {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100svh !important;
+  max-width: 100vw !important;
+  max-height: 100svh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden !important;
+  z-index: 999997 !important;
+  background: #07111f !important;
+}
+
+html body .age-gate-overlay.active,
+html body #ageGateOverlay.active {
+  display: flex !important;
+  align-items: stretch !important;
+  justify-content: stretch !important;
+}
+
+html body .age-gate-backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100svh !important;
+  background: #07111f !important;
+}
+
+html body .age-gate-modal,
+html body #ageGateCard {
+  position: relative !important;
+  z-index: 2 !important;
+
+  width: 100vw !important;
+  height: 100svh !important;
+  max-width: 100vw !important;
+  max-height: 100svh !important;
+
+  margin: 0 !important;
+  padding: 16px 16px calc(18px + env(safe-area-inset-bottom)) !important;
+
+  border-radius: 0 !important;
+  background: #ffffff !important;
+
+  overflow: hidden !important;
+  box-shadow: none !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+
+/* Make everything fit without scrolling */
+html body .age-gate-logo-wrap {
+  margin-bottom: 8px !important;
+}
+
+html body .age-gate-logo {
+  width: 150px !important;
+  max-width: 62vw !important;
+}
+
+html body .age-gate-kicker {
+  margin: 0 0 6px !important;
+  font-size: 10px !important;
+  line-height: 1.2 !important;
+}
+
+html body .age-gate-title {
+  margin: 0 0 9px !important;
+  font-size: 25px !important;
+  line-height: 1.04 !important;
+}
+
+html body .age-gate-description {
+  margin: 0 auto 12px !important;
+  font-size: 13px !important;
+  line-height: 1.42 !important;
+}
+
+html body .age-gate-points {
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+html body .age-gate-point {
+  min-height: 0 !important;
+  padding: 10px 12px !important;
+  border-radius: 17px !important;
+  font-size: 13px !important;
+  line-height: 1.32 !important;
+}
+
+html body .age-gate-checkboxes {
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+}
+
+html body .age-gate-check {
+  padding: 10px 12px !important;
+  border-radius: 17px !important;
+}
+
+html body .age-gate-check input[type="checkbox"] {
+  width: 20px !important;
+  height: 20px !important;
+  flex: 0 0 20px !important;
+}
+
+html body .age-gate-check span {
+  font-size: 13px !important;
+  line-height: 1.38 !important;
+}
+
+html body .age-gate-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 9px !important;
+  margin: 4px 0 8px !important;
+}
+
+html body .age-gate-btn {
+  min-height: 50px !important;
+  font-size: 15px !important;
+}
+
+html body .age-gate-footer {
+  margin: 0 !important;
+  font-size: 10.5px !important;
+  line-height: 1.35 !important;
+}
+
+/* Hide bottom nav while age gate is open */
+html body.age-gate-locked .axiom-mobile-bottom-nav,
+html body.age-gate-locked .mobile-bottom-nav,
+html body.age-gate-locked #mobileBottomNav,
+html body.age-gate-locked .bottom-navigation,
+html body.age-gate-locked .bottom-nav {
+  display: none !important;
+}
