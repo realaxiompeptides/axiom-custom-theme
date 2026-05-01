@@ -33,17 +33,18 @@ function axiom_custom_theme_assets() {
     /**
      * Email/SMS popup capture styles.
      *
-     * New split CSS files:
+     * CSS files:
      * /assets/css/popup/popup-layout.css
      * /assets/css/popup/popup-form.css
      * /assets/css/popup/popup-responsive.css
      * /assets/css/popup/popup-success.css
+     * /assets/css/popup/popup-launcher.css
      *
      * IMPORTANT:
      * The old /assets/css/popup.css is intentionally NOT loaded anymore.
      *
-     * SUCCESS CSS LOADS LAST so the coupon box and Shop Now button
-     * override browser button/link styles and theme button styles.
+     * Launcher CSS loads last so the floating % icon wins against
+     * popup/account/button/span styling conflicts.
      */
     if (file_exists($theme_path . '/assets/css/popup/popup-layout.css')) {
         wp_enqueue_style(
@@ -84,6 +85,22 @@ function axiom_custom_theme_assets() {
                 'axiom-popup-responsive',
             ),
             filemtime($theme_path . '/assets/css/popup/popup-success.css')
+        );
+    }
+
+    if (file_exists($theme_path . '/assets/css/popup/popup-launcher.css')) {
+        wp_enqueue_style(
+            'axiom-popup-launcher',
+            $theme_uri . '/assets/css/popup/popup-launcher.css',
+            array(
+                'axiom-base',
+                'axiom-age-gate',
+                'axiom-popup-layout',
+                'axiom-popup-form',
+                'axiom-popup-responsive',
+                'axiom-popup-success',
+            ),
+            filemtime($theme_path . '/assets/css/popup/popup-launcher.css')
         );
     }
 
