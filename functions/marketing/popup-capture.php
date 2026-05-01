@@ -31,20 +31,18 @@ add_action('wp_footer', function () {
 
     /**
      * Do NOT render the floating launcher on:
-     * - product pages
-     * - cart
      * - checkout
-     * - order received / thank you
+     * - account page
+     * - affiliate program page
      *
-     * This avoids interfering with sticky add-to-cart and checkout UI.
+     * Show it on basically every other frontend page.
      */
     $show_popup_launcher = true;
 
     if (
-        (function_exists('is_product') && is_product()) ||
-        (function_exists('is_cart') && is_cart()) ||
         (function_exists('is_checkout') && is_checkout()) ||
-        (function_exists('is_order_received_page') && is_order_received_page())
+        (function_exists('is_account_page') && is_account_page()) ||
+        is_page('affiliate-program')
     ) {
         $show_popup_launcher = false;
     }
