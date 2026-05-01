@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    const POPUP_KEY = 'axiom_popup_seen_v8';
+    const POPUP_KEY = 'axiom_popup_seen_v9';
     const AGE_GATE_KEY = 'axiom_age_gate_accepted_v1';
     const DELAY_AFTER_GATE_CLOSE = 3000;
 
@@ -21,20 +21,30 @@
         return document.getElementById('axiom-popup-launcher');
     }
 
+    /**
+     * Hide launcher only on:
+     * - checkout
+     * - account page
+     * - affiliate program page
+     *
+     * Do NOT hide it on product pages or cart pages.
+     */
     function isBlockedLauncherPage() {
         const body = document.body;
+        const path = String(window.location.pathname || '').toLowerCase();
 
         if (!body) {
             return false;
         }
 
         return (
-            body.classList.contains('single-product') ||
-            body.classList.contains('product-template-default') ||
             body.classList.contains('woocommerce-checkout') ||
-            body.classList.contains('woocommerce-cart') ||
             body.classList.contains('checkout') ||
-            body.classList.contains('cart')
+            body.classList.contains('woocommerce-account') ||
+            body.classList.contains('page-template-affiliate-program-template') ||
+            path.indexOf('/checkout') !== -1 ||
+            path.indexOf('/my-account') !== -1 ||
+            path.indexOf('/affiliate-program') !== -1
         );
     }
 
@@ -123,7 +133,10 @@
 
         popup.style.display = 'none';
         popup.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('axiom-popup-open');
+
+        if (document.body) {
+            document.body.classList.remove('axiom-popup-open');
+        }
     }
 
     function ageGateAccepted() {
@@ -138,10 +151,17 @@
         clearTimeout(popupTimeout);
 
         if (popupAlreadySeen()) {
+            showLauncher();
             return;
         }
 
         if (isAffiliateTraffic()) {
+            hidePopup();
+            hideLauncher();
+            return;
+        }
+
+        if (isBlockedLauncherPage()) {
             hidePopup();
             hideLauncher();
             return;
@@ -160,10 +180,17 @@
         }
 
         if (popupAlreadySeen()) {
+            showLauncher();
             return;
         }
 
         if (isAffiliateTraffic()) {
+            hidePopup();
+            hideLauncher();
+            return;
+        }
+
+        if (isBlockedLauncherPage()) {
             hidePopup();
             hideLauncher();
             return;
@@ -179,7 +206,10 @@
 
         popup.style.display = 'block';
         popup.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('axiom-popup-open');
+
+        if (document.body) {
+            document.body.classList.add('axiom-popup-open');
+        }
     }
 
     /**
@@ -199,6 +229,12 @@
             return;
         }
 
+        if (isBlockedLauncherPage()) {
+            hidePopup();
+            hideLauncher();
+            return;
+        }
+
         if (!ageGateAccepted()) {
             hidePopup();
             hideLauncher();
@@ -210,7 +246,10 @@
 
         popup.style.display = 'block';
         popup.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('axiom-popup-open');
+
+        if (document.body) {
+            document.body.classList.add('axiom-popup-open');
+        }
     }
 
     function waitForAgeGateAccepted() {
@@ -220,12 +259,14 @@
         clearInterval(ageGateWatchInterval);
 
         ageGateWatchInterval = setInterval(function () {
-            if (popupAlreadySeen()) {
+            if (isAffiliateTraffic()) {
                 clearInterval(ageGateWatchInterval);
+                hidePopup();
+                hideLauncher();
                 return;
             }
 
-            if (isAffiliateTraffic()) {
+            if (isBlockedLauncherPage()) {
                 clearInterval(ageGateWatchInterval);
                 hidePopup();
                 hideLauncher();
@@ -234,7 +275,12 @@
 
             if (ageGateAccepted()) {
                 clearInterval(ageGateWatchInterval);
-                schedulePopup();
+
+                if (popupAlreadySeen()) {
+                    showLauncher();
+                } else {
+                    schedulePopup();
+                }
             }
         }, 300);
     }
@@ -248,13 +294,16 @@
 
         popup.style.display = 'none';
         popup.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('axiom-popup-open');
+
+        if (document.body) {
+            document.body.classList.remove('axiom-popup-open');
+        }
 
         localStorage.setItem(POPUP_KEY, '1');
 
         /**
          * Show floating % icon after the user closes popup,
-         * except on product/cart/checkout pages.
+         * except on checkout/account/affiliate pages.
          */
         showLauncher();
     }
@@ -677,6 +726,12 @@
                         return;
                     }
 
+                    if (isBlockedLauncherPage()) {
+                        hidePopup();
+                        hideLauncher();
+                        return;
+                    }
+
                     if (ageGateAccepted()) {
                         schedulePopup();
                     } else {
@@ -704,6 +759,12 @@
         bindPopupEvents();
 
         if (isAffiliateTraffic()) {
+            hidePopup();
+            hideLauncher();
+            return;
+        }
+
+        if (isBlockedLauncherPage()) {
             hidePopup();
             hideLauncher();
             return;
