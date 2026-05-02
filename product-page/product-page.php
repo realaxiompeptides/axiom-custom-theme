@@ -412,16 +412,16 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
         </div>
 
         <?php
-        $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
-        if (file_exists($why_choose)) {
-            include $why_choose;
+        $enhanced_research_section = get_template_directory() . '/product-page/templates/enhanced-research-section.php';
+        if (file_exists($enhanced_research_section)) {
+            include $enhanced_research_section;
         }
         ?>
 
         <?php
-        $enhanced_research_section = get_template_directory() . '/product-page/templates/enhanced-research-section.php';
-        if (file_exists($enhanced_research_section)) {
-            include $enhanced_research_section;
+        $why_choose = get_template_directory() . '/product-page/why-choose-us.php';
+        if (file_exists($why_choose)) {
+            include $why_choose;
         }
         ?>
 
