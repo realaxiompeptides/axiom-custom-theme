@@ -418,6 +418,13 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
         }
         ?>
 
+        <?php
+        $enhanced_research_section = get_template_directory() . '/product-page/templates/enhanced-research-section.php';
+        if (file_exists($enhanced_research_section)) {
+            include $enhanced_research_section;
+        }
+        ?>
+
         <div class="product-disclaimer-box product-disclaimer-below-description">
           <div class="product-disclaimer-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -430,13 +437,6 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
       </section>
     </div>
   </section>
-
-  <?php
-  $enhanced_research_section = get_template_directory() . '/product-page/templates/enhanced-research-section.php';
-  if (file_exists($enhanced_research_section)) {
-      include $enhanced_research_section;
-  }
-  ?>
 </main>
 
 <div class="sticky-product-bar" id="stickyProductBar" aria-hidden="true">
