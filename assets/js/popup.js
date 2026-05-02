@@ -26,8 +26,9 @@
      * - checkout
      * - account page
      * - affiliate program page
+     * - product pages
      *
-     * Do NOT hide it on product pages or cart pages.
+     * Do NOT hide it on cart pages.
      */
     function isBlockedLauncherPage() {
         const body = document.body;
@@ -38,10 +39,12 @@
         }
 
         return (
+            body.classList.contains('single-product') ||
             body.classList.contains('woocommerce-checkout') ||
             body.classList.contains('checkout') ||
             body.classList.contains('woocommerce-account') ||
             body.classList.contains('page-template-affiliate-program-template') ||
+            path.indexOf('/product/') !== -1 ||
             path.indexOf('/checkout') !== -1 ||
             path.indexOf('/my-account') !== -1 ||
             path.indexOf('/affiliate-program') !== -1
@@ -303,7 +306,7 @@
 
         /**
          * Show floating % icon after the user closes popup,
-         * except on checkout/account/affiliate pages.
+         * except on checkout/account/affiliate/product pages.
          */
         showLauncher();
     }
