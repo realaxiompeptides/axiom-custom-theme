@@ -22,7 +22,6 @@ $quick_stats       = !empty($enhanced_data['quick_stats']) && is_array($enhanced
 $mechanism_title   = !empty($enhanced_data['mechanism_title']) ? $enhanced_data['mechanism_title'] : 'Research Mechanism';
 $mechanism_text    = !empty($enhanced_data['mechanism_text']) ? $enhanced_data['mechanism_text'] : '';
 $research_profile  = !empty($enhanced_data['research_profile']) && is_array($enhanced_data['research_profile']) ? $enhanced_data['research_profile'] : array();
-$safety_disclaimer = !empty($enhanced_data['safety_disclaimer']) ? $enhanced_data['safety_disclaimer'] : 'This product is intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption.';
 ?>
 
 <section class="axiom-enhanced-product-section">
@@ -114,15 +113,6 @@ $safety_disclaimer = !empty($enhanced_data['safety_disclaimer']) ? $enhanced_dat
                 </div>
             </details>
         <?php endif; ?>
-
-        <div class="axiom-safety-disclaimer-card axiom-compact-disclaimer">
-            <div>
-                <p class="axiom-enhanced-kicker">Research Disclaimer</p>
-                <h3>Research Use Only</h3>
-            </div>
-
-            <p><?php echo esc_html($safety_disclaimer); ?></p>
-        </div>
 
     </div>
 </section>
