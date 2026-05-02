@@ -99,6 +99,7 @@
         <?php
         $homepage_product_slugs = array(
           'glp-3-rt',
+          'tesamorelin',
           'ghk-cu',
           'mots-c',
           'nad',
