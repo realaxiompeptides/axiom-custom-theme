@@ -148,7 +148,24 @@
               ? wp_get_attachment_image($image_id, 'large', false, array('alt' => $product_name))
               : wc_placeholder_img('large');
 
-            $is_on_sale = $product->is_on_sale();
+            $is_on_sale      = $product->is_on_sale();
+            $stock_status    = $product->get_stock_status();
+            $is_out_of_stock = ($stock_status === 'outofstock');
+            $is_on_backorder = ($stock_status === 'onbackorder');
+
+            $badge_text  = '';
+            $badge_class = '';
+
+            if ($is_out_of_stock) {
+              $badge_text  = 'Out of Stock';
+              $badge_class = 'is-out-of-stock';
+            } elseif ($is_on_backorder) {
+              $badge_text  = 'Backorder';
+              $badge_class = 'is-backorder';
+            } elseif ($is_on_sale) {
+              $badge_text  = 'Sale';
+              $badge_class = 'is-sale';
+            }
 
             $regular_price_value = '';
             $current_price_value = '';
@@ -184,8 +201,10 @@
             ?>
             <article class="homepage-product-card">
               <div class="homepage-product-image-wrap">
-                <?php if ($is_on_sale) : ?>
-                  <span class="homepage-product-badge">SALE</span>
+                <?php if ($badge_text) : ?>
+                  <span class="homepage-product-badge <?php echo esc_attr($badge_class); ?>">
+                    <?php echo esc_html($badge_text); ?>
+                  </span>
                 <?php endif; ?>
 
                 <a href="<?php echo esc_url($product_link); ?>" class="homepage-product-image-link">
