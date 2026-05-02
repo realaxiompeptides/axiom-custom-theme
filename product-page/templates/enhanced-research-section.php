@@ -24,7 +24,7 @@ $mechanism_text    = !empty($enhanced_data['mechanism_text']) ? $enhanced_data['
 $research_profile  = !empty($enhanced_data['research_profile']) && is_array($enhanced_data['research_profile']) ? $enhanced_data['research_profile'] : array();
 ?>
 
-<section class="axiom-enhanced-product-section">
+<section class="axiom-enhanced-product-section" id="axiomEnhancedResearchSection">
     <div class="axiom-enhanced-container">
 
         <div class="axiom-enhanced-header axiom-enhanced-compact-header">
@@ -116,3 +116,29 @@ $research_profile  = !empty($enhanced_data['research_profile']) && is_array($enh
 
     </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const researchSection = document.getElementById('axiomEnhancedResearchSection');
+
+    if (!researchSection) {
+        return;
+    }
+
+    const accordions = researchSection.querySelectorAll('.axiom-enhanced-accordion');
+
+    accordions.forEach(function (accordion) {
+        accordion.addEventListener('toggle', function () {
+            if (!accordion.open) {
+                return;
+            }
+
+            accordions.forEach(function (otherAccordion) {
+                if (otherAccordion !== accordion) {
+                    otherAccordion.open = false;
+                }
+            });
+        });
+    });
+});
+</script>
