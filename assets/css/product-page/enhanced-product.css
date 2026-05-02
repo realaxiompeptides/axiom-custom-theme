@@ -370,3 +370,43 @@
         padding: 18px;
     }
 }
+
+/* Tighten spacing between enhanced research and How We Compare */
+.product-description-card .axiom-enhanced-product-section {
+    margin-top: 22px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+}
+
+.product-description-card .axiom-enhanced-container {
+    margin-bottom: 0;
+}
+
+.product-description-card .axiom-enhanced-product-section + .axiom-why-choose-section,
+.product-description-card .axiom-enhanced-product-section + .why-choose-us-section,
+.product-description-card .axiom-enhanced-product-section + .product-why-choose-section {
+    margin-top: 16px;
+}
+
+/* Slightly tighter accordion spacing */
+.product-description-card .axiom-enhanced-accordion {
+    margin-bottom: 12px;
+}
+
+.product-description-card .axiom-enhanced-accordion:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .product-description-card .axiom-enhanced-product-section {
+        margin-top: 18px;
+        margin-bottom: 12px;
+        padding-bottom: 10px;
+    }
+
+    .product-description-card .axiom-enhanced-product-section + .axiom-why-choose-section,
+    .product-description-card .axiom-enhanced-product-section + .why-choose-us-section,
+    .product-description-card .axiom-enhanced-product-section + .product-why-choose-section {
+        margin-top: 12px;
+    }
+}
