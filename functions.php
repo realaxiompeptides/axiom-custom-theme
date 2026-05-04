@@ -12,6 +12,14 @@ $axiom_function_files = array(
     '/functions/core/setup.php',
     '/functions/core/assets.php',
 
+    // SEO AUTHORITY SYSTEM - NON-VISIBLE ONLY
+    // These do NOT add visible SEO blocks to the front end.
+    '/functions/seo/meta-tags.php',
+    '/functions/seo/schema.php',
+    '/functions/seo/image-alt.php',
+    '/functions/seo/robots.php',
+    '/functions/seo/sitemap-helper.php',
+
     // SHOP
     '/functions/shop/catalog.php',
     '/functions/shop/variation-stock-labels.php',
@@ -89,7 +97,7 @@ $axiom_function_files = array(
 );
 
 /**
- * Load all modules safely
+ * Load all modules safely.
  */
 foreach ($axiom_function_files as $axiom_file) {
     $axiom_path = get_template_directory() . $axiom_file;
@@ -106,7 +114,7 @@ foreach ($axiom_function_files as $axiom_file) {
 }
 
 /**
- * ADMIN HELPER — Open thank-you page
+ * ADMIN HELPER — Open thank-you page.
  */
 add_action('woocommerce_admin_order_data_after_order_details', 'axiom_show_admin_thankyou_test_link');
 
@@ -124,7 +132,7 @@ function axiom_show_admin_thankyou_test_link($order) {
 }
 
 /**
- * REVIEWS PAGE CSS
+ * REVIEWS PAGE CSS.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_reviews_page_assets', 20);
 
@@ -144,9 +152,11 @@ function axiom_enqueue_reviews_page_assets() {
 }
 
 /**
- * OPTIONAL: GLOBAL BRAND COLORS
+ * OPTIONAL: GLOBAL BRAND COLORS.
  */
-add_action('wp_head', function () {
+add_action('wp_head', 'axiom_output_global_brand_colors');
+
+function axiom_output_global_brand_colors() {
     echo '<style>
         :root {
             --axiom-blue: #3B6FE0;
@@ -154,4 +164,4 @@ add_action('wp_head', function () {
             --axiom-dark: #0c1220;
         }
     </style>';
-});
+}
