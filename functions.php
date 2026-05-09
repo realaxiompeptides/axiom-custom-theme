@@ -56,6 +56,10 @@ $axiom_function_files = array(
     // AFFILIATE
     '/functions/affiliate-program/affiliate-program.php',
 
+    // MODERN AFFILIATE DASHBOARD FRONT-END STYLING / SHORTCODE WRAPPER
+    // Still uses SliceWP underneath.
+    '/functions/affiliate-program/affiliate-dashboard-modern.php',
+
     // Blocks WELCOME10 / WELCOME15 / AXIOM15 popup coupons on affiliate traffic
     '/functions/affiliate-program/affiliate-coupon-rules.php',
 
