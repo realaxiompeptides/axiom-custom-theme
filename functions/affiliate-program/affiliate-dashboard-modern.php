@@ -72,8 +72,8 @@ function axiom_get_current_affiliate_dashboard_stats() {
     }
 
     /**
-     * 1) Get commissions via SliceWP function.
-     * We treat every non-rejected commission as a successful conversion/order.
+     * Get commissions via SliceWP.
+     * Every non-rejected commission counts as a conversion/order.
      */
     $commissions = array();
 
@@ -96,9 +96,6 @@ function axiom_get_current_affiliate_dashboard_stats() {
         $status = strtolower((string) axiom_affiliate_get_object_value($commission, 'status', ''));
         $amount = (float) axiom_affiliate_get_object_value($commission, 'amount', 0);
 
-        /**
-         * Ignore rejected commissions.
-         */
         if ($status === 'rejected') {
             continue;
         }
@@ -112,8 +109,7 @@ function axiom_get_current_affiliate_dashboard_stats() {
     }
 
     /**
-     * 2) Get referred visits directly from SliceWP visits table.
-     * This is used as "Total Referrals" for the top card summary.
+     * Get referred visits from SliceWP visits table.
      */
     $visits_table = $wpdb->prefix . 'slicewp_visits';
     $visit_count  = 0;
@@ -245,11 +241,11 @@ function axiom_enqueue_affiliate_dashboard_modern_styles() {
         is_page('affiliate-area') ||
         is_page('affiliate-dashboard')
     ) {
-        $css_path = get_template_directory() . '/assets/css/affiliate/affiliate-dashboard-modern.css';
+        $css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css';
 
         wp_enqueue_style(
             'axiom-affiliate-dashboard-modern',
-            get_template_directory_uri() . '/assets/css/affiliate/affiliate-dashboard-modern.css',
+            get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css',
             array(),
             file_exists($css_path) ? filemtime($css_path) : '1.0.0'
         );
