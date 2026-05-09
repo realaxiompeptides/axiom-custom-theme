@@ -147,7 +147,7 @@ function axiom_get_current_affiliate_dashboard_stats() {
 }
 
 /**
- * Output custom affiliate dashboard + default SliceWP dashboard below it.
+ * Output custom affiliate dashboard + default SliceWP dashboard underneath.
  *
  * Use shortcode:
  * [axiom_affiliate_dashboard]
@@ -173,37 +173,49 @@ function axiom_render_affiliate_dashboard() {
         <div class="axiom-affiliate-stats-grid">
 
             <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">✅</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-check"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['conversions']); ?></div>
                 <div class="axiom-affiliate-stat-label">Conversions</div>
             </div>
 
             <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">📈</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['conversion_rate']); ?>%</div>
                 <div class="axiom-affiliate-stat-label">Conversion Rate</div>
             </div>
 
             <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">👥</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['total_referrals']); ?></div>
                 <div class="axiom-affiliate-stat-label">Total Referrals</div>
             </div>
 
             <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">🛍️</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['total_orders']); ?></div>
                 <div class="axiom-affiliate-stat-label">Total Orders</div>
             </div>
 
             <div class="axiom-affiliate-stat-card axiom-affiliate-stat-card--accent">
-                <div class="axiom-affiliate-stat-icon">💰</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo wp_kses_post(axiom_affiliate_format_money($stats['total_earnings'])); ?></div>
                 <div class="axiom-affiliate-stat-label">Total Earnings</div>
             </div>
 
             <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">⏳</div>
+                <div class="axiom-affiliate-stat-icon">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
                 <div class="axiom-affiliate-stat-value"><?php echo wp_kses_post(axiom_affiliate_format_money($stats['paid_earnings'])); ?></div>
                 <div class="axiom-affiliate-stat-label">Paid Earnings</div>
             </div>
@@ -239,7 +251,8 @@ function axiom_enqueue_affiliate_dashboard_modern_styles() {
         has_shortcode($post->post_content, 'axiom_affiliate_dashboard') ||
         is_page('affiliate-program') ||
         is_page('affiliate-area') ||
-        is_page('affiliate-dashboard')
+        is_page('affiliate-dashboard') ||
+        is_page('affiliate-account')
     ) {
         $css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css';
 
