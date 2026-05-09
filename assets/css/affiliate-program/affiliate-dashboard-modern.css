@@ -1,312 +1,363 @@
-<?php
-if (!defined('ABSPATH')) {
-    exit;
+/* =========================================================
+   Axiom Affiliate Dashboard Modern
+   File: assets/css/affiliate-program/affiliate-dashboard-modern.css
+========================================================= */
+
+.axiom-affiliate-dashboard-modern {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/**
- * Helper: safely get values from SliceWP objects.
- */
-function axiom_affiliate_get_object_value($object, $key, $default = '') {
-    if (is_object($object) && method_exists($object, 'get')) {
-        $value = $object->get($key);
-        return ($value !== null) ? $value : $default;
-    }
-
-    if (is_array($object) && isset($object[$key])) {
-        return $object[$key];
-    }
-
-    if (is_object($object) && isset($object->$key)) {
-        return $object->$key;
-    }
-
-    return $default;
+.axiom-affiliate-dashboard-modern *,
+.axiom-affiliate-dashboard-modern *::before,
+.axiom-affiliate-dashboard-modern *::after {
+    box-sizing: border-box;
 }
 
-/**
- * Helper: currency formatting.
- */
-function axiom_affiliate_format_money($amount) {
-    $amount = (float) $amount;
-
-    if (function_exists('wc_price')) {
-        return wc_price($amount);
-    }
-
-    return '$' . number_format($amount, 2);
+.axiom-affiliate-dashboard-header {
+    margin-bottom: 22px;
 }
 
-/**
- * Get current user's SliceWP affiliate object.
- */
-function axiom_get_current_slicewp_affiliate() {
-    if (!is_user_logged_in()) {
-        return false;
-    }
-
-    if (!function_exists('slicewp_get_affiliate_by_user_id')) {
-        return false;
-    }
-
-    $affiliate = slicewp_get_affiliate_by_user_id(get_current_user_id());
-
-    if (!$affiliate) {
-        return false;
-    }
-
-    return $affiliate;
+.axiom-affiliate-dashboard-header h2 {
+    margin: 0 0 8px;
+    font-size: 34px;
+    line-height: 1.05;
+    font-weight: 900;
+    color: #0c1220;
+    letter-spacing: -0.04em;
 }
 
-/**
- * Check if current user is an active SliceWP affiliate.
- */
-function axiom_is_current_user_active_affiliate() {
-    $affiliate = axiom_get_current_slicewp_affiliate();
-
-    if (!$affiliate) {
-        return false;
-    }
-
-    $status = strtolower((string) axiom_affiliate_get_object_value($affiliate, 'status', ''));
-
-    return ($status === 'active');
+.axiom-affiliate-dashboard-header p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #5d6779;
 }
 
-/**
- * Get custom affiliate stats for the current logged-in affiliate.
- */
-function axiom_get_current_affiliate_dashboard_stats() {
-    global $wpdb;
+/* =========================================================
+   Top Stats Grid
+========================================================= */
 
-    $stats = array(
-        'conversions'     => 0,
-        'conversion_rate' => 0,
-        'total_referrals' => 0,
-        'total_orders'    => 0,
-        'total_earnings'  => 0,
-        'paid_earnings'   => 0,
-    );
-
-    $affiliate = axiom_get_current_slicewp_affiliate();
-
-    if (!$affiliate) {
-        return $stats;
-    }
-
-    $affiliate_id = (int) axiom_affiliate_get_object_value($affiliate, 'id', 0);
-
-    if (!$affiliate_id) {
-        return $stats;
-    }
-
-    /**
-     * Get commissions via SliceWP.
-     * Every non-rejected commission counts as a conversion/order.
-     */
-    $commissions = array();
-
-    if (function_exists('slicewp_get_commissions')) {
-        $commissions = slicewp_get_commissions(array(
-            'affiliate_id' => $affiliate_id,
-            'number'       => -1,
-        ));
-    }
-
-    if (!is_array($commissions)) {
-        $commissions = array();
-    }
-
-    $valid_conversion_count = 0;
-    $paid_earnings          = 0;
-    $total_earnings         = 0;
-
-    foreach ($commissions as $commission) {
-        $status = strtolower((string) axiom_affiliate_get_object_value($commission, 'status', ''));
-        $amount = (float) axiom_affiliate_get_object_value($commission, 'amount', 0);
-
-        if ($status === 'rejected') {
-            continue;
-        }
-
-        $valid_conversion_count++;
-        $total_earnings += $amount;
-
-        if ($status === 'paid') {
-            $paid_earnings += $amount;
-        }
-    }
-
-    /**
-     * Get referred visits from SliceWP visits table.
-     */
-    $visits_table = $wpdb->prefix . 'slicewp_visits';
-    $visit_count  = 0;
-
-    $table_exists = $wpdb->get_var(
-        $wpdb->prepare(
-            "SHOW TABLES LIKE %s",
-            $visits_table
-        )
-    );
-
-    if ($table_exists === $visits_table) {
-        $visit_count = (int) $wpdb->get_var(
-            $wpdb->prepare(
-                "SELECT COUNT(*) FROM {$visits_table} WHERE affiliate_id = %d",
-                $affiliate_id
-            )
-        );
-    }
-
-    $conversion_rate = 0;
-
-    if ($visit_count > 0) {
-        $conversion_rate = ($valid_conversion_count / $visit_count) * 100;
-    }
-
-    $stats['conversions']     = $valid_conversion_count;
-    $stats['conversion_rate'] = round($conversion_rate, 2);
-    $stats['total_referrals'] = $visit_count;
-    $stats['total_orders']    = $valid_conversion_count;
-    $stats['total_earnings']  = $total_earnings;
-    $stats['paid_earnings']   = $paid_earnings;
-
-    return $stats;
+.axiom-affiliate-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
 }
 
-/**
- * Output custom affiliate dashboard + SliceWP underneath.
- *
- * Use shortcode:
- * [axiom_affiliate_dashboard]
- */
-add_shortcode('axiom_affiliate_dashboard', 'axiom_render_affiliate_dashboard');
-
-function axiom_render_affiliate_dashboard() {
-    if (!function_exists('slicewp_get_affiliate_by_user_id')) {
-        return '<p>SliceWP is not active.</p>';
-    }
-
-    /**
-     * IMPORTANT:
-     * If the visitor is logged out, do NOT show the custom cards.
-     * Only show the default SliceWP login/account area.
-     */
-    if (!is_user_logged_in()) {
-        return do_shortcode('[slicewp_affiliate_account]');
-    }
-
-    /**
-     * If logged in but not an active affiliate yet,
-     * do NOT show the custom stats cards.
-     * Let SliceWP show its normal pending/account/register message.
-     */
-    if (!axiom_is_current_user_active_affiliate()) {
-        return do_shortcode('[slicewp_affiliate_account]');
-    }
-
-    $stats = axiom_get_current_affiliate_dashboard_stats();
-
-    ob_start();
-    ?>
-    <div class="axiom-affiliate-dashboard-modern">
-
-        <div class="axiom-affiliate-dashboard-header">
-            <h2>Affiliate Dashboard</h2>
-            <p>Track your performance, referrals, and earnings in one place.</p>
-        </div>
-
-        <div class="axiom-affiliate-stats-grid">
-
-            <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['conversions']); ?></div>
-                <div class="axiom-affiliate-stat-label">Conversions</div>
-            </div>
-
-            <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-chart-line"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['conversion_rate']); ?>%</div>
-                <div class="axiom-affiliate-stat-label">Conversion Rate</div>
-            </div>
-
-            <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['total_referrals']); ?></div>
-                <div class="axiom-affiliate-stat-label">Total Referrals</div>
-            </div>
-
-            <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo esc_html($stats['total_orders']); ?></div>
-                <div class="axiom-affiliate-stat-label">Total Orders</div>
-            </div>
-
-            <div class="axiom-affiliate-stat-card axiom-affiliate-stat-card--accent">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-sack-dollar"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo wp_kses_post(axiom_affiliate_format_money($stats['total_earnings'])); ?></div>
-                <div class="axiom-affiliate-stat-label">Total Earnings</div>
-            </div>
-
-            <div class="axiom-affiliate-stat-card">
-                <div class="axiom-affiliate-stat-icon">
-                    <i class="fa-solid fa-hourglass-half"></i>
-                </div>
-                <div class="axiom-affiliate-stat-value"><?php echo wp_kses_post(axiom_affiliate_format_money($stats['paid_earnings'])); ?></div>
-                <div class="axiom-affiliate-stat-label">Paid Earnings</div>
-            </div>
-
-        </div>
-
-        <div class="axiom-affiliate-default-dashboard">
-            <?php echo do_shortcode('[slicewp_affiliate_account]'); ?>
-        </div>
-
-    </div>
-    <?php
-    return ob_get_clean();
+.axiom-affiliate-stat-card {
+    background: #ffffff;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 16px 42px rgba(12, 18, 32, 0.07);
+    min-height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
-/**
- * Enqueue modern affiliate dashboard CSS.
- */
-add_action('wp_enqueue_scripts', 'axiom_enqueue_affiliate_dashboard_modern_styles', 30);
+.axiom-affiliate-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 48px rgba(12, 18, 32, 0.11);
+    border-color: rgba(59, 111, 224, 0.20);
+}
 
-function axiom_enqueue_affiliate_dashboard_modern_styles() {
-    if (!is_singular()) {
-        return;
+.axiom-affiliate-stat-card--accent {
+    border-color: rgba(59, 111, 224, 0.28);
+    box-shadow: 0 18px 46px rgba(59, 111, 224, 0.10);
+}
+
+.axiom-affiliate-stat-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f8ff;
+    color: #0c1220;
+    font-size: 28px;
+    margin-bottom: 22px;
+}
+
+.axiom-affiliate-stat-icon i {
+    line-height: 1;
+    font-size: 28px;
+}
+
+.axiom-affiliate-stat-value {
+    font-size: 30px;
+    line-height: 1.05;
+    font-weight: 900;
+    color: #0c1220;
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
+}
+
+.axiom-affiliate-stat-card--accent .axiom-affiliate-stat-value {
+    color: #41a653;
+}
+
+.axiom-affiliate-stat-label {
+    font-size: 16px;
+    line-height: 1.25;
+    color: #7a8393;
+    font-weight: 800;
+}
+
+/* =========================================================
+   SliceWP Area Under Custom Cards
+   Keep SliceWP nav/buttons working
+========================================================= */
+
+.axiom-affiliate-default-dashboard {
+    margin-top: 8px;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard,
+.axiom-affiliate-default-dashboard .slicewp-affiliate-account,
+.axiom-affiliate-default-dashboard .slicewp-affiliate-dashboard {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* SliceWP icon/tab nav */
+.axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    border-radius: 22px;
+    background: #f7f9fd;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-nav-tab,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 54px;
+    min-height: 54px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #0c1220;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 800;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    box-shadow: 0 8px 22px rgba(12, 18, 32, 0.04);
+}
+
+.axiom-affiliate-default-dashboard .slicewp-nav-tab:hover,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav a:hover,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a:hover {
+    color: #3B6FE0;
+    border-color: rgba(59, 111, 224, 0.25);
+}
+
+.axiom-affiliate-default-dashboard .slicewp-nav-tab-active,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav .active a,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a {
+    background: #ffffff;
+    color: #0c1220 !important;
+    border-color: rgba(59, 111, 224, 0.22);
+    box-shadow: 0 10px 26px rgba(59, 111, 224, 0.12);
+    position: relative;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-nav-tab-active::after,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav .active a::after,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a::after {
+    content: "";
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: -8px;
+    height: 3px;
+    border-radius: 999px;
+    background: #0c1220;
+}
+
+/* Buttons */
+.axiom-affiliate-default-dashboard .slicewp-button,
+.axiom-affiliate-default-dashboard .slicewp-submit,
+.axiom-affiliate-default-dashboard button,
+.axiom-affiliate-default-dashboard input[type="submit"] {
+    background: linear-gradient(135deg, #3B6FE0, #5A8CFF) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 12px 18px !important;
+    font-weight: 800 !important;
+    box-shadow: 0 12px 24px rgba(59, 111, 224, 0.22);
+    cursor: pointer;
+}
+
+/* Inputs */
+.axiom-affiliate-default-dashboard input,
+.axiom-affiliate-default-dashboard select,
+.axiom-affiliate-default-dashboard textarea {
+    border: 1px solid rgba(12, 18, 32, 0.14) !important;
+    border-radius: 14px !important;
+    padding: 12px 14px !important;
+    font-size: 15px;
+    background: #ffffff;
+}
+
+.axiom-affiliate-default-dashboard input:focus,
+.axiom-affiliate-default-dashboard select:focus,
+.axiom-affiliate-default-dashboard textarea:focus {
+    outline: none;
+    border-color: #3B6FE0 !important;
+    box-shadow: 0 0 0 4px rgba(59, 111, 224, 0.12);
+}
+
+/* Tables */
+.axiom-affiliate-default-dashboard table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 14px 36px rgba(12, 18, 32, 0.06);
+    border: 1px solid rgba(12, 18, 32, 0.08);
+}
+
+.axiom-affiliate-default-dashboard table th {
+    background: #f7f9fd;
+    color: #0c1220;
+    font-weight: 900;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 14px;
+    border-bottom: 1px solid rgba(12, 18, 32, 0.08);
+}
+
+.axiom-affiliate-default-dashboard table td {
+    padding: 14px;
+    border-bottom: 1px solid rgba(12, 18, 32, 0.06);
+    color: #253047;
+}
+
+/* Keep all SliceWP links/buttons clickable */
+.axiom-affiliate-default-dashboard a,
+.axiom-affiliate-default-dashboard button {
+    pointer-events: auto !important;
+}
+
+/* =========================================================
+   Hide Duplicate SliceWP Dashboard Overview Only
+   Keeps tabs/nav working
+========================================================= */
+
+/*
+   The custom cards replace SliceWP's duplicate dashboard overview cards/chart.
+   These rules avoid hiding the nav icons.
+*/
+
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-grid,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-card,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-chart,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-date-range-picker,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-overview,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-stats,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-chart {
+    display: none !important;
+}
+
+/* Try to hide dashboard tab duplicate content but keep nav */
+.axiom-affiliate-default-dashboard .slicewp-tab-dashboard > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav) {
+    display: none !important;
+}
+
+/* =========================================================
+   Mobile
+========================================================= */
+
+@media (max-width: 1024px) {
+    .axiom-affiliate-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .axiom-affiliate-dashboard-modern {
+        padding: 14px 12px 30px;
     }
 
-    global $post;
-
-    if (!$post instanceof WP_Post) {
-        return;
+    .axiom-affiliate-dashboard-header h2 {
+        font-size: 28px;
     }
 
-    if (
-        has_shortcode($post->post_content, 'axiom_affiliate_dashboard') ||
-        is_page('affiliate-program') ||
-        is_page('affiliate-area') ||
-        is_page('affiliate-dashboard') ||
-        is_page('affiliate-account')
-    ) {
-        $css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css';
+    .axiom-affiliate-dashboard-header p {
+        font-size: 15px;
+    }
 
-        wp_enqueue_style(
-            'axiom-affiliate-dashboard-modern',
-            get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css',
-            array(),
-            file_exists($css_path) ? filemtime($css_path) : '1.0.0'
-        );
+    .axiom-affiliate-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .axiom-affiliate-stat-card {
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 150px;
+    }
+
+    .axiom-affiliate-stat-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+
+    .axiom-affiliate-stat-icon i {
+        font-size: 24px;
+    }
+
+    .axiom-affiliate-stat-value {
+        font-size: 24px;
+    }
+
+    .axiom-affiliate-stat-label {
+        font-size: 14px;
+    }
+
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav {
+        gap: 8px;
+        padding: 10px;
+        border-radius: 18px;
+    }
+
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
+        min-width: 48px;
+        min-height: 48px;
+        padding: 9px 12px;
+    }
+
+    .axiom-affiliate-default-dashboard table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 }
