@@ -89,6 +89,9 @@ $axiom_function_files = array(
     // SMS COUNTRY DATA FOR POPUP
     '/functions/marketing/sms-capture.php',
 
+    // RESTOCK ALERTS - TEST MODE ONLY
+    '/functions/marketing/restock-alerts.php',
+
     // UI / VISUAL
     '/functions/floating-vials/floating-vials.php',
 
