@@ -6,7 +6,7 @@
 .axiom-affiliate-dashboard-modern {
     max-width: 1180px;
     margin: 0 auto;
-    padding: 20px 16px 40px;
+    padding: 22px 16px 44px;
     font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -16,28 +16,33 @@
     box-sizing: border-box;
 }
 
+/* =========================================================
+   Header
+========================================================= */
+
 .axiom-affiliate-dashboard-header {
-    margin-bottom: 22px;
+    margin-bottom: 24px;
 }
 
 .axiom-affiliate-dashboard-header h2 {
-    margin: 0 0 8px;
-    font-size: 34px;
-    line-height: 1.05;
+    margin: 0 0 10px;
+    font-size: 36px;
+    line-height: 1.04;
     font-weight: 900;
     color: #0c1220;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.045em;
 }
 
 .axiom-affiliate-dashboard-header p {
     margin: 0;
+    max-width: 680px;
     font-size: 16px;
     line-height: 1.55;
     color: #5d6779;
 }
 
 /* =========================================================
-   Top Stats Grid
+   Top Axiom Stats Grid
 ========================================================= */
 
 .axiom-affiliate-stats-grid {
@@ -57,13 +62,6 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.axiom-affiliate-stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 20px 48px rgba(12, 18, 32, 0.11);
-    border-color: rgba(59, 111, 224, 0.20);
 }
 
 .axiom-affiliate-stat-card--accent {
@@ -99,7 +97,7 @@
 }
 
 .axiom-affiliate-stat-card--accent .axiom-affiliate-stat-value {
-    color: #41a653;
+    color: #38a657;
 }
 
 .axiom-affiliate-stat-label {
@@ -110,12 +108,11 @@
 }
 
 /* =========================================================
-   SliceWP Area Under Custom Cards
-   Keep SliceWP nav/buttons working
+   SliceWP Wrapper
 ========================================================= */
 
 .axiom-affiliate-default-dashboard {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard,
@@ -126,95 +123,185 @@
     padding: 0;
 }
 
-/* SliceWP icon/tab nav */
+/* =========================================================
+   SliceWP Icon Navigation
+========================================================= */
+
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav {
-    display: flex;
-    flex-wrap: nowrap;
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav,
+.axiom-affiliate-default-dashboard ul.slicewp-tabs-nav,
+.axiom-affiliate-default-dashboard ul.slicewp-nav-tab-wrapper {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
     gap: 10px;
-    padding: 12px;
+    padding: 12px !important;
     border: 1px solid rgba(12, 18, 32, 0.08);
-    border-radius: 22px;
+    border-radius: 24px;
     background: #f7f9fd;
-    margin-bottom: 20px;
+    margin: 0 0 22px !important;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
+    list-style: none !important;
+    box-shadow: 0 12px 34px rgba(12, 18, 32, 0.05);
+}
+
+.axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper::-webkit-scrollbar,
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav::-webkit-scrollbar,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .axiom-affiliate-default-dashboard .slicewp-nav-tab,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
-    display: inline-flex;
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a,
+.axiom-affiliate-default-dashboard ul.slicewp-tabs-nav li a {
+    display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    min-width: 54px;
-    min-height: 54px;
-    padding: 10px 14px;
+    min-width: 58px;
+    width: 58px;
+    height: 58px;
+    padding: 0 !important;
     border-radius: 999px;
     background: #ffffff;
-    color: #0c1220;
-    text-decoration: none;
-    font-size: 14px;
+    color: #0c1220 !important;
+    text-decoration: none !important;
+    font-size: 20px;
     font-weight: 800;
     border: 1px solid rgba(12, 18, 32, 0.08);
-    box-shadow: 0 8px 22px rgba(12, 18, 32, 0.04);
+    box-shadow: 0 8px 22px rgba(12, 18, 32, 0.05);
+    position: relative;
 }
 
 .axiom-affiliate-default-dashboard .slicewp-nav-tab:hover,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a:hover,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a:hover {
-    color: #3B6FE0;
+    color: #3B6FE0 !important;
     border-color: rgba(59, 111, 224, 0.25);
 }
 
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-active,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav .active a,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a {
-    background: #ffffff;
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav li.active a,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a,
+.axiom-affiliate-default-dashboard .slicewp-active a {
+    background: #ffffff !important;
     color: #0c1220 !important;
-    border-color: rgba(59, 111, 224, 0.22);
-    box-shadow: 0 10px 26px rgba(59, 111, 224, 0.12);
-    position: relative;
+    border-color: rgba(59, 111, 224, 0.28);
+    box-shadow: 0 10px 28px rgba(59, 111, 224, 0.14);
 }
 
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-active::after,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav .active a::after,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a::after {
+.axiom-affiliate-default-dashboard .slicewp-tabs-nav li.active a::after,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav .active a::after,
+.axiom-affiliate-default-dashboard .slicewp-active a::after {
     content: "";
     position: absolute;
     left: 14px;
     right: 14px;
-    bottom: -8px;
+    bottom: -9px;
     height: 3px;
     border-radius: 999px;
     background: #0c1220;
 }
 
-/* Buttons */
-.axiom-affiliate-default-dashboard .slicewp-button,
-.axiom-affiliate-default-dashboard .slicewp-submit,
-.axiom-affiliate-default-dashboard button,
-.axiom-affiliate-default-dashboard input[type="submit"] {
-    background: linear-gradient(135deg, #3B6FE0, #5A8CFF) !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 999px !important;
-    padding: 12px 18px !important;
-    font-weight: 800 !important;
-    box-shadow: 0 12px 24px rgba(59, 111, 224, 0.22);
-    cursor: pointer;
+/* =========================================================
+   Hide Duplicate SliceWP Dashboard Overview
+   This keeps the icon nav, but removes duplicate dashboard blocks.
+========================================================= */
+
+/* Hide the date range on the default SliceWP dashboard */
+.axiom-affiliate-default-dashboard .slicewp-date-range-picker,
+.axiom-affiliate-default-dashboard .slicewp-card-date-range,
+.axiom-affiliate-default-dashboard .slicewp-dashboard-date-range,
+.axiom-affiliate-default-dashboard [class*="date-range"] {
+    display: none !important;
 }
 
-/* Inputs */
+/* Hide duplicate overview cards/chart/all-time/program details from SliceWP dashboard */
+.axiom-affiliate-default-dashboard .slicewp-dashboard-overview,
+.axiom-affiliate-default-dashboard .slicewp-dashboard-stats,
+.axiom-affiliate-default-dashboard .slicewp-dashboard-chart,
+.axiom-affiliate-default-dashboard .slicewp-chart,
+.axiom-affiliate-default-dashboard .slicewp-overview,
+.axiom-affiliate-default-dashboard .slicewp-summary,
+.axiom-affiliate-default-dashboard .slicewp-performance,
+.axiom-affiliate-default-dashboard .slicewp-section-dashboard,
+.axiom-affiliate-default-dashboard [class*="dashboard-overview"],
+.axiom-affiliate-default-dashboard [class*="dashboard-stats"],
+.axiom-affiliate-default-dashboard [class*="dashboard-chart"],
+.axiom-affiliate-default-dashboard [class*="performance-chart"],
+.axiom-affiliate-default-dashboard [class*="all-time"],
+.axiom-affiliate-default-dashboard [class*="program-details"] {
+    display: none !important;
+}
+
+/* Hide common duplicate dashboard headings */
+.axiom-affiliate-default-dashboard h2:has(+ .slicewp-card),
+.axiom-affiliate-default-dashboard h2:has(+ .slicewp-grid),
+.axiom-affiliate-default-dashboard h3:has(+ .slicewp-card),
+.axiom-affiliate-default-dashboard h3:has(+ .slicewp-grid) {
+    display: none !important;
+}
+
+/* Hide direct dashboard cards that appear immediately after nav on the dashboard tab */
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-card,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-grid,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-chart,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section {
+    display: none !important;
+}
+
+/* This removes the duplicate dashboard content when SliceWP uses tab panels */
+.axiom-affiliate-default-dashboard .slicewp-tab-dashboard > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav),
+.axiom-affiliate-default-dashboard .slicewp-dashboard-tab > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav) {
+    display: none !important;
+}
+
+/* =========================================================
+   Style SliceWP Forms / Login / Referral / Settings Sections
+========================================================= */
+
+.axiom-affiliate-default-dashboard form,
+.axiom-affiliate-default-dashboard .slicewp-form,
+.axiom-affiliate-default-dashboard .slicewp-form-fields,
+.axiom-affiliate-default-dashboard .slicewp-field-wrapper,
+.axiom-affiliate-default-dashboard .slicewp-box,
+.axiom-affiliate-default-dashboard .slicewp-panel,
+.axiom-affiliate-default-dashboard .slicewp-card:not([class*="dashboard"]):not([class*="overview"]):not([class*="chart"]) {
+    background: #ffffff;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    border-radius: 22px;
+    box-shadow: 0 14px 36px rgba(12, 18, 32, 0.06);
+}
+
+.axiom-affiliate-default-dashboard form,
+.axiom-affiliate-default-dashboard .slicewp-form {
+    padding: 22px;
+}
+
+.axiom-affiliate-default-dashboard label {
+    display: block;
+    margin-bottom: 8px;
+    color: #0c1220;
+    font-weight: 800;
+    font-size: 15px;
+}
+
 .axiom-affiliate-default-dashboard input,
 .axiom-affiliate-default-dashboard select,
 .axiom-affiliate-default-dashboard textarea {
+    width: 100%;
     border: 1px solid rgba(12, 18, 32, 0.14) !important;
-    border-radius: 14px !important;
-    padding: 12px 14px !important;
+    border-radius: 15px !important;
+    padding: 13px 15px !important;
     font-size: 15px;
     background: #ffffff;
+    color: #0c1220;
 }
 
 .axiom-affiliate-default-dashboard input:focus,
@@ -223,6 +310,35 @@
     outline: none;
     border-color: #3B6FE0 !important;
     box-shadow: 0 0 0 4px rgba(59, 111, 224, 0.12);
+}
+
+.axiom-affiliate-default-dashboard .slicewp-button,
+.axiom-affiliate-default-dashboard .slicewp-submit,
+.axiom-affiliate-default-dashboard button,
+.axiom-affiliate-default-dashboard input[type="submit"] {
+    width: auto;
+    min-height: 46px;
+    background: linear-gradient(135deg, #3B6FE0, #5A8CFF) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 12px 22px !important;
+    font-weight: 900 !important;
+    box-shadow: 0 12px 24px rgba(59, 111, 224, 0.22);
+    cursor: pointer;
+}
+
+/* Referral link boxes */
+.axiom-affiliate-default-dashboard .slicewp-affiliate-link,
+.axiom-affiliate-default-dashboard .slicewp-referral-url,
+.axiom-affiliate-default-dashboard .slicewp-referral-link,
+.axiom-affiliate-default-dashboard [class*="affiliate-link"],
+.axiom-affiliate-default-dashboard [class*="referral-url"],
+.axiom-affiliate-default-dashboard [class*="referral-link"] {
+    background: #f7f9fd;
+    border: 1px dashed rgba(59, 111, 224, 0.35);
+    border-radius: 20px;
+    padding: 16px;
 }
 
 /* Tables */
@@ -254,36 +370,24 @@
     color: #253047;
 }
 
+/* Notices */
+.axiom-affiliate-default-dashboard .slicewp-notice,
+.axiom-affiliate-default-dashboard .slicewp-alert,
+.axiom-affiliate-default-dashboard .slicewp-message,
+.axiom-affiliate-default-dashboard [class*="notice"],
+.axiom-affiliate-default-dashboard [class*="alert"],
+.axiom-affiliate-default-dashboard [class*="message"] {
+    border-radius: 16px;
+    padding: 14px 16px;
+    border: 1px solid rgba(59, 111, 224, 0.18);
+    background: #f6f8ff;
+    color: #0c1220;
+}
+
 /* Keep all SliceWP links/buttons clickable */
 .axiom-affiliate-default-dashboard a,
 .axiom-affiliate-default-dashboard button {
     pointer-events: auto !important;
-}
-
-/* =========================================================
-   Hide Duplicate SliceWP Dashboard Overview Only
-   Keeps tabs/nav working
-========================================================= */
-
-/*
-   The custom cards replace SliceWP's duplicate dashboard overview cards/chart.
-   These rules avoid hiding the nav icons.
-*/
-
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-grid,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-card,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-chart,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-date-range-picker,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-overview,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-stats,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-chart {
-    display: none !important;
-}
-
-/* Try to hide dashboard tab duplicate content but keep nav */
-.axiom-affiliate-default-dashboard .slicewp-tab-dashboard > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav) {
-    display: none !important;
 }
 
 /* =========================================================
@@ -298,11 +402,15 @@
 
 @media (max-width: 640px) {
     .axiom-affiliate-dashboard-modern {
-        padding: 14px 12px 30px;
+        padding: 16px 14px 34px;
+    }
+
+    .axiom-affiliate-dashboard-header {
+        margin-bottom: 22px;
     }
 
     .axiom-affiliate-dashboard-header h2 {
-        font-size: 28px;
+        font-size: 31px;
     }
 
     .axiom-affiliate-dashboard-header p {
@@ -312,12 +420,13 @@
     .axiom-affiliate-stats-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 14px;
+        margin-bottom: 28px;
     }
 
     .axiom-affiliate-stat-card {
         border-radius: 20px;
         padding: 18px;
-        min-height: 150px;
+        min-height: 152px;
     }
 
     .axiom-affiliate-stat-icon {
@@ -332,7 +441,7 @@
     }
 
     .axiom-affiliate-stat-value {
-        font-size: 24px;
+        font-size: 25px;
     }
 
     .axiom-affiliate-stat-label {
@@ -341,18 +450,21 @@
 
     .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper,
     .axiom-affiliate-default-dashboard .slicewp-tabs-nav,
-    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav {
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav,
+    .axiom-affiliate-default-dashboard ul.slicewp-tabs-nav {
         gap: 8px;
-        padding: 10px;
-        border-radius: 18px;
+        padding: 10px !important;
+        border-radius: 22px;
     }
 
     .axiom-affiliate-default-dashboard .slicewp-nav-tab,
     .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
-    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
-        min-width: 48px;
-        min-height: 48px;
-        padding: 9px 12px;
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a,
+    .axiom-affiliate-default-dashboard ul.slicewp-tabs-nav li a {
+        min-width: 52px;
+        width: 52px;
+        height: 52px;
+        font-size: 19px;
     }
 
     .axiom-affiliate-default-dashboard table {
