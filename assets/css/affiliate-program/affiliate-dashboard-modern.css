@@ -213,3 +213,41 @@
         font-size: 14px;
     }
 }
+
+/* =========================================================
+   Hide duplicate SliceWP dashboard overview
+   Keep SliceWP navigation buttons working
+========================================================= */
+
+/*
+   This keeps the SliceWP icon navigation visible.
+   It only hides the duplicate dashboard overview content
+   that appears under the nav on the first dashboard tab.
+*/
+
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-grid,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-card,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-chart,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-date-range-picker,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-overview,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-stats,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-dashboard-chart {
+    display: none !important;
+}
+
+/*
+   If SliceWP outputs the duplicate dashboard content inside a dashboard tab,
+   hide only the dashboard tab content, not the navigation.
+*/
+.axiom-affiliate-default-dashboard .slicewp-tab-dashboard > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav) {
+    display: none !important;
+}
+
+/*
+   Keep all buttons clickable.
+*/
+.axiom-affiliate-default-dashboard a,
+.axiom-affiliate-default-dashboard button {
+    pointer-events: auto !important;
+}
