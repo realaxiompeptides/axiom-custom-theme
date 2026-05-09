@@ -188,8 +188,7 @@ function axiom_render_affiliate_dashboard() {
     }
 
     /**
-     * IMPORTANT:
-     * If the visitor is logged out, do NOT show the custom cards.
+     * If the visitor is logged out, do NOT show the custom dashboard.
      * Only show the default SliceWP login/account area.
      */
     if (!is_user_logged_in()) {
@@ -199,7 +198,6 @@ function axiom_render_affiliate_dashboard() {
     /**
      * If logged in but not an active affiliate yet,
      * do NOT show the custom stats cards.
-     * Let SliceWP show its normal pending/account/register message.
      */
     if (!axiom_is_current_user_active_affiliate()) {
         return do_shortcode('[slicewp_affiliate_account]');
@@ -213,7 +211,7 @@ function axiom_render_affiliate_dashboard() {
 
         <div class="axiom-affiliate-dashboard-header">
             <h2>Affiliate Dashboard</h2>
-            <p>Track your performance, referrals, and earnings in one place.</p>
+            <p>Track your performance, referrals, earnings, and program details in one place.</p>
         </div>
 
         <div class="axiom-affiliate-stats-grid">
@@ -266,6 +264,32 @@ function axiom_render_affiliate_dashboard() {
                 <div class="axiom-affiliate-stat-label">Paid Earnings</div>
             </div>
 
+        </div>
+
+        <div class="axiom-affiliate-program-details">
+            <h3>Program Details</h3>
+
+            <div class="axiom-affiliate-program-grid">
+                <div class="axiom-affiliate-program-card">
+                    <div class="axiom-affiliate-program-icon">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <div>
+                        <div class="axiom-affiliate-program-label">Commission Rate</div>
+                        <div class="axiom-affiliate-program-value">10% per sale</div>
+                    </div>
+                </div>
+
+                <div class="axiom-affiliate-program-card">
+                    <div class="axiom-affiliate-program-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <div>
+                        <div class="axiom-affiliate-program-label">Cookie Duration</div>
+                        <div class="axiom-affiliate-program-value">30 days</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="axiom-affiliate-default-dashboard">
