@@ -1,12 +1,13 @@
 <?php
 /**
- * Axiom Restock Alerts
+ * Axiom Restock Alerts — TEST MODE ONLY
  *
- * Detects when stock is increased on normal peptide products only.
- * Sends an internal restock email to the site admin / Zoho Mail SMTP.
+ * This detects when stock is increased on normal peptide products only.
+ * It sends a test restock email only to cheapeptides@gmail.com.
  *
- * This does NOT send mass customer emails yet.
- * Use this first to safely confirm every restock alert works.
+ * It does NOT send to customers.
+ * It does NOT send to your whole email list.
+ * It does NOT send SMS.
  */
 
 if (!defined('ABSPATH')) {
@@ -28,9 +29,8 @@ function axiom_restock_is_allowed_product($product) {
     /**
      * ONLY products in this category can trigger restock alerts.
      *
-     * IMPORTANT:
-     * Your normal peptide products need to be in a WooCommerce category
-     * with the slug: peptides
+     * Your normal peptide products must be in WooCommerce category slug:
+     * peptides
      */
     $allowed_categories = array(
         'peptides',
@@ -137,6 +137,9 @@ function axiom_restock_detect_stock_increase($product) {
         return;
     }
 
+    /**
+     * Only allow normal peptide products.
+     */
     if (!axiom_restock_is_allowed_product($product)) {
         return;
     }
@@ -157,7 +160,7 @@ function axiom_restock_detect_stock_increase($product) {
      * First time this code sees the product:
      * save current stock but do NOT send an alert.
      *
-     * This prevents a bunch of fake alerts when you first install the code.
+     * This prevents fake alerts when you first install the code.
      */
     if ($old_stock_raw === '') {
         update_post_meta($product_id, $last_stock_key, $new_stock);
@@ -177,8 +180,8 @@ function axiom_restock_detect_stock_increase($product) {
      * Examples:
      * 0 -> 20 = sends
      * 5 -> 30 = sends
-     * 30 -> 0 = does not send
-     * 30 -> 20 = does not send
+     * 30 -> 0 = does NOT send
+     * 30 -> 20 = does NOT send
      */
     if ($new_stock <= $old_stock) {
         return;
@@ -203,16 +206,16 @@ function axiom_restock_detect_stock_increase($product) {
 
     update_post_meta($product_id, $cooldown_key, time());
 
-    axiom_restock_send_internal_email($product, $old_stock, $new_stock);
+    axiom_restock_send_test_email($product, $old_stock, $new_stock);
 }
 
 add_action('woocommerce_product_set_stock', 'axiom_restock_detect_stock_increase', 20, 1);
 add_action('woocommerce_variation_set_stock', 'axiom_restock_detect_stock_increase', 20, 1);
 
 /**
- * Send the internal restock email to you.
+ * Send test restock email only to cheapeptides@gmail.com.
  */
-function axiom_restock_send_internal_email($product, $old_stock, $new_stock) {
+function axiom_restock_send_test_email($product, $old_stock, $new_stock) {
     $product_id = $product->get_id();
     $parent_id  = $product->is_type('variation') ? $product->get_parent_id() : 0;
     $main_id    = $parent_id ?: $product_id;
@@ -220,7 +223,13 @@ function axiom_restock_send_internal_email($product, $old_stock, $new_stock) {
     $product_name = axiom_restock_get_product_display_name($product);
     $product_url  = get_permalink($main_id);
 
-    $subject = 'Axiom Restock Detected: ' . $product_name;
+    /**
+     * TEST EMAIL ONLY.
+     * Customers will NOT receive this.
+     */
+    $to = 'cheapeptides@gmail.com';
+
+    $subject = '[TEST] Axiom Restock Detected: ' . $product_name;
 
     $customer_subject = 'Limited Restock: ' . $product_name . ' is back';
 
@@ -236,7 +245,13 @@ function axiom_restock_send_internal_email($product, $old_stock, $new_stock) {
 
     $sms_body = 'Axiom Research: ' . $product_name . ' is back in stock. Limited quantity available: ' . $product_url . ' Reply STOP to opt out.';
 
-    $message = "A valid restock was detected.\n\n";
+    $message = "TEST MODE ONLY\n";
+    $message .= "This was sent only to cheapeptides@gmail.com.\n";
+    $message .= "Customers were NOT emailed.\n";
+    $message .= "SMS was NOT sent.\n\n";
+
+    $message .= "A valid restock was detected.\n\n";
+
     $message .= "PRODUCT DETAILS\n";
     $message .= "-------------------------\n";
     $message .= "Product: " . $product_name . "\n";
@@ -247,29 +262,27 @@ function axiom_restock_send_internal_email($product, $old_stock, $new_stock) {
     $message .= "Product URL: " . $product_url . "\n";
     $message .= "Time: " . current_time('mysql') . "\n\n";
 
-    $message .= "CUSTOMER EMAIL SUBJECT\n";
+    $message .= "CUSTOMER EMAIL SUBJECT PREVIEW\n";
     $message .= "-------------------------\n";
     $message .= $customer_subject . "\n\n";
 
-    $message .= "CUSTOMER EMAIL BODY\n";
+    $message .= "CUSTOMER EMAIL BODY PREVIEW\n";
     $message .= "-------------------------\n";
     $message .= $customer_body . "\n\n";
 
-    $message .= "SMS COPY\n";
+    $message .= "SMS COPY PREVIEW\n";
     $message .= "-------------------------\n";
     $message .= $sms_body . "\n\n";
 
     $message .= "IMPORTANT\n";
     $message .= "-------------------------\n";
-    $message .= "This email was sent to you only. It did not blast customers.\n";
-    $message .= "Use Zoho Campaigns later for mass customer emails/SMS.\n";
+    $message .= "This is only the test trigger.\n";
+    $message .= "After testing, connect this to Zoho Campaigns for real customer email sends.\n";
 
-    /**
-     * Sends to WordPress admin email.
-     *
-     * If your SMTP plugin uses Zoho Mail, this will send through Zoho.
-     */
-    $to = get_option('admin_email');
+    $headers = array(
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: Axiom Research <support@axiomresearch.shop>',
+    );
 
-    wp_mail($to, $subject, $message);
+    wp_mail($to, $subject, $message, $headers);
 }
