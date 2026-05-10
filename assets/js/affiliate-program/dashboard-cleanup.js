@@ -26,7 +26,7 @@
         );
     }
 
-    function axiomHideElement(el) {
+    function axiomHide(el) {
         if (!el) {
             return;
         }
@@ -42,127 +42,98 @@
         el.classList.add('axiom-slicewp-duplicate-home-block');
     }
 
-    function axiomHideBottomDuplicateSections(sliceArea) {
-        if (!sliceArea) {
+    function axiomUnhideCleanup(sliceArea) {
+        sliceArea.querySelectorAll('.axiom-slicewp-duplicate-home-block').forEach(function (el) {
+            el.classList.remove('axiom-slicewp-duplicate-home-block');
+        });
+    }
+
+    function axiomFindChartBlock(sliceArea) {
+        var canvas = sliceArea.querySelector('canvas');
+
+        if (!canvas) {
+            return null;
+        }
+
+        /**
+         * Try to grab the full chart card/wrapper instead of just the canvas.
+         */
+        return (
+            canvas.closest('.slicewp-card') ||
+            canvas.closest('.slicewp-box') ||
+            canvas.closest('.slicewp-panel') ||
+            canvas.closest('[class*="chart"]') ||
+            canvas.closest('section') ||
+            canvas.closest('div')
+        );
+    }
+
+    function axiomHideDuplicateBottomAfterChart(sliceArea) {
+        var chartBlock = axiomFindChartBlock(sliceArea);
+
+        if (!chartBlock) {
             return;
         }
 
         /**
-         * Reset previous cleanup.
+         * Hide everything AFTER the chart block inside the SliceWP dashboard.
+         * This is the cleanest way to remove the duplicated All Time / Program Details section.
          */
-        sliceArea.querySelectorAll('.axiom-slicewp-duplicate-home-block').forEach(function (el) {
-            el.classList.remove('axiom-slicewp-duplicate-home-block');
-        });
+        var allElements = Array.prototype.slice.call(sliceArea.querySelectorAll('*'));
 
-        /**
-         * IMPORTANT:
-         * Do NOT hide:
-         * - Visits cards
-         * - Commissions cards
-         * - Earnings cards
-         * - Chart
-         * - Date range
-         *
-         * Only hide the bottom duplicate:
-         * - All time
-         * - Program details
-         * - Their cards below those headings
-         */
-
-        var headings = Array.prototype.slice.call(
-            sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6')
-        );
-
-        headings.forEach(function (heading) {
-            if (axiomIsInsideNav(heading) || axiomIsProtectedAxiomSection(heading)) {
+        allElements.forEach(function (el) {
+            if (el === chartBlock || chartBlock.contains(el)) {
                 return;
             }
 
-            var text = axiomText(heading);
-
-            if (text !== 'all time' && text !== 'program details') {
+            if (axiomIsInsideNav(el) || axiomIsProtectedAxiomSection(el)) {
                 return;
             }
 
-            axiomHideElement(heading);
+            var position = chartBlock.compareDocumentPosition(el);
+            var isAfterChart = !!(position & Node.DOCUMENT_POSITION_FOLLOWING);
+
+            if (!isAfterChart) {
+                return;
+            }
+
+            var text = axiomText(el);
 
             /**
-             * Hide only the section after "All time" / "Program details".
-             * Stop once we reach nav, chart, or unrelated content.
+             * Only hide duplicate dashboard pieces after the chart.
+             * This avoids breaking other SliceWP tabs.
              */
-            var sibling = heading.nextElementSibling;
-            var count = 0;
+            var isDuplicateAfterChart =
+                text === 'all time' ||
+                text === 'program details' ||
+                text.indexOf('visits') !== -1 ||
+                text.indexOf('commissions') !== -1 ||
+                text.indexOf('paid earnings') !== -1 ||
+                text.indexOf('unpaid earnings') !== -1 ||
+                text.indexOf('commission rate') !== -1 ||
+                text.indexOf('sale rate') !== -1 ||
+                text.indexOf('cookie duration') !== -1 ||
+                text.indexOf('30 days') !== -1;
 
-            while (sibling && count < 10) {
-                if (axiomIsInsideNav(sibling) || axiomIsProtectedAxiomSection(sibling)) {
-                    break;
-                }
-
-                var siblingText = axiomText(sibling);
-
-                var shouldHide =
-                    siblingText.indexOf('visits') !== -1 ||
-                    siblingText.indexOf('commissions') !== -1 ||
-                    siblingText.indexOf('paid earnings') !== -1 ||
-                    siblingText.indexOf('unpaid earnings') !== -1 ||
-                    siblingText.indexOf('commission rate') !== -1 ||
-                    siblingText.indexOf('sale rate') !== -1 ||
-                    siblingText.indexOf('cookie duration') !== -1 ||
-                    siblingText.indexOf('30 days') !== -1;
-
-                if (shouldHide) {
-                    axiomHideElement(sibling);
-                }
-
-                sibling = sibling.nextElementSibling;
-                count++;
+            if (isDuplicateAfterChart) {
+                axiomHide(el);
             }
         });
+    }
 
+    function axiomHideLooseDuplicateHeadings(sliceArea) {
         /**
-         * Fallback: hide loose text nodes that only say All time / Program details.
-         * This does NOT touch the metric cards/chart.
+         * Extra cleanup for the words themselves if they are loose text/headings.
          */
-        var walker = document.createTreeWalker(
-            sliceArea,
-            NodeFilter.SHOW_TEXT,
-            null,
-            false
-        );
-
-        var textNodes = [];
-
-        while (walker.nextNode()) {
-            textNodes.push(walker.currentNode);
-        }
-
-        textNodes.forEach(function (node) {
-            var text = (node.nodeValue || '')
-                .replace(/\s+/g, ' ')
-                .trim()
-                .toLowerCase();
-
-            if (text !== 'all time' && text !== 'program details') {
+        sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, strong, div').forEach(function (el) {
+            if (axiomIsInsideNav(el) || axiomIsProtectedAxiomSection(el)) {
                 return;
             }
 
-            var parent = node.parentElement;
+            var text = axiomText(el);
 
-            if (!parent) {
-                node.nodeValue = '';
-                return;
-            }
-
-            if (axiomIsInsideNav(parent) || axiomIsProtectedAxiomSection(parent)) {
-                return;
-            }
-
-            var parentText = axiomText(parent);
-
-            if (parentText === text) {
-                axiomHideElement(parent);
-            } else {
-                node.nodeValue = '';
+            if (text === 'all time' || text === 'program details') {
+                axiomHide(el);
             }
         });
     }
@@ -181,12 +152,14 @@
         }
 
         /**
-         * Keep custom Axiom dashboard visible.
+         * Keep custom Axiom top dashboard visible.
          */
         dashboard.classList.remove('axiom-affiliate-not-home');
         dashboard.classList.add('axiom-affiliate-home-active');
 
-        axiomHideBottomDuplicateSections(sliceArea);
+        axiomUnhideCleanup(sliceArea);
+        axiomHideDuplicateBottomAfterChart(sliceArea);
+        axiomHideLooseDuplicateHeadings(sliceArea);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -204,5 +177,6 @@
         setTimeout(axiomDashboardCleanup, 500);
         setTimeout(axiomDashboardCleanup, 1200);
         setTimeout(axiomDashboardCleanup, 2500);
+        setTimeout(axiomDashboardCleanup, 4000);
     });
 })();
