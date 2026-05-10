@@ -1031,3 +1031,139 @@ function axiom_affiliate_partner_card_copy_script() {
     <?php
 }
 add_action('wp_footer', 'axiom_affiliate_partner_card_copy_script', 50);
+
+/**
+ * =========================================================
+ * Axiom Force Sync Affiliate Payout Method
+ *
+ * Fixes:
+ * - Custom Payment Preference shows Store Credit
+ * - But SliceWP real Payout Method still shows Manual
+ *
+ * This syncs:
+ * axiom_affiliate_payment_preference = store_credit
+ * into SliceWP affiliate payout_method = store_credit
+ * =========================================================
+ */
+
+add_action('init', 'axiom_force_sync_current_affiliate_payout_method', 50);
+add_action('wp', 'axiom_force_sync_current_affiliate_payout_method', 50);
+add_action('admin_init', 'axiom_force_sync_current_affiliate_payout_method', 50);
+
+function axiom_force_sync_current_affiliate_payout_method() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    $user_id = get_current_user_id();
+
+    axiom_force_sync_affiliate_payout_method_for_user($user_id);
+}
+
+function axiom_force_sync_affiliate_payout_method_for_user($user_id) {
+    global $wpdb;
+
+    $user_id = absint($user_id);
+
+    if (!$user_id) {
+        return false;
+    }
+
+    if (!function_exists('slicewp_get_affiliate_by_user_id')) {
+        return false;
+    }
+
+    $affiliate = slicewp_get_affiliate_by_user_id($user_id);
+
+    if (!$affiliate) {
+        return false;
+    }
+
+    $affiliate_id = 0;
+
+    if (is_object($affiliate) && method_exists($affiliate, 'get')) {
+        $affiliate_id = absint($affiliate->get('id'));
+    } elseif (is_object($affiliate) && isset($affiliate->id)) {
+        $affiliate_id = absint($affiliate->id);
+    } elseif (is_array($affiliate) && isset($affiliate['id'])) {
+        $affiliate_id = absint($affiliate['id']);
+    }
+
+    if (!$affiliate_id) {
+        return false;
+    }
+
+    $payment_preference = get_user_meta($user_id, 'axiom_affiliate_payment_preference', true);
+    $payment_preference = sanitize_key($payment_preference);
+
+    if (!$payment_preference) {
+        return false;
+    }
+
+    /**
+     * Map your custom setting to SliceWP payout method slug.
+     */
+    if ($payment_preference === 'store_credit') {
+        $payout_method = 'store_credit';
+    } else {
+        $payout_method = 'manual';
+    }
+
+    /**
+     * 1. Try SliceWP official update function.
+     */
+    if (function_exists('slicewp_update_affiliate')) {
+        slicewp_update_affiliate($affiliate_id, array(
+            'payout_method' => $payout_method,
+        ));
+    }
+
+    /**
+     * 2. Force update SliceWP affiliates database table.
+     */
+    $table = $wpdb->prefix . 'slicewp_affiliates';
+
+    $table_exists = $wpdb->get_var(
+        $wpdb->prepare('SHOW TABLES LIKE %s', $table)
+    );
+
+    if ($table_exists === $table) {
+        $columns = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
+
+        if (in_array('payout_method', $columns, true)) {
+            $wpdb->update(
+                $table,
+                array('payout_method' => $payout_method),
+                array('id' => $affiliate_id),
+                array('%s'),
+                array('%d')
+            );
+        }
+
+        if (in_array('payment_method', $columns, true)) {
+            $wpdb->update(
+                $table,
+                array('payment_method' => $payout_method),
+                array('id' => $affiliate_id),
+                array('%s'),
+                array('%d')
+            );
+        }
+    }
+
+    /**
+     * 3. Save affiliate meta fallback.
+     */
+    if (function_exists('slicewp_update_affiliate_meta')) {
+        slicewp_update_affiliate_meta($affiliate_id, 'payout_method', $payout_method);
+        slicewp_update_affiliate_meta($affiliate_id, 'payment_method', $payout_method);
+        slicewp_update_affiliate_meta($affiliate_id, 'axiom_payment_preference', $payment_preference);
+    }
+
+    /**
+     * 4. Save user meta mirror.
+     */
+    update_user_meta($user_id, 'axiom_affiliate_synced_payout_method', $payout_method);
+
+    return true;
+}
