@@ -1,72 +1,119 @@
 (function () {
-    function axiomAffiliateGetActiveTabIndex(sliceArea) {
-        var navLinks = Array.prototype.slice.call(sliceArea.querySelectorAll(
-            '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a, .slicewp-nav-tab'
-        ));
+    'use strict';
 
-        if (!navLinks.length) {
-            return 0;
-        }
-
-        var activeLink = sliceArea.querySelector(
-            '.slicewp-nav-tab-active, .slicewp-tabs-nav .active a, .slicewp-tabs-nav li.active a, .slicewp-user-dashboard-nav .active a, .slicewp-active a'
-        );
-
-        if (!activeLink) {
-            return 0;
-        }
-
-        var activeIndex = navLinks.indexOf(activeLink);
-
-        if (activeIndex < 0 && activeLink.tagName !== 'A') {
-            var activeAnchor = activeLink.querySelector('a');
-
-            if (activeAnchor) {
-                activeIndex = navLinks.indexOf(activeAnchor);
-            }
-        }
-
-        return activeIndex >= 0 ? activeIndex : 0;
+    function axiomText(el) {
+        return (el && el.textContent ? el.textContent : '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
     }
 
-    function axiomAffiliateCleanupHomeDuplicates(sliceArea) {
-        var blocks = Array.prototype.slice.call(sliceArea.querySelectorAll(
+    function axiomIsInsideNav(el) {
+        return !!(
+            el &&
+            el.closest(
+                '.slicewp-tabs-nav, .slicewp-user-dashboard-nav, .slicewp-nav-tab-wrapper'
+            )
+        );
+    }
+
+    function axiomHideDuplicateHomeBlocks(sliceArea) {
+        if (!sliceArea) {
+            return;
+        }
+
+        /**
+         * Reset previous cleanup.
+         */
+        sliceArea.querySelectorAll('.axiom-slicewp-duplicate-home-block').forEach(function (el) {
+            el.classList.remove('axiom-slicewp-duplicate-home-block');
+        });
+
+        /**
+         * Hide duplicate headings left behind by SliceWP.
+         */
+        sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function (heading) {
+            if (axiomIsInsideNav(heading)) {
+                return;
+            }
+
+            var text = axiomText(heading);
+
+            if (
+                text === 'all time' ||
+                text === 'program details' ||
+                text === 'dashboard'
+            ) {
+                heading.classList.add('axiom-slicewp-duplicate-home-block');
+            }
+        });
+
+        /**
+         * Hide duplicate SliceWP dashboard metric blocks.
+         * This targets only the default home dashboard content, not the nav buttons.
+         */
+        var blocks = sliceArea.querySelectorAll(
             '.slicewp-card, .slicewp-box, .slicewp-panel, .slicewp-chart, .slicewp-section, .slicewp-grid, .slicewp-row, section'
-        ));
+        );
 
         blocks.forEach(function (block) {
-            var text = (block.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+            if (axiomIsInsideNav(block)) {
+                return;
+            }
+
+            var text = axiomText(block);
 
             if (!text) {
                 return;
             }
 
-            var isDuplicate =
+            var isDefaultMetricBlock =
                 text.indexOf('view all visits') !== -1 ||
                 text.indexOf('view all commissions') !== -1 ||
                 text.indexOf('visits commissions earnings') !== -1 ||
-                text.indexOf('all time') !== -1 ||
+                text.indexOf('paid earnings unpaid earnings') !== -1 ||
+                text.indexOf('commission rate sale rate') !== -1 ||
                 text.indexOf('cookie duration') !== -1 ||
-                text.indexOf('sale rate') !== -1 ||
-                text.indexOf('commission rate') !== -1;
+                text.indexOf('sale rate:') !== -1;
 
-            if (isDuplicate) {
+            if (isDefaultMetricBlock) {
                 block.classList.add('axiom-slicewp-duplicate-home-block');
             }
         });
 
-        var headings = Array.prototype.slice.call(sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6'));
+        /**
+         * Extra cleanup:
+         * Sometimes SliceWP wraps all-time/program details in plain divs.
+         * This hides parent blocks only when the text clearly matches duplicate home content.
+         */
+        sliceArea.querySelectorAll('div').forEach(function (div) {
+            if (axiomIsInsideNav(div)) {
+                return;
+            }
 
-        headings.forEach(function (heading) {
-            var text = (heading.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+            if (div.classList.contains('axiom-affiliate-default-dashboard')) {
+                return;
+            }
 
-            if (text === 'all time' || text === 'program details') {
-                heading.classList.add('axiom-slicewp-duplicate-home-block');
+            var text = axiomText(div);
+
+            if (!text) {
+                return;
+            }
+
+            var isLooseDuplicate =
+                text === 'all time' ||
+                text === 'program details' ||
+                text === 'commission rate sale rate: 10%' ||
+                text === 'cookie duration 30 days';
+
+            if (isLooseDuplicate) {
+                div.classList.add('axiom-slicewp-duplicate-home-block');
             }
         });
     }
 
-    function axiomAffiliateDashboardCleanup() {
+    function axiomDashboardCleanup() {
         var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
 
         if (!dashboard) {
@@ -79,44 +126,36 @@
             return;
         }
 
-        var activeTabIndex = axiomAffiliateGetActiveTabIndex(sliceArea);
-
         /**
          * IMPORTANT:
-         * Home tab is tab index 0.
-         * If SliceWP fails to report active tab, we assume Home.
+         * Do NOT add axiom-affiliate-not-home anymore.
+         * That class was hiding your custom Axiom cards.
+         *
+         * We always keep the Axiom cards and Program Details visible.
+         * We only remove duplicate SliceWP home/dashboard blocks.
          */
-        var isHomeTab = activeTabIndex === 0;
+        dashboard.classList.remove('axiom-affiliate-not-home');
+        dashboard.classList.add('axiom-affiliate-home-active');
 
-        dashboard.classList.toggle('axiom-affiliate-home-active', isHomeTab);
-        dashboard.classList.toggle('axiom-affiliate-not-home', !isHomeTab);
-
-        /**
-         * Reset old cleanup classes first.
-         */
-        var previouslyHidden = sliceArea.querySelectorAll('.axiom-slicewp-duplicate-home-block');
-
-        previouslyHidden.forEach(function (el) {
-            el.classList.remove('axiom-slicewp-duplicate-home-block');
-        });
-
-        /**
-         * Only hide duplicate SliceWP dashboard blocks on Home tab.
-         */
-        if (isHomeTab) {
-            axiomAffiliateCleanupHomeDuplicates(sliceArea);
-        }
+        axiomHideDuplicateHomeBlocks(sliceArea);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        axiomAffiliateDashboardCleanup();
+        axiomDashboardCleanup();
 
+        /**
+         * SliceWP changes tab content after clicks, so cleanup runs again.
+         */
         document.addEventListener('click', function () {
-            setTimeout(axiomAffiliateDashboardCleanup, 150);
-            setTimeout(axiomAffiliateDashboardCleanup, 500);
-            setTimeout(axiomAffiliateDashboardCleanup, 1000);
+            setTimeout(axiomDashboardCleanup, 150);
+            setTimeout(axiomDashboardCleanup, 500);
+            setTimeout(axiomDashboardCleanup, 1000);
         });
     });
 
-    window.addEventListener('load', axiomAffiliateDashboardCleanup);
+    window.addEventListener('load', function () {
+        axiomDashboardCleanup();
+        setTimeout(axiomDashboardCleanup, 500);
+        setTimeout(axiomDashboardCleanup, 1200);
+    });
 })();
