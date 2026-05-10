@@ -60,6 +60,9 @@ function axiom_affiliate_reserved_codes() {
         'SALE',
         'PEPTIDE',
         'PEPTIDES',
+        'PAST30DAYS',
+        'PAST7DAYS',
+        'PAST90DAYS',
     );
 }
 
@@ -85,6 +88,11 @@ function axiom_affiliate_obj_get($object, $key, $default = '') {
 
 /**
  * Get a submitted POST value by exact key first, then fuzzy key search.
+ *
+ * IMPORTANT:
+ * This is okay for payment/zelle fields.
+ * Do NOT use this for partner code because it can accidentally pick up
+ * SliceWP dashboard filter text like "Past 30 days".
  */
 function axiom_affiliate_get_post_value_by_key($preferred_keys = array()) {
     foreach ($preferred_keys as $key) {
@@ -183,20 +191,36 @@ function axiom_affiliate_get_submitted_zelle_contact() {
 
 /**
  * Detect requested partner code from POST.
+ *
+ * IMPORTANT:
+ * This is intentionally strict. It ONLY accepts the hidden field
+ * named axiom_partner_code.
+ *
+ * This prevents the bug where SliceWP dashboard text like "Past 30 days"
+ * gets detected as a partner code.
  */
 function axiom_affiliate_get_submitted_partner_code() {
-    $value = axiom_affiliate_get_post_value_by_key(array(
-        'axiom_partner_code',
-        'partner_code',
-        'your_partner_code',
-        'coupon_code',
-    ));
+    if (!isset($_POST['axiom_partner_code'])) {
+        return '';
+    }
+
+    $value = $_POST['axiom_partner_code'];
 
     if (is_array($value)) {
         $value = implode(' ', array_map('sanitize_text_field', wp_unslash($value)));
     }
 
-    return axiom_affiliate_clean_partner_code($value);
+    $code = axiom_affiliate_clean_partner_code($value);
+
+    if (strlen($code) < 3) {
+        return '';
+    }
+
+    if (in_array($code, axiom_affiliate_reserved_codes(), true)) {
+        return '';
+    }
+
+    return $code;
 }
 
 /**
@@ -331,17 +355,13 @@ function axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payout_method
 function axiom_affiliate_get_unique_coupon_code($requested_code, $user_id) {
     $requested_code = axiom_affiliate_clean_partner_code($requested_code);
 
-    if (!$requested_code) {
+    if (!$requested_code || in_array($requested_code, axiom_affiliate_reserved_codes(), true)) {
         $user = get_userdata($user_id);
         $requested_code = $user ? axiom_affiliate_clean_partner_code($user->user_login . '10') : '';
     }
 
-    if (!$requested_code) {
+    if (!$requested_code || in_array($requested_code, axiom_affiliate_reserved_codes(), true)) {
         $requested_code = 'AXIOM' . absint($user_id);
-    }
-
-    if (in_array($requested_code, axiom_affiliate_reserved_codes(), true)) {
-        $requested_code = $requested_code . absint($user_id);
     }
 
     $base_code = $requested_code;
@@ -604,6 +624,14 @@ function axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_i
 function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id, $new_code) {
     global $wpdb;
 
+    $affiliate_id = absint($affiliate_id);
+    $coupon_id    = absint($coupon_id);
+    $new_code     = axiom_affiliate_clean_partner_code($new_code);
+
+    if (!$affiliate_id || !$coupon_id || !$new_code) {
+        return;
+    }
+
     $tables = $wpdb->get_col("SHOW TABLES LIKE '{$wpdb->prefix}slicewp%coupon%'");
 
     if (empty($tables)) {
@@ -620,7 +648,7 @@ function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id,
         $data = array();
 
         if (in_array('coupon_id', $columns, true)) {
-            $data['coupon_id'] = absint($coupon_id);
+            $data['coupon_id'] = $coupon_id;
         }
 
         if (in_array('code', $columns, true)) {
@@ -642,7 +670,7 @@ function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id,
         $existing_id = $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT affiliate_id FROM {$table} WHERE affiliate_id = %d LIMIT 1",
-                absint($affiliate_id)
+                $affiliate_id
             )
         );
 
@@ -650,7 +678,7 @@ function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id,
             $wpdb->update(
                 $table,
                 $data,
-                array('affiliate_id' => absint($affiliate_id))
+                array('affiliate_id' => $affiliate_id)
             );
         }
     }
@@ -896,7 +924,7 @@ function axiom_render_affiliate_partner_card_shortcode() {
     $coupon_id   = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
     $coupon_code = $coupon_id ? get_the_title($coupon_id) : get_user_meta($user_id, 'axiom_affiliate_coupon_code', true);
 
-    if (!$coupon_code) {
+    if (!$coupon_code || in_array(axiom_affiliate_clean_partner_code($coupon_code), axiom_affiliate_reserved_codes(), true)) {
         $requested = get_user_meta($user_id, 'axiom_affiliate_requested_partner_code', true);
         $coupon_code = $requested ? $requested : 'PENDING';
     }
