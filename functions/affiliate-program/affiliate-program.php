@@ -23,8 +23,28 @@ function axiom_affiliate_program_assets() {
     wp_enqueue_style(
         'axiom-affiliate-program',
         get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-program.css',
-        array('axiom-base'),
+        array(),
         file_exists($css_path) ? filemtime($css_path) : '1.0.0'
     );
+
+    if ($is_affiliate_registration_page) {
+        $registration_css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-registration-fields.css';
+        $registration_js_path  = get_template_directory() . '/assets/js/affiliate-program/affiliate-registration-fields.js';
+
+        wp_enqueue_style(
+            'axiom-affiliate-registration-fields',
+            get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-registration-fields.css',
+            array('axiom-affiliate-program'),
+            file_exists($registration_css_path) ? filemtime($registration_css_path) : '1.0.0'
+        );
+
+        wp_enqueue_script(
+            'axiom-affiliate-registration-fields',
+            get_template_directory_uri() . '/assets/js/affiliate-program/affiliate-registration-fields.js',
+            array(),
+            file_exists($registration_js_path) ? filemtime($registration_js_path) : '1.0.0',
+            true
+        );
+    }
 }
 add_action('wp_enqueue_scripts', 'axiom_affiliate_program_assets', 20);
