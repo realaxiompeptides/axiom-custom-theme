@@ -53,3 +53,130 @@
         font-size: 15px;
     }
 }
+
+/* =========================================================
+   Axiom Affiliate Partner Code Card
+========================================================= */
+
+.axiom-partner-card {
+    width: 100%;
+    margin: 22px 0 26px;
+    padding: 28px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #3B6FE0 0%, #5A8CFF 100%);
+    color: #ffffff;
+    box-shadow: 0 18px 45px rgba(59, 111, 224, 0.24);
+    overflow: hidden;
+}
+
+.axiom-partner-card-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.axiom-partner-card-label {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+.axiom-partner-card-code {
+    color: #ffffff;
+    font-size: 42px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+}
+
+.axiom-copy-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 48px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    background: rgba(255, 255, 255, 0.10);
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+.axiom-partner-card-link-wrap {
+    margin-top: 26px;
+}
+
+.axiom-partner-link-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    width: 100%;
+    min-height: 58px;
+    padding: 8px 8px 8px 16px;
+    border-radius: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.10);
+}
+
+.axiom-partner-link-box span {
+    min-width: 0;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.axiom-copy-btn--small {
+    min-height: 42px;
+    flex: 0 0 auto;
+}
+
+.axiom-partner-card-note {
+    margin: 18px 0 0;
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 15px;
+    line-height: 1.55;
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .axiom-partner-card {
+        padding: 22px;
+        border-radius: 24px;
+    }
+
+    .axiom-partner-card-row {
+        display: block;
+    }
+
+    .axiom-copy-btn {
+        margin-top: 16px;
+        width: 100%;
+    }
+
+    .axiom-partner-card-code {
+        font-size: 34px;
+    }
+
+    .axiom-partner-link-box {
+        display: block;
+        padding: 14px;
+    }
+
+    .axiom-partner-link-box span {
+        display: block;
+        margin-bottom: 12px;
+    }
+
+    .axiom-copy-btn--small {
+        margin-top: 0;
+    }
+}
