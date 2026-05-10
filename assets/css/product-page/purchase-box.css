@@ -981,3 +981,24 @@ img {
     font-size: 16px !important;
   }
 }
+
+/* =========================================================
+   Hide WPLoyalty Earn Points Inside Sticky Add To Cart Only
+   Keeps normal product page earn-points message visible
+========================================================= */
+
+.single-product .axiom-sticky-add-to-cart [class*="wlr"],
+.single-product .axiom-sticky-add-to-cart [class*="loyalty"],
+.single-product .sticky-add-to-cart [class*="wlr"],
+.single-product .sticky-add-to-cart [class*="loyalty"],
+.single-product .product-sticky-bar [class*="wlr"],
+.single-product .product-sticky-bar [class*="loyalty"],
+.single-product .sticky-cart [class*="wlr"],
+.single-product .sticky-cart [class*="loyalty"],
+.single-product .sticky-atc [class*="wlr"],
+.single-product .sticky-atc [class*="loyalty"],
+.single-product [class*="sticky"] [class*="wlr"],
+.single-product [class*="sticky"] [class*="loyalty"],
+.single-product [class*="sticky"] [class*="points"] {
+  display: none !important;
+}
