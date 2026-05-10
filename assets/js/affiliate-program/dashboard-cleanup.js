@@ -56,38 +56,28 @@
     }
 
     /**
-     * Hide bad/unused SliceWP tabs.
+     * Hide ONLY the Creatives tab.
      *
      * KEEP:
      * - Dashboard
      * - Affiliate Links
-     * - Visits
      * - Commissions
+     * - Visits
+     * - Coupons
+     * - Payouts
      * - Settings
      * - Logout
-     *
-     * HIDE:
-     * - Coupons
-     * - Creatives
-     * - Payouts
      */
     function axiomShouldHideNavButton(link) {
         var text = axiomText(link);
         var href = axiomHref(link);
 
-        var badTabs = [
-            'coupon',
-            'coupons',
-            'creative',
-            'creatives',
-            'payout',
-            'payouts'
-        ];
+        if (text.indexOf('creative') !== -1 || href.indexOf('creative') !== -1) {
+            return true;
+        }
 
-        for (var i = 0; i < badTabs.length; i++) {
-            if (text.indexOf(badTabs[i]) !== -1 || href.indexOf(badTabs[i]) !== -1) {
-                return true;
-            }
+        if (text.indexOf('creatives') !== -1 || href.indexOf('creatives') !== -1) {
+            return true;
         }
 
         return false;
@@ -105,37 +95,63 @@
             if (shouldHide) {
                 wrapper.style.display = 'none';
                 wrapper.setAttribute('data-axiom-hidden-tab', 'true');
-            } else {
-                if (wrapper.getAttribute('data-axiom-hidden-tab') !== 'true') {
-                    wrapper.style.display = '';
-                }
             }
         });
     }
 
+    function axiomIsSettingsTab() {
+        var url = window.location.href.toLowerCase();
+
+        return (
+            url.indexOf('affiliate-account-tab=settings') !== -1 ||
+            url.indexOf('tab=settings') !== -1 ||
+            url.indexOf('settings') !== -1
+        );
+    }
+
+    function axiomIsPayoutTab() {
+        var url = window.location.href.toLowerCase();
+
+        return (
+            url.indexOf('affiliate-account-tab=payouts') !== -1 ||
+            url.indexOf('tab=payouts') !== -1 ||
+            url.indexOf('payout') !== -1
+        );
+    }
+
     /**
-     * Hide the custom payout schedule from the main dashboard home.
-     * It should not show under the normal home dashboard.
+     * Payout Schedule:
+     * - Hide it on the main dashboard.
+     * - Show it on Settings/Payouts.
+     * - Move it below the button navigation, above the settings form/content.
      */
-    function axiomHandlePayoutScheduleVisibility(dashboard) {
+    function axiomHandlePayoutScheduleVisibility(dashboard, sliceArea) {
         var payoutSchedule = dashboard.querySelector('.axiom-affiliate-payout-schedule');
 
         if (!payoutSchedule) {
             return;
         }
 
-        var url = window.location.href.toLowerCase();
+        var shouldShow = axiomIsSettingsTab() || axiomIsPayoutTab();
 
-        var isPayoutOrSettingsArea =
-            url.indexOf('payout') !== -1 ||
-            url.indexOf('settings') !== -1 ||
-            url.indexOf('affiliate-account-tab=settings') !== -1 ||
-            url.indexOf('affiliate-account-tab=payouts') !== -1;
-
-        if (isPayoutOrSettingsArea) {
-            payoutSchedule.style.display = '';
-        } else {
+        if (!shouldShow) {
             payoutSchedule.style.display = 'none';
+            return;
+        }
+
+        payoutSchedule.style.display = '';
+
+        var nav =
+            sliceArea.querySelector('.slicewp-tabs-nav') ||
+            sliceArea.querySelector('.slicewp-user-dashboard-nav') ||
+            sliceArea.querySelector('.slicewp-nav-tab-wrapper');
+
+        if (nav && nav.parentNode) {
+            var navParent = nav.parentNode;
+
+            if (payoutSchedule.parentNode !== navParent || payoutSchedule.previousElementSibling !== nav) {
+                navParent.insertBefore(payoutSchedule, nav.nextSibling);
+            }
         }
     }
 
@@ -146,9 +162,6 @@
             return null;
         }
 
-        /**
-         * Try to grab the full chart card/wrapper instead of just the canvas.
-         */
         return (
             canvas.closest('.slicewp-card') ||
             canvas.closest('.slicewp-box') ||
@@ -166,9 +179,6 @@
             return;
         }
 
-        /**
-         * Hide duplicated bottom blocks AFTER the chart only.
-         */
         var allElements = Array.prototype.slice.call(sliceArea.querySelectorAll('*'));
 
         allElements.forEach(function (el) {
@@ -206,9 +216,6 @@
     }
 
     function axiomHideLooseDuplicateHeadings(sliceArea) {
-        /**
-         * Extra cleanup for loose duplicate headings.
-         */
         sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, strong, div').forEach(function (el) {
             if (axiomIsInsideNav(el) || axiomIsProtectedAxiomSection(el)) {
                 return;
@@ -235,24 +242,15 @@
             return;
         }
 
-        /**
-         * Keep custom Axiom top dashboard visible.
-         */
         dashboard.classList.remove('axiom-affiliate-not-home');
         dashboard.classList.add('axiom-affiliate-home-active');
 
-        axiomHandlePayoutScheduleVisibility(dashboard);
-
         axiomUnhideCleanup(sliceArea);
 
-        /**
-         * Hide bad SliceWP nav buttons only.
-         */
         axiomHideBadNavButtons(sliceArea);
 
-        /**
-         * Keep analytics/chart, but hide duplicate bottom SliceWP sections.
-         */
+        axiomHandlePayoutScheduleVisibility(dashboard, sliceArea);
+
         axiomHideDuplicateBottomAfterChart(sliceArea);
         axiomHideLooseDuplicateHeadings(sliceArea);
     }
