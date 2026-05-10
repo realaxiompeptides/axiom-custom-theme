@@ -17,10 +17,82 @@
         );
     }
 
+    function axiomIsProtectedAxiomSection(el) {
+        return !!(
+            el &&
+            el.closest(
+                '.axiom-affiliate-dashboard-header, .axiom-affiliate-stats-grid, .axiom-affiliate-program-details'
+            )
+        );
+    }
+
     function axiomHideElement(el) {
-        if (el && !axiomIsInsideNav(el)) {
-            el.classList.add('axiom-slicewp-duplicate-home-block');
+        if (!el) {
+            return;
         }
+
+        if (axiomIsInsideNav(el)) {
+            return;
+        }
+
+        if (axiomIsProtectedAxiomSection(el)) {
+            return;
+        }
+
+        el.classList.add('axiom-slicewp-duplicate-home-block');
+    }
+
+    function axiomRemoveLooseDuplicateText(scope) {
+        if (!scope) {
+            return;
+        }
+
+        var walker = document.createTreeWalker(
+            scope,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        var nodesToProcess = [];
+
+        while (walker.nextNode()) {
+            nodesToProcess.push(walker.currentNode);
+        }
+
+        nodesToProcess.forEach(function (node) {
+            var text = (node.nodeValue || '')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+
+            if (text !== 'all time' && text !== 'program details') {
+                return;
+            }
+
+            var parent = node.parentElement;
+
+            if (!parent) {
+                node.nodeValue = '';
+                return;
+            }
+
+            if (axiomIsInsideNav(parent) || axiomIsProtectedAxiomSection(parent)) {
+                return;
+            }
+
+            /**
+             * If the parent only contains this text, hide the parent.
+             * If not, remove just the text node.
+             */
+            var parentText = axiomText(parent);
+
+            if (parentText === text) {
+                axiomHideElement(parent);
+            } else {
+                node.nodeValue = '';
+            }
+        });
     }
 
     function axiomHideDuplicateHomeBlocks(sliceArea) {
@@ -36,14 +108,14 @@
         });
 
         /**
-         * Hide duplicate SliceWP metric/dashboard cards.
+         * Hide duplicate metric/dashboard cards.
          */
         var blocks = sliceArea.querySelectorAll(
-            '.slicewp-card, .slicewp-box, .slicewp-panel, .slicewp-chart, .slicewp-section, .slicewp-grid, .slicewp-row, section'
+            '.slicewp-card, .slicewp-box, .slicewp-panel, .slicewp-chart, .slicewp-section, .slicewp-grid, .slicewp-row, section, div'
         );
 
         blocks.forEach(function (block) {
-            if (axiomIsInsideNav(block)) {
+            if (axiomIsInsideNav(block) || axiomIsProtectedAxiomSection(block)) {
                 return;
             }
 
@@ -60,7 +132,9 @@
                 text.indexOf('paid earnings unpaid earnings') !== -1 ||
                 text.indexOf('commission rate sale rate') !== -1 ||
                 text.indexOf('cookie duration') !== -1 ||
-                text.indexOf('sale rate:') !== -1;
+                text.indexOf('sale rate:') !== -1 ||
+                text === 'all time' ||
+                text === 'program details';
 
             if (isDefaultMetricBlock) {
                 axiomHideElement(block);
@@ -68,14 +142,12 @@
         });
 
         /**
-         * Hide leftover duplicate headings:
-         * All time
-         * Program details
+         * Hide headings that contain duplicate text.
          */
-        var headings = sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6');
+        var headings = sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, strong');
 
         headings.forEach(function (heading) {
-            if (axiomIsInsideNav(heading)) {
+            if (axiomIsInsideNav(heading) || axiomIsProtectedAxiomSection(heading)) {
                 return;
             }
 
@@ -83,74 +155,13 @@
 
             if (text === 'all time' || text === 'program details') {
                 axiomHideElement(heading);
-
-                /**
-                 * Also hide the next few sibling blocks because SliceWP puts
-                 * the All Time / Program Details cards right after these headings.
-                 */
-                var sibling = heading.nextElementSibling;
-                var count = 0;
-
-                while (sibling && count < 8) {
-                    if (axiomIsInsideNav(sibling)) {
-                        sibling = sibling.nextElementSibling;
-                        count++;
-                        continue;
-                    }
-
-                    var siblingText = axiomText(sibling);
-
-                    if (
-                        siblingText.indexOf('visits') !== -1 ||
-                        siblingText.indexOf('commissions') !== -1 ||
-                        siblingText.indexOf('paid earnings') !== -1 ||
-                        siblingText.indexOf('unpaid earnings') !== -1 ||
-                        siblingText.indexOf('commission rate') !== -1 ||
-                        siblingText.indexOf('sale rate') !== -1 ||
-                        siblingText.indexOf('cookie duration') !== -1 ||
-                        siblingText.indexOf('30 days') !== -1
-                    ) {
-                        axiomHideElement(sibling);
-                    }
-
-                    sibling = sibling.nextElementSibling;
-                    count++;
-                }
             }
         });
 
         /**
-         * Extra cleanup for loose divs that only contain duplicate text.
+         * Final fallback: remove loose text nodes.
          */
-        sliceArea.querySelectorAll('div').forEach(function (div) {
-            if (axiomIsInsideNav(div)) {
-                return;
-            }
-
-            if (div.classList.contains('axiom-affiliate-default-dashboard')) {
-                return;
-            }
-
-            var text = axiomText(div);
-
-            if (!text) {
-                return;
-            }
-
-            var isLooseDuplicate =
-                text === 'all time' ||
-                text === 'program details' ||
-                text === 'commission rate sale rate: 10%' ||
-                text === 'cookie duration 30 days' ||
-                text === 'visits 0' ||
-                text === 'commissions 0' ||
-                text === 'paid earnings $0.00' ||
-                text === 'unpaid earnings $0.00';
-
-            if (isLooseDuplicate) {
-                axiomHideElement(div);
-            }
-        });
+        axiomRemoveLooseDuplicateText(sliceArea);
     }
 
     function axiomDashboardCleanup() {
@@ -190,5 +201,6 @@
         setTimeout(axiomDashboardCleanup, 500);
         setTimeout(axiomDashboardCleanup, 1200);
         setTimeout(axiomDashboardCleanup, 2000);
+        setTimeout(axiomDashboardCleanup, 3500);
     });
 })();
