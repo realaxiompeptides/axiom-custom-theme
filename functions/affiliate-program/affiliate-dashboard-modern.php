@@ -203,6 +203,17 @@ function axiom_render_affiliate_dashboard() {
             <p>Track your performance, referrals, earnings, and program details in one place.</p>
         </div>
 
+        <?php
+        /**
+         * Partner code/referral card.
+         * This shortcode is created in:
+         * functions/affiliate-program/affiliate-partner-setup.php
+         */
+        if (shortcode_exists('axiom_affiliate_partner_card')) {
+            echo do_shortcode('[axiom_affiliate_partner_card]');
+        }
+        ?>
+
         <div class="axiom-affiliate-stats-grid">
 
             <div class="axiom-affiliate-stat-card">
