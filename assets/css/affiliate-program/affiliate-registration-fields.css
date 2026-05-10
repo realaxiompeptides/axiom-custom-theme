@@ -1,0 +1,273 @@
+/* =========================================================
+   Axiom Affiliate Registration Custom Styling
+   File: assets/css/affiliate-program/affiliate-registration-fields.css
+========================================================= */
+
+.axiom-affiliate-registration-page .axiom-affiliate-form-wrap,
+.axiom-affiliate-registration-card .axiom-affiliate-form-wrap {
+    max-width: 760px;
+    margin: 0 auto;
+}
+
+.axiom-affiliate-registration-page .slicewp-form,
+.axiom-affiliate-registration-page form,
+.axiom-affiliate-form-wrap .slicewp-form,
+.axiom-affiliate-form-wrap form {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.axiom-affiliate-registration-page .slicewp-field-wrapper,
+.axiom-affiliate-registration-page .slicewp-form-field,
+.axiom-affiliate-registration-page .slicewp-field,
+.axiom-affiliate-form-wrap .slicewp-field-wrapper,
+.axiom-affiliate-form-wrap .slicewp-form-field,
+.axiom-affiliate-form-wrap .slicewp-field {
+    margin-bottom: 24px !important;
+    position: relative;
+}
+
+.axiom-affiliate-registration-page label,
+.axiom-affiliate-form-wrap label {
+    display: block !important;
+    margin: 0 0 10px !important;
+    color: #737b86 !important;
+    font-size: 13px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.12em !important;
+    text-transform: uppercase !important;
+}
+
+.axiom-affiliate-registration-page input[type="text"],
+.axiom-affiliate-registration-page input[type="email"],
+.axiom-affiliate-registration-page input[type="password"],
+.axiom-affiliate-registration-page textarea,
+.axiom-affiliate-form-wrap input[type="text"],
+.axiom-affiliate-form-wrap input[type="email"],
+.axiom-affiliate-form-wrap input[type="password"],
+.axiom-affiliate-form-wrap textarea {
+    width: 100% !important;
+    min-height: 62px !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(12, 18, 32, 0.14) !important;
+    background: #ffffff !important;
+    color: #0c1220 !important;
+    padding: 15px 18px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    box-shadow: 0 8px 22px rgba(12, 18, 32, 0.035) !important;
+}
+
+.axiom-affiliate-registration-page textarea,
+.axiom-affiliate-form-wrap textarea {
+    min-height: 145px !important;
+    resize: vertical !important;
+}
+
+.axiom-affiliate-registration-page input::placeholder,
+.axiom-affiliate-registration-page textarea::placeholder,
+.axiom-affiliate-form-wrap input::placeholder,
+.axiom-affiliate-form-wrap textarea::placeholder {
+    color: #c4c8ce !important;
+    font-weight: 500 !important;
+}
+
+.axiom-affiliate-registration-page input:focus,
+.axiom-affiliate-registration-page textarea:focus,
+.axiom-affiliate-form-wrap input:focus,
+.axiom-affiliate-form-wrap textarea:focus {
+    outline: none !important;
+    border-color: #5bc7df !important;
+    box-shadow: 0 0 0 4px rgba(91, 199, 223, 0.15) !important;
+}
+
+/* =========================================================
+   Payment Preference Cards
+========================================================= */
+
+.axiom-payment-preference-cards {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+    margin-top: 10px !important;
+}
+
+.axiom-payment-preference-cards input[type="radio"] {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+.axiom-payment-preference-card {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    min-height: 160px !important;
+    padding: 22px !important;
+    border-radius: 24px !important;
+    border: 2px solid rgba(12, 18, 32, 0.10) !important;
+    background: #ffffff !important;
+    box-shadow: 0 14px 34px rgba(12, 18, 32, 0.05) !important;
+    cursor: pointer !important;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.axiom-payment-preference-card:hover {
+    transform: translateY(-1px) !important;
+    border-color: rgba(91, 199, 223, 0.55) !important;
+}
+
+.axiom-payment-preference-card.is-selected {
+    border-color: #5bc7df !important;
+    box-shadow: 0 16px 36px rgba(91, 199, 223, 0.18) !important;
+}
+
+.axiom-payment-preference-card.is-selected::after {
+    content: "✓";
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 31px;
+    height: 31px;
+    border-radius: 999px;
+    background: #5bc7df;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 900;
+}
+
+.axiom-payment-preference-card-icon {
+    display: block !important;
+    font-size: 28px !important;
+    line-height: 1 !important;
+    margin-bottom: 16px !important;
+}
+
+.axiom-payment-preference-card-title {
+    display: block !important;
+    color: #0c1220 !important;
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+    margin-bottom: 8px !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.axiom-payment-preference-card-subtitle {
+    display: block !important;
+    color: #9aa2af !important;
+    font-size: 15px !important;
+    line-height: 1.35 !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0 !important;
+}
+
+.axiom-payment-preference-bonus {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: fit-content !important;
+    margin-top: 13px !important;
+    padding: 6px 13px !important;
+    border-radius: 999px !important;
+    background: #5bc7df !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.03em !important;
+}
+
+/* Zelle field conditional */
+.axiom-zelle-hidden {
+    display: none !important;
+}
+
+.axiom-zelle-field-active {
+    display: block !important;
+}
+
+/* Partner code helper */
+.axiom-partner-code-preview {
+    margin-top: -14px;
+    margin-bottom: 22px;
+    color: #b1b7c0;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Submit button */
+.axiom-affiliate-registration-page button[type="submit"],
+.axiom-affiliate-registration-page input[type="submit"],
+.axiom-affiliate-form-wrap button[type="submit"],
+.axiom-affiliate-form-wrap input[type="submit"] {
+    width: 100% !important;
+    min-height: 64px !important;
+    border: none !important;
+    border-radius: 18px !important;
+    background: linear-gradient(135deg, #5bc7df, #3bb7d5) !important;
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.03em !important;
+    box-shadow: 0 16px 36px rgba(91, 199, 223, 0.24) !important;
+    cursor: pointer !important;
+}
+
+.axiom-affiliate-registration-page button[type="submit"]::after,
+.axiom-affiliate-form-wrap button[type="submit"]::after {
+    content: " →";
+}
+
+/* Rename submit button visually if input value is Register */
+.axiom-affiliate-form-wrap input[type="submit"] {
+    text-transform: none !important;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .axiom-payment-preference-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+        gap: 12px !important;
+    }
+
+    .axiom-payment-preference-card {
+        min-height: 145px !important;
+        padding: 16px !important;
+        border-radius: 21px !important;
+    }
+
+    .axiom-payment-preference-card-icon {
+        font-size: 25px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .axiom-payment-preference-card-title {
+        font-size: 16px !important;
+    }
+
+    .axiom-payment-preference-card-subtitle {
+        font-size: 13px !important;
+    }
+
+    .axiom-affiliate-registration-page input[type="text"],
+    .axiom-affiliate-registration-page input[type="email"],
+    .axiom-affiliate-registration-page input[type="password"],
+    .axiom-affiliate-registration-page textarea,
+    .axiom-affiliate-form-wrap input[type="text"],
+    .axiom-affiliate-form-wrap input[type="email"],
+    .axiom-affiliate-form-wrap input[type="password"],
+    .axiom-affiliate-form-wrap textarea {
+        min-height: 58px !important;
+        border-radius: 16px !important;
+    }
+}
