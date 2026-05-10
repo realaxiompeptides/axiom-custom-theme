@@ -1167,3 +1167,59 @@ function axiom_force_sync_affiliate_payout_method_for_user($user_id) {
 
     return true;
 }
+
+/**
+ * TEMP DEBUG: Show real payout method select values on SliceWP affiliate edit page.
+ * Remove after testing.
+ */
+add_action('admin_footer', 'axiom_debug_slicewp_payout_method_values');
+
+function axiom_debug_slicewp_payout_method_values() {
+    if (!is_admin()) {
+        return;
+    }
+
+    if (empty($_GET['page']) || strpos((string) $_GET['page'], 'slicewp') === false) {
+        return;
+    }
+    ?>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selects = document.querySelectorAll('select');
+
+        selects.forEach(function(select) {
+            var nearbyText = '';
+            var row = select.closest('tr, .slicewp-card-field, .slicewp-field-wrapper, div');
+
+            if (row) {
+                nearbyText = (row.textContent || '').toLowerCase();
+            }
+
+            if (nearbyText.indexOf('payout method') !== -1) {
+                var box = document.createElement('div');
+                box.style.background = '#fff3cd';
+                box.style.border = '2px solid #ffcc00';
+                box.style.padding = '12px';
+                box.style.margin = '12px 0';
+                box.style.fontSize = '14px';
+                box.style.lineHeight = '1.5';
+                box.style.color = '#111';
+
+                var html = '<strong>Axiom Debug: Payout Method Select</strong><br>';
+                html += '<strong>Select name:</strong> ' + select.name + '<br>';
+                html += '<strong>Current value:</strong> ' + select.value + '<br><br>';
+                html += '<strong>Options:</strong><br>';
+
+                Array.from(select.options).forEach(function(option) {
+                    html += 'Text: <strong>' + option.text + '</strong> | Value: <code>' + option.value + '</code><br>';
+                });
+
+                box.innerHTML = html;
+
+                select.parentNode.insertBefore(box, select.nextSibling);
+            }
+        });
+    });
+    </script>
+    <?php
+}
