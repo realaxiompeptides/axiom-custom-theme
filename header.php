@@ -6,6 +6,7 @@
   <meta name="description" content="Axiom Peptides offers premium research compounds with a clean, trusted, and modern experience." />
   <?php wp_head(); ?>
 </head>
+
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
@@ -23,27 +24,77 @@ $drawer_checkout_url = home_url('/checkout/');
 ?>
 
 <?php if (!$is_checkout_page) : ?>
-  <div class="top-guide-bar">
-  <div class="top-guide-bar__inner">
-    <span class="top-guide-bar__text">🎁 Free Research Guide Included With Every Order</span>
-  </div>
-</div>
 
-<div class="top-announcement-bar">
-  <div class="top-announcement-track">
-    <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
-    <span class="announcement-sep">|</span>
-    <span class="announcement-item">🧪 Third-Party Lab Tested</span>
-    <span class="announcement-sep">|</span>
-    <span class="announcement-item">⭐ Trusted by Researchers</span>
-    <span class="announcement-sep">|</span>
-    <span class="announcement-item">🇺🇸 USA Fulfilled Orders</span>
-    <span class="announcement-sep">|</span>
-    <span class="announcement-item">🧪 Third-Party Lab Tested</span>
-    <span class="announcement-sep">|</span>
-    <span class="announcement-item">⭐ Trusted by Researchers</span>
+  <div class="top-guide-bar">
+    <div class="top-guide-bar__inner">
+      <span class="top-guide-bar__text">
+        <i class="fa-solid fa-gift" aria-hidden="true"></i>
+        Free Research Guide Included With Every Order
+      </span>
+    </div>
   </div>
-</div>
+
+  <div class="top-announcement-bar">
+    <div class="top-announcement-track">
+
+      <div class="top-announcement-group">
+        <span class="announcement-item">
+          <i class="fa-solid fa-flag-usa" aria-hidden="true"></i>
+          USA Fulfilled Orders
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i>
+          Third-Party Lab Tested
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-star" aria-hidden="true"></i>
+          Trusted by Researchers
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-gift" aria-hidden="true"></i>
+          Free Research Guide Included With Every Order
+        </span>
+      </div>
+
+      <div class="top-announcement-group" aria-hidden="true">
+        <span class="announcement-item">
+          <i class="fa-solid fa-flag-usa" aria-hidden="true"></i>
+          USA Fulfilled Orders
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-vial-circle-check" aria-hidden="true"></i>
+          Third-Party Lab Tested
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-star" aria-hidden="true"></i>
+          Trusted by Researchers
+        </span>
+
+        <span class="announcement-sep">|</span>
+
+        <span class="announcement-item">
+          <i class="fa-solid fa-gift" aria-hidden="true"></i>
+          Free Research Guide Included With Every Order
+        </span>
+      </div>
+
+    </div>
+  </div>
 
   <header class="site-header">
     <div class="header-inner container">
@@ -136,50 +187,53 @@ $drawer_checkout_url = home_url('/checkout/');
     </div>
   </aside>
 
-<div class="cart-drawer" id="cartDrawer" aria-hidden="true">
-  <div class="cart-drawer-inner">
-<div class="cart-drawer-header">
-  <div class="cart-drawer-title-wrap">
-    <h2>Your Cart</h2>
-    <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
-  </div>
+  <div class="cart-drawer" id="cartDrawer" aria-hidden="true">
+    <div class="cart-drawer-inner">
 
-  <button class="cart-close" id="cartClose" aria-label="Close cart" type="button">
-    &times;
-  </button>
-</div>
+      <div class="cart-drawer-header">
+        <div class="cart-drawer-title-wrap">
+          <h2>Your Cart</h2>
+          <span class="cart-item-count-badge" id="cartItemCountBadge" hidden></span>
+        </div>
 
-<div id="cartFreeShippingGoal"></div>
-
-<div class="cart-drawer-body">
-      <div class="cart-empty-state" id="cartEmptyState">
-        Your cart is currently empty.
+        <button class="cart-close" id="cartClose" aria-label="Close cart" type="button">
+          &times;
+        </button>
       </div>
 
-      <div class="cart-items-list" id="cartItemsList"></div>
+      <div id="cartFreeShippingGoal"></div>
+
+      <div class="cart-drawer-body">
+        <div class="cart-empty-state" id="cartEmptyState">
+          Your cart is currently empty.
+        </div>
+
+        <div class="cart-items-list" id="cartItemsList"></div>
+      </div>
+
+      <div class="cart-drawer-footer">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <strong id="cartSubtotal">$0.00</strong>
+        </div>
+
+        <div class="cart-summary-row cart-summary-row-shipping">
+          <span>Shipping</span>
+          <span id="cartShippingValue">Calculated at checkout</span>
+        </div>
+
+        <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-checkout-btn">
+          Checkout
+        </a>
+
+        <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-view-full-link">
+          View Full Cart
+        </a>
+      </div>
+
     </div>
-
-    <div class="cart-drawer-footer">
-      <div class="cart-summary-row">
-        <span>Subtotal</span>
-        <strong id="cartSubtotal">$0.00</strong>
-      </div>
-
-      <div class="cart-summary-row cart-summary-row-shipping">
-        <span>Shipping</span>
-        <span id="cartShippingValue">Calculated at checkout</span>
-      </div>
-
-      <a href="<?php echo esc_url(wc_get_checkout_url()); ?>" class="cart-checkout-btn">
-        Checkout
-      </a>
-
-      <a href="<?php echo esc_url(wc_get_cart_url()); ?>" class="cart-view-full-link">
-        View Full Cart
-      </a>
-    </div>
   </div>
-</div>
 
   <div class="site-overlay" id="siteOverlay"></div>
+
 <?php endif; ?>
