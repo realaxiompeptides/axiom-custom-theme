@@ -38,33 +38,33 @@ $drawer_checkout_url = home_url('/checkout/');
     <div class="top-announcement-track">
 
       <div class="top-announcement-group">
-        <span class="announcement-item">USA Fulfilled Orders</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
+        <span class="announcement-dot"></span>
+        <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Third-Party Lab Tested</span>
-        <span class="announcement-dot"></span>
-        <span class="announcement-item">Trusted by Researchers</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">99%+ Verified Purity</span>
         <span class="announcement-dot"></span>
       </div>
 
       <div class="top-announcement-group" aria-hidden="true">
-        <span class="announcement-item">USA Fulfilled Orders</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
+        <span class="announcement-dot"></span>
+        <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Third-Party Lab Tested</span>
-        <span class="announcement-dot"></span>
-        <span class="announcement-item">Trusted by Researchers</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">99%+ Verified Purity</span>
         <span class="announcement-dot"></span>
       </div>
 
       <div class="top-announcement-group" aria-hidden="true">
-        <span class="announcement-item">USA Fulfilled Orders</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
+        <span class="announcement-dot"></span>
+        <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Third-Party Lab Tested</span>
-        <span class="announcement-dot"></span>
-        <span class="announcement-item">Trusted by Researchers</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">99%+ Verified Purity</span>
         <span class="announcement-dot"></span>
