@@ -364,3 +364,111 @@
         setTimeout(axiomDashboardCleanup, 4000);
     });
 })();
+
+/* =========================================================
+   Axiom: Hide editable Partner Code field in affiliate dashboard
+   Keeps registration page partner code field visible.
+========================================================= */
+
+function axiomHideDashboardPartnerCodeField() {
+    var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
+
+    if (!dashboard) {
+        return;
+    }
+
+    var sliceArea = dashboard.querySelector('.axiom-affiliate-default-dashboard');
+
+    if (!sliceArea) {
+        return;
+    }
+
+    sliceArea.querySelectorAll('label, div, p, span, strong').forEach(function (el) {
+        var text = (el.textContent || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+
+        if (
+            text === 'your partner code *' ||
+            text === 'your partner code' ||
+            text === 'partner code *' ||
+            text === 'partner code' ||
+            text === 'affiliate code *' ||
+            text === 'affiliate code'
+        ) {
+            var wrapper =
+                el.closest('.slicewp-field-wrapper') ||
+                el.closest('.slicewp-form-field') ||
+                el.closest('.slicewp-field') ||
+                el.closest('p') ||
+                el.parentElement;
+
+            if (wrapper) {
+                wrapper.style.display = 'none';
+                wrapper.classList.add('axiom-hidden-partner-code-field');
+            }
+        }
+    });
+
+    sliceArea.querySelectorAll('input, textarea').forEach(function (field) {
+        var name = (field.getAttribute('name') || '').toLowerCase();
+        var id = (field.getAttribute('id') || '').toLowerCase();
+        var value = (field.value || '').toLowerCase();
+
+        var looksLikePartnerCodeField =
+            name.indexOf('partner') !== -1 ||
+            name.indexOf('partner_code') !== -1 ||
+            name.indexOf('affiliate_code') !== -1 ||
+            id.indexOf('partner') !== -1 ||
+            id.indexOf('partner_code') !== -1 ||
+            id.indexOf('affiliate_code') !== -1;
+
+        /*
+         * Backup: your screenshot shows this as a large textarea/input under
+         * "Your Partner Code *", so also hide by nearby label text.
+         */
+        var parentText = field.closest('div, p, section, form')
+            ? field.closest('div, p, section, form').textContent.toLowerCase()
+            : '';
+
+        if (
+            looksLikePartnerCodeField ||
+            parentText.indexOf('your partner code') !== -1 ||
+            parentText.indexOf('partner code') !== -1
+        ) {
+            var wrapper =
+                field.closest('.slicewp-field-wrapper') ||
+                field.closest('.slicewp-form-field') ||
+                field.closest('.slicewp-field') ||
+                field.closest('p') ||
+                field.parentElement;
+
+            if (wrapper) {
+                wrapper.style.display = 'none';
+                wrapper.classList.add('axiom-hidden-partner-code-field');
+            }
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    axiomHideDashboardPartnerCodeField();
+
+    setTimeout(axiomHideDashboardPartnerCodeField, 300);
+    setTimeout(axiomHideDashboardPartnerCodeField, 900);
+    setTimeout(axiomHideDashboardPartnerCodeField, 1800);
+});
+
+window.addEventListener('load', function () {
+    axiomHideDashboardPartnerCodeField();
+
+    setTimeout(axiomHideDashboardPartnerCodeField, 500);
+    setTimeout(axiomHideDashboardPartnerCodeField, 1500);
+    setTimeout(axiomHideDashboardPartnerCodeField, 3000);
+});
+
+document.addEventListener('click', function () {
+    setTimeout(axiomHideDashboardPartnerCodeField, 150);
+    setTimeout(axiomHideDashboardPartnerCodeField, 600);
+});
