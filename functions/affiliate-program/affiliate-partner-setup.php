@@ -173,13 +173,14 @@ function axiom_affiliate_get_submitted_payment_preference() {
 
         $text = strtolower(axiom_affiliate_clean_text($post_value));
 
-        if (strpos($text, 'store credit') !== false) {
+        if (strpos($text, 'store credit') !== false || strpos($text, 'store_credit') !== false) {
             return 'store_credit';
         }
 
         if (
             strpos($text, 'manual / zelle payout') !== false ||
             strpos($text, 'zelle') !== false ||
+            strpos($text, 'manual') !== false ||
             strpos($text, 'bank deposit') !== false
         ) {
             return 'manual';
@@ -229,10 +230,6 @@ function axiom_affiliate_generate_code_from_email($user_id) {
 
     $base = strtoupper($base);
     $base = preg_replace('/[^A-Z0-9]/', '', $base);
-
-    /**
-     * Keep code short enough to add 10 at the end.
-     */
     $base = substr($base, 0, 14);
 
     if (!$base) {
@@ -336,7 +333,7 @@ function axiom_affiliate_save_registration_meta($user_id) {
     $payment_preference = axiom_affiliate_get_submitted_payment_preference();
     $zelle_contact      = axiom_affiliate_get_submitted_zelle_contact();
 
-    if ($payment_preference) {
+    if ($payment_preference === 'manual' || $payment_preference === 'store_credit') {
         update_user_meta($user_id, 'axiom_affiliate_payment_preference', $payment_preference);
     }
 
@@ -348,6 +345,10 @@ add_action('user_register', 'axiom_affiliate_save_registration_meta', 20);
 
 /**
  * Save payout method to SliceWP affiliate data.
+ *
+ * Confirmed SliceWP values:
+ * Manual = manual
+ * Store Credit = store_credit
  */
 function axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payout_method) {
     global $wpdb;
@@ -355,7 +356,7 @@ function axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payout_method
     $affiliate_id  = absint($affiliate_id);
     $payout_method = sanitize_key($payout_method);
 
-    if (!$affiliate_id || !$payout_method) {
+    if (!$affiliate_id || ($payout_method !== 'manual' && $payout_method !== 'store_credit')) {
         return false;
     }
 
@@ -694,70 +695,6 @@ function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id,
 }
 
 /**
- * Create WooCommerce affiliate coupon.
- *
- * IMPORTANT:
- * Code is always generated from email + commission percent.
- * Affiliates cannot choose/edit it.
- */
-function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
-    if (!$user_id || !$affiliate_id || !function_exists('wc_get_coupon_id_by_code')) {
-        return '';
-    }
-
-    $existing_coupon_id = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
-    $wanted_code        = axiom_affiliate_get_unique_email_coupon_code($user_id, $existing_coupon_id);
-
-    if ($existing_coupon_id && get_post($existing_coupon_id)) {
-        $existing_code = axiom_affiliate_clean_partner_code(get_the_title($existing_coupon_id));
-
-        /**
-         * If existing code is broken/reserved, rename to email-based code.
-         * Otherwise leave existing real coupon alone so admin manual edits stay.
-         */
-        if (!$existing_code || axiom_affiliate_is_reserved_code($existing_code)) {
-            axiom_affiliate_admin_rename_coupon($existing_coupon_id, $user_id, $affiliate_id, $wanted_code);
-            return $wanted_code;
-        }
-
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code', $existing_code);
-        update_user_meta($user_id, 'axiom_affiliate_coupon_id', absint($existing_coupon_id));
-
-        axiom_affiliate_link_coupon_to_affiliate($existing_coupon_id, $user_id, $affiliate_id);
-
-        return $existing_code;
-    }
-
-    $coupon_code = $wanted_code;
-
-    if (!$coupon_code) {
-        return '';
-    }
-
-    $coupon_id = wp_insert_post(array(
-        'post_title'   => $coupon_code,
-        'post_name'    => sanitize_title($coupon_code),
-        'post_content' => 'Axiom affiliate coupon for affiliate ID ' . absint($affiliate_id),
-        'post_status'  => 'publish',
-        'post_author'  => absint($user_id),
-        'post_type'    => 'shop_coupon',
-    ));
-
-    if (is_wp_error($coupon_id) || !$coupon_id) {
-        return '';
-    }
-
-    axiom_affiliate_apply_coupon_settings($coupon_id);
-    axiom_affiliate_link_coupon_to_affiliate($coupon_id, $user_id, $affiliate_id);
-    axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id, $coupon_code);
-
-    update_user_meta($user_id, 'axiom_affiliate_coupon_code', $coupon_code);
-    update_user_meta($user_id, 'axiom_affiliate_coupon_id', absint($coupon_id));
-
-    return $coupon_code;
-}
-
-/**
  * Apply standard coupon settings.
  */
 function axiom_affiliate_apply_coupon_settings($coupon_id) {
@@ -814,6 +751,71 @@ function axiom_affiliate_admin_rename_coupon($coupon_id, $user_id, $affiliate_id
 }
 
 /**
+ * Create WooCommerce affiliate coupon.
+ *
+ * IMPORTANT:
+ * Code is generated from email + commission percent.
+ * Affiliates cannot choose/edit it from dashboard.
+ */
+function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
+    if (!$user_id || !$affiliate_id || !function_exists('wc_get_coupon_id_by_code')) {
+        return '';
+    }
+
+    $existing_coupon_id = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
+    $wanted_code        = axiom_affiliate_get_unique_email_coupon_code($user_id, $existing_coupon_id);
+
+    if ($existing_coupon_id && get_post($existing_coupon_id)) {
+        $existing_code = axiom_affiliate_clean_partner_code(get_the_title($existing_coupon_id));
+
+        /**
+         * If existing code is broken/reserved, rename to email-based code.
+         * Otherwise leave existing real coupon alone so admin manual edits stay.
+         */
+        if (!$existing_code || axiom_affiliate_is_reserved_code($existing_code)) {
+            axiom_affiliate_admin_rename_coupon($existing_coupon_id, $user_id, $affiliate_id, $wanted_code);
+            return $wanted_code;
+        }
+
+        update_user_meta($user_id, 'axiom_affiliate_coupon_code', $existing_code);
+        update_user_meta($user_id, 'axiom_affiliate_coupon_id', absint($existing_coupon_id));
+
+        axiom_affiliate_apply_coupon_settings($existing_coupon_id);
+        axiom_affiliate_link_coupon_to_affiliate($existing_coupon_id, $user_id, $affiliate_id);
+
+        return $existing_code;
+    }
+
+    $coupon_code = $wanted_code;
+
+    if (!$coupon_code) {
+        return '';
+    }
+
+    $coupon_id = wp_insert_post(array(
+        'post_title'   => $coupon_code,
+        'post_name'    => sanitize_title($coupon_code),
+        'post_content' => 'Axiom affiliate coupon for affiliate ID ' . absint($affiliate_id),
+        'post_status'  => 'publish',
+        'post_author'  => absint($user_id),
+        'post_type'    => 'shop_coupon',
+    ));
+
+    if (is_wp_error($coupon_id) || !$coupon_id) {
+        return '';
+    }
+
+    axiom_affiliate_apply_coupon_settings($coupon_id);
+    axiom_affiliate_link_coupon_to_affiliate($coupon_id, $user_id, $affiliate_id);
+    axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id, $coupon_code);
+
+    update_user_meta($user_id, 'axiom_affiliate_coupon_code', $coupon_code);
+    update_user_meta($user_id, 'axiom_affiliate_coupon_id', absint($coupon_id));
+
+    return $coupon_code;
+}
+
+/**
  * Repair a broken coupon like PAST30DAYS.
  */
 function axiom_affiliate_repair_reserved_coupon_code($user_id) {
@@ -844,29 +846,98 @@ function axiom_affiliate_repair_reserved_coupon_code($user_id) {
 }
 
 /**
- * Sync affiliate setup.
+ * Final force-sync payout method by user.
+ *
+ * Confirmed:
+ * Manual = manual
+ * Store Credit = store_credit
  */
-function axiom_affiliate_sync_user_setup($user_id) {
+function axiom_force_sync_affiliate_payout_method_for_user($user_id, $payment_preference = '') {
+    global $wpdb;
+
+    $user_id = absint($user_id);
+
     if (!$user_id) {
-        return;
+        return false;
+    }
+
+    if (!$payment_preference) {
+        $payment_preference = get_user_meta($user_id, 'axiom_affiliate_payment_preference', true);
+    }
+
+    $payment_preference = sanitize_key($payment_preference);
+
+    if ($payment_preference !== 'manual' && $payment_preference !== 'store_credit') {
+        return false;
     }
 
     $affiliate_id = axiom_affiliate_get_affiliate_id_by_user($user_id);
 
     if (!$affiliate_id) {
-        return;
+        return false;
     }
 
-    $payment_preference = get_user_meta($user_id, 'axiom_affiliate_payment_preference', true);
+    $payout_method = ($payment_preference === 'store_credit') ? 'store_credit' : 'manual';
 
-    if ($payment_preference) {
-        axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payment_preference);
+    /**
+     * 1. Official SliceWP update.
+     */
+    if (function_exists('slicewp_update_affiliate')) {
+        slicewp_update_affiliate($affiliate_id, array(
+            'payout_method'  => $payout_method,
+            'payment_method' => $payout_method,
+        ));
     }
 
-    if (axiom_affiliate_is_active($user_id)) {
-        axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id);
-        axiom_affiliate_repair_reserved_coupon_code($user_id);
+    /**
+     * 2. Direct database update.
+     */
+    $table = $wpdb->prefix . 'slicewp_affiliates';
+
+    $table_exists = $wpdb->get_var(
+        $wpdb->prepare('SHOW TABLES LIKE %s', $table)
+    );
+
+    if ($table_exists === $table) {
+        $columns = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
+
+        if (in_array('payout_method', $columns, true)) {
+            $wpdb->update(
+                $table,
+                array('payout_method' => $payout_method),
+                array('id' => $affiliate_id),
+                array('%s'),
+                array('%d')
+            );
+        }
+
+        if (in_array('payment_method', $columns, true)) {
+            $wpdb->update(
+                $table,
+                array('payment_method' => $payout_method),
+                array('id' => $affiliate_id),
+                array('%s'),
+                array('%d')
+            );
+        }
     }
+
+    /**
+     * 3. Affiliate meta fallback.
+     */
+    if (function_exists('slicewp_update_affiliate_meta')) {
+        slicewp_update_affiliate_meta($affiliate_id, 'payout_method', $payout_method);
+        slicewp_update_affiliate_meta($affiliate_id, 'payment_method', $payout_method);
+        slicewp_update_affiliate_meta($affiliate_id, 'axiom_payment_preference', $payment_preference);
+    }
+
+    /**
+     * 4. User meta mirror.
+     */
+    update_user_meta($user_id, 'axiom_affiliate_payment_preference', $payment_preference);
+    update_user_meta($user_id, 'axiom_affiliate_synced_payout_method', $payout_method);
+
+    return true;
 }
 
 /**
@@ -895,9 +966,11 @@ function axiom_affiliate_capture_settings_post() {
     $payment_preference = axiom_affiliate_get_submitted_payment_preference();
     $zelle_contact      = axiom_affiliate_get_submitted_zelle_contact();
 
-    if ($payment_preference) {
+    if ($payment_preference === 'manual' || $payment_preference === 'store_credit') {
         update_user_meta($user_id, 'axiom_affiliate_payment_preference', $payment_preference);
+
         axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payment_preference);
+        axiom_force_sync_affiliate_payout_method_for_user($user_id, $payment_preference);
     }
 
     if ($zelle_contact) {
@@ -906,7 +979,35 @@ function axiom_affiliate_capture_settings_post() {
 
     axiom_affiliate_repair_reserved_coupon_code($user_id);
 }
-add_action('init', 'axiom_affiliate_capture_settings_post', 5);
+add_action('init', 'axiom_affiliate_capture_settings_post', 1);
+add_action('admin_init', 'axiom_affiliate_capture_settings_post', 1);
+
+/**
+ * Sync affiliate setup.
+ */
+function axiom_affiliate_sync_user_setup($user_id) {
+    if (!$user_id) {
+        return;
+    }
+
+    $affiliate_id = axiom_affiliate_get_affiliate_id_by_user($user_id);
+
+    if (!$affiliate_id) {
+        return;
+    }
+
+    $payment_preference = get_user_meta($user_id, 'axiom_affiliate_payment_preference', true);
+
+    if ($payment_preference === 'manual' || $payment_preference === 'store_credit') {
+        axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payment_preference);
+        axiom_force_sync_affiliate_payout_method_for_user($user_id, $payment_preference);
+    }
+
+    if (axiom_affiliate_is_active($user_id)) {
+        axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id);
+        axiom_affiliate_repair_reserved_coupon_code($user_id);
+    }
+}
 
 /**
  * Run sync on frontend/admin account loads.
@@ -1031,195 +1132,3 @@ function axiom_affiliate_partner_card_copy_script() {
     <?php
 }
 add_action('wp_footer', 'axiom_affiliate_partner_card_copy_script', 50);
-
-/**
- * =========================================================
- * Axiom Force Sync Affiliate Payout Method
- *
- * Fixes:
- * - Custom Payment Preference shows Store Credit
- * - But SliceWP real Payout Method still shows Manual
- *
- * This syncs:
- * axiom_affiliate_payment_preference = store_credit
- * into SliceWP affiliate payout_method = store_credit
- * =========================================================
- */
-
-add_action('init', 'axiom_force_sync_current_affiliate_payout_method', 50);
-add_action('wp', 'axiom_force_sync_current_affiliate_payout_method', 50);
-add_action('admin_init', 'axiom_force_sync_current_affiliate_payout_method', 50);
-
-function axiom_force_sync_current_affiliate_payout_method() {
-    if (!is_user_logged_in()) {
-        return;
-    }
-
-    $user_id = get_current_user_id();
-
-    axiom_force_sync_affiliate_payout_method_for_user($user_id);
-}
-
-function axiom_force_sync_affiliate_payout_method_for_user($user_id) {
-    global $wpdb;
-
-    $user_id = absint($user_id);
-
-    if (!$user_id) {
-        return false;
-    }
-
-    if (!function_exists('slicewp_get_affiliate_by_user_id')) {
-        return false;
-    }
-
-    $affiliate = slicewp_get_affiliate_by_user_id($user_id);
-
-    if (!$affiliate) {
-        return false;
-    }
-
-    $affiliate_id = 0;
-
-    if (is_object($affiliate) && method_exists($affiliate, 'get')) {
-        $affiliate_id = absint($affiliate->get('id'));
-    } elseif (is_object($affiliate) && isset($affiliate->id)) {
-        $affiliate_id = absint($affiliate->id);
-    } elseif (is_array($affiliate) && isset($affiliate['id'])) {
-        $affiliate_id = absint($affiliate['id']);
-    }
-
-    if (!$affiliate_id) {
-        return false;
-    }
-
-    $payment_preference = get_user_meta($user_id, 'axiom_affiliate_payment_preference', true);
-    $payment_preference = sanitize_key($payment_preference);
-
-    if (!$payment_preference) {
-        return false;
-    }
-
-    /**
-     * Map your custom setting to SliceWP payout method slug.
-     */
-    if ($payment_preference === 'store_credit') {
-        $payout_method = 'store_credit';
-    } else {
-        $payout_method = 'manual';
-    }
-
-    /**
-     * 1. Try SliceWP official update function.
-     */
-    if (function_exists('slicewp_update_affiliate')) {
-        slicewp_update_affiliate($affiliate_id, array(
-            'payout_method' => $payout_method,
-        ));
-    }
-
-    /**
-     * 2. Force update SliceWP affiliates database table.
-     */
-    $table = $wpdb->prefix . 'slicewp_affiliates';
-
-    $table_exists = $wpdb->get_var(
-        $wpdb->prepare('SHOW TABLES LIKE %s', $table)
-    );
-
-    if ($table_exists === $table) {
-        $columns = $wpdb->get_col("SHOW COLUMNS FROM {$table}", 0);
-
-        if (in_array('payout_method', $columns, true)) {
-            $wpdb->update(
-                $table,
-                array('payout_method' => $payout_method),
-                array('id' => $affiliate_id),
-                array('%s'),
-                array('%d')
-            );
-        }
-
-        if (in_array('payment_method', $columns, true)) {
-            $wpdb->update(
-                $table,
-                array('payment_method' => $payout_method),
-                array('id' => $affiliate_id),
-                array('%s'),
-                array('%d')
-            );
-        }
-    }
-
-    /**
-     * 3. Save affiliate meta fallback.
-     */
-    if (function_exists('slicewp_update_affiliate_meta')) {
-        slicewp_update_affiliate_meta($affiliate_id, 'payout_method', $payout_method);
-        slicewp_update_affiliate_meta($affiliate_id, 'payment_method', $payout_method);
-        slicewp_update_affiliate_meta($affiliate_id, 'axiom_payment_preference', $payment_preference);
-    }
-
-    /**
-     * 4. Save user meta mirror.
-     */
-    update_user_meta($user_id, 'axiom_affiliate_synced_payout_method', $payout_method);
-
-    return true;
-}
-
-/**
- * TEMP DEBUG: Show real payout method select values on SliceWP affiliate edit page.
- * Remove after testing.
- */
-add_action('admin_footer', 'axiom_debug_slicewp_payout_method_values');
-
-function axiom_debug_slicewp_payout_method_values() {
-    if (!is_admin()) {
-        return;
-    }
-
-    if (empty($_GET['page']) || strpos((string) $_GET['page'], 'slicewp') === false) {
-        return;
-    }
-    ?>
-    <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var selects = document.querySelectorAll('select');
-
-        selects.forEach(function(select) {
-            var nearbyText = '';
-            var row = select.closest('tr, .slicewp-card-field, .slicewp-field-wrapper, div');
-
-            if (row) {
-                nearbyText = (row.textContent || '').toLowerCase();
-            }
-
-            if (nearbyText.indexOf('payout method') !== -1) {
-                var box = document.createElement('div');
-                box.style.background = '#fff3cd';
-                box.style.border = '2px solid #ffcc00';
-                box.style.padding = '12px';
-                box.style.margin = '12px 0';
-                box.style.fontSize = '14px';
-                box.style.lineHeight = '1.5';
-                box.style.color = '#111';
-
-                var html = '<strong>Axiom Debug: Payout Method Select</strong><br>';
-                html += '<strong>Select name:</strong> ' + select.name + '<br>';
-                html += '<strong>Current value:</strong> ' + select.value + '<br><br>';
-                html += '<strong>Options:</strong><br>';
-
-                Array.from(select.options).forEach(function(option) {
-                    html += 'Text: <strong>' + option.text + '</strong> | Value: <code>' + option.value + '</code><br>';
-                });
-
-                box.innerHTML = html;
-
-                select.parentNode.insertBefore(box, select.nextSibling);
-            }
-        });
-    });
-    </script>
-    <?php
-}
