@@ -99,10 +99,6 @@ function axiom_get_current_affiliate_dashboard_stats() {
         return $stats;
     }
 
-    /**
-     * Get commissions via SliceWP.
-     * Every non-rejected commission counts as a conversion/order.
-     */
     $commissions = array();
 
     if (function_exists('slicewp_get_commissions')) {
@@ -136,9 +132,6 @@ function axiom_get_current_affiliate_dashboard_stats() {
         }
     }
 
-    /**
-     * Get referred visits from SliceWP visits table.
-     */
     $visits_table = $wpdb->prefix . 'slicewp_visits';
     $visit_count  = 0;
 
@@ -175,9 +168,7 @@ function axiom_get_current_affiliate_dashboard_stats() {
 }
 
 /**
- * Output custom affiliate dashboard + SliceWP underneath.
- *
- * Use shortcode:
+ * Shortcode:
  * [axiom_affiliate_dashboard]
  */
 add_shortcode('axiom_affiliate_dashboard', 'axiom_render_affiliate_dashboard');
@@ -187,18 +178,10 @@ function axiom_render_affiliate_dashboard() {
         return '<p>SliceWP is not active.</p>';
     }
 
-    /**
-     * If the visitor is logged out, do NOT show the custom dashboard.
-     * Only show the default SliceWP login/account area.
-     */
     if (!is_user_logged_in()) {
         return do_shortcode('[slicewp_affiliate_account]');
     }
 
-    /**
-     * If logged in but not an active affiliate yet,
-     * do NOT show the custom stats cards.
-     */
     if (!axiom_is_current_user_active_affiliate()) {
         return do_shortcode('[slicewp_affiliate_account]');
     }
@@ -302,7 +285,7 @@ function axiom_render_affiliate_dashboard() {
 }
 
 /**
- * Enqueue modern affiliate dashboard CSS.
+ * Enqueue split affiliate dashboard CSS files.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_affiliate_dashboard_modern_styles', 30);
 
@@ -324,13 +307,22 @@ function axiom_enqueue_affiliate_dashboard_modern_styles() {
         is_page('affiliate-dashboard') ||
         is_page('affiliate-account')
     ) {
-        $css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css';
-
-        wp_enqueue_style(
-            'axiom-affiliate-dashboard-modern',
-            get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-dashboard-modern.css',
-            array(),
-            file_exists($css_path) ? filemtime($css_path) : '1.0.0'
+        $css_files = array(
+            'axiom-affiliate-dashboard-base'     => '/assets/css/affiliate-program/dashboard-base.css',
+            'axiom-affiliate-dashboard-cards'    => '/assets/css/affiliate-program/dashboard-cards.css',
+            'axiom-affiliate-dashboard-slicewp'  => '/assets/css/affiliate-program/dashboard-slicewp.css',
+            'axiom-affiliate-dashboard-metrics'  => '/assets/css/affiliate-program/dashboard-metrics.css',
         );
+
+        foreach ($css_files as $handle => $path) {
+            $full_path = get_template_directory() . $path;
+
+            wp_enqueue_style(
+                $handle,
+                get_template_directory_uri() . $path,
+                array(),
+                file_exists($full_path) ? filemtime($full_path) : '1.0.0'
+            );
+        }
     }
 }
