@@ -1431,3 +1431,343 @@
     transition: none !important;
   }
 }
+
+/* =========================================================
+   AXIOM FLOATING VIAL SHOWCASE
+   Visual branding section between proof cards and best sellers
+========================================================= */
+
+.axiom-vial-showcase {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background:
+    linear-gradient(180deg, #f7fbff 0%, #ffffff 18%, #f6faff 100%);
+  padding: clamp(46px, 6vw, 82px) 0 clamp(54px, 7vw, 92px);
+}
+
+.axiom-vial-showcase-bg,
+.axiom-vial-showcase-grid,
+.axiom-vial-showcase-glow {
+  position: absolute;
+  pointer-events: none;
+}
+
+.axiom-vial-showcase-bg {
+  inset: 0;
+  z-index: 0;
+}
+
+.axiom-vial-showcase-grid {
+  inset: 0;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(78, 162, 245, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 162, 245, 0.055) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 72%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black 0%, transparent 72%);
+}
+
+.axiom-vial-showcase-glow {
+  border-radius: 999px;
+  filter: blur(12px);
+}
+
+.axiom-vial-showcase-glow--one {
+  width: 540px;
+  height: 340px;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(78, 162, 245, 0.16), transparent 68%);
+}
+
+.axiom-vial-showcase-glow--two {
+  width: 420px;
+  height: 260px;
+  right: -110px;
+  bottom: -60px;
+  background: radial-gradient(circle, rgba(127, 214, 255, 0.16), transparent 70%);
+}
+
+.axiom-vial-showcase-inner {
+  position: relative;
+  z-index: 2;
+  width: min(1180px, calc(100% - 40px));
+  margin: 0 auto;
+}
+
+.axiom-vial-showcase-copy {
+  max-width: 760px;
+  margin: 0 auto 34px;
+  text-align: center;
+}
+
+.axiom-vial-showcase-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-bottom: 14px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgba(78, 162, 245, 0.10);
+  color: #2b74c8;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 0 0 1px rgba(78, 162, 245, 0.10),
+    0 12px 28px rgba(78, 162, 245, 0.10);
+}
+
+.axiom-vial-showcase-copy h2 {
+  margin: 0 0 12px;
+  color: #071329;
+  font-size: clamp(34px, 4vw, 56px);
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
+}
+
+.axiom-vial-showcase-copy p {
+  max-width: 660px;
+  margin: 0 auto;
+  color: #64748b;
+  font-size: clamp(16px, 1.25vw, 19px);
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+.axiom-vial-float-stage {
+  position: relative;
+  height: clamp(260px, 30vw, 390px);
+  border-radius: 36px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(78, 162, 245, 0.12), transparent 42%),
+    linear-gradient(135deg, rgba(248, 251, 255, 0.92), rgba(255, 255, 255, 0.88));
+  border: 1px solid rgba(203, 213, 225, 0.72);
+  box-shadow:
+    0 24px 70px rgba(15, 23, 42, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.80);
+}
+
+.axiom-vial-float-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(78, 162, 245, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(78, 162, 245, 0.045) 1px, transparent 1px);
+  background-size: 54px 54px;
+}
+
+.axiom-vial-float-stage::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 72%;
+  height: 38px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: rgba(78, 162, 245, 0.18);
+  filter: blur(26px);
+  pointer-events: none;
+}
+
+.axiom-vial-float {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(110px, 12vw, 170px);
+  aspect-ratio: 0.58;
+  transform-origin: center;
+}
+
+.axiom-vial-float img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 24px 26px rgba(15, 23, 42, 0.22))
+    drop-shadow(0 0 20px rgba(78, 162, 245, 0.14));
+  animation: axiomShowcaseFloat 5.8s ease-in-out infinite;
+}
+
+.axiom-vial-float--one {
+  left: 8%;
+  bottom: 14%;
+  transform: rotate(-8deg);
+}
+
+.axiom-vial-float--two {
+  left: 26%;
+  bottom: 20%;
+  transform: rotate(5deg);
+}
+
+.axiom-vial-float--three {
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%) scale(1.14);
+}
+
+.axiom-vial-float--four {
+  right: 26%;
+  bottom: 20%;
+  transform: rotate(-5deg);
+}
+
+.axiom-vial-float--five {
+  right: 8%;
+  bottom: 14%;
+  transform: rotate(8deg);
+}
+
+.axiom-vial-float--two img {
+  animation-delay: -1.2s;
+}
+
+.axiom-vial-float--three img {
+  animation-delay: -2s;
+}
+
+.axiom-vial-float--four img {
+  animation-delay: -0.8s;
+}
+
+.axiom-vial-float--five img {
+  animation-delay: -1.6s;
+}
+
+@keyframes axiomShowcaseFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-16px);
+  }
+}
+
+@media (max-width: 991px) {
+  .axiom-vial-showcase-inner {
+    width: min(100% - 28px, 920px);
+  }
+
+  .axiom-vial-float-stage {
+    height: 330px;
+  }
+
+  .axiom-vial-float {
+    width: clamp(94px, 16vw, 136px);
+  }
+
+  .axiom-vial-float--one {
+    left: 2%;
+  }
+
+  .axiom-vial-float--two {
+    left: 20%;
+  }
+
+  .axiom-vial-float--four {
+    right: 20%;
+  }
+
+  .axiom-vial-float--five {
+    right: 2%;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-vial-showcase {
+    padding: 38px 0 48px;
+  }
+
+  .axiom-vial-showcase-inner {
+    width: min(100% - 24px, 680px);
+  }
+
+  .axiom-vial-showcase-copy {
+    margin-bottom: 24px;
+  }
+
+  .axiom-vial-showcase-copy h2 {
+    font-size: clamp(30px, 9vw, 42px);
+  }
+
+  .axiom-vial-showcase-copy p {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .axiom-vial-float-stage {
+    height: 300px;
+    border-radius: 28px;
+  }
+
+  .axiom-vial-float {
+    width: 112px;
+  }
+
+  .axiom-vial-float--one {
+    left: -20px;
+    bottom: 16%;
+    opacity: 0.72;
+  }
+
+  .axiom-vial-float--two {
+    left: 14%;
+    bottom: 22%;
+    opacity: 0.88;
+  }
+
+  .axiom-vial-float--three {
+    left: 50%;
+    bottom: 13%;
+    transform: translateX(-50%) scale(1.12);
+    z-index: 4;
+  }
+
+  .axiom-vial-float--four {
+    right: 14%;
+    bottom: 22%;
+    opacity: 0.88;
+  }
+
+  .axiom-vial-float--five {
+    right: -20px;
+    bottom: 16%;
+    opacity: 0.72;
+  }
+}
+
+@media (max-width: 420px) {
+  .axiom-vial-float-stage {
+    height: 270px;
+  }
+
+  .axiom-vial-float {
+    width: 96px;
+  }
+
+  .axiom-vial-float--two {
+    left: 11%;
+  }
+
+  .axiom-vial-float--four {
+    right: 11%;
+  }
+}
