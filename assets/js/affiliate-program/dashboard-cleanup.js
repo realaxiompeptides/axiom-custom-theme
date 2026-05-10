@@ -415,3 +415,246 @@
         setTimeout(axiomDashboardCleanup, 4000);
     });
 })();
+
+/* =========================================================
+   Axiom Affiliate Settings Payment Preference Sync
+   Adds reliable hidden fields for PHP:
+   - axiom_payment_preference
+   - axiom_zelle_contact
+========================================================= */
+
+(function () {
+    'use strict';
+
+    function axiomCleanText(value) {
+        return String(value || '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .toLowerCase();
+    }
+
+    function axiomIsAffiliateSettingsPage() {
+        var url = window.location.href.toLowerCase();
+
+        return (
+            url.indexOf('affiliate-account-tab=settings') !== -1 ||
+            url.indexOf('tab=settings') !== -1 ||
+            url.indexOf('settings') !== -1
+        );
+    }
+
+    function axiomFindAffiliateSettingsForm() {
+        return (
+            document.querySelector('.axiom-affiliate-default-dashboard form') ||
+            document.querySelector('.slicewp-section-settings form') ||
+            document.querySelector('.slicewp-affiliate-account form') ||
+            document.querySelector('.slicewp-user-dashboard form') ||
+            document.querySelector('form')
+        );
+    }
+
+    function axiomEnsureHiddenInput(form, name) {
+        if (!form || !name) {
+            return null;
+        }
+
+        var input = form.querySelector('input[name="' + name + '"]');
+
+        if (!input) {
+            input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = name;
+            form.appendChild(input);
+        }
+
+        return input;
+    }
+
+    function axiomFindPaymentPreferenceWrapper() {
+        var possible = document.querySelectorAll(
+            '.axiom-affiliate-default-dashboard .slicewp-field-wrapper,' +
+            '.axiom-affiliate-default-dashboard .slicewp-form-field,' +
+            '.axiom-affiliate-default-dashboard .slicewp-field,' +
+            '.axiom-affiliate-default-dashboard p,' +
+            '.axiom-affiliate-default-dashboard div'
+        );
+
+        for (var i = 0; i < possible.length; i++) {
+            var el = possible[i];
+            var text = axiomCleanText(el.textContent);
+
+            if (
+                text.indexOf('payment preference') !== -1 &&
+                (
+                    text.indexOf('manual') !== -1 ||
+                    text.indexOf('zelle') !== -1 ||
+                    text.indexOf('store credit') !== -1
+                ) &&
+                el.querySelector('input[type="radio"]')
+            ) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+
+    function axiomFindZelleField() {
+        var possible = document.querySelectorAll(
+            '.axiom-affiliate-default-dashboard .slicewp-field-wrapper,' +
+            '.axiom-affiliate-default-dashboard .slicewp-form-field,' +
+            '.axiom-affiliate-default-dashboard .slicewp-field,' +
+            '.axiom-affiliate-default-dashboard p,' +
+            '.axiom-affiliate-default-dashboard div'
+        );
+
+        for (var i = 0; i < possible.length; i++) {
+            var el = possible[i];
+            var text = axiomCleanText(el.textContent);
+
+            if (
+                (
+                    text.indexOf('zelle email') !== -1 ||
+                    text.indexOf('zelle email or phone') !== -1 ||
+                    text.indexOf('zelle phone') !== -1
+                ) &&
+                el.querySelector('input, textarea')
+            ) {
+                return {
+                    wrapper: el,
+                    input: el.querySelector('input, textarea')
+                };
+            }
+        }
+
+        return null;
+    }
+
+    function axiomGetSelectedPaymentPreference() {
+        var wrapper = axiomFindPaymentPreferenceWrapper();
+
+        if (!wrapper) {
+            return '';
+        }
+
+        var checked = wrapper.querySelector('input[type="radio"]:checked');
+
+        if (!checked) {
+            return '';
+        }
+
+        var label = checked.closest('label');
+        var selectedText = '';
+
+        if (label) {
+            selectedText += ' ' + axiomCleanText(label.textContent);
+        }
+
+        selectedText += ' ' + axiomCleanText(checked.value);
+        selectedText += ' ' + axiomCleanText(checked.getAttribute('aria-label'));
+        selectedText += ' ' + axiomCleanText(checked.getAttribute('data-value'));
+
+        if (selectedText.indexOf('store') !== -1) {
+            return 'store_credit';
+        }
+
+        if (
+            selectedText.indexOf('manual') !== -1 ||
+            selectedText.indexOf('zelle') !== -1 ||
+            selectedText.indexOf('bank') !== -1
+        ) {
+            return 'manual';
+        }
+
+        return '';
+    }
+
+    function axiomSyncAffiliateSettingsFields() {
+        if (!axiomIsAffiliateSettingsPage()) {
+            return;
+        }
+
+        var form = axiomFindAffiliateSettingsForm();
+
+        if (!form) {
+            return;
+        }
+
+        var paymentHidden = axiomEnsureHiddenInput(form, 'axiom_payment_preference');
+        var zelleHidden = axiomEnsureHiddenInput(form, 'axiom_zelle_contact');
+
+        var paymentPreference = axiomGetSelectedPaymentPreference();
+        var zelleField = axiomFindZelleField();
+
+        if (paymentHidden) {
+            paymentHidden.value = paymentPreference;
+        }
+
+        if (zelleHidden && zelleField && zelleField.input) {
+            zelleHidden.value = zelleField.input.value || '';
+        }
+
+        /**
+         * Optional display behavior:
+         * Store Credit selected = hide Zelle box
+         * Manual/Zelle selected = show Zelle box
+         */
+        if (zelleField && zelleField.wrapper) {
+            if (paymentPreference === 'store_credit') {
+                zelleField.wrapper.style.display = 'none';
+            } else {
+                zelleField.wrapper.style.display = '';
+            }
+        }
+    }
+
+    function axiomBindAffiliateSettingsForm() {
+        if (!axiomIsAffiliateSettingsPage()) {
+            return;
+        }
+
+        var form = axiomFindAffiliateSettingsForm();
+
+        if (!form || form.classList.contains('axiom-payment-sync-bound')) {
+            return;
+        }
+
+        form.classList.add('axiom-payment-sync-bound');
+
+        form.addEventListener('submit', function () {
+            axiomSyncAffiliateSettingsFields();
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        axiomSyncAffiliateSettingsFields();
+        axiomBindAffiliateSettingsForm();
+
+        setTimeout(axiomSyncAffiliateSettingsFields, 300);
+        setTimeout(axiomSyncAffiliateSettingsFields, 900);
+        setTimeout(axiomSyncAffiliateSettingsFields, 1800);
+    });
+
+    window.addEventListener('load', function () {
+        axiomSyncAffiliateSettingsFields();
+        axiomBindAffiliateSettingsForm();
+
+        setTimeout(axiomSyncAffiliateSettingsFields, 500);
+        setTimeout(axiomSyncAffiliateSettingsFields, 1500);
+        setTimeout(axiomSyncAffiliateSettingsFields, 3000);
+    });
+
+    document.addEventListener('change', function () {
+        axiomSyncAffiliateSettingsFields();
+        axiomBindAffiliateSettingsForm();
+    });
+
+    document.addEventListener('input', function () {
+        axiomSyncAffiliateSettingsFields();
+    });
+
+    document.addEventListener('click', function () {
+        setTimeout(axiomSyncAffiliateSettingsFields, 100);
+        setTimeout(axiomBindAffiliateSettingsForm, 150);
+    });
+})();
