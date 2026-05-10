@@ -601,3 +601,170 @@ function axiom_affiliate_partner_card_copy_script() {
     <?php
 }
 add_action('wp_footer', 'axiom_affiliate_partner_card_copy_script', 50);
+
+/**
+ * =========================================================
+ * Axiom Affiliate Settings Partner Code Sync
+ *
+ * If affiliate changes "Your Partner Code" inside SliceWP settings,
+ * update their saved code and rename their WooCommerce coupon.
+ * =========================================================
+ */
+
+add_action('init', 'axiom_affiliate_capture_partner_code_from_settings', 30);
+
+function axiom_affiliate_capture_partner_code_from_settings() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    if (empty($_POST) || !is_array($_POST)) {
+        return;
+    }
+
+    $user_id = get_current_user_id();
+
+    $submitted_partner_code = axiom_affiliate_find_partner_code_in_post();
+
+    if (!$submitted_partner_code) {
+        return;
+    }
+
+    update_user_meta($user_id, 'axiom_affiliate_requested_partner_code', $submitted_partner_code);
+    update_user_meta($user_id, 'axiom_affiliate_coupon_code', $submitted_partner_code);
+
+    axiom_affiliate_rename_existing_coupon_for_user($user_id, $submitted_partner_code);
+}
+
+/**
+ * Find partner code from SliceWP settings POST.
+ */
+function axiom_affiliate_find_partner_code_in_post() {
+    foreach ($_POST as $key => $value) {
+        if (is_array($value)) {
+            $value = implode(' ', array_map('sanitize_text_field', wp_unslash($value)));
+        }
+
+        $key_clean = strtolower((string) $key);
+
+        /**
+         * Try to catch keys like:
+         * partner_code
+         * your_partner_code
+         * axiom_partner_code
+         * slicewp...partner...
+         */
+        $looks_like_partner_code_key =
+            strpos($key_clean, 'partner') !== false ||
+            strpos($key_clean, 'coupon') !== false ||
+            strpos($key_clean, 'code') !== false;
+
+        if (!$looks_like_partner_code_key) {
+            continue;
+        }
+
+        $code = axiom_affiliate_normalize_dashboard_partner_code($value);
+
+        if ($code) {
+            return $code;
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Normalize dashboard partner code.
+ */
+function axiom_affiliate_normalize_dashboard_partner_code($value) {
+    $value = strtoupper(wp_unslash((string) $value));
+    $value = preg_replace('/[^A-Z0-9]/', '', $value);
+    $value = substr($value, 0, 18);
+
+    /**
+     * Ignore tiny/invalid values.
+     */
+    if (strlen($value) < 3) {
+        return '';
+    }
+
+    return $value;
+}
+
+/**
+ * Rename existing WooCommerce affiliate coupon for user.
+ */
+function axiom_affiliate_rename_existing_coupon_for_user($user_id, $new_code) {
+    if (!$user_id || !$new_code) {
+        return false;
+    }
+
+    if (!function_exists('wc_get_coupon_id_by_code')) {
+        return false;
+    }
+
+    $coupon_id = (int) get_user_meta($user_id, 'axiom_affiliate_coupon_id', true);
+
+    /**
+     * If coupon ID was never saved, try to find the user's old saved coupon code.
+     */
+    if (!$coupon_id) {
+        $old_code = get_user_meta($user_id, 'axiom_affiliate_coupon_code', true);
+
+        if ($old_code) {
+            $coupon_id = (int) wc_get_coupon_id_by_code($old_code);
+        }
+    }
+
+    /**
+     * If still no coupon, create one if the helper exists.
+     */
+    if (!$coupon_id) {
+        $affiliate_id = 0;
+
+        if (function_exists('axiom_affiliate_get_affiliate_id_by_user')) {
+            $affiliate_id = (int) axiom_affiliate_get_affiliate_id_by_user($user_id);
+        } elseif (function_exists('slicewp_get_affiliate_by_user_id')) {
+            $affiliate = slicewp_get_affiliate_by_user_id($user_id);
+
+            if ($affiliate && function_exists('axiom_affiliate_obj_get')) {
+                $affiliate_id = (int) axiom_affiliate_obj_get($affiliate, 'id', 0);
+            }
+        }
+
+        if ($affiliate_id && function_exists('axiom_affiliate_create_coupon_for_user')) {
+            $created_code = axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id);
+
+            if ($created_code) {
+                $coupon_id = (int) wc_get_coupon_id_by_code($created_code);
+            }
+        }
+    }
+
+    if (!$coupon_id || !get_post($coupon_id)) {
+        return false;
+    }
+
+    /**
+     * Do not overwrite another coupon if the requested code already belongs to a different coupon.
+     */
+    $conflicting_coupon_id = (int) wc_get_coupon_id_by_code($new_code);
+
+    if ($conflicting_coupon_id && $conflicting_coupon_id !== $coupon_id) {
+        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'That partner code is already taken.');
+        return false;
+    }
+
+    wp_update_post(array(
+        'ID'         => $coupon_id,
+        'post_title' => $new_code,
+        'post_name'  => sanitize_title($new_code),
+    ));
+
+    update_user_meta($user_id, 'axiom_affiliate_coupon_code', $new_code);
+    update_user_meta($user_id, 'axiom_affiliate_coupon_id', $coupon_id);
+
+    update_post_meta($coupon_id, 'axiom_affiliate_user_id', (int) $user_id);
+
+    return true;
+}
