@@ -1,18 +1,28 @@
+/* =========================================================
+   Axiom Header / Menu / Announcement Bars
+========================================================= */
+
 .top-guide-bar {
   position: relative;
   z-index: 42;
-  background: linear-gradient(90deg, #53a7f7 0%, #469cf2 100%);
+  height: 46px;
+  min-height: 46px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #3b8ff3 0%, #48b8ff 50%, #3b8ff3 100%);
   color: #ffffff;
   border-bottom: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 8px 20px rgba(70, 156, 242, 0.18);
 }
 
 .top-guide-bar__inner {
-  min-height: 50px;
+  width: 100%;
+  min-height: 46px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 14px;
+  padding: 8px 16px;
   text-align: center;
 }
 
@@ -21,61 +31,107 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-size: 15px;
-  line-height: 1.2;
-  font-weight: 800;
-  letter-spacing: 0.025em;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.055em;
   text-transform: uppercase;
   text-align: center;
   white-space: nowrap;
 }
 
-.top-guide-bar__text .emoji {
-  font-size: 20px;
+.top-guide-bar__text i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 17px;
   line-height: 1;
-  display: inline-block;
-  flex: 0 0 auto;
-  transform: translateY(-1px);
+  opacity: 1;
+  margin: 0;
 }
+
+.top-guide-bar__text .emoji {
+  display: none;
+}
+
+/* =========================================================
+   Premium Scrolling Announcement Bar
+========================================================= */
 
 .top-announcement-bar {
   position: relative;
-  overflow: hidden;
-  background: #08162f;
-  color: #ffffff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 41;
+  height: 48px;
+  min-height: 48px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, #06101f 0%, #0b1a31 50%, #06101f 100%);
+  color: #ffffff;
+  border-top: 1px solid rgba(91, 199, 223, 0.22);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .top-announcement-track {
   display: flex;
   align-items: center;
-  gap: 16px;
-  white-space: nowrap;
+  width: max-content;
   min-width: max-content;
-  padding: 10px 20px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  animation: axiomTicker 30s linear infinite;
+  white-space: nowrap;
+  animation: axiomTicker 15s linear infinite;
+  will-change: transform;
+}
+
+.top-announcement-group {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding-right: 22px;
+  flex-shrink: 0;
 }
 
 .announcement-item {
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
   opacity: 0.98;
 }
 
+.announcement-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #5bc7df;
+  box-shadow: 0 0 14px rgba(91, 199, 223, 0.75);
+  flex: 0 0 auto;
+}
+
 .announcement-sep {
-  opacity: 0.45;
+  display: none;
+}
+
+.announcement-item i {
+  display: none;
 }
 
 @keyframes axiomTicker {
   0% {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
+
   100% {
-    transform: translateX(-25%);
+    transform: translate3d(-33.333%, 0, 0);
   }
 }
+
+/* =========================================================
+   Main Header
+========================================================= */
 
 .site-header {
   position: sticky;
@@ -129,6 +185,10 @@
   max-height: 60px;
   object-fit: contain;
 }
+
+/* =========================================================
+   Header Buttons
+========================================================= */
 
 .icon-btn {
   width: 52px;
@@ -205,6 +265,10 @@
   text-align: center;
   box-shadow: 0 0 0 2px #ffffff;
 }
+
+/* =========================================================
+   Mobile Menu Drawer
+========================================================= */
 
 .mobile-menu {
   position: fixed;
@@ -305,6 +369,10 @@
   flex: 0 0 44px;
 }
 
+/* =========================================================
+   Overlay
+========================================================= */
+
 .site-overlay {
   position: fixed;
   inset: 0;
@@ -320,22 +388,55 @@
   visibility: visible;
 }
 
+/* =========================================================
+   Mobile
+========================================================= */
+
 @media (max-width: 767px) {
+  .top-guide-bar {
+    height: 44px;
+    min-height: 44px;
+  }
+
   .top-guide-bar__inner {
-    min-height: 46px;
+    min-height: 44px;
     padding: 8px 10px;
   }
 
   .top-guide-bar__text {
     font-size: 12px;
-    line-height: 1.2;
-    gap: 7px;
-    letter-spacing: 0.02em;
+    line-height: 1;
+    gap: 9px;
+    letter-spacing: 0.05em;
     white-space: nowrap;
   }
 
-  .top-guide-bar__text .emoji {
-    font-size: 17px;
+  .top-guide-bar__text i {
+    font-size: 15px;
+  }
+
+  .top-announcement-bar {
+    height: 45px;
+    min-height: 45px;
+  }
+
+  .top-announcement-track {
+    animation-duration: 12s;
+  }
+
+  .top-announcement-group {
+    gap: 18px;
+    padding-right: 18px;
+  }
+
+  .announcement-item {
+    font-size: 13px;
+    letter-spacing: 0.045em;
+  }
+
+  .announcement-dot {
+    width: 5px;
+    height: 5px;
   }
 
   .header-inner {
@@ -375,34 +476,4 @@
     padding: 0 14px;
     font-size: 15px;
   }
-
-  .top-announcement-track {
-    font-size: 11px;
-    padding: 8px 14px;
-    gap: 12px;
-  }
-}
-
-.top-guide-bar__text i,
-.announcement-item i {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 7px;
-  color: #5bc7df;
-  font-size: 0.95em;
-  line-height: 1;
-}
-
-.top-guide-bar__text i {
-  color: #ffffff;
-  opacity: 0.95;
-}
-
-.announcement-item .fa-star {
-  color: #ffd166;
-}
-
-.announcement-item .fa-flag-usa {
-  color: #5bc7df;
 }
