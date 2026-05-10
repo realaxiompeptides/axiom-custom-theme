@@ -60,6 +60,11 @@ $axiom_function_files = array(
     // Still uses SliceWP underneath.
     '/functions/affiliate-program/affiliate-dashboard-modern.php',
 
+    // AFFILIATE PARTNER SETUP
+    // Saves payout preference, requested partner code, creates affiliate coupon,
+    // and provides the partner card shortcode.
+    '/functions/affiliate-program/affiliate-partner-setup.php',
+
     // Blocks WELCOME10 / WELCOME15 / AXIOM15 popup coupons on affiliate traffic
     '/functions/affiliate-program/affiliate-coupon-rules.php',
 
