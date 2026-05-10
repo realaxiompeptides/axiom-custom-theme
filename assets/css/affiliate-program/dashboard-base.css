@@ -616,3 +616,42 @@
         padding: 0 14px !important;
     }
 }
+
+/* =========================================================
+   Hide editable affiliate/partner code field in dashboard
+   Keeps registration page field visible.
+========================================================= */
+
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard label {
+    position: relative;
+}
+
+/* Hide field wrappers where SliceWP labels say Partner Code / Affiliate Code */
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(label),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(label),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(label) {
+    position: relative;
+}
+
+/* Strong browser-supported backup using common input names */
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[name*="partner_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[name*="partner"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[name*="affiliate_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[name*="coupon_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[name*="partner_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[name*="partner"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[name*="affiliate_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[name*="coupon_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(input[name*="partner_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(input[name*="partner"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(input[name*="affiliate_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(input[name*="coupon_code"]) {
+    display: none !important;
+}
+
+/* Extra fallback if the field has your custom Axiom input name */
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[name="axiom_partner_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[name="axiom_partner_code"]),
+.axiom-affiliate-dashboard-modern .axiom-affiliate-default-dashboard .slicewp-field:has(input[name="axiom_partner_code"]) {
+    display: none !important;
+}
