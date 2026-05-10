@@ -473,3 +473,115 @@
         white-space: nowrap;
     }
 }
+
+/* =========================================================
+   FIX: Axiom Program Details Styling
+   Put this at the VERY BOTTOM of affiliate-dashboard-modern.css
+========================================================= */
+
+.axiom-affiliate-program-details {
+    margin: -4px 0 28px !important;
+    padding: 0 !important;
+}
+
+.axiom-affiliate-program-details h3 {
+    margin: 0 0 16px !important;
+    font-size: 26px !important;
+    line-height: 1.15 !important;
+    font-weight: 900 !important;
+    color: #0c1220 !important;
+    letter-spacing: -0.035em !important;
+}
+
+.axiom-affiliate-program-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    margin: 0 0 26px !important;
+}
+
+.axiom-affiliate-program-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(12, 18, 32, 0.08) !important;
+    border-radius: 22px !important;
+    padding: 18px !important;
+    box-shadow: 0 14px 36px rgba(12, 18, 32, 0.06) !important;
+    min-height: 104px !important;
+}
+
+.axiom-affiliate-program-icon {
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px !important;
+    border-radius: 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f3f8ff !important;
+    color: #0c1220 !important;
+    font-size: 22px !important;
+}
+
+.axiom-affiliate-program-icon i {
+    font-size: 22px !important;
+    line-height: 1 !important;
+}
+
+.axiom-affiliate-program-label {
+    color: #7a8393 !important;
+    font-size: 14px !important;
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    margin: 0 0 6px !important;
+}
+
+.axiom-affiliate-program-value {
+    color: #0c1220 !important;
+    font-size: 22px !important;
+    line-height: 1.1 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.035em !important;
+    margin: 0 !important;
+}
+
+/* Mobile layout */
+@media (max-width: 640px) {
+    .axiom-affiliate-program-details {
+        margin: -2px 0 24px !important;
+    }
+
+    .axiom-affiliate-program-details h3 {
+        font-size: 24px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .axiom-affiliate-program-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+        margin-bottom: 24px !important;
+    }
+
+    .axiom-affiliate-program-card {
+        padding: 16px !important;
+        border-radius: 20px !important;
+        min-height: 96px !important;
+    }
+
+    .axiom-affiliate-program-icon {
+        width: 52px !important;
+        height: 52px !important;
+        min-width: 52px !important;
+        font-size: 20px !important;
+    }
+
+    .axiom-affiliate-program-icon i {
+        font-size: 20px !important;
+    }
+
+    .axiom-affiliate-program-value {
+        font-size: 20px !important;
+    }
+}
