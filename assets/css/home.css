@@ -4,66 +4,125 @@
 ========================================================= */
 
 /* =========================================================
-   HERO SECTION
+   HERO SECTION - NEW AXIOM BRAND HERO
 ========================================================= */
 
 .hero-section {
   position: relative;
-  min-height: clamp(620px, 76vh, 820px);
+  min-height: clamp(680px, 82vh, 860px);
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
-  background: #071329;
+  background:
+    radial-gradient(circle at 72% 44%, rgba(78, 162, 245, 0.22), transparent 34%),
+    radial-gradient(circle at 22% 20%, rgba(127, 214, 255, 0.13), transparent 30%),
+    linear-gradient(135deg, #061226 0%, #081a36 48%, #061226 100%);
   color: #ffffff;
 }
 
-/* Background image */
+.hero-section--axiom-brand {
+  padding: 0;
+}
+
+/* Hide old hero image system if old markup is still cached */
 .hero-bg,
 .hero-overlay {
+  display: none;
+}
+
+/* New layered background */
+.hero-visual-bg {
   position: absolute;
   inset: 0;
-}
-
-.hero-bg {
   z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
-.hero-bg img {
+.hero-gradient-layer,
+.hero-grid-layer,
+.hero-abstract-image,
+.hero-glow,
+.hero-strand {
+  position: absolute;
+  pointer-events: none;
+}
+
+.hero-gradient-layer {
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(6, 18, 38, 0.92) 0%, rgba(6, 18, 38, 0.68) 42%, rgba(6, 18, 38, 0.42) 100%),
+    linear-gradient(180deg, rgba(6, 18, 38, 0.08) 0%, rgba(6, 18, 38, 0.38) 100%);
+}
+
+.hero-grid-layer {
+  inset: 0;
+  z-index: 2;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(rgba(127, 214, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(127, 214, 255, 0.12) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(circle at 68% 42%, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(circle at 68% 42%, black 0%, transparent 70%);
+}
+
+.hero-abstract-image {
+  inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center center;
-  transform: scale(1.03);
-  filter: saturate(0.92) contrast(1.03);
+  opacity: 0.34;
+  filter: saturate(1.18) contrast(1.05);
+  transform: scale(1.02);
 }
 
-/* Cleaner blue overlay */
-.hero-overlay {
-  z-index: 1;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(78, 162, 245, 0.18), transparent 34%),
-    linear-gradient(
-      180deg,
-      rgba(7, 19, 41, 0.42) 0%,
-      rgba(7, 19, 41, 0.56) 45%,
-      rgba(7, 19, 41, 0.78) 100%
-    );
+.hero-glow--one {
+  z-index: 3;
+  width: 520px;
+  height: 520px;
+  right: 6%;
+  top: 18%;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(78, 162, 245, 0.32), transparent 66%);
+  filter: blur(10px);
 }
 
-/* Soft grid like premium lab/tech styling */
-.hero-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-  background-size: 58px 58px;
-  opacity: 0.16;
+.hero-glow--two {
+  z-index: 3;
+  width: 420px;
+  height: 420px;
+  left: -8%;
+  bottom: 0;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(127, 214, 255, 0.18), transparent 68%);
+  filter: blur(16px);
+}
+
+.hero-strand {
+  z-index: 4;
+  width: 340px;
+  height: 340px;
+  border-radius: 999px;
+  border: 1px solid rgba(127, 214, 255, 0.18);
+  opacity: 0.55;
+}
+
+.hero-strand--left {
+  left: -120px;
+  top: 15%;
+  transform: rotate(28deg);
+}
+
+.hero-strand--right {
+  right: -90px;
+  bottom: 14%;
+  transform: rotate(-28deg);
 }
 
 /* Bottom fade */
@@ -72,32 +131,26 @@
   position: absolute;
   inset: auto 0 0;
   z-index: 2;
-  height: 190px;
+  height: 220px;
   pointer-events: none;
-  background: linear-gradient(180deg, transparent 0%, rgba(7, 19, 41, 0.38) 100%);
+  background: linear-gradient(180deg, transparent 0%, rgba(6, 18, 38, 0.62) 100%);
 }
 
-/* Main hero content */
-.hero-content,
-.hero-content-centered-mobile {
+/* Main hero layout */
+.hero-inner {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   width: 100%;
-  padding: 96px 0 92px;
-}
-
-.hero-content.container,
-.hero-content-centered-mobile.container {
-  max-width: 1120px;
-}
-
-/* Center hero text on desktop */
-.hero-content,
-.hero-content-centered-mobile {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: minmax(0, 0.96fr) minmax(420px, 0.84fr);
   align-items: center;
-  text-align: center;
+  gap: clamp(34px, 5vw, 78px);
+  padding-top: clamp(70px, 8vh, 110px);
+  padding-bottom: clamp(70px, 8vh, 110px);
+}
+
+.hero-copy {
+  max-width: 710px;
 }
 
 .hero-kicker {
@@ -107,44 +160,43 @@
   margin: 0 0 18px;
   padding: 10px 16px;
   border-radius: 999px;
-  background: rgba(78, 162, 245, 0.18);
-  border: 1px solid rgba(120, 190, 255, 0.30);
-  color: #ffffff;
+  background: rgba(78, 162, 245, 0.16);
+  border: 1px solid rgba(127, 214, 255, 0.28);
+  color: #dff4ff;
   font-size: 12px;
   line-height: 1;
   font-weight: 900;
-  letter-spacing: 0.10em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   box-shadow:
     0 14px 34px rgba(0, 0, 0, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
+.hero-copy h1,
 .hero-content h1,
 .hero-content-centered-mobile h1 {
-  max-width: 760px;
-  margin: 0 auto 18px;
+  max-width: 740px;
+  margin: 0 0 20px;
   color: #ffffff;
-  font-size: clamp(52px, 5.6vw, 82px);
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  font-size: clamp(56px, 5.45vw, 88px);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
   font-weight: 950;
-  text-align: center;
   text-wrap: balance;
   text-shadow: 0 18px 46px rgba(0, 0, 0, 0.30);
 }
 
 .hero-subtext {
-  max-width: 680px;
-  margin: 0 auto 30px;
-  color: rgba(255, 255, 255, 0.88);
+  max-width: 620px;
+  margin: 0 0 32px;
+  color: rgba(225, 240, 255, 0.88);
   font-size: clamp(17px, 1.25vw, 20px);
   line-height: 1.55;
   font-weight: 600;
-  text-align: center;
-  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
 }
 
 /* Hero buttons */
@@ -152,7 +204,6 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 14px;
   margin-top: 4px;
@@ -177,13 +228,17 @@
   text-align: center;
   background: #ffffff;
   color: #071329;
-  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.24);
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.26),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-actions .btn-white:hover {
   transform: translateY(-2px);
-  box-shadow: 0 22px 46px rgba(0, 0, 0, 0.30);
+  box-shadow:
+    0 24px 52px rgba(0, 0, 0, 0.34),
+    inset 0 -1px 0 rgba(15, 23, 42, 0.08);
 }
 
 .hero-actions .btn-outline {
@@ -199,8 +254,8 @@
   line-height: 1;
   text-align: center;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.09);
-  border: 1.5px solid rgba(255, 255, 255, 0.36);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.32);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.11),
     0 14px 30px rgba(0, 0, 0, 0.16);
@@ -211,8 +266,8 @@
 
 .hero-actions .btn-outline:hover {
   transform: translateY(-2px);
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.56);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.52);
 }
 
 .btn-arrow {
@@ -225,6 +280,182 @@
 
 .hero-actions .btn-white:hover .btn-arrow {
   transform: translateX(4px);
+}
+
+/* Product/Vial stage */
+.hero-product-stage {
+  position: relative;
+  min-height: 540px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-vial-wrap {
+  position: relative;
+  z-index: 5;
+  width: min(420px, 34vw);
+  max-width: 420px;
+  min-width: 290px;
+  aspect-ratio: 0.72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: axiomHeroFloat 5.2s ease-in-out infinite;
+}
+
+.hero-vial-glow {
+  position: absolute;
+  inset: 12% 4% 8%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(127, 214, 255, 0.38), transparent 58%),
+    radial-gradient(circle at 50% 64%, rgba(78, 162, 245, 0.30), transparent 62%);
+  filter: blur(28px);
+  transform: scale(0.92);
+}
+
+.hero-vial-image {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 30px 44px rgba(0, 0, 0, 0.44))
+    drop-shadow(0 0 26px rgba(127, 214, 255, 0.16));
+}
+
+.hero-vial-image--fallback {
+  width: 115%;
+  height: 115%;
+  object-fit: cover;
+  border-radius: 30px;
+  opacity: 0.95;
+  filter:
+    saturate(0.98)
+    contrast(1.02)
+    drop-shadow(0 30px 44px rgba(0, 0, 0, 0.44));
+}
+
+.hero-product-orbit {
+  position: absolute;
+  z-index: 1;
+  border-radius: 999px;
+  border: 1px solid rgba(127, 214, 255, 0.18);
+  box-shadow: inset 0 0 40px rgba(78, 162, 245, 0.05);
+}
+
+.hero-product-orbit--one {
+  width: min(520px, 42vw);
+  height: min(520px, 42vw);
+  transform: rotate(-18deg);
+}
+
+.hero-product-orbit--two {
+  width: min(390px, 32vw);
+  height: min(390px, 32vw);
+  transform: rotate(25deg);
+  opacity: 0.66;
+}
+
+.hero-floating-card {
+  position: absolute;
+  z-index: 8;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 190px;
+  padding: 12px 14px;
+  border-radius: 18px;
+  background: rgba(7, 19, 41, 0.64);
+  border: 1px solid rgba(127, 214, 255, 0.22);
+  color: #ffffff;
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.hero-floating-card strong {
+  display: block;
+  margin: 0 0 2px;
+  font-size: 13px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+
+.hero-floating-card small {
+  display: block;
+  color: rgba(225, 240, 255, 0.76);
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 700;
+}
+
+.hero-floating-card-icon {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 12px;
+  background: rgba(78, 162, 245, 0.18);
+  color: #7fd6ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-floating-card--top {
+  top: 48px;
+  right: 16px;
+  animation: axiomCardFloat 5.6s ease-in-out infinite;
+}
+
+.hero-floating-card--left {
+  left: -18px;
+  top: 42%;
+  animation: axiomCardFloat 6s ease-in-out infinite reverse;
+}
+
+.hero-floating-card--right {
+  right: -24px;
+  bottom: 92px;
+  animation: axiomCardFloat 6.4s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes axiomHeroFloat {
+  0%, 100% {
+    transform: translateY(0) rotate(-2deg);
+  }
+
+  50% {
+    transform: translateY(-18px) rotate(2deg);
+  }
+}
+
+@keyframes axiomCardFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* =========================================================
+   OLD HERO COMPATIBILITY
+   If any old class is still present, keep it usable.
+========================================================= */
+
+.hero-content,
+.hero-content-centered-mobile {
+  position: relative;
+  z-index: 5;
+  width: 100%;
 }
 
 /* =========================================================
@@ -274,7 +505,7 @@
 
 .axiom-proof-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 18px;
 }
 
@@ -322,28 +553,49 @@
 }
 
 /* =========================================================
+   HOMEPAGE COLLECTION SAFETY POLISH
+========================================================= */
+
+.homepage-collection {
+  background: #f8fbfe;
+}
+
+.homepage-collection-heading {
+  text-align: center;
+}
+
+.homepage-collection-heading p {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.homepage-collection-cta {
+  margin-top: 28px;
+  text-align: center;
+}
+
+/* =========================================================
    DESKTOP POLISH
 ========================================================= */
 
 @media (min-width: 992px) {
   .hero-section {
-    min-height: 710px;
+    min-height: 740px;
   }
 
-  .hero-bg img {
-    object-position: center center;
-  }
-
-  .hero-content,
-  .hero-content-centered-mobile {
-    padding-left: 24px;
-    padding-right: 24px;
+  .hero-inner {
+    max-width: 1180px;
   }
 }
 
 @media (min-width: 1280px) {
   .hero-section {
-    min-height: 760px;
+    min-height: 780px;
+  }
+
+  .hero-inner {
+    max-width: 1240px;
   }
 }
 
@@ -353,21 +605,62 @@
 
 @media (max-width: 991px) {
   .hero-section {
-    min-height: 620px;
+    min-height: auto;
   }
 
-  .hero-content,
-  .hero-content-centered-mobile {
-    padding: 82px 22px 76px;
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    padding-top: 78px;
+    padding-bottom: 78px;
+    text-align: center;
   }
 
+  .hero-copy {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  .hero-copy h1,
   .hero-content h1,
   .hero-content-centered-mobile h1 {
-    max-width: 720px;
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(46px, 8vw, 70px);
   }
 
   .hero-subtext {
-    max-width: 620px;
+    max-width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-product-stage {
+    min-height: 440px;
+  }
+
+  .hero-vial-wrap {
+    width: min(360px, 58vw);
+    min-width: 260px;
+  }
+
+  .hero-floating-card--top {
+    top: 20px;
+    right: 8%;
+  }
+
+  .hero-floating-card--left {
+    left: 6%;
+  }
+
+  .hero-floating-card--right {
+    right: 5%;
+    bottom: 54px;
   }
 
   .axiom-proof-grid {
@@ -390,52 +683,81 @@
 
 @media (max-width: 767px) {
   .hero-section {
-    min-height: 610px;
-  }
-
-  .hero-bg img {
-    object-position: center center;
-    transform: scale(1.04);
-  }
-
-  .hero-overlay {
+    min-height: auto;
     background:
-      radial-gradient(circle at 50% 34%, rgba(78, 162, 245, 0.16), transparent 40%),
-      linear-gradient(
-        180deg,
-        rgba(7, 19, 41, 0.48) 0%,
-        rgba(7, 19, 41, 0.62) 45%,
-        rgba(7, 19, 41, 0.86) 100%
-      );
+      radial-gradient(circle at 50% 38%, rgba(78, 162, 245, 0.26), transparent 42%),
+      linear-gradient(135deg, #061226 0%, #081a36 52%, #061226 100%);
   }
 
-  .hero-content,
-  .hero-content-centered-mobile {
-    padding: 72px 18px 70px;
+  .hero-gradient-layer {
+    background:
+      linear-gradient(180deg, rgba(6, 18, 38, 0.46) 0%, rgba(6, 18, 38, 0.78) 100%);
+  }
+
+  .hero-grid-layer {
+    background-size: 44px 44px;
+    opacity: 0.13;
+  }
+
+  .hero-abstract-image {
+    opacity: 0.22;
+    object-position: center center;
+  }
+
+  .hero-glow--one {
+    width: 340px;
+    height: 340px;
+    right: -80px;
+    top: 28%;
+  }
+
+  .hero-glow--two {
+    width: 300px;
+    height: 300px;
+    left: -110px;
+    bottom: 12%;
+  }
+
+  .hero-section::after {
+    height: 170px;
+  }
+
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    padding: 62px 18px 56px;
+    gap: 30px;
+  }
+
+  .hero-copy {
+    width: 100%;
+    max-width: 100%;
+    order: 1;
   }
 
   .hero-kicker {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     font-size: 11px;
-    padding: 10px 15px;
+    padding: 10px 14px;
     letter-spacing: 0.09em;
   }
 
+  .hero-copy h1,
   .hero-content h1,
   .hero-content-centered-mobile h1 {
     max-width: 100%;
     width: 100%;
     margin-bottom: 16px;
-    font-size: clamp(38px, 11vw, 56px);
+    font-size: clamp(39px, 11.4vw, 58px);
     line-height: 0.98;
-    letter-spacing: -0.045em;
+    letter-spacing: -0.047em;
   }
 
   .hero-subtext {
     max-width: 100%;
     width: 100%;
     font-size: 16px;
-    line-height: 1.45;
+    line-height: 1.48;
     margin-bottom: 26px;
   }
 
@@ -449,9 +771,9 @@
   .hero-actions .btn,
   .hero-actions .btn-white,
   .hero-actions .btn-outline {
-    width: min(310px, 88vw);
+    width: min(315px, 88vw);
     min-width: 0;
-    max-width: 310px;
+    max-width: 315px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -466,6 +788,66 @@
     min-height: 54px;
     padding: 0 24px;
     font-size: 16px;
+  }
+
+  .hero-product-stage {
+    order: 2;
+    width: 100%;
+    min-height: 355px;
+    margin-top: 0;
+  }
+
+  .hero-vial-wrap {
+    width: min(250px, 62vw);
+    min-width: 210px;
+  }
+
+  .hero-product-orbit--one {
+    width: 300px;
+    height: 300px;
+  }
+
+  .hero-product-orbit--two {
+    width: 230px;
+    height: 230px;
+  }
+
+  .hero-floating-card {
+    min-width: auto;
+    padding: 10px 11px;
+    border-radius: 15px;
+    gap: 8px;
+  }
+
+  .hero-floating-card strong {
+    font-size: 11px;
+  }
+
+  .hero-floating-card small {
+    font-size: 9px;
+  }
+
+  .hero-floating-card-icon {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  .hero-floating-card--top {
+    top: 2px;
+    right: 0;
+  }
+
+  .hero-floating-card--left {
+    left: 0;
+    top: 42%;
+  }
+
+  .hero-floating-card--right {
+    right: 0;
+    bottom: 28px;
   }
 
   .axiom-proof-strip {
@@ -521,5 +903,56 @@
   .axiom-proof-content p {
     font-size: 12px;
     line-height: 1.25;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-inner {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .hero-copy h1,
+  .hero-content h1,
+  .hero-content-centered-mobile h1 {
+    font-size: clamp(37px, 11.2vw, 50px);
+  }
+
+  .hero-product-stage {
+    min-height: 330px;
+  }
+
+  .hero-vial-wrap {
+    width: min(225px, 62vw);
+    min-width: 190px;
+  }
+
+  .hero-floating-card {
+    transform: scale(0.92);
+  }
+
+  .hero-floating-card--left {
+    left: -8px;
+  }
+
+  .hero-floating-card--right {
+    right: -8px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-vial-wrap,
+  .hero-floating-card {
+    animation: none !important;
+  }
+
+  .hero-actions .btn-white,
+  .hero-actions .btn-outline,
+  .btn-arrow {
+    transition: none !important;
   }
 }
