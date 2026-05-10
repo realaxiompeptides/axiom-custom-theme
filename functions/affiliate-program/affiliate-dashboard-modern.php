@@ -178,10 +178,16 @@ function axiom_render_affiliate_dashboard() {
         return '<p>SliceWP is not active.</p>';
     }
 
+    /**
+     * Logged out visitors should only see the SliceWP login/account area.
+     */
     if (!is_user_logged_in()) {
         return do_shortcode('[slicewp_affiliate_account]');
     }
 
+    /**
+     * Logged in but not active affiliates should only see SliceWP's normal message.
+     */
     if (!axiom_is_current_user_active_affiliate()) {
         return do_shortcode('[slicewp_affiliate_account]');
     }
@@ -190,7 +196,7 @@ function axiom_render_affiliate_dashboard() {
 
     ob_start();
     ?>
-    <div class="axiom-affiliate-dashboard-modern">
+    <div class="axiom-affiliate-dashboard-modern axiom-affiliate-home-active">
 
         <div class="axiom-affiliate-dashboard-header">
             <h2>Affiliate Dashboard</h2>
@@ -285,11 +291,11 @@ function axiom_render_affiliate_dashboard() {
 }
 
 /**
- * Enqueue split affiliate dashboard CSS files.
+ * Enqueue split affiliate dashboard CSS files + cleanup JS.
  */
-add_action('wp_enqueue_scripts', 'axiom_enqueue_affiliate_dashboard_modern_styles', 30);
+add_action('wp_enqueue_scripts', 'axiom_enqueue_affiliate_dashboard_modern_assets', 30);
 
-function axiom_enqueue_affiliate_dashboard_modern_styles() {
+function axiom_enqueue_affiliate_dashboard_modern_assets() {
     if (!is_singular()) {
         return;
     }
@@ -307,6 +313,10 @@ function axiom_enqueue_affiliate_dashboard_modern_styles() {
         is_page('affiliate-dashboard') ||
         is_page('affiliate-account')
     ) {
+        /**
+         * Your CSS files are currently directly inside:
+         * assets/css/affiliate-program/
+         */
         $css_files = array(
             'axiom-affiliate-dashboard-base'     => '/assets/css/affiliate-program/dashboard-base.css',
             'axiom-affiliate-dashboard-cards'    => '/assets/css/affiliate-program/dashboard-cards.css',
@@ -324,5 +334,19 @@ function axiom_enqueue_affiliate_dashboard_modern_styles() {
                 file_exists($full_path) ? filemtime($full_path) : '1.0.0'
             );
         }
+
+        /**
+         * Cleanup JS:
+         * assets/js/affiliate-program/dashboard-cleanup.js
+         */
+        $js_path = get_template_directory() . '/assets/js/affiliate-program/dashboard-cleanup.js';
+
+        wp_enqueue_script(
+            'axiom-affiliate-dashboard-cleanup',
+            get_template_directory_uri() . '/assets/js/affiliate-program/dashboard-cleanup.js',
+            array(),
+            file_exists($js_path) ? filemtime($js_path) : '1.0.0',
+            true
+        );
     }
 }
