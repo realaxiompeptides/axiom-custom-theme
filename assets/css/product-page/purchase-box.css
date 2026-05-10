@@ -867,3 +867,117 @@ img {
     font-size: 16px;
   }
 }
+
+/* =========================================================
+   Axiom Product Page - WPLoyalty Earn Points Styling
+   Strong version for custom product layout
+========================================================= */
+
+/* Main WPLoyalty points message */
+.single-product .wlr-product-message,
+.single-product .wlr-product-points-message,
+.single-product .wlr_points_message,
+.single-product .wlr-earned-points-message,
+.single-product .wployalty-product-message,
+.single-product .wployalty-earn-message,
+.single-product [class*="wlr"][class*="message"],
+.single-product [class*="wlr"][class*="points"],
+.single-product [class*="loyalty"][class*="message"],
+.single-product [class*="loyalty"][class*="points"] {
+  width: 100% !important;
+  margin: 16px 0 22px !important;
+  padding: 16px 18px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(78, 162, 245, 0.26) !important;
+  background: linear-gradient(180deg, #f4f9ff 0%, #edf6ff 100%) !important;
+  box-shadow: 0 14px 34px rgba(78, 162, 245, 0.12) !important;
+  color: #0c1220 !important;
+  font-size: 20px !important;
+  line-height: 1.2 !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.03em !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 13px !important;
+  text-align: left !important;
+}
+
+/* Reward icon bubble */
+.single-product .wlr-product-message::before,
+.single-product .wlr-product-points-message::before,
+.single-product .wlr_points_message::before,
+.single-product .wlr-earned-points-message::before,
+.single-product .wployalty-product-message::before,
+.single-product .wployalty-earn-message::before,
+.single-product [class*="wlr"][class*="message"]::before,
+.single-product [class*="wlr"][class*="points"]::before,
+.single-product [class*="loyalty"][class*="message"]::before,
+.single-product [class*="loyalty"][class*="points"]::before {
+  content: "★" !important;
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #4ea2f5 0%, #3b6fe0 100%) !important;
+  color: #ffffff !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  box-shadow: 0 10px 22px rgba(78, 162, 245, 0.26) !important;
+}
+
+/* Inner plugin text */
+.single-product .wlr-product-message *,
+.single-product .wlr-product-points-message *,
+.single-product .wlr_points_message *,
+.single-product .wlr-earned-points-message *,
+.single-product .wployalty-product-message *,
+.single-product .wployalty-earn-message *,
+.single-product [class*="wlr"][class*="message"] *,
+.single-product [class*="wlr"][class*="points"] *,
+.single-product [class*="loyalty"][class*="message"] *,
+.single-product [class*="loyalty"][class*="points"] * {
+  color: inherit !important;
+  font-size: inherit !important;
+  line-height: inherit !important;
+  font-weight: inherit !important;
+  margin: 0 !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .single-product .wlr-product-message,
+  .single-product .wlr-product-points-message,
+  .single-product .wlr_points_message,
+  .single-product .wlr-earned-points-message,
+  .single-product .wployalty-product-message,
+  .single-product .wployalty-earn-message,
+  .single-product [class*="wlr"][class*="message"],
+  .single-product [class*="wlr"][class*="points"],
+  .single-product [class*="loyalty"][class*="message"],
+  .single-product [class*="loyalty"][class*="points"] {
+    margin: 14px 0 20px !important;
+    padding: 14px 15px !important;
+    border-radius: 18px !important;
+    font-size: 17px !important;
+    gap: 11px !important;
+  }
+
+  .single-product .wlr-product-message::before,
+  .single-product .wlr-product-points-message::before,
+  .single-product .wlr_points_message::before,
+  .single-product .wlr-earned-points-message::before,
+  .single-product .wployalty-product-message::before,
+  .single-product .wployalty-earn-message::before,
+  .single-product [class*="wlr"][class*="message"]::before,
+  .single-product [class*="wlr"][class*="points"]::before,
+  .single-product [class*="loyalty"][class*="message"]::before,
+  .single-product [class*="loyalty"][class*="points"]::before {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    font-size: 16px !important;
+  }
+}
