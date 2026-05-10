@@ -5,87 +5,67 @@ if (!defined('ABSPATH')) {
 
 $theme_uri = get_template_directory_uri();
 
-$axiom_floating_products = array(
+$axiom_vials = array(
     array(
-        'title'    => 'GHK-Cu',
-        'subtitle' => '50mg / 3mL',
-        'image'    => $theme_uri . '/assets/images/floating-vials/ghk-cu-50mg.PNG',
-        'slug'     => 'ghk-cu',
+        'image' => $theme_uri . '/assets/images/floating-vials/ghk-cu-50mg.PNG',
+        'alt'   => 'GHK-Cu Axiom vial',
+        'class' => 'axiom-vial-float--one',
     ),
     array(
-        'title'    => 'GLP-3 RT',
-        'subtitle' => '60mg / 3mL',
-        'image'    => $theme_uri . '/assets/images/floating-vials/glp-3-rt-60mg.PNG',
-        'slug'     => 'glp-3-rt',
+        'image' => $theme_uri . '/assets/images/floating-vials/glp-3-rt-60mg.PNG',
+        'alt'   => 'GLP-3 RT Axiom vial',
+        'class' => 'axiom-vial-float--two',
     ),
     array(
-        'title'    => '5-Amino 1MQ',
-        'subtitle' => '5mg / 3mL',
-        'image'    => $theme_uri . '/assets/images/floating-vials/5-amino-1mq-5mg.PNG',
-        'slug'     => '5-amino-1mq',
+        'image' => $theme_uri . '/assets/images/floating-vials/5-amino-1mq-5mg.PNG',
+        'alt'   => '5-Amino 1MQ Axiom vial',
+        'class' => 'axiom-vial-float--three',
     ),
     array(
-        'title'    => 'MT-1',
-        'subtitle' => '10mg / 3mL',
-        'image'    => $theme_uri . '/assets/images/floating-vials/mt1-10mg.PNG',
-        'slug'     => 'mt-1',
+        'image' => $theme_uri . '/assets/images/floating-vials/mt1-10mg.PNG',
+        'alt'   => 'MT-1 Axiom vial',
+        'class' => 'axiom-vial-float--four',
     ),
     array(
-        'title'    => 'NAD+',
-        'subtitle' => '500mg / 3mL',
-        'image'    => $theme_uri . '/assets/images/floating-vials/nad-500mg.PNG',
-        'slug'     => 'nad',
+        'image' => $theme_uri . '/assets/images/floating-vials/nad-500mg.PNG',
+        'alt'   => 'NAD+ Axiom vial',
+        'class' => 'axiom-vial-float--five',
     ),
 );
 ?>
 
-<section class="axiom-floating-vials axiom-home-floating-vials" aria-label="Featured research products">
-    <div class="axiom-floating-shell">
-        <div class="axiom-floating-panel">
+<section class="axiom-vial-showcase" aria-label="Axiom research vial showcase">
+    <div class="axiom-vial-showcase-bg" aria-hidden="true">
+        <div class="axiom-vial-showcase-grid"></div>
+        <div class="axiom-vial-showcase-glow axiom-vial-showcase-glow--one"></div>
+        <div class="axiom-vial-showcase-glow axiom-vial-showcase-glow--two"></div>
+    </div>
 
-            <div class="axiom-floating-header">
-                <span class="axiom-floating-kicker">
-                    <i class="fa-solid fa-vials" aria-hidden="true"></i>
-                    Featured Research Compounds
-                </span>
+    <div class="axiom-vial-showcase-inner">
+        <div class="axiom-vial-showcase-copy">
+            <span class="axiom-vial-showcase-pill">
+                <i class="fa-solid fa-vials" aria-hidden="true"></i>
+                Axiom Research Collection
+            </span>
 
-                <h2>Explore Axiom Best Sellers</h2>
+            <h2>Precision Compounds. Clean Presentation.</h2>
 
-                <p>
-                    Premium research-use products with clean documentation, transparent batch standards, and fast fulfillment.
-                </p>
-            </div>
+            <p>
+                A premium research-use catalog built around batch transparency, clean fulfillment, and professional documentation.
+            </p>
+        </div>
 
-            <div class="axiom-floating-products">
-                <?php foreach ($axiom_floating_products as $product) : ?>
-                    <?php
-                    $product_post = get_page_by_path($product['slug'], OBJECT, 'product');
-                    $product_link = $product_post ? get_permalink($product_post->ID) : home_url('/shop/');
-                    ?>
-
-                    <a
-                        class="axiom-floating-product"
-                        href="<?php echo esc_url($product_link); ?>"
-                        aria-label="<?php echo esc_attr($product['title']); ?>"
+        <div class="axiom-vial-float-stage" aria-hidden="true">
+            <?php foreach ($axiom_vials as $vial) : ?>
+                <div class="axiom-vial-float <?php echo esc_attr($vial['class']); ?>">
+                    <img
+                        src="<?php echo esc_url($vial['image']); ?>"
+                        alt="<?php echo esc_attr($vial['alt']); ?>"
+                        loading="lazy"
+                        decoding="async"
                     >
-                        <img
-                            src="<?php echo esc_url($product['image']); ?>"
-                            alt="<?php echo esc_attr($product['title']); ?>"
-                            loading="lazy"
-                            decoding="async"
-                        >
-
-                        <span class="axiom-floating-product-title">
-                            <?php echo esc_html($product['title']); ?>
-                        </span>
-
-                        <span class="axiom-floating-product-subtitle">
-                            <?php echo esc_html($product['subtitle']); ?>
-                        </span>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-
+                </div>
+            <?php endforeach; ?>
         </div>
     </div>
 </section>
