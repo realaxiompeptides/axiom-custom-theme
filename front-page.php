@@ -1,34 +1,102 @@
 <?php get_header(); ?>
 
 <main>
-  <section class="hero-section">
-    <div class="hero-bg">
-      <?php $hero = get_template_directory_uri() . '/assets/images/hero-image.PNG'; ?>
-      <img src="<?php echo esc_url($hero); ?>" alt="Laboratory research environment" />
+  <section class="hero-section hero-section--axiom-brand">
+    <?php
+    $theme_uri        = get_template_directory_uri();
+    $hero_abstract    = $theme_uri . '/assets/images/hero-axiom-abstract.webp';
+    $hero_vial        = $theme_uri . '/assets/images/hero-vial-main.webp';
+    $hero_fallback    = $theme_uri . '/assets/images/hero-image.PNG';
+    $shop_page_url    = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
+    ?>
+
+    <div class="hero-visual-bg" aria-hidden="true">
+      <div class="hero-gradient-layer"></div>
+      <div class="hero-grid-layer"></div>
+      <div class="hero-glow hero-glow--one"></div>
+      <div class="hero-glow hero-glow--two"></div>
+      <div class="hero-strand hero-strand--left"></div>
+      <div class="hero-strand hero-strand--right"></div>
+
+      <img
+        class="hero-abstract-image"
+        src="<?php echo esc_url($hero_abstract); ?>"
+        alt=""
+        loading="eager"
+        decoding="async"
+        onerror="this.style.display='none';"
+      />
     </div>
-    <div class="hero-overlay"></div>
 
-    <div class="hero-content container hero-content-centered-mobile">
-      <p class="hero-kicker">Premium Research Compounds</p>
-      <h1>Your Supplier For Research Compounds</h1>
-      <p class="hero-subtext">
-        Research-grade peptides engineered for precision. 99%+ verified purity with independent third-party testing on every batch.
-      </p>
+    <div class="hero-inner container">
+      <div class="hero-copy">
+        <p class="hero-kicker">Premium Research Compounds</p>
 
-      <!-- ✅ UPDATED BUTTONS ONLY -->
-      <div class="hero-actions">
+        <h1>Your Supplier For Research Compounds</h1>
 
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-white">
-          Shop All Peptides
-          <span class="btn-arrow">→</span>
-        </a>
+        <p class="hero-subtext">
+          Research-grade peptides engineered for precision, transparent batch documentation, and fast U.S. fulfillment.
+        </p>
 
-        <a href="<?php echo esc_url(home_url('/coa-page/')); ?>" class="btn btn-outline">
-          View COA Library
-        </a>
+        <div class="hero-actions">
+          <a href="<?php echo esc_url($shop_page_url); ?>" class="btn btn-white">
+            Shop All Peptides
+            <span class="btn-arrow">→</span>
+          </a>
 
+          <a href="<?php echo esc_url(home_url('/coa-page/')); ?>" class="btn btn-outline">
+            View COA Library
+          </a>
+        </div>
       </div>
 
+      <div class="hero-product-stage" aria-hidden="true">
+        <div class="hero-product-orbit hero-product-orbit--one"></div>
+        <div class="hero-product-orbit hero-product-orbit--two"></div>
+
+        <div class="hero-floating-card hero-floating-card--top">
+          <span class="hero-floating-card-icon">
+            <i class="fa-solid fa-vial-circle-check"></i>
+          </span>
+          <span>
+            <strong>COA Verified</strong>
+            <small>Batch documentation</small>
+          </span>
+        </div>
+
+        <div class="hero-floating-card hero-floating-card--left">
+          <span class="hero-floating-card-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </span>
+          <span>
+            <strong>Research Use Only</strong>
+            <small>Clear product standards</small>
+          </span>
+        </div>
+
+        <div class="hero-floating-card hero-floating-card--right">
+          <span class="hero-floating-card-icon">
+            <i class="fa-solid fa-truck-fast"></i>
+          </span>
+          <span>
+            <strong>Fast Fulfillment</strong>
+            <small>Orders before 2 PM PST</small>
+          </span>
+        </div>
+
+        <div class="hero-vial-wrap">
+          <div class="hero-vial-glow"></div>
+
+          <img
+            class="hero-vial-image"
+            src="<?php echo esc_url($hero_vial); ?>"
+            alt=""
+            loading="eager"
+            decoding="async"
+            onerror="this.src='<?php echo esc_url($hero_fallback); ?>'; this.classList.add('hero-vial-image--fallback');"
+          />
+        </div>
+      </div>
     </div>
   </section>
 
@@ -249,7 +317,7 @@
       ?>
 
       <div class="section-cta homepage-collection-cta">
-        <a href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>" class="btn btn-primary-home">
+        <a href="<?php echo esc_url($shop_page_url); ?>" class="btn btn-primary-home">
           <?php echo esc_html($catalog_button_text); ?>
         </a>
       </div>
