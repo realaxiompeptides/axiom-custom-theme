@@ -382,3 +382,27 @@
     gap: 12px;
   }
 }
+
+.top-guide-bar__text i,
+.announcement-item i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 7px;
+  color: #5bc7df;
+  font-size: 0.95em;
+  line-height: 1;
+}
+
+.top-guide-bar__text i {
+  color: #ffffff;
+  opacity: 0.95;
+}
+
+.announcement-item .fa-star {
+  color: #ffd166;
+}
+
+.announcement-item .fa-flag-usa {
+  color: #5bc7df;
+}
