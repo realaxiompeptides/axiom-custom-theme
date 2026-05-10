@@ -10,10 +10,14 @@ if (!defined('ABSPATH')) {
  * Handles:
  * - Saving payment preference from registration/settings
  * - Saving Zelle contact
- * - Saving requested partner code
  * - Creating WooCommerce coupon after affiliate approval
- * - Renaming the real linked WooCommerce coupon when partner code changes
+ * - Existing affiliates get a code automatically on login/dashboard load
+ * - Code format = email username + commission percent
  * - Saving/displaying partner code and REAL SliceWP referral link
+ *
+ * IMPORTANT:
+ * Affiliates cannot edit their own code from the dashboard anymore.
+ * If they want a custom code, admin changes the WooCommerce coupon manually.
  * =========================================================
  */
 
@@ -40,7 +44,7 @@ function axiom_affiliate_clean_partner_code($value) {
 }
 
 /**
- * Reserved coupon codes affiliates cannot claim.
+ * Reserved/bad coupon codes.
  */
 function axiom_affiliate_reserved_codes() {
     return array(
@@ -70,7 +74,7 @@ function axiom_affiliate_reserved_codes() {
 }
 
 /**
- * Check if a code is blocked/reserved.
+ * Check if code is reserved/broken.
  */
 function axiom_affiliate_is_reserved_code($code) {
     $code = axiom_affiliate_clean_partner_code($code);
@@ -106,7 +110,7 @@ function axiom_affiliate_obj_get($object, $key, $default = '') {
  * Get a submitted POST value by exact key first, then fuzzy key search.
  *
  * Only use this for payment/Zelle fields.
- * Do NOT use this for partner code.
+ * Do NOT use this for affiliate code.
  */
 function axiom_affiliate_get_post_value_by_key($preferred_keys = array()) {
     foreach ($preferred_keys as $key) {
@@ -204,50 +208,76 @@ function axiom_affiliate_get_submitted_zelle_contact() {
 }
 
 /**
- * Detect requested partner code from POST.
+ * Generate code from email name + commission percent.
  *
- * IMPORTANT:
- * This intentionally does NOT fuzzy-search POST data.
- * It only accepts exact custom keys so SliceWP date filter text like
- * "Past 30 days" can never become a coupon again.
+ * Example:
+ * johnsmith@gmail.com = JOHNSMITH10
+ * real.axiom@gmail.com = REALAXIOM10
  */
-function axiom_affiliate_get_submitted_partner_code() {
-    $allowed_keys = array(
-        'axiom_partner_code',
-        'axiom_affiliate_partner_code',
-        'axiom_affiliate_requested_partner_code',
-        'partner_code',
-        'your_partner_code',
-    );
+function axiom_affiliate_generate_code_from_email($user_id) {
+    $user_id = absint($user_id);
+    $user    = get_userdata($user_id);
 
-    $value = '';
+    if ($user && !empty($user->user_email)) {
+        $email_parts = explode('@', $user->user_email);
+        $base        = isset($email_parts[0]) ? $email_parts[0] : '';
+    } elseif ($user && !empty($user->user_login)) {
+        $base = $user->user_login;
+    } else {
+        $base = 'AXIOM' . $user_id;
+    }
 
-    foreach ($allowed_keys as $key) {
-        if (isset($_POST[$key])) {
-            $value = $_POST[$key];
+    $base = strtoupper($base);
+    $base = preg_replace('/[^A-Z0-9]/', '', $base);
+
+    /**
+     * Keep code short enough to add 10 at the end.
+     */
+    $base = substr($base, 0, 14);
+
+    if (!$base) {
+        $base = 'AXIOM' . $user_id;
+    }
+
+    $code = $base . AXIOM_AFFILIATE_COUPON_PERCENT;
+    $code = axiom_affiliate_clean_partner_code($code);
+
+    if (!$code || axiom_affiliate_is_reserved_code($code)) {
+        $code = 'AXIOM' . $user_id . AXIOM_AFFILIATE_COUPON_PERCENT;
+    }
+
+    return axiom_affiliate_clean_partner_code($code);
+}
+
+/**
+ * Get unique email-based code.
+ */
+function axiom_affiliate_get_unique_email_coupon_code($user_id, $current_coupon_id = 0) {
+    $base_code = axiom_affiliate_generate_code_from_email($user_id);
+    $final     = $base_code;
+    $counter   = 2;
+
+    if (!function_exists('wc_get_coupon_id_by_code')) {
+        return $final;
+    }
+
+    while (true) {
+        $existing_coupon_id = absint(wc_get_coupon_id_by_code($final));
+
+        if (!$existing_coupon_id || ($current_coupon_id && $existing_coupon_id === absint($current_coupon_id))) {
+            break;
+        }
+
+        $final = substr($base_code, 0, 16) . $counter;
+        $counter++;
+
+        if ($counter > 99) {
+            $final = 'AXIOM' . absint($user_id) . AXIOM_AFFILIATE_COUPON_PERCENT;
             break;
         }
     }
 
-    if (!$value) {
-        return '';
-    }
-
-    if (is_array($value)) {
-        $value = implode(' ', array_map('sanitize_text_field', wp_unslash($value)));
-    }
-
-    $code = axiom_affiliate_clean_partner_code($value);
-
-    if (strlen($code) < 3) {
-        return '';
-    }
-
-    if (axiom_affiliate_is_reserved_code($code)) {
-        return '';
-    }
-
-    return $code;
+    return axiom_affiliate_clean_partner_code($final);
 }
 
 /**
@@ -293,6 +323,10 @@ function axiom_affiliate_is_active($user_id) {
 
 /**
  * Save submitted affiliate preferences to user meta on registration.
+ *
+ * NOTE:
+ * Partner code is NOT saved from registration/settings anymore.
+ * Code is generated automatically from email + commission rate.
  */
 function axiom_affiliate_save_registration_meta($user_id) {
     if (!$user_id) {
@@ -301,7 +335,6 @@ function axiom_affiliate_save_registration_meta($user_id) {
 
     $payment_preference = axiom_affiliate_get_submitted_payment_preference();
     $zelle_contact      = axiom_affiliate_get_submitted_zelle_contact();
-    $partner_code       = axiom_affiliate_get_submitted_partner_code();
 
     if ($payment_preference) {
         update_user_meta($user_id, 'axiom_affiliate_payment_preference', $payment_preference);
@@ -309,10 +342,6 @@ function axiom_affiliate_save_registration_meta($user_id) {
 
     if ($zelle_contact) {
         update_user_meta($user_id, 'axiom_affiliate_zelle_contact', $zelle_contact);
-    }
-
-    if ($partner_code) {
-        update_user_meta($user_id, 'axiom_affiliate_requested_partner_code', $partner_code);
     }
 }
 add_action('user_register', 'axiom_affiliate_save_registration_meta', 20);
@@ -374,38 +403,6 @@ function axiom_affiliate_set_slicewp_payout_method($affiliate_id, $payout_method
     }
 
     return true;
-}
-
-/**
- * Get a unique coupon code.
- */
-function axiom_affiliate_get_unique_coupon_code($requested_code, $user_id) {
-    $requested_code = axiom_affiliate_clean_partner_code($requested_code);
-
-    if (!$requested_code || axiom_affiliate_is_reserved_code($requested_code)) {
-        $user = get_userdata($user_id);
-        $requested_code = $user ? axiom_affiliate_clean_partner_code($user->user_login . '10') : '';
-    }
-
-    if (!$requested_code || axiom_affiliate_is_reserved_code($requested_code)) {
-        $requested_code = 'AXIOM' . absint($user_id);
-    }
-
-    $base_code = $requested_code;
-    $final     = $base_code;
-    $counter   = 2;
-
-    while (function_exists('wc_get_coupon_id_by_code') && wc_get_coupon_id_by_code($final)) {
-        $final = $base_code . $counter;
-        $counter++;
-
-        if ($counter > 99) {
-            $final = $base_code . absint($user_id);
-            break;
-        }
-    }
-
-    return $final;
 }
 
 /**
@@ -698,22 +695,29 @@ function axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id,
 
 /**
  * Create WooCommerce affiliate coupon.
+ *
+ * IMPORTANT:
+ * Code is always generated from email + commission percent.
+ * Affiliates cannot choose/edit it.
  */
 function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
     if (!$user_id || !$affiliate_id || !function_exists('wc_get_coupon_id_by_code')) {
         return '';
     }
 
-    $requested_code = axiom_affiliate_clean_partner_code(get_user_meta($user_id, 'axiom_affiliate_requested_partner_code', true));
-
     $existing_coupon_id = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
+    $wanted_code        = axiom_affiliate_get_unique_email_coupon_code($user_id, $existing_coupon_id);
 
     if ($existing_coupon_id && get_post($existing_coupon_id)) {
         $existing_code = axiom_affiliate_clean_partner_code(get_the_title($existing_coupon_id));
 
-        if ($requested_code && !axiom_affiliate_is_reserved_code($requested_code) && axiom_affiliate_is_reserved_code($existing_code)) {
-            axiom_affiliate_change_user_coupon_code($user_id, $requested_code);
-            return $requested_code;
+        /**
+         * If existing code is broken/reserved, rename to email-based code.
+         * Otherwise leave existing real coupon alone so admin manual edits stay.
+         */
+        if (!$existing_code || axiom_affiliate_is_reserved_code($existing_code)) {
+            axiom_affiliate_admin_rename_coupon($existing_coupon_id, $user_id, $affiliate_id, $wanted_code);
+            return $wanted_code;
         }
 
         update_user_meta($user_id, 'axiom_affiliate_coupon_code', $existing_code);
@@ -724,7 +728,7 @@ function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
         return $existing_code;
     }
 
-    $coupon_code = axiom_affiliate_get_unique_coupon_code($requested_code, $user_id);
+    $coupon_code = $wanted_code;
 
     if (!$coupon_code) {
         return '';
@@ -743,15 +747,7 @@ function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
         return '';
     }
 
-    update_post_meta($coupon_id, 'discount_type', 'percent');
-    update_post_meta($coupon_id, 'coupon_amount', AXIOM_AFFILIATE_COUPON_PERCENT);
-    update_post_meta($coupon_id, 'individual_use', 'yes');
-    update_post_meta($coupon_id, 'exclude_sale_items', 'no');
-    update_post_meta($coupon_id, 'free_shipping', 'no');
-    update_post_meta($coupon_id, 'usage_limit', '');
-    update_post_meta($coupon_id, 'usage_limit_per_user', '');
-    update_post_meta($coupon_id, 'limit_usage_to_x_items', '');
-
+    axiom_affiliate_apply_coupon_settings($coupon_id);
     axiom_affiliate_link_coupon_to_affiliate($coupon_id, $user_id, $affiliate_id);
     axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id, $coupon_code);
 
@@ -762,54 +758,37 @@ function axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id) {
 }
 
 /**
- * Change/rename the actual linked WooCommerce coupon.
+ * Apply standard coupon settings.
  */
-function axiom_affiliate_change_user_coupon_code($user_id, $new_code) {
-    if (!$user_id || !$new_code || !function_exists('wc_get_coupon_id_by_code')) {
+function axiom_affiliate_apply_coupon_settings($coupon_id) {
+    update_post_meta($coupon_id, 'discount_type', 'percent');
+    update_post_meta($coupon_id, 'coupon_amount', AXIOM_AFFILIATE_COUPON_PERCENT);
+    update_post_meta($coupon_id, 'individual_use', 'yes');
+    update_post_meta($coupon_id, 'exclude_sale_items', 'no');
+    update_post_meta($coupon_id, 'free_shipping', 'no');
+    update_post_meta($coupon_id, 'usage_limit', '');
+    update_post_meta($coupon_id, 'usage_limit_per_user', '');
+    update_post_meta($coupon_id, 'limit_usage_to_x_items', '');
+}
+
+/**
+ * Admin/system rename only.
+ * Affiliates do not call this directly.
+ */
+function axiom_affiliate_admin_rename_coupon($coupon_id, $user_id, $affiliate_id, $new_code) {
+    if (!$coupon_id || !$new_code || !function_exists('wc_get_coupon_id_by_code')) {
         return false;
     }
 
     $new_code = axiom_affiliate_clean_partner_code($new_code);
 
-    if (!$new_code || strlen($new_code) < 3) {
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'Invalid partner code.');
-        return false;
-    }
-
-    if (axiom_affiliate_is_reserved_code($new_code)) {
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'That partner code is reserved.');
-        return false;
-    }
-
-    $affiliate_id = axiom_affiliate_get_affiliate_id_by_user($user_id);
-
-    if (!$affiliate_id) {
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'Affiliate account was not found.');
-        return false;
-    }
-
-    $coupon_id = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
-
-    if (!$coupon_id || !get_post($coupon_id)) {
-        $coupon_id = wp_insert_post(array(
-            'post_title'   => $new_code,
-            'post_name'    => sanitize_title($new_code),
-            'post_content' => 'Axiom affiliate coupon for affiliate ID ' . absint($affiliate_id),
-            'post_status'  => 'publish',
-            'post_author'  => absint($user_id),
-            'post_type'    => 'shop_coupon',
-        ));
-    }
-
-    if (is_wp_error($coupon_id) || !$coupon_id || !get_post($coupon_id)) {
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'Could not find or create affiliate coupon.');
+    if (!$new_code || axiom_affiliate_is_reserved_code($new_code)) {
         return false;
     }
 
     $conflicting_coupon_id = absint(wc_get_coupon_id_by_code($new_code));
 
     if ($conflicting_coupon_id && $conflicting_coupon_id !== absint($coupon_id)) {
-        update_user_meta($user_id, 'axiom_affiliate_coupon_code_error', 'That partner code is already taken.');
         return false;
     }
 
@@ -822,23 +801,12 @@ function axiom_affiliate_change_user_coupon_code($user_id, $new_code) {
         'post_type'   => 'shop_coupon',
     ));
 
-    update_post_meta($coupon_id, 'discount_type', 'percent');
-    update_post_meta($coupon_id, 'coupon_amount', AXIOM_AFFILIATE_COUPON_PERCENT);
-    update_post_meta($coupon_id, 'individual_use', 'yes');
-    update_post_meta($coupon_id, 'exclude_sale_items', 'no');
-    update_post_meta($coupon_id, 'free_shipping', 'no');
-    update_post_meta($coupon_id, 'usage_limit', '');
-    update_post_meta($coupon_id, 'usage_limit_per_user', '');
-    update_post_meta($coupon_id, 'limit_usage_to_x_items', '');
-
+    axiom_affiliate_apply_coupon_settings($coupon_id);
     axiom_affiliate_link_coupon_to_affiliate($coupon_id, $user_id, $affiliate_id);
     axiom_affiliate_update_slicewp_coupon_tables($affiliate_id, $coupon_id, $new_code);
 
-    update_user_meta($user_id, 'axiom_affiliate_requested_partner_code', $new_code);
     update_user_meta($user_id, 'axiom_affiliate_coupon_code', $new_code);
     update_user_meta($user_id, 'axiom_affiliate_coupon_id', absint($coupon_id));
-
-    delete_user_meta($user_id, 'axiom_affiliate_coupon_code_error');
 
     clean_post_cache($coupon_id);
 
@@ -861,12 +829,6 @@ function axiom_affiliate_repair_reserved_coupon_code($user_id) {
         return;
     }
 
-    $requested_code = axiom_affiliate_clean_partner_code(get_user_meta($user_id, 'axiom_affiliate_requested_partner_code', true));
-
-    if (!$requested_code || axiom_affiliate_is_reserved_code($requested_code)) {
-        return;
-    }
-
     $coupon_id = axiom_affiliate_find_existing_coupon_id_for_user($user_id, $affiliate_id);
 
     if (!$coupon_id || !get_post($coupon_id)) {
@@ -875,8 +837,9 @@ function axiom_affiliate_repair_reserved_coupon_code($user_id) {
 
     $current_code = axiom_affiliate_clean_partner_code(get_the_title($coupon_id));
 
-    if (axiom_affiliate_is_reserved_code($current_code)) {
-        axiom_affiliate_change_user_coupon_code($user_id, $requested_code);
+    if (!$current_code || axiom_affiliate_is_reserved_code($current_code)) {
+        $new_code = axiom_affiliate_get_unique_email_coupon_code($user_id, $coupon_id);
+        axiom_affiliate_admin_rename_coupon($coupon_id, $user_id, $affiliate_id, $new_code);
     }
 }
 
@@ -908,6 +871,10 @@ function axiom_affiliate_sync_user_setup($user_id) {
 
 /**
  * Capture settings updates from SliceWP settings form.
+ *
+ * IMPORTANT:
+ * This only saves payout/Zelle.
+ * It does NOT save or edit affiliate coupon code anymore.
  */
 function axiom_affiliate_capture_settings_post() {
     if (!is_user_logged_in()) {
@@ -927,7 +894,6 @@ function axiom_affiliate_capture_settings_post() {
 
     $payment_preference = axiom_affiliate_get_submitted_payment_preference();
     $zelle_contact      = axiom_affiliate_get_submitted_zelle_contact();
-    $partner_code       = axiom_affiliate_get_submitted_partner_code();
 
     if ($payment_preference) {
         update_user_meta($user_id, 'axiom_affiliate_payment_preference', $payment_preference);
@@ -936,11 +902,6 @@ function axiom_affiliate_capture_settings_post() {
 
     if ($zelle_contact) {
         update_user_meta($user_id, 'axiom_affiliate_zelle_contact', $zelle_contact);
-    }
-
-    if ($partner_code) {
-        update_user_meta($user_id, 'axiom_affiliate_requested_partner_code', $partner_code);
-        axiom_affiliate_change_user_coupon_code($user_id, $partner_code);
     }
 
     axiom_affiliate_repair_reserved_coupon_code($user_id);
@@ -991,12 +952,7 @@ function axiom_render_affiliate_partner_card_shortcode() {
     $coupon_code = $coupon_id ? axiom_affiliate_clean_partner_code(get_the_title($coupon_id)) : '';
 
     if (!$coupon_code || axiom_affiliate_is_reserved_code($coupon_code)) {
-        $requested_code = axiom_affiliate_clean_partner_code(get_user_meta($user_id, 'axiom_affiliate_requested_partner_code', true));
-
-        if ($requested_code && !axiom_affiliate_is_reserved_code($requested_code)) {
-            axiom_affiliate_change_user_coupon_code($user_id, $requested_code);
-            $coupon_code = $requested_code;
-        }
+        $coupon_code = axiom_affiliate_create_coupon_for_user($user_id, $affiliate_id);
     }
 
     if (!$coupon_code || axiom_affiliate_is_reserved_code($coupon_code)) {
@@ -1004,13 +960,9 @@ function axiom_render_affiliate_partner_card_shortcode() {
     }
 
     /**
-     * IMPORTANT:
-     * This is the real SliceWP tracking link for every affiliate.
-     * It uses the affiliate's actual SliceWP affiliate ID.
-     *
+     * REAL SliceWP tracking link for every affiliate.
      * Example:
      * Affiliate ID 3 = https://axiomresearch.shop/?aff=3
-     * Affiliate ID 9 = https://axiomresearch.shop/?aff=9
      */
     $referral_link = add_query_arg('aff', absint($affiliate_id), home_url('/'));
 
