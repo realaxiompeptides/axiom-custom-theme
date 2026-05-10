@@ -1435,6 +1435,7 @@
 /* =========================================================
    AXIOM FLOATING VIAL SHOWCASE
    Visual branding section between proof cards and best sellers
+   TIGHTER VERSION
 ========================================================= */
 
 .axiom-vial-showcase {
@@ -1443,7 +1444,7 @@
   isolation: isolate;
   background:
     linear-gradient(180deg, #f7fbff 0%, #ffffff 18%, #f6faff 100%);
-  padding: clamp(46px, 6vw, 82px) 0 clamp(54px, 7vw, 92px);
+  padding: clamp(20px, 3vw, 38px) 0 clamp(28px, 4vw, 52px);
 }
 
 .axiom-vial-showcase-bg,
@@ -1475,32 +1476,32 @@
 }
 
 .axiom-vial-showcase-glow--one {
-  width: 540px;
-  height: 340px;
+  width: 500px;
+  height: 280px;
   left: 50%;
   top: 52%;
   transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(78, 162, 245, 0.16), transparent 68%);
+  background: radial-gradient(circle, rgba(78, 162, 245, 0.15), transparent 68%);
 }
 
 .axiom-vial-showcase-glow--two {
-  width: 420px;
-  height: 260px;
-  right: -110px;
-  bottom: -60px;
-  background: radial-gradient(circle, rgba(127, 214, 255, 0.16), transparent 70%);
+  width: 360px;
+  height: 220px;
+  right: -90px;
+  bottom: -50px;
+  background: radial-gradient(circle, rgba(127, 214, 255, 0.14), transparent 70%);
 }
 
 .axiom-vial-showcase-inner {
   position: relative;
   z-index: 2;
-  width: min(1180px, calc(100% - 40px));
+  width: min(1120px, calc(100% - 40px));
   margin: 0 auto;
 }
 
 .axiom-vial-showcase-copy {
   max-width: 760px;
-  margin: 0 auto 34px;
+  margin: 0 auto 24px;
   text-align: center;
 }
 
@@ -1545,15 +1546,15 @@
 
 .axiom-vial-float-stage {
   position: relative;
-  height: clamp(260px, 30vw, 390px);
-  border-radius: 36px;
+  height: clamp(210px, 23vw, 310px);
+  border-radius: 32px;
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 50%, rgba(78, 162, 245, 0.12), transparent 42%),
     linear-gradient(135deg, rgba(248, 251, 255, 0.92), rgba(255, 255, 255, 0.88));
   border: 1px solid rgba(203, 213, 225, 0.72);
   box-shadow:
-    0 24px 70px rgba(15, 23, 42, 0.08),
+    0 20px 54px rgba(15, 23, 42, 0.07),
     inset 0 1px 0 rgba(255, 255, 255, 0.80);
 }
 
@@ -1573,13 +1574,13 @@
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 18px;
-  width: 72%;
-  height: 38px;
+  bottom: 14px;
+  width: 68%;
+  height: 30px;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: rgba(78, 162, 245, 0.18);
-  filter: blur(26px);
+  background: rgba(78, 162, 245, 0.16);
+  filter: blur(22px);
   pointer-events: none;
 }
 
@@ -1589,7 +1590,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(110px, 12vw, 170px);
+  width: clamp(92px, 10vw, 148px);
   aspect-ratio: 0.58;
   transform-origin: center;
 }
@@ -1600,38 +1601,39 @@
   height: 100%;
   object-fit: contain;
   filter:
-    drop-shadow(0 24px 26px rgba(15, 23, 42, 0.22))
-    drop-shadow(0 0 20px rgba(78, 162, 245, 0.14));
+    drop-shadow(0 22px 24px rgba(15, 23, 42, 0.20))
+    drop-shadow(0 0 18px rgba(78, 162, 245, 0.13));
   animation: axiomShowcaseFloat 5.8s ease-in-out infinite;
 }
 
 .axiom-vial-float--one {
   left: 8%;
-  bottom: 14%;
+  bottom: 12%;
   transform: rotate(-8deg);
 }
 
 .axiom-vial-float--two {
   left: 26%;
-  bottom: 20%;
+  bottom: 18%;
   transform: rotate(5deg);
 }
 
 .axiom-vial-float--three {
   left: 50%;
-  bottom: 12%;
-  transform: translateX(-50%) scale(1.14);
+  bottom: 10%;
+  transform: translateX(-50%) scale(1.12);
+  z-index: 4;
 }
 
 .axiom-vial-float--four {
   right: 26%;
-  bottom: 20%;
+  bottom: 18%;
   transform: rotate(-5deg);
 }
 
 .axiom-vial-float--five {
   right: 8%;
-  bottom: 14%;
+  bottom: 12%;
   transform: rotate(8deg);
 }
 
@@ -1657,21 +1659,25 @@
   }
 
   50% {
-    transform: translateY(-16px);
+    transform: translateY(-13px);
   }
 }
 
 @media (max-width: 991px) {
+  .axiom-vial-showcase {
+    padding: 24px 0 42px;
+  }
+
   .axiom-vial-showcase-inner {
     width: min(100% - 28px, 920px);
   }
 
   .axiom-vial-float-stage {
-    height: 330px;
+    height: 260px;
   }
 
   .axiom-vial-float {
-    width: clamp(94px, 16vw, 136px);
+    width: clamp(84px, 15vw, 118px);
   }
 
   .axiom-vial-float--one {
@@ -1693,7 +1699,7 @@
 
 @media (max-width: 767px) {
   .axiom-vial-showcase {
-    padding: 38px 0 48px;
+    padding: 18px 0 34px;
   }
 
   .axiom-vial-showcase-inner {
@@ -1701,7 +1707,7 @@
   }
 
   .axiom-vial-showcase-copy {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
 
   .axiom-vial-showcase-copy h2 {
@@ -1714,60 +1720,60 @@
   }
 
   .axiom-vial-float-stage {
-    height: 300px;
-    border-radius: 28px;
+    height: 220px;
+    border-radius: 26px;
   }
 
   .axiom-vial-float {
-    width: 112px;
+    width: 84px;
   }
 
   .axiom-vial-float--one {
-    left: -20px;
-    bottom: 16%;
-    opacity: 0.72;
+    left: -14px;
+    bottom: 17%;
+    opacity: 0.78;
   }
 
   .axiom-vial-float--two {
     left: 14%;
-    bottom: 22%;
+    bottom: 23%;
     opacity: 0.88;
   }
 
   .axiom-vial-float--three {
     left: 50%;
     bottom: 13%;
-    transform: translateX(-50%) scale(1.12);
+    transform: translateX(-50%) scale(1.14);
     z-index: 4;
   }
 
   .axiom-vial-float--four {
     right: 14%;
-    bottom: 22%;
+    bottom: 23%;
     opacity: 0.88;
   }
 
   .axiom-vial-float--five {
-    right: -20px;
-    bottom: 16%;
-    opacity: 0.72;
+    right: -14px;
+    bottom: 17%;
+    opacity: 0.78;
   }
 }
 
 @media (max-width: 420px) {
   .axiom-vial-float-stage {
-    height: 270px;
+    height: 200px;
   }
 
   .axiom-vial-float {
-    width: 96px;
+    width: 76px;
   }
 
   .axiom-vial-float--two {
-    left: 11%;
+    left: 10%;
   }
 
   .axiom-vial-float--four {
-    right: 11%;
+    right: 10%;
   }
 }
