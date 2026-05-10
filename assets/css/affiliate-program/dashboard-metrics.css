@@ -1,26 +1,195 @@
 /* =========================================================
    SliceWP Dashboard Metrics Area
-   Visits / Commissions / Earnings / Chart
+   File: assets/css/affiliate-program/dashboard-metrics.css
+
+   Goal:
+   - Style default SliceWP Visits / Commissions / Earnings cards
+   - Style date range + chart box
+   - Remove duplicate "All time" and "Program details" default text
+   - Keep the icon navigation working
 ========================================================= */
 
-/* Date range styling */
-.axiom-affiliate-default-dashboard [class*="date"],
-.axiom-affiliate-default-dashboard [class*="range"] {
-    border-radius: 16px;
+
+/* =========================================================
+   Default SliceWP Dashboard Container Spacing
+========================================================= */
+
+.axiom-affiliate-default-dashboard {
+    margin-top: 10px;
 }
 
-/* Style the default dashboard cards if they still show */
-.axiom-affiliate-default-dashboard [class*="visit"],
-.axiom-affiliate-default-dashboard [class*="commission"],
-.axiom-affiliate-default-dashboard [class*="earning"] {
-    border-radius: 22px;
+/* remove ugly default spacing */
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > * {
+    max-width: 100%;
 }
 
-/* Hide duplicate default SliceWP dashboard sections */
+
+/* =========================================================
+   Date Range Bar
+========================================================= */
+
+.axiom-affiliate-default-dashboard [class*="date-range"],
+.axiom-affiliate-default-dashboard [class*="date_range"],
+.axiom-affiliate-default-dashboard [class*="period"],
+.axiom-affiliate-default-dashboard [class*="filter"] {
+    border-radius: 999px !important;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-date-range-picker,
+.axiom-affiliate-default-dashboard .slicewp-dashboard-date-range,
+.axiom-affiliate-default-dashboard .slicewp-card-date-range {
+    background: #ffffff !important;
+    border: 1px solid rgba(59, 111, 224, 0.22) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 12px 28px rgba(12, 18, 32, 0.06) !important;
+    overflow: hidden !important;
+    margin: 0 0 18px !important;
+}
+
+
+/* =========================================================
+   Visits / Commissions / Earnings Cards
+========================================================= */
+
+/*
+   Style SliceWP's default cards.
+   These are the cards under the icon tabs.
+*/
+
+.axiom-affiliate-default-dashboard .slicewp-card,
+.axiom-affiliate-default-dashboard .slicewp-box,
+.axiom-affiliate-default-dashboard .slicewp-panel,
+.axiom-affiliate-default-dashboard [class*="card"],
+.axiom-affiliate-default-dashboard [class*="overview"] {
+    background: #ffffff !important;
+    border: 1px solid rgba(12, 18, 32, 0.08) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 16px 42px rgba(12, 18, 32, 0.07) !important;
+    overflow: hidden !important;
+}
+
+/* Main metric card spacing */
+.axiom-affiliate-default-dashboard .slicewp-card {
+    margin-bottom: 18px !important;
+}
+
+/* Metric titles */
+.axiom-affiliate-default-dashboard .slicewp-card h1,
+.axiom-affiliate-default-dashboard .slicewp-card h2,
+.axiom-affiliate-default-dashboard .slicewp-card h3,
+.axiom-affiliate-default-dashboard .slicewp-card h4,
+.axiom-affiliate-default-dashboard [class*="card"] h1,
+.axiom-affiliate-default-dashboard [class*="card"] h2,
+.axiom-affiliate-default-dashboard [class*="card"] h3,
+.axiom-affiliate-default-dashboard [class*="card"] h4 {
+    color: #0c1220 !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.03em !important;
+}
+
+/* Metric numbers */
+.axiom-affiliate-default-dashboard .slicewp-card strong,
+.axiom-affiliate-default-dashboard .slicewp-card .slicewp-value,
+.axiom-affiliate-default-dashboard .slicewp-card [class*="value"],
+.axiom-affiliate-default-dashboard .slicewp-card [class*="amount"],
+.axiom-affiliate-default-dashboard [class*="card"] strong,
+.axiom-affiliate-default-dashboard [class*="card"] [class*="value"],
+.axiom-affiliate-default-dashboard [class*="card"] [class*="amount"] {
+    color: #0c1220 !important;
+    font-size: 30px !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.045em !important;
+}
+
+/* Bottom "View all..." links */
+.axiom-affiliate-default-dashboard a[href*="visit"],
+.axiom-affiliate-default-dashboard a[href*="commission"],
+.axiom-affiliate-default-dashboard a[href*="earning"],
+.axiom-affiliate-default-dashboard .slicewp-card a {
+    color: #0c1220 !important;
+    font-weight: 900 !important;
+    text-decoration: none !important;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-card a:hover {
+    color: #3B6FE0 !important;
+}
+
+
+/* =========================================================
+   Chart / Graph Box
+========================================================= */
+
+.axiom-affiliate-default-dashboard .slicewp-chart,
+.axiom-affiliate-default-dashboard [class*="chart"],
+.axiom-affiliate-default-dashboard canvas {
+    border-radius: 24px !important;
+}
+
+.axiom-affiliate-default-dashboard [class*="chart"] {
+    background: #ffffff !important;
+    border: 1px solid rgba(12, 18, 32, 0.08) !important;
+    box-shadow: 0 16px 42px rgba(12, 18, 32, 0.07) !important;
+}
+
+/* Chart dropdown */
+.axiom-affiliate-default-dashboard select {
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    border: 1px solid rgba(12, 18, 32, 0.14) !important;
+    font-weight: 700 !important;
+}
+
+
+/* =========================================================
+   Remove Duplicate Default SliceWP "All time" / "Program details"
+========================================================= */
+
+/*
+   These headings are duplicate because we already show custom Axiom cards
+   and our own styled Program Details block above.
+*/
+
+.axiom-affiliate-default-dashboard h2,
+.axiom-affiliate-default-dashboard h3 {
+    display: none !important;
+}
+
+/*
+   Hide the empty/default all-time and program-details sections that remain
+   after SliceWP's duplicate cards are hidden.
+*/
+
+.axiom-affiliate-default-dashboard [class*="all-time"],
+.axiom-affiliate-default-dashboard [class*="all_time"],
+.axiom-affiliate-default-dashboard [class*="program-details"],
+.axiom-affiliate-default-dashboard [class*="program_details"] {
+    display: none !important;
+}
+
+/*
+   Hide duplicate program/details cards from SliceWP,
+   while keeping the icon nav and other real tabs clickable.
+*/
+
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section,
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard > section {
+    display: none !important;
+}
+
+
+/* =========================================================
+   Stronger Cleanup for Leftover Dashboard Blocks
+========================================================= */
+
+/*
+   This removes leftover blank default dashboard content after the chart.
+   It should not touch the SliceWP icon buttons.
+*/
+
 .axiom-affiliate-default-dashboard .slicewp-dashboard-overview,
 .axiom-affiliate-default-dashboard .slicewp-dashboard-stats,
 .axiom-affiliate-default-dashboard .slicewp-dashboard-chart,
-.axiom-affiliate-default-dashboard .slicewp-chart,
 .axiom-affiliate-default-dashboard .slicewp-overview,
 .axiom-affiliate-default-dashboard .slicewp-summary,
 .axiom-affiliate-default-dashboard .slicewp-performance,
@@ -32,54 +201,30 @@
     display: none !important;
 }
 
-/* Hide duplicate All Time / Program Details from SliceWP default dashboard */
-.axiom-affiliate-default-dashboard [class*="all-time"],
-.axiom-affiliate-default-dashboard [class*="program-details"] {
-    display: none !important;
-}
 
-/*
-   If SliceWP renders default dashboard cards without useful classes,
-   this hides the first dashboard content blocks while leaving nav visible.
-*/
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-card,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-grid,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-chart,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard > .slicewp-section {
-    display: none !important;
-}
+/* =========================================================
+   Mobile Improvements
+========================================================= */
 
-/* Hide dashboard-tab content but keep nav */
-.axiom-affiliate-default-dashboard .slicewp-tab-dashboard > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav),
-.axiom-affiliate-default-dashboard .slicewp-dashboard-tab > *:not(.slicewp-nav-tab-wrapper):not(.slicewp-tabs-nav):not(.slicewp-user-dashboard-nav) {
-    display: none !important;
-}
-
-/* Make any remaining metric cards look cleaner */
-.axiom-affiliate-default-dashboard .slicewp-card {
-    background: #ffffff;
-    border: 1px solid rgba(12, 18, 32, 0.08);
-    border-radius: 22px;
-    box-shadow: 0 14px 36px rgba(12, 18, 32, 0.06);
-    overflow: hidden;
-}
-
-/* Make "View all visits / commissions" links look more intentional */
-.axiom-affiliate-default-dashboard a[href*="visit"],
-.axiom-affiliate-default-dashboard a[href*="commission"] {
-    font-weight: 800;
-    color: #0c1220;
-    text-decoration: none;
-}
-
-/* Chart/dropdowns if still visible */
-.axiom-affiliate-default-dashboard select {
-    border-radius: 999px !important;
-}
-
-/* Mobile */
 @media (max-width: 640px) {
-    .axiom-affiliate-default-dashboard .slicewp-card {
-        border-radius: 20px;
+    .axiom-affiliate-default-dashboard .slicewp-card,
+    .axiom-affiliate-default-dashboard .slicewp-box,
+    .axiom-affiliate-default-dashboard .slicewp-panel,
+    .axiom-affiliate-default-dashboard [class*="card"] {
+        border-radius: 22px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .axiom-affiliate-default-dashboard .slicewp-card strong,
+    .axiom-affiliate-default-dashboard .slicewp-card .slicewp-value,
+    .axiom-affiliate-default-dashboard .slicewp-card [class*="value"],
+    .axiom-affiliate-default-dashboard .slicewp-card [class*="amount"] {
+        font-size: 28px !important;
+    }
+
+    .axiom-affiliate-default-dashboard .slicewp-date-range-picker,
+    .axiom-affiliate-default-dashboard .slicewp-dashboard-date-range,
+    .axiom-affiliate-default-dashboard .slicewp-card-date-range {
+        border-radius: 18px !important;
     }
 }
