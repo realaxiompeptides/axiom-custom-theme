@@ -4,8 +4,8 @@
   <section class="hero-section hero-section--axiom-brand">
     <?php
     $theme_uri        = get_template_directory_uri();
-    $hero_abstract    = $theme_uri . '/assets/images/hero-axiom-abstract.webp';
-    $hero_vial        = $theme_uri . '/assets/images/hero-vial-main.webp';
+    $hero_abstract    = $theme_uri . '/assets/images/hero-abstract-bg.PNG';
+    $hero_vial        = $theme_uri . '/assets/images/hero-vial.PNG';
     $hero_fallback    = $theme_uri . '/assets/images/hero-image.PNG';
     $shop_page_url    = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
     ?>
@@ -90,7 +90,7 @@
           <img
             class="hero-vial-image"
             src="<?php echo esc_url($hero_vial); ?>"
-            alt=""
+            alt="Axiom Peptides research vial"
             loading="eager"
             decoding="async"
             onerror="this.src='<?php echo esc_url($hero_fallback); ?>'; this.classList.add('hero-vial-image--fallback');"
