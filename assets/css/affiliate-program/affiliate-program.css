@@ -424,3 +424,130 @@
 .axiom-affiliate-login-text a:focus{
   text-decoration:underline;
 }
+
+/* =========================================================
+   Affiliate Program / Registration Page Extras
+========================================================= */
+
+.axiom-affiliate-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.axiom-affiliate-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 0 22px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #d9e5f0;
+  color: #0d1835;
+  font-size: 15px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.axiom-affiliate-secondary-link:hover,
+.axiom-affiliate-secondary-link:focus {
+  color: #0d1835;
+  border-color: #59a8df;
+  text-decoration: none;
+}
+
+.axiom-affiliate-full-btn {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.axiom-affiliate-program-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.axiom-affiliate-program-stat {
+  background: #ffffff;
+  border: 1px solid #d9e5f0;
+  border-radius: 26px;
+  padding: 22px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
+}
+
+.axiom-affiliate-program-stat-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 18px;
+  background: #dff0fb;
+  color: #59a8df;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.axiom-affiliate-program-stat strong {
+  display: block;
+  color: #0d1835;
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  margin-bottom: 8px;
+}
+
+.axiom-affiliate-program-stat span {
+  display: block;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.axiom-affiliate-registration-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.axiom-affiliate-registration-sidebar {
+  display: grid;
+  gap: 22px;
+}
+
+.axiom-affiliate-registration-card {
+  min-width: 0;
+}
+
+@media (max-width: 991px) {
+  .axiom-affiliate-program-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-affiliate-registration-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .axiom-affiliate-hero-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-affiliate-secondary-link {
+    width: 100%;
+  }
+
+  .axiom-affiliate-program-stat {
+    border-radius: 22px;
+    padding: 20px;
+  }
+}
