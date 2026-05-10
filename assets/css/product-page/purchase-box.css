@@ -721,3 +721,149 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+/* =========================================================
+   WPLoyalty / Earn Points Message Styling
+   ========================================================= */
+
+.single-product .summary .wlr-product-message,
+.single-product .summary .wlr_points_message,
+.single-product .summary .wlr-product-points-message,
+.single-product .summary .wployalty-product-message,
+.single-product .summary .wployalty-earn-message,
+.single-product .summary .wlpr_points_message,
+.single-product .summary .woocommerce-loyalty-points-message,
+.single-product .summary .wlr-earned-points-message,
+.single-product .summary p[class*="points"],
+.single-product .summary div[class*="points"] {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 14px 0 20px;
+  padding: 16px 18px 16px 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #f5f9ff 0%, #edf5ff 100%);
+  border: 1px solid #d7e5f5;
+  box-shadow: 0 12px 30px rgba(78, 162, 245, 0.10);
+  color: #0b1633;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-align: left;
+}
+
+/* Icon bubble */
+.single-product .summary .wlr-product-message::before,
+.single-product .summary .wlr_points_message::before,
+.single-product .summary .wlr-product-points-message::before,
+.single-product .summary .wployalty-product-message::before,
+.single-product .summary .wployalty-earn-message::before,
+.single-product .summary .wlpr_points_message::before,
+.single-product .summary .woocommerce-loyalty-points-message::before,
+.single-product .summary .wlr-earned-points-message::before,
+.single-product .summary p[class*="points"]::before,
+.single-product .summary div[class*="points"]::before {
+  content: "★";
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #5faef7 0%, #4a9ef3 100%);
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
+  box-shadow: 0 8px 20px rgba(78, 162, 245, 0.25);
+}
+
+/* Make inner text look clean */
+.single-product .summary .wlr-product-message *,
+.single-product .summary .wlr_points_message *,
+.single-product .summary .wlr-product-points-message *,
+.single-product .summary .wployalty-product-message *,
+.single-product .summary .wployalty-earn-message *,
+.single-product .summary .wlpr_points_message *,
+.single-product .summary .woocommerce-loyalty-points-message *,
+.single-product .summary .wlr-earned-points-message *,
+.single-product .summary p[class*="points"] *,
+.single-product .summary div[class*="points"] * {
+  color: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  line-height: inherit !important;
+  margin: 0 !important;
+}
+
+/* Highlight numeric points if plugin wraps them in strong/b/bold */
+.single-product .summary .wlr-product-message strong,
+.single-product .summary .wlr-product-message b,
+.single-product .summary .wlr_points_message strong,
+.single-product .summary .wlr_points_message b,
+.single-product .summary .wlr-product-points-message strong,
+.single-product .summary .wlr-product-points-message b,
+.single-product .summary .wployalty-product-message strong,
+.single-product .summary .wployalty-product-message b,
+.single-product .summary .wployalty-earn-message strong,
+.single-product .summary .wployalty-earn-message b,
+.single-product .summary .wlpr_points_message strong,
+.single-product .summary .wlpr_points_message b,
+.single-product .summary .woocommerce-loyalty-points-message strong,
+.single-product .summary .woocommerce-loyalty-points-message b,
+.single-product .summary .wlr-earned-points-message strong,
+.single-product .summary .wlr-earned-points-message b {
+  color: #1f7ae0 !important;
+  font-weight: 900 !important;
+}
+
+/* Optional subtle top label look */
+.single-product .summary .wlr-product-message,
+.single-product .summary .wlr_points_message,
+.single-product .summary .wlr-product-points-message,
+.single-product .summary .wployalty-product-message,
+.single-product .summary .wployalty-earn-message,
+.single-product .summary .wlpr_points_message,
+.single-product .summary .woocommerce-loyalty-points-message,
+.single-product .summary .wlr-earned-points-message {
+  max-width: 100%;
+}
+
+/* Mobile refinement */
+@media (max-width: 767px) {
+  .single-product .summary .wlr-product-message,
+  .single-product .summary .wlr_points_message,
+  .single-product .summary .wlr-product-points-message,
+  .single-product .summary .wployalty-product-message,
+  .single-product .summary .wployalty-earn-message,
+  .single-product .summary .wlpr_points_message,
+  .single-product .summary .woocommerce-loyalty-points-message,
+  .single-product .summary .wlr-earned-points-message,
+  .single-product .summary p[class*="points"],
+  .single-product .summary div[class*="points"] {
+    margin: 12px 0 18px;
+    padding: 14px 16px;
+    gap: 12px;
+    border-radius: 18px;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .single-product .summary .wlr-product-message::before,
+  .single-product .summary .wlr_points_message::before,
+  .single-product .summary .wlr-product-points-message::before,
+  .single-product .summary .wployalty-product-message::before,
+  .single-product .summary .wployalty-earn-message::before,
+  .single-product .summary .wlpr_points_message::before,
+  .single-product .summary .woocommerce-loyalty-points-message::before,
+  .single-product .summary .wlr-earned-points-message::before,
+  .single-product .summary p[class*="points"]::before,
+  .single-product .summary div[class*="points"]::before {
+    width: 38px;
+    height: 38px;
+    flex-basis: 38px;
+    font-size: 16px;
+  }
+}
