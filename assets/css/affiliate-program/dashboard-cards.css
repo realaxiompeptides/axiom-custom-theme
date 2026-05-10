@@ -1,0 +1,186 @@
+/* =========================================================
+   Axiom Top Cards + Program Details
+========================================================= */
+
+.axiom-affiliate-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.axiom-affiliate-stat-card {
+    background: #ffffff;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 16px 42px rgba(12, 18, 32, 0.07);
+    min-height: 170px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.axiom-affiliate-stat-card--accent {
+    border-color: rgba(59, 111, 224, 0.28);
+    box-shadow: 0 18px 46px rgba(59, 111, 224, 0.10);
+}
+
+.axiom-affiliate-stat-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f8ff;
+    color: #0c1220;
+    font-size: 28px;
+    margin-bottom: 22px;
+}
+
+.axiom-affiliate-stat-icon i {
+    line-height: 1;
+    font-size: 28px;
+}
+
+.axiom-affiliate-stat-value {
+    font-size: 30px;
+    line-height: 1.05;
+    font-weight: 900;
+    color: #0c1220;
+    letter-spacing: -0.04em;
+    margin-bottom: 10px;
+}
+
+.axiom-affiliate-stat-card--accent .axiom-affiliate-stat-value {
+    color: #38a657;
+}
+
+.axiom-affiliate-stat-label {
+    font-size: 16px;
+    line-height: 1.25;
+    color: #7a8393;
+    font-weight: 800;
+}
+
+/* Program Details */
+
+.axiom-affiliate-program-details {
+    margin: -4px 0 28px;
+}
+
+.axiom-affiliate-program-details h3 {
+    margin: 0 0 16px;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 900;
+    color: #0c1220;
+    letter-spacing: -0.04em;
+}
+
+.axiom-affiliate-program-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0 0 28px;
+}
+
+.axiom-affiliate-program-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #ffffff;
+    border: 1px solid rgba(12, 18, 32, 0.08);
+    border-radius: 22px;
+    padding: 18px;
+    box-shadow: 0 14px 36px rgba(12, 18, 32, 0.06);
+    min-height: 104px;
+}
+
+.axiom-affiliate-program-icon {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f8ff;
+    color: #0c1220;
+    font-size: 22px;
+}
+
+.axiom-affiliate-program-label {
+    color: #7a8393;
+    font-size: 14px;
+    line-height: 1.2;
+    font-weight: 800;
+    margin: 0 0 6px;
+}
+
+.axiom-affiliate-program-value {
+    color: #0c1220;
+    font-size: 22px;
+    line-height: 1.1;
+    font-weight: 900;
+    letter-spacing: -0.035em;
+    margin: 0;
+}
+
+@media (max-width: 1024px) {
+    .axiom-affiliate-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .axiom-affiliate-stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 28px;
+    }
+
+    .axiom-affiliate-stat-card {
+        border-radius: 20px;
+        padding: 18px;
+        min-height: 152px;
+    }
+
+    .axiom-affiliate-stat-icon {
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+        margin-bottom: 16px;
+    }
+
+    .axiom-affiliate-stat-icon i {
+        font-size: 24px;
+    }
+
+    .axiom-affiliate-stat-value {
+        font-size: 25px;
+    }
+
+    .axiom-affiliate-stat-label {
+        font-size: 14px;
+    }
+
+    .axiom-affiliate-program-details h3 {
+        font-size: 28px;
+    }
+
+    .axiom-affiliate-program-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .axiom-affiliate-program-card {
+        padding: 16px;
+        border-radius: 20px;
+    }
+
+    .axiom-affiliate-program-value {
+        font-size: 20px;
+    }
+}
