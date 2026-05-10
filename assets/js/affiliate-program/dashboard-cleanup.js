@@ -17,6 +17,12 @@
         );
     }
 
+    function axiomHideElement(el) {
+        if (el && !axiomIsInsideNav(el)) {
+            el.classList.add('axiom-slicewp-duplicate-home-block');
+        }
+    }
+
     function axiomHideDuplicateHomeBlocks(sliceArea) {
         if (!sliceArea) {
             return;
@@ -30,27 +36,7 @@
         });
 
         /**
-         * Hide duplicate headings left behind by SliceWP.
-         */
-        sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(function (heading) {
-            if (axiomIsInsideNav(heading)) {
-                return;
-            }
-
-            var text = axiomText(heading);
-
-            if (
-                text === 'all time' ||
-                text === 'program details' ||
-                text === 'dashboard'
-            ) {
-                heading.classList.add('axiom-slicewp-duplicate-home-block');
-            }
-        });
-
-        /**
-         * Hide duplicate SliceWP dashboard metric blocks.
-         * This targets only the default home dashboard content, not the nav buttons.
+         * Hide duplicate SliceWP metric/dashboard cards.
          */
         var blocks = sliceArea.querySelectorAll(
             '.slicewp-card, .slicewp-box, .slicewp-panel, .slicewp-chart, .slicewp-section, .slicewp-grid, .slicewp-row, section'
@@ -77,14 +63,64 @@
                 text.indexOf('sale rate:') !== -1;
 
             if (isDefaultMetricBlock) {
-                block.classList.add('axiom-slicewp-duplicate-home-block');
+                axiomHideElement(block);
             }
         });
 
         /**
-         * Extra cleanup:
-         * Sometimes SliceWP wraps all-time/program details in plain divs.
-         * This hides parent blocks only when the text clearly matches duplicate home content.
+         * Hide leftover duplicate headings:
+         * All time
+         * Program details
+         */
+        var headings = sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+        headings.forEach(function (heading) {
+            if (axiomIsInsideNav(heading)) {
+                return;
+            }
+
+            var text = axiomText(heading);
+
+            if (text === 'all time' || text === 'program details') {
+                axiomHideElement(heading);
+
+                /**
+                 * Also hide the next few sibling blocks because SliceWP puts
+                 * the All Time / Program Details cards right after these headings.
+                 */
+                var sibling = heading.nextElementSibling;
+                var count = 0;
+
+                while (sibling && count < 8) {
+                    if (axiomIsInsideNav(sibling)) {
+                        sibling = sibling.nextElementSibling;
+                        count++;
+                        continue;
+                    }
+
+                    var siblingText = axiomText(sibling);
+
+                    if (
+                        siblingText.indexOf('visits') !== -1 ||
+                        siblingText.indexOf('commissions') !== -1 ||
+                        siblingText.indexOf('paid earnings') !== -1 ||
+                        siblingText.indexOf('unpaid earnings') !== -1 ||
+                        siblingText.indexOf('commission rate') !== -1 ||
+                        siblingText.indexOf('sale rate') !== -1 ||
+                        siblingText.indexOf('cookie duration') !== -1 ||
+                        siblingText.indexOf('30 days') !== -1
+                    ) {
+                        axiomHideElement(sibling);
+                    }
+
+                    sibling = sibling.nextElementSibling;
+                    count++;
+                }
+            }
+        });
+
+        /**
+         * Extra cleanup for loose divs that only contain duplicate text.
          */
         sliceArea.querySelectorAll('div').forEach(function (div) {
             if (axiomIsInsideNav(div)) {
@@ -105,10 +141,14 @@
                 text === 'all time' ||
                 text === 'program details' ||
                 text === 'commission rate sale rate: 10%' ||
-                text === 'cookie duration 30 days';
+                text === 'cookie duration 30 days' ||
+                text === 'visits 0' ||
+                text === 'commissions 0' ||
+                text === 'paid earnings $0.00' ||
+                text === 'unpaid earnings $0.00';
 
             if (isLooseDuplicate) {
-                div.classList.add('axiom-slicewp-duplicate-home-block');
+                axiomHideElement(div);
             }
         });
     }
@@ -127,12 +167,7 @@
         }
 
         /**
-         * IMPORTANT:
-         * Do NOT add axiom-affiliate-not-home anymore.
-         * That class was hiding your custom Axiom cards.
-         *
-         * We always keep the Axiom cards and Program Details visible.
-         * We only remove duplicate SliceWP home/dashboard blocks.
+         * Keep custom Axiom cards visible.
          */
         dashboard.classList.remove('axiom-affiliate-not-home');
         dashboard.classList.add('axiom-affiliate-home-active');
@@ -143,9 +178,6 @@
     document.addEventListener('DOMContentLoaded', function () {
         axiomDashboardCleanup();
 
-        /**
-         * SliceWP changes tab content after clicks, so cleanup runs again.
-         */
         document.addEventListener('click', function () {
             setTimeout(axiomDashboardCleanup, 150);
             setTimeout(axiomDashboardCleanup, 500);
@@ -157,5 +189,6 @@
         axiomDashboardCleanup();
         setTimeout(axiomDashboardCleanup, 500);
         setTimeout(axiomDashboardCleanup, 1200);
+        setTimeout(axiomDashboardCleanup, 2000);
     });
 })();
