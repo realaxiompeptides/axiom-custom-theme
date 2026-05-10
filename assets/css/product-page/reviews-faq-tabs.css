@@ -1,0 +1,191 @@
+.axiom-product-tabs-conversion {
+  margin: 34px 0 24px;
+  padding: 18px;
+  border: 1px solid rgba(32, 90, 76, 0.14);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at top left, rgba(75, 162, 245, 0.14), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.axiom-product-tabs-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.axiom-product-tab-btn {
+  appearance: none;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 18px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 15px;
+  padding: 15px 12px;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.axiom-product-tab-btn i {
+  margin-right: 7px;
+}
+
+.axiom-product-tab-btn.is-active {
+  color: #ffffff;
+  border-color: #155c49;
+  background: linear-gradient(135deg, #155c49 0%, #0d3f34 100%);
+}
+
+.axiom-product-tab-panel {
+  display: none;
+}
+
+.axiom-product-tab-panel.is-active {
+  display: block;
+}
+
+.axiom-review-summary-card,
+.axiom-review-empty-card {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 18px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+.axiom-review-summary-card {
+  margin-bottom: 14px;
+}
+
+.axiom-review-stars {
+  color: #f59e0b;
+  font-size: 24px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.axiom-review-score strong,
+.axiom-review-empty-card h3 {
+  display: block;
+  color: #0f172a;
+  font-size: 20px;
+  font-weight: 950;
+  line-height: 1.15;
+  margin-bottom: 8px;
+}
+
+.axiom-review-score p,
+.axiom-review-empty-card p,
+.axiom-faq-item p {
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.axiom-review-proof {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.axiom-review-proof span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #10231e;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(21, 92, 73, 0.08);
+}
+
+.axiom-review-proof i {
+  color: #155c49;
+}
+
+.axiom-review-write-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #155c49 0%, #0d3f34 100%);
+  color: #ffffff;
+  font-weight: 950;
+  text-decoration: none;
+  box-shadow: 0 14px 26px rgba(21, 92, 73, 0.22);
+}
+
+.axiom-faq-list {
+  display: grid;
+  gap: 10px;
+}
+
+.axiom-faq-item {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 18px;
+  background: #ffffff;
+  padding: 0;
+  overflow: hidden;
+}
+
+.axiom-faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 17px 18px;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 950;
+  line-height: 1.3;
+}
+
+.axiom-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.axiom-faq-item summary::after {
+  content: "+";
+  float: right;
+  color: #155c49;
+  font-size: 22px;
+  font-weight: 900;
+  margin-left: 10px;
+}
+
+.axiom-faq-item[open] summary::after {
+  content: "−";
+}
+
+.axiom-faq-item p {
+  padding: 0 18px 18px;
+}
+
+@media (max-width: 640px) {
+  .axiom-product-tabs-conversion {
+    margin: 28px 0 22px;
+    padding: 14px;
+    border-radius: 24px;
+  }
+
+  .axiom-product-tab-btn {
+    font-size: 14px;
+    padding: 14px 8px;
+  }
+
+  .axiom-review-score strong,
+  .axiom-review-empty-card h3 {
+    font-size: 18px;
+  }
+
+  .axiom-faq-item summary {
+    font-size: 15px;
+  }
+}
