@@ -55,6 +55,13 @@
         );
     }
 
+    function axiomFindPromoteField() {
+        return (
+            axiomFindFieldByLabel('how will you promote us') ||
+            document.querySelector('[name*="promote"]')?.closest('.slicewp-field-wrapper')
+        );
+    }
+
     function axiomBuildPaymentCards(paymentField) {
         if (!paymentField || paymentField.classList.contains('axiom-payment-cards-ready')) {
             return;
@@ -91,8 +98,8 @@
             }
 
             var raw = (label.textContent || radio.value || '').toLowerCase();
-
             var isStoreCredit = raw.indexOf('store') !== -1;
+
             var title = isStoreCredit ? 'Store Credit' : 'Bank Deposit';
             var subtitle = isStoreCredit ? 'Added to wallet' : 'Via Zelle';
             var icon = isStoreCredit ? '🛍️' : '🏦';
@@ -109,11 +116,6 @@
                 label.insertBefore(radio, label.firstChild);
             }
 
-            /*
-             * IMPORTANT:
-             * Do NOT auto-select anything on page load.
-             * User must choose Bank Deposit or Store Credit.
-             */
             radio.checked = false;
             label.classList.remove('is-selected');
 
@@ -174,10 +176,6 @@
         var selected = axiomSelectedPaymentType(paymentField);
         var zelleInputs = Array.prototype.slice.call(zelleField.querySelectorAll('input, textarea, select'));
 
-        /*
-         * Default state:
-         * Nothing selected = hide Zelle field.
-         */
         if (selected !== 'bank_deposit') {
             zelleField.classList.add('axiom-zelle-hidden');
             zelleField.classList.remove('axiom-zelle-field-active');
@@ -185,18 +183,12 @@
             zelleInputs.forEach(function (input) {
                 input.required = false;
                 input.removeAttribute('required');
-
-                if (selected === 'store_credit' || selected === '') {
-                    input.value = '';
-                }
+                input.value = '';
             });
 
             return;
         }
 
-        /*
-         * Bank Deposit selected = show Zelle field and require it.
-         */
         zelleField.classList.remove('axiom-zelle-hidden');
         zelleField.classList.add('axiom-zelle-field-active');
 
@@ -214,6 +206,7 @@
         }
 
         field.classList.add('axiom-partner-helper-ready');
+        field.classList.add('axiom-partner-code-field');
 
         var helper = document.createElement('div');
         helper.className = 'axiom-partner-code-preview';
@@ -243,6 +236,24 @@
         });
     }
 
+    function axiomAddFieldClasses() {
+        var zelleField = axiomFindZelleField();
+        var partnerField = axiomFindPartnerCodeField();
+        var promoteField = axiomFindPromoteField();
+
+        if (zelleField) {
+            zelleField.classList.add('axiom-zelle-contact-field');
+        }
+
+        if (partnerField) {
+            partnerField.classList.add('axiom-partner-code-field');
+        }
+
+        if (promoteField) {
+            promoteField.classList.add('axiom-promote-field');
+        }
+    }
+
     function axiomRenameSubmitButton() {
         var submits = Array.prototype.slice.call(document.querySelectorAll(
             '.axiom-affiliate-form-wrap input[type="submit"], .axiom-affiliate-form-wrap button[type="submit"], input[type="submit"], button[type="submit"]'
@@ -250,9 +261,9 @@
 
         submits.forEach(function (submit) {
             if (submit.tagName === 'INPUT') {
-                submit.value = 'Create Partner Account →';
+                submit.value = 'Create Partner Account →→';
             } else {
-                submit.textContent = 'Create Partner Account →';
+                submit.textContent = 'Create Partner Account →→';
             }
         });
     }
@@ -265,13 +276,13 @@
             axiomUpdatePaymentState();
         }
 
+        axiomAddFieldClasses();
         axiomAddPartnerCodeHelper();
         axiomRenameSubmitButton();
     }
 
     document.addEventListener('DOMContentLoaded', function () {
         axiomInitAffiliateRegistrationFields();
-
         setTimeout(axiomInitAffiliateRegistrationFields, 500);
         setTimeout(axiomInitAffiliateRegistrationFields, 1200);
     });
