@@ -1,0 +1,55 @@
+/* =========================================================
+   Axiom Affiliate Dashboard Base
+========================================================= */
+
+.axiom-affiliate-dashboard-modern {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 22px 16px 44px;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.axiom-affiliate-dashboard-modern *,
+.axiom-affiliate-dashboard-modern *::before,
+.axiom-affiliate-dashboard-modern *::after {
+    box-sizing: border-box;
+}
+
+.axiom-affiliate-dashboard-header {
+    margin-bottom: 24px;
+}
+
+.axiom-affiliate-dashboard-header h2 {
+    margin: 0 0 10px;
+    font-size: 36px;
+    line-height: 1.04;
+    font-weight: 900;
+    color: #0c1220;
+    letter-spacing: -0.045em;
+}
+
+.axiom-affiliate-dashboard-header p {
+    margin: 0;
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #5d6779;
+}
+
+@media (max-width: 640px) {
+    .axiom-affiliate-dashboard-modern {
+        padding: 16px 14px 34px;
+    }
+
+    .axiom-affiliate-dashboard-header {
+        margin-bottom: 22px;
+    }
+
+    .axiom-affiliate-dashboard-header h2 {
+        font-size: 31px;
+    }
+
+    .axiom-affiliate-dashboard-header p {
+        font-size: 15px;
+    }
+}
