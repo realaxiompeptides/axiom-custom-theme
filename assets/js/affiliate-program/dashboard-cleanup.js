@@ -90,8 +90,7 @@
 
         return (
             url.indexOf('affiliate-account-tab=settings') !== -1 ||
-            url.indexOf('tab=settings') !== -1 ||
-            url.indexOf('settings') !== -1
+            url.indexOf('tab=settings') !== -1
         );
     }
 
@@ -100,17 +99,10 @@
 
         return (
             url.indexOf('affiliate-account-tab=payouts') !== -1 ||
-            url.indexOf('tab=payouts') !== -1 ||
-            url.indexOf('payout') !== -1
+            url.indexOf('tab=payouts') !== -1
         );
     }
 
-    /**
-     * Payout Schedule:
-     * - Hide on dashboard home.
-     * - Show on settings/payouts.
-     * - Move below SliceWP buttons and above the settings form/content.
-     */
     function axiomHandlePayoutScheduleVisibility(dashboard, sliceArea) {
         var payoutSchedule = dashboard.querySelector('.axiom-affiliate-payout-schedule');
 
@@ -132,7 +124,7 @@
             sliceArea.querySelector('.slicewp-user-dashboard-nav') ||
             sliceArea.querySelector('.slicewp-nav-tab-wrapper');
 
-        if (nav && nav.parentNode) {
+        if (nav && nav.parentNode && payoutSchedule.previousElementSibling !== nav) {
             nav.parentNode.insertBefore(payoutSchedule, nav.nextSibling);
         }
     }
@@ -198,7 +190,7 @@
     }
 
     function axiomHideLooseDuplicateHeadings(sliceArea) {
-        sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, strong, div').forEach(function (el) {
+        sliceArea.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, strong').forEach(function (el) {
             if (axiomIsInsideNav(el) || axiomIsProtectedAxiomSection(el)) {
                 return;
             }
@@ -212,28 +204,40 @@
     }
 
     /**
-     * Find a field by visible label text.
+     * Find a field wrapper by visible label text.
+     * IMPORTANT: this only checks label text, not full parent text.
      */
     function axiomFindFieldByLabelText(textNeedle) {
         textNeedle = String(textNeedle || '').toLowerCase();
 
-        var fields = document.querySelectorAll(
-            '.slicewp-field-wrapper, .slicewp-form-field, .slicewp-field, p, div'
-        );
+        var labels = document.querySelectorAll('.axiom-affiliate-default-dashboard label');
 
-        for (var i = 0; i < fields.length; i++) {
-            var field = fields[i];
-            var text = axiomText(field);
+        for (var i = 0; i < labels.length; i++) {
+            var label = labels[i];
+            var labelText = axiomText(label);
 
-            if (text.indexOf(textNeedle) !== -1) {
-                var input = field.querySelector('input, textarea, select');
+            if (labelText.indexOf(textNeedle) === -1) {
+                continue;
+            }
 
-                if (input) {
-                    return {
-                        field: field,
-                        input: input
-                    };
-                }
+            var field =
+                label.closest('.slicewp-field-wrapper') ||
+                label.closest('.slicewp-form-field') ||
+                label.closest('.slicewp-field') ||
+                label.closest('p') ||
+                label.parentElement;
+
+            if (!field) {
+                continue;
+            }
+
+            var input = field.querySelector('input, textarea, select');
+
+            if (input) {
+                return {
+                    field: field,
+                    input: input
+                };
             }
         }
 
@@ -265,19 +269,16 @@
     }
 
     /**
-     * IMPORTANT FIX:
-     * SliceWP custom fields use random/internal names.
-     * This injects normal field names PHP can actually read:
-     * - axiom_partner_code
-     * - axiom_payment_preference
-     * - axiom_zelle_contact
+     * Settings hidden sync:
+     * Only payment + Zelle.
+     * Partner code is intentionally NOT synced anymore because affiliates should not edit it from dashboard.
      */
     function axiomForceSettingsHiddenFields() {
         if (!axiomIsSettingsTab()) {
             return;
         }
 
-        var forms = document.querySelectorAll('.axiom-affiliate-default-dashboard form, form');
+        var forms = document.querySelectorAll('.axiom-affiliate-default-dashboard form');
 
         forms.forEach(function (form) {
             if (form.classList.contains('axiom-hidden-sync-ready')) {
@@ -287,14 +288,8 @@
             form.classList.add('axiom-hidden-sync-ready');
 
             form.addEventListener('submit', function () {
-                var partner = axiomFindFieldByLabelText('partner code');
                 var zelle = axiomFindFieldByLabelText('zelle email');
                 var payment = axiomFindFieldByLabelText('payment preference');
-
-                if (partner && partner.input) {
-                    partner.input.value = axiomCleanPartnerCode(partner.input.value);
-                    axiomSetHiddenInput(form, 'axiom_partner_code', partner.input.value);
-                }
 
                 if (zelle && zelle.input) {
                     axiomSetHiddenInput(form, 'axiom_zelle_contact', zelle.input.value || '');
@@ -302,15 +297,70 @@
 
                 if (payment && payment.field) {
                     var checked = payment.field.querySelector('input[type="radio"]:checked');
-                    var selectedText = checked ? axiomText(checked.closest('label')) + ' ' + checked.value : '';
+                    var selectedText = '';
+
+                    if (checked) {
+                        selectedText =
+                            axiomText(checked.closest('label')) +
+                            ' ' +
+                            String(checked.value || '').toLowerCase();
+                    }
 
                     if (selectedText.indexOf('store') !== -1) {
                         axiomSetHiddenInput(form, 'axiom_payment_preference', 'store_credit');
-                    } else {
+                    } else if (
+                        selectedText.indexOf('manual') !== -1 ||
+                        selectedText.indexOf('zelle') !== -1 ||
+                        selectedText.indexOf('bank') !== -1
+                    ) {
                         axiomSetHiddenInput(form, 'axiom_payment_preference', 'manual');
                     }
                 }
             });
+        });
+    }
+
+    /**
+     * Hide editable Partner Code field in dashboard settings only.
+     * This does NOT touch registration page.
+     */
+    function axiomHideDashboardPartnerCodeField(sliceArea) {
+        if (!axiomIsSettingsTab()) {
+            return;
+        }
+
+        if (!sliceArea) {
+            return;
+        }
+
+        var labels = sliceArea.querySelectorAll('label');
+
+        labels.forEach(function (label) {
+            var text = axiomText(label);
+
+            var isPartnerCodeLabel =
+                text === 'your partner code *' ||
+                text === 'your partner code' ||
+                text === 'partner code *' ||
+                text === 'partner code' ||
+                text === 'affiliate code *' ||
+                text === 'affiliate code';
+
+            if (!isPartnerCodeLabel) {
+                return;
+            }
+
+            var wrapper =
+                label.closest('.slicewp-field-wrapper') ||
+                label.closest('.slicewp-form-field') ||
+                label.closest('.slicewp-field') ||
+                label.closest('p') ||
+                label.parentElement;
+
+            if (wrapper) {
+                wrapper.style.display = 'none';
+                wrapper.classList.add('axiom-hidden-partner-code-field');
+            }
         });
     }
 
@@ -336,6 +386,7 @@
         axiomHideDuplicateBottomAfterChart(sliceArea);
         axiomHideLooseDuplicateHeadings(sliceArea);
         axiomForceSettingsHiddenFields();
+        axiomHideDashboardPartnerCodeField(sliceArea);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -364,111 +415,3 @@
         setTimeout(axiomDashboardCleanup, 4000);
     });
 })();
-
-/* =========================================================
-   Axiom: Hide editable Partner Code field in affiliate dashboard
-   Keeps registration page partner code field visible.
-========================================================= */
-
-function axiomHideDashboardPartnerCodeField() {
-    var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
-
-    if (!dashboard) {
-        return;
-    }
-
-    var sliceArea = dashboard.querySelector('.axiom-affiliate-default-dashboard');
-
-    if (!sliceArea) {
-        return;
-    }
-
-    sliceArea.querySelectorAll('label, div, p, span, strong').forEach(function (el) {
-        var text = (el.textContent || '')
-            .replace(/\s+/g, ' ')
-            .trim()
-            .toLowerCase();
-
-        if (
-            text === 'your partner code *' ||
-            text === 'your partner code' ||
-            text === 'partner code *' ||
-            text === 'partner code' ||
-            text === 'affiliate code *' ||
-            text === 'affiliate code'
-        ) {
-            var wrapper =
-                el.closest('.slicewp-field-wrapper') ||
-                el.closest('.slicewp-form-field') ||
-                el.closest('.slicewp-field') ||
-                el.closest('p') ||
-                el.parentElement;
-
-            if (wrapper) {
-                wrapper.style.display = 'none';
-                wrapper.classList.add('axiom-hidden-partner-code-field');
-            }
-        }
-    });
-
-    sliceArea.querySelectorAll('input, textarea').forEach(function (field) {
-        var name = (field.getAttribute('name') || '').toLowerCase();
-        var id = (field.getAttribute('id') || '').toLowerCase();
-        var value = (field.value || '').toLowerCase();
-
-        var looksLikePartnerCodeField =
-            name.indexOf('partner') !== -1 ||
-            name.indexOf('partner_code') !== -1 ||
-            name.indexOf('affiliate_code') !== -1 ||
-            id.indexOf('partner') !== -1 ||
-            id.indexOf('partner_code') !== -1 ||
-            id.indexOf('affiliate_code') !== -1;
-
-        /*
-         * Backup: your screenshot shows this as a large textarea/input under
-         * "Your Partner Code *", so also hide by nearby label text.
-         */
-        var parentText = field.closest('div, p, section, form')
-            ? field.closest('div, p, section, form').textContent.toLowerCase()
-            : '';
-
-        if (
-            looksLikePartnerCodeField ||
-            parentText.indexOf('your partner code') !== -1 ||
-            parentText.indexOf('partner code') !== -1
-        ) {
-            var wrapper =
-                field.closest('.slicewp-field-wrapper') ||
-                field.closest('.slicewp-form-field') ||
-                field.closest('.slicewp-field') ||
-                field.closest('p') ||
-                field.parentElement;
-
-            if (wrapper) {
-                wrapper.style.display = 'none';
-                wrapper.classList.add('axiom-hidden-partner-code-field');
-            }
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    axiomHideDashboardPartnerCodeField();
-
-    setTimeout(axiomHideDashboardPartnerCodeField, 300);
-    setTimeout(axiomHideDashboardPartnerCodeField, 900);
-    setTimeout(axiomHideDashboardPartnerCodeField, 1800);
-});
-
-window.addEventListener('load', function () {
-    axiomHideDashboardPartnerCodeField();
-
-    setTimeout(axiomHideDashboardPartnerCodeField, 500);
-    setTimeout(axiomHideDashboardPartnerCodeField, 1500);
-    setTimeout(axiomHideDashboardPartnerCodeField, 3000);
-});
-
-document.addEventListener('click', function () {
-    setTimeout(axiomHideDashboardPartnerCodeField, 150);
-    setTimeout(axiomHideDashboardPartnerCodeField, 600);
-});
