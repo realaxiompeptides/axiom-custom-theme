@@ -34,7 +34,7 @@ $axiom_vials = array(
 );
 ?>
 
-<section class="axiom-vial-showcase" aria-label="Axiom research vial showcase">
+<section class="axiom-vial-showcase axiom-vial-showcase--minimal" aria-label="Axiom research vial showcase">
     <div class="axiom-vial-showcase-bg" aria-hidden="true">
         <div class="axiom-vial-showcase-grid"></div>
         <div class="axiom-vial-showcase-glow axiom-vial-showcase-glow--one"></div>
@@ -42,19 +42,6 @@ $axiom_vials = array(
     </div>
 
     <div class="axiom-vial-showcase-inner">
-        <div class="axiom-vial-showcase-copy">
-            <span class="axiom-vial-showcase-pill">
-                <i class="fa-solid fa-vials" aria-hidden="true"></i>
-                Axiom Research Collection
-            </span>
-
-            <h2>Precision Compounds. Clean Presentation.</h2>
-
-            <p>
-                A premium research-use catalog built around batch transparency, clean fulfillment, and professional documentation.
-            </p>
-        </div>
-
         <div class="axiom-vial-float-stage" aria-hidden="true">
             <?php foreach ($axiom_vials as $vial) : ?>
                 <div class="axiom-vial-float <?php echo esc_attr($vial['class']); ?>">
