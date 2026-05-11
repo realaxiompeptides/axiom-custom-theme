@@ -5,50 +5,38 @@ if (!defined('ABSPATH')) {
 
 /**
  * ==========================================================
- * Axiom Kit Coupon Block
- * Discount codes cannot apply when cart contains kit products.
+ * Axiom Kit Coupon Exclusion
+ * Coupons can apply to normal products, but NOT kit products.
  * ==========================================================
  */
 
-function axiom_coupon_cart_contains_kit_product() {
-    if (!function_exists('WC') || !WC()->cart) {
+function axiom_coupon_product_is_kit($product_id) {
+    $product_id = (int) $product_id;
+
+    if (!$product_id) {
         return false;
     }
 
-    foreach (WC()->cart->get_cart() as $cart_item) {
-        $product_id   = !empty($cart_item['product_id']) ? (int) $cart_item['product_id'] : 0;
-        $variation_id = !empty($cart_item['variation_id']) ? (int) $cart_item['variation_id'] : 0;
-
-        if ($product_id && has_term(array('kits', 'kit'), 'product_cat', $product_id)) {
-            return true;
-        }
-
-        if ($variation_id && has_term(array('kits', 'kit'), 'product_cat', $variation_id)) {
-            return true;
-        }
-    }
-
-    return false;
+    return has_term(array('kits', 'kit'), 'product_cat', $product_id);
 }
 
-add_filter('woocommerce_coupon_is_valid', 'axiom_disable_coupons_for_kit_products', 20, 2);
+/**
+ * Make coupon discount $0 for kit cart items only.
+ */
+add_filter('woocommerce_coupon_get_discount_amount', 'axiom_exclude_kit_items_from_coupon_discount', 20, 5);
 
-function axiom_disable_coupons_for_kit_products($valid, $coupon) {
-    if (axiom_coupon_cart_contains_kit_product()) {
-        return false;
+function axiom_exclude_kit_items_from_coupon_discount($discount, $discounting_amount, $cart_item, $single, $coupon) {
+    if (empty($cart_item) || empty($cart_item['product_id'])) {
+        return $discount;
     }
 
-    return $valid;
-}
+    $product_id = (int) $cart_item['product_id'];
 
-add_filter('woocommerce_coupon_error', 'axiom_kit_coupon_error_message', 30, 3);
-
-function axiom_kit_coupon_error_message($message, $error_code, $coupon) {
-    if (axiom_coupon_cart_contains_kit_product()) {
-        return 'Discount codes cannot be applied to kit products.';
+    if (axiom_coupon_product_is_kit($product_id)) {
+        return 0;
     }
 
-    return $message;
+    return $discount;
 }
 
 /**
@@ -63,12 +51,6 @@ function axiom_apply_coupon() {
     if (!function_exists('WC') || !WC()->cart) {
         wp_send_json_error(array(
             'message' => 'Cart unavailable.',
-        ));
-    }
-
-    if (axiom_coupon_cart_contains_kit_product()) {
-        wp_send_json_error(array(
-            'message' => 'Discount codes cannot be applied to kit products.',
         ));
     }
 
@@ -118,22 +100,16 @@ function axiom_apply_coupon() {
 
     WC()->cart->calculate_totals();
 
-    $notices = wc_get_notices('success');
-    $message = 'Discount applied.';
-
-    if (!empty($notices) && !empty($notices[0]['notice'])) {
-        $message = wp_strip_all_tags($notices[0]['notice']);
-    }
-
     wc_clear_notices();
 
     wp_send_json_success(array(
-        'message'     => $message,
+        'message'     => 'Discount applied. Kit products are excluded from discounts.',
         'coupon_code' => $coupon_code,
     ));
 }
 add_action('wp_ajax_axiom_apply_coupon', 'axiom_apply_coupon');
 add_action('wp_ajax_nopriv_axiom_apply_coupon', 'axiom_apply_coupon');
+
 
 /**
  * ==========================================================
@@ -274,10 +250,6 @@ function axiom_validate_popup_coupon_with_live_checkout_email($valid, $coupon, $
         return $valid;
     }
 
-    if (axiom_coupon_cart_contains_kit_product()) {
-        return false;
-    }
-
     $coupon_code = $coupon->get_code();
 
     if (!axiom_popup_coupon_code_is_generated_coupon($coupon_code)) {
@@ -336,10 +308,6 @@ function axiom_prefill_checkout_email_from_popup_coupon($value, $input) {
 add_filter('woocommerce_coupon_error', 'axiom_clean_popup_coupon_email_error', 20, 3);
 
 function axiom_clean_popup_coupon_email_error($message, $error_code, $coupon) {
-    if (axiom_coupon_cart_contains_kit_product()) {
-        return 'Discount codes cannot be applied to kit products.';
-    }
-
     if (!$coupon instanceof WC_Coupon) {
         return $message;
     }
