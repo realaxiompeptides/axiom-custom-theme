@@ -30,22 +30,6 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
-    /**
-     * Email/SMS popup capture styles.
-     *
-     * CSS files:
-     * /assets/css/popup/popup-layout.css
-     * /assets/css/popup/popup-form.css
-     * /assets/css/popup/popup-responsive.css
-     * /assets/css/popup/popup-success.css
-     * /assets/css/popup/popup-launcher.css
-     *
-     * IMPORTANT:
-     * The old /assets/css/popup.css is intentionally NOT loaded anymore.
-     *
-     * Launcher CSS loads last so the floating % icon wins against
-     * popup/account/button/span styling conflicts.
-     */
     if (file_exists($theme_path . '/assets/css/popup/popup-layout.css')) {
         wp_enqueue_style(
             'axiom-popup-layout',
@@ -233,6 +217,15 @@ function axiom_custom_theme_assets() {
             );
         }
 
+        if (file_exists($theme_path . '/assets/css/product-page/reviews-faq-tabs.css')) {
+            wp_enqueue_style(
+                'axiom-product-reviews-faq-tabs',
+                $theme_uri . '/assets/css/product-page/reviews-faq-tabs.css',
+                array(),
+                filemtime($theme_path . '/assets/css/product-page/reviews-faq-tabs.css')
+            );
+        }
+
         if (file_exists($theme_path . '/assets/css/product-page/product-image-trust-icons.css')) {
             wp_enqueue_style(
                 'axiom-product-image-trust-icons',
@@ -381,14 +374,6 @@ function axiom_custom_theme_assets() {
         'nonce'       => wp_create_nonce('axiom_cart_drawer'),
     ));
 
-    /**
-     * Email/SMS popup capture script.
-     *
-     * File:
-     * /assets/js/popup.js
-     *
-     * This must load after axiom-main so global site behavior is already available.
-     */
     if (file_exists($theme_path . '/assets/js/popup.js')) {
         wp_enqueue_script(
             'axiom-popup',
