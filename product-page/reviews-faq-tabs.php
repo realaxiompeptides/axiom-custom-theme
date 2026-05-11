@@ -25,7 +25,26 @@ $product_name = $product ? $product->get_name() : get_the_title();
 
   <div class="axiom-product-tab-panel is-active" data-panel="reviews">
     <div class="axiom-real-reviews-wrapper">
-      <?php comments_template(); ?>
+
+      <div class="axiom-review-intro-card">
+        <div class="axiom-review-intro-icon">
+          <i class="fa-solid fa-pen"></i>
+        </div>
+
+        <div class="axiom-review-intro-copy">
+          <h3>Reviews for <?php echo esc_html($product_name); ?></h3>
+          <p>Only real product feedback is displayed here. Reviews mentioning human use, treatment, results, or medical claims will not be published.</p>
+        </div>
+      </div>
+
+      <button type="button" class="axiom-show-review-form-btn" id="axiomShowReviewFormBtn">
+        Write a Review
+      </button>
+
+      <div class="axiom-hidden-review-form" id="axiomHiddenReviewForm">
+        <?php comments_template(); ?>
+      </div>
+
     </div>
   </div>
 
@@ -79,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const buttons = section.querySelectorAll('.axiom-product-tab-btn');
   const panels = section.querySelectorAll('.axiom-product-tab-panel');
   const faqItems = section.querySelectorAll('.axiom-faq-item');
+  const showReviewBtn = document.getElementById('axiomShowReviewFormBtn');
+  const reviewForm = document.getElementById('axiomHiddenReviewForm');
 
   buttons.forEach(function (button) {
     button.addEventListener('click', function () {
@@ -112,5 +133,17 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
   });
+
+  if (showReviewBtn && reviewForm) {
+    showReviewBtn.addEventListener('click', function () {
+      reviewForm.classList.toggle('is-open');
+
+      if (reviewForm.classList.contains('is-open')) {
+        showReviewBtn.textContent = 'Hide Review Form';
+      } else {
+        showReviewBtn.textContent = 'Write a Review';
+      }
+    });
+  }
 });
 </script>
