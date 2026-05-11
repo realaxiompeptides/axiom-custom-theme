@@ -33,9 +33,6 @@ $tax_query = array(
     'relation' => 'AND',
 );
 
-/**
- * Respect WooCommerce catalog visibility.
- */
 if (function_exists('wc_get_product_visibility_term_ids')) {
     $product_visibility_terms = wc_get_product_visibility_term_ids();
 
@@ -69,6 +66,10 @@ $product_query_args['tax_query'] = $tax_query;
 $products = new WP_Query($product_query_args);
 
 $catalog_filter_groups = array(
+    array(
+        'label' => 'All Products',
+        'slug'  => 'all',
+    ),
     array(
         'label' => 'Peptides',
         'slug'  => 'peptides',
@@ -186,6 +187,20 @@ $catalog_filter_groups = array(
                         'bac-water',
                         'bacteriostatic-water',
                     ), 'product_cat', $product_id);
+
+                    if (!$is_research_supply) {
+                        $normalized_name = strtolower($product_name);
+
+                        if (
+                            strpos($normalized_name, 'bac water') !== false ||
+                            strpos($normalized_name, 'bacteriostatic water') !== false ||
+                            strpos($normalized_name, 'research supply') !== false
+                        ) {
+                            $is_research_supply = true;
+                        }
+                    }
+
+                    $term_slugs[] = 'all';
 
                     if ($is_kit_product) {
                         $term_slugs[] = 'kits';
