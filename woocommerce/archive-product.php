@@ -14,6 +14,7 @@ $page_desc  = 'Browse all research products in our catalog.';
 
 if ($is_tax_archive && $current_term && !empty($current_term->name)) {
     $page_title = $current_term->name;
+
     if (!empty($current_term->description)) {
         $page_desc = wp_strip_all_tags($current_term->description);
     }
@@ -30,21 +31,10 @@ $product_query_args = array(
 
 $tax_query = array(
     'relation' => 'AND',
-    array(
-        'taxonomy' => 'product_cat',
-        'field'    => 'slug',
-        'terms'    => array('kits'),
-        'operator' => 'NOT IN',
-    ),
 );
 
 /**
  * Respect WooCommerce catalog visibility.
- * This prevents products marked as:
- * - Hidden
- * - Exclude from catalog
- * - Exclude from search
- * from showing in the custom catalog grid.
  */
 if (function_exists('wc_get_product_visibility_term_ids')) {
     $product_visibility_terms = wc_get_product_visibility_term_ids();
@@ -83,9 +73,6 @@ $catalog_terms = get_terms(array(
     'hide_empty' => true,
     'orderby'    => 'name',
     'order'      => 'ASC',
-    'exclude'    => array_filter(array(
-        ($kits_term = get_term_by('slug', 'kits', 'product_cat')) ? (int) $kits_term->term_id : 0,
-    )),
 ));
 ?>
 
@@ -149,15 +136,11 @@ $catalog_terms = get_terms(array(
                 <?php while ($products->have_posts()) : $products->the_post(); ?>
                     <?php
                     $product = wc_get_product(get_the_ID());
+
                     if (!$product) {
                         continue;
                     }
 
-                    /**
-                     * Extra safety check.
-                     * Even if the query misses hidden products for any reason,
-                     * this skips anything WooCommerce says should not be visible.
-                     */
                     if (method_exists($product, 'get_catalog_visibility')) {
                         $catalog_visibility = $product->get_catalog_visibility();
 
@@ -185,16 +168,13 @@ $catalog_terms = get_terms(array(
 
                     if (!is_wp_error($product_terms) && !empty($product_terms)) {
                         foreach ($product_terms as $term) {
-                            if ($term->slug === 'kits') {
-                                continue;
-                            }
                             $term_slugs[] = $term->slug;
                             $term_names[] = $term->name;
                         }
                     }
 
-                    $term_slugs_string = implode(' ', $term_slugs);
-                    $term_names_string = implode(', ', $term_names);
+                    $term_slugs_string = implode(' ', array_unique($term_slugs));
+                    $term_names_string = implode(', ', array_unique($term_names));
                     ?>
                     <article
                         class="axiom-product-card<?php echo $is_backorder ? ' axiom-product-card-backorder' : ($is_out_of_stock ? ' axiom-product-card-out-of-stock' : ''); ?>"
