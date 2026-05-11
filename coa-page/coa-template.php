@@ -8,17 +8,11 @@ if (!defined('ABSPATH')) {
 
 get_header();
 
-/*
- * Make sure the COA map file is available even if functions.php load order is wrong.
- */
 $coa_map_file = get_template_directory() . '/functions/coa/coa-map.php';
 if (file_exists($coa_map_file)) {
     require_once $coa_map_file;
 }
 
-/**
- * Helpers local to this template.
- */
 if (!function_exists('axiom_coa_template_normalize_text')) {
     function axiom_coa_template_normalize_text($text) {
         $text = wp_strip_all_tags((string) $text);
@@ -29,6 +23,64 @@ if (!function_exists('axiom_coa_template_normalize_text')) {
         $text = trim($text, '-');
 
         return $text;
+    }
+}
+
+if (!function_exists('axiom_coa_template_product_is_excluded')) {
+    function axiom_coa_template_product_is_excluded($product) {
+        if (!$product || !is_a($product, 'WC_Product')) {
+            return true;
+        }
+
+        $excluded_category_slugs = array(
+            'kits',
+            'kit',
+            'add-ons',
+            'addons',
+            'checkout-addons',
+            'checkout-add-ons',
+            'shipping-protection',
+        );
+
+        $excluded_product_slugs = array(
+            'research-starter-pack',
+            'starter-pack',
+            'shipping-protection',
+            'shipment-protection',
+        );
+
+        $excluded_product_name_phrases = array(
+            'research starter pack',
+            'starter pack',
+            'shipping protection',
+            'shipment protection',
+        );
+
+        $product_id   = $product->get_id();
+        $product_name = strtolower(trim((string) $product->get_name()));
+        $product_slug = strtolower(trim((string) $product->get_slug()));
+
+        if (in_array($product_slug, $excluded_product_slugs, true)) {
+            return true;
+        }
+
+        foreach ($excluded_product_name_phrases as $phrase) {
+            if ($phrase && strpos($product_name, $phrase) !== false) {
+                return true;
+            }
+        }
+
+        $product_terms = get_the_terms($product_id, 'product_cat');
+
+        if (!empty($product_terms) && !is_wp_error($product_terms)) {
+            foreach ($product_terms as $term) {
+                if (!empty($term->slug) && in_array($term->slug, $excluded_category_slugs, true)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
 
@@ -52,6 +104,7 @@ if (!function_exists('axiom_coa_template_get_map_config_for_product_name')) {
         }
 
         $map = axiom_coa_file_map();
+
         if (empty($map) || !is_array($map)) {
             return null;
         }
@@ -208,9 +261,6 @@ if (!function_exists('axiom_coa_template_get_variant_label')) {
     }
 }
 
-/*
- * Build product list and exclude anything that should not show on the COA page.
- */
 $products = array();
 
 if (function_exists('wc_get_products')) {
@@ -222,58 +272,10 @@ if (function_exists('wc_get_products')) {
         'order'   => 'ASC',
     ));
 
-    $excluded_category_slugs = array(
-        'kits',
-        'kit',
-        'add-ons',
-        'addons',
-        'checkout-addons',
-        'checkout-add-ons',
-        'shipping-protection',
-    );
-
-    $excluded_product_slugs = array(
-        'research-starter-pack',
-        'starter-pack',
-        'shipping-protection',
-        'shipment-protection',
-    );
-
-    $excluded_product_name_phrases = array(
-        'research starter pack',
-        'starter pack',
-        'shipping protection',
-        'shipment protection',
-    );
-
     if (!empty($all_products)) {
         foreach ($all_products as $product) {
-            if (!$product || !is_a($product, 'WC_Product')) {
+            if (axiom_coa_template_product_is_excluded($product)) {
                 continue;
-            }
-
-            $product_id   = $product->get_id();
-            $product_name = strtolower(trim((string) $product->get_name()));
-            $product_slug = strtolower(trim((string) $product->get_slug()));
-
-            if (in_array($product_slug, $excluded_product_slugs, true)) {
-                continue;
-            }
-
-            foreach ($excluded_product_name_phrases as $excluded_phrase) {
-                if ($excluded_phrase && strpos($product_name, $excluded_phrase) !== false) {
-                    continue 2;
-                }
-            }
-
-            $product_terms = get_the_terms($product_id, 'product_cat');
-
-            if (!empty($product_terms) && !is_wp_error($product_terms)) {
-                foreach ($product_terms as $term) {
-                    if (!empty($term->slug) && in_array($term->slug, $excluded_category_slugs, true)) {
-                        continue 2;
-                    }
-                }
             }
 
             $products[] = $product;
