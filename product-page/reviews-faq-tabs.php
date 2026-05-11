@@ -3,6 +3,10 @@ defined('ABSPATH') || exit;
 
 global $product;
 
+if (!$product || !is_a($product, 'WC_Product')) {
+    $product = wc_get_product(get_the_ID());
+}
+
 $product_name = $product ? $product->get_name() : get_the_title();
 ?>
 
@@ -20,27 +24,8 @@ $product_name = $product ? $product->get_name() : get_the_title();
   </div>
 
   <div class="axiom-product-tab-panel is-active" data-panel="reviews">
-    <div class="axiom-review-summary-card">
-      <div class="axiom-review-score">
-        <div class="axiom-review-stars">★★★★★</div>
-        <strong>Verified reviews coming soon</strong>
-        <p>Only real reviews from verified purchasers will be displayed here.</p>
-      </div>
-
-      <div class="axiom-review-proof">
-        <span><i class="fa-solid fa-check"></i> Verified purchasers only</span>
-        <span><i class="fa-solid fa-flask"></i> Research-use feedback only</span>
-        <span><i class="fa-solid fa-ban"></i> No medical claims allowed</span>
-      </div>
-    </div>
-
-    <div class="axiom-review-empty-card">
-      <h3>Be the first to review <?php echo esc_html($product_name); ?></h3>
-      <p>Share feedback about ordering, packaging, shipping, and product presentation. Reviews mentioning human use, treatment, results, or medical claims will not be published.</p>
-
-      <a class="axiom-review-write-btn" href="#respond">
-        Write a Review
-      </a>
+    <div class="axiom-real-reviews-wrapper">
+      <?php comments_template(); ?>
     </div>
   </div>
 
