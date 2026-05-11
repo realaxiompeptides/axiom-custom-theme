@@ -1,6 +1,7 @@
 <?php
 /**
  * Template Name: Axiom Terms of Service
+ * Template Post Type: page
  */
 
 defined('ABSPATH') || exit;
@@ -28,7 +29,15 @@ $last_date  = 'May 11, 2026';
     <div class="axiom-legal-container">
       <article class="axiom-legal-box">
 
-        <p><strong>Last Updated:</strong> <?php echo esc_html($last_date); ?></p>
+        <p class="axiom-legal-updated">
+          <strong>Last Updated:</strong> <?php echo esc_html($last_date); ?>
+        </p>
+
+        <div class="axiom-legal-warning">
+          <strong>Important:</strong> All products are sold strictly for lawful laboratory research purposes only.
+          Products are not for human consumption, medical use, veterinary use, diagnostic use, therapeutic use,
+          or household use.
+        </div>
 
         <p>
           These Terms of Service govern your access to and use of <?php echo esc_html($site_name); ?>,
