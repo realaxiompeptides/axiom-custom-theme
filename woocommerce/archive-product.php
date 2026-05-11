@@ -68,12 +68,20 @@ $product_query_args['tax_query'] = $tax_query;
 
 $products = new WP_Query($product_query_args);
 
-$catalog_terms = get_terms(array(
-    'taxonomy'   => 'product_cat',
-    'hide_empty' => true,
-    'orderby'    => 'name',
-    'order'      => 'ASC',
-));
+$catalog_filter_groups = array(
+    array(
+        'label' => 'Peptides',
+        'slug'  => 'peptides',
+    ),
+    array(
+        'label' => 'Kits',
+        'slug'  => 'kits',
+    ),
+    array(
+        'label' => 'Research Supplies',
+        'slug'  => 'research-supplies',
+    ),
+);
 ?>
 
 <main class="axiom-catalog-page">
@@ -86,6 +94,18 @@ $catalog_terms = get_terms(array(
     </section>
 
     <section class="axiom-catalog-toolbar-section">
+        <div class="axiom-catalog-filter-pills" id="axiomCatalogFilters">
+            <?php foreach ($catalog_filter_groups as $index => $filter_group) : ?>
+                <button
+                    type="button"
+                    class="axiom-filter-pill<?php echo $index === 0 ? ' is-active' : ''; ?>"
+                    data-filter="<?php echo esc_attr($filter_group['slug']); ?>"
+                >
+                    <?php echo esc_html($filter_group['label']); ?>
+                </button>
+            <?php endforeach; ?>
+        </div>
+
         <div class="axiom-catalog-toolbar">
             <div class="axiom-catalog-search-wrap">
                 <input
@@ -107,22 +127,6 @@ $catalog_terms = get_terms(array(
                     <option value="newest">Newest</option>
                 </select>
             </div>
-        </div>
-
-        <div class="axiom-catalog-filter-pills" id="axiomCatalogFilters">
-            <button type="button" class="axiom-filter-pill is-active" data-filter="all">All Products</button>
-
-            <?php if (!is_wp_error($catalog_terms) && !empty($catalog_terms)) : ?>
-                <?php foreach ($catalog_terms as $term) : ?>
-                    <button
-                        type="button"
-                        class="axiom-filter-pill"
-                        data-filter="<?php echo esc_attr($term->slug); ?>"
-                    >
-                        <?php echo esc_html($term->name); ?>
-                    </button>
-                <?php endforeach; ?>
-            <?php endif; ?>
         </div>
 
         <div class="axiom-catalog-results-row">
@@ -171,6 +175,24 @@ $catalog_terms = get_terms(array(
                             $term_slugs[] = $term->slug;
                             $term_names[] = $term->name;
                         }
+                    }
+
+                    $is_kit_product = has_term(array('kits', 'kit'), 'product_cat', $product_id);
+
+                    $is_research_supply = has_term(array(
+                        'research-supplies',
+                        'research-supply',
+                        'supplies',
+                        'bac-water',
+                        'bacteriostatic-water',
+                    ), 'product_cat', $product_id);
+
+                    if ($is_kit_product) {
+                        $term_slugs[] = 'kits';
+                    } elseif ($is_research_supply) {
+                        $term_slugs[] = 'research-supplies';
+                    } else {
+                        $term_slugs[] = 'peptides';
                     }
 
                     $term_slugs_string = implode(' ', array_unique($term_slugs));
