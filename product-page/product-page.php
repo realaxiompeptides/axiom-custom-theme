@@ -76,10 +76,12 @@ if ($is_variable) {
         }
 
         $label_parts = array();
+
         foreach ($variation['attributes'] as $attr_key => $attr_value) {
             if (!$attr_value) {
                 continue;
             }
+
             $label_parts[] = ucwords(str_replace('-', ' ', $attr_value));
         }
 
@@ -154,6 +156,7 @@ $coa_items = array();
 if (!empty($coa_matches)) {
     foreach ($coa_matches as $attachment_id) {
         $attachment_id = (int) $attachment_id;
+
         if (!$attachment_id) {
             continue;
         }
@@ -295,17 +298,7 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
                   <label class="product-option-label" for="productQty">Quantity</label>
                   <div class="product-qty-wrap">
                     <button type="button" class="product-qty-btn" id="qtyMinus">−</button>
-                    <input
-                      id="productQty"
-                      class="product-qty-input"
-                      type="number"
-                      name="quantity"
-                      value="1"
-                      min="1"
-                      step="1"
-                      inputmode="numeric"
-                      autocomplete="off"
-                    >
+                    <input id="productQty" class="product-qty-input" type="number" name="quantity" value="1" min="1" step="1" inputmode="numeric" autocomplete="off">
                     <button type="button" class="product-qty-btn" id="qtyPlus">+</button>
                   </div>
                   <p class="product-qty-note" id="productQtyNote" style="display:none;"></p>
@@ -425,6 +418,13 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
         }
         ?>
 
+        <?php
+        $reviews_faq_tabs = get_template_directory() . '/product-page/reviews-faq-tabs.php';
+        if (file_exists($reviews_faq_tabs)) {
+            include $reviews_faq_tabs;
+        }
+        ?>
+
         <div class="product-disclaimer-box product-disclaimer-below-description">
           <div class="product-disclaimer-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
@@ -537,13 +537,7 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
               </a>
             </div>
           <?php else : ?>
-            <img
-              id="productCoaModalImage"
-              class="product-coa-modal-image"
-              src=""
-              alt=""
-              hidden
-            />
+            <img id="productCoaModalImage" class="product-coa-modal-image" src="" alt="" hidden />
             <div id="productCoaModalPdfState" class="product-coa-modal-pdf-state">
               <span class="product-coa-modal-pdf-badge">PDF</span>
               <p>This COA is a PDF file.</p>
