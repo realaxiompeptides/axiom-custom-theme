@@ -13,7 +13,6 @@ $axiom_function_files = array(
     '/functions/core/assets.php',
 
     // SEO AUTHORITY SYSTEM - NON-VISIBLE ONLY
-    // These do NOT add visible SEO blocks to the front end.
     '/functions/seo/meta-tags.php',
     '/functions/seo/schema.php',
     '/functions/seo/image-alt.php',
@@ -55,20 +54,9 @@ $axiom_function_files = array(
 
     // AFFILIATE
     '/functions/affiliate-program/affiliate-program.php',
-
-    // MODERN AFFILIATE DASHBOARD FRONT-END STYLING / SHORTCODE WRAPPER
-    // Still uses SliceWP underneath.
     '/functions/affiliate-program/affiliate-dashboard-modern.php',
-
-    // AFFILIATE PARTNER SETUP
-    // Saves payout preference, requested partner code, creates affiliate coupon,
-    // and provides the partner card shortcode.
     '/functions/affiliate-program/affiliate-partner-setup.php',
-
-    // Blocks WELCOME10 / WELCOME15 / AXIOM15 popup coupons on affiliate traffic
     '/functions/affiliate-program/affiliate-coupon-rules.php',
-
-    // Reduces affiliate commission by 5 percentage points for Cash App / Crypto / Zelle orders
     '/functions/affiliate-program/payment-method-commission-adjustment.php',
 
     // ACCOUNT
@@ -136,7 +124,11 @@ function axiom_register_legal_page_templates($templates, $theme, $post, $post_ty
         return $templates;
     }
 
-    $templates['templates/legal/page-terms.php'] = 'Axiom Terms of Service';
+    $templates['templates/legal/page-terms.php']             = 'Axiom Terms of Service';
+    $templates['templates/legal/page-privacy.php']           = 'Axiom Privacy Policy';
+    $templates['templates/legal/page-research-use-only.php'] = 'Axiom Research Use Only Disclaimer';
+    $templates['templates/legal/page-refunds.php']           = 'Axiom Refund and Return Policy';
+    $templates['templates/legal/page-shipping.php']          = 'Axiom Shipping Policy';
 
     return $templates;
 }
@@ -158,6 +150,10 @@ function axiom_load_legal_page_templates($template) {
 
     $legal_templates = array(
         'templates/legal/page-terms.php',
+        'templates/legal/page-privacy.php',
+        'templates/legal/page-research-use-only.php',
+        'templates/legal/page-refunds.php',
+        'templates/legal/page-shipping.php',
     );
 
     if (in_array($selected_template, $legal_templates, true)) {
