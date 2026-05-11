@@ -49,32 +49,37 @@ $product_name = $product ? $product->get_name() : get_the_title();
 
       <details class="axiom-faq-item" open>
         <summary>What does “research use only” mean?</summary>
-        <p>This product is intended strictly for laboratory, analytical, and in-vitro research use only. It is not for human or veterinary consumption.</p>
+        <p>All products sold by Axiom Peptides are intended strictly for in-vitro research and laboratory use only. They are not intended for human or animal consumption. By purchasing, you confirm that you are acquiring these products for legitimate research purposes.</p>
       </details>
 
       <details class="axiom-faq-item">
-        <summary>Do you include a Certificate of Analysis?</summary>
-        <p>When available, COA documents are shown on the product page or in the COA library so researchers can review testing information before ordering.</p>
+        <summary>How should I store this product?</summary>
+        <p>For best stability, store lyophilized products in a cool, dry place away from direct sunlight. After reconstitution, storage requirements may vary by product. Always review the product label, COA, and product-specific documentation.</p>
       </details>
 
       <details class="axiom-faq-item">
-        <summary>Where does this product ship from?</summary>
-        <p>Orders are fulfilled from the United States and shipped discreetly with tracking.</p>
+        <summary>Do you include a Certificate of Analysis (COA)?</summary>
+        <p>Yes. When available, products include a third-party Certificate of Analysis verifying identity and purity. COAs can be viewed directly on eligible product pages or in our COA library.</p>
       </details>
 
       <details class="axiom-faq-item">
-        <summary>How fast do orders ship?</summary>
-        <p>Orders placed before the posted cutoff are typically prepared for same-day shipment when inventory is available.</p>
+        <summary>What is your shipping time?</summary>
+        <p>Orders are fulfilled from the United States. Most orders are processed quickly and shipped with tracking. Delivery times depend on the selected shipping method and carrier performance.</p>
       </details>
 
       <details class="axiom-faq-item">
-        <summary>How should this product be stored?</summary>
-        <p>Storage recommendations may vary by product. Always review the product label, COA, and product-specific storage information before use in a research setting.</p>
+        <summary>What is your return policy?</summary>
+        <p>If an order arrives damaged, incorrect, or affected by a fulfillment issue, contact our support team as soon as possible. We review eligible issues and may offer a replacement, store credit, or refund depending on the situation.</p>
       </details>
 
       <details class="axiom-faq-item">
-        <summary>Can this be used for human consumption?</summary>
-        <p>No. This product is not for human consumption and is not intended to diagnose, treat, cure, or prevent any disease.</p>
+        <summary>Are Janoshik Analytical & Freedom Labs independent labs?</summary>
+        <p>Yes. Janoshik Analytical and Freedom Labs are third-party testing laboratories. When a COA is available, researchers can review the report details, batch information, and testing data before ordering.</p>
+      </details>
+
+      <details class="axiom-faq-item">
+        <summary>How do your prices compare to other suppliers?</summary>
+        <p>We aim to offer research products at competitive prices while keeping quality, COA access, discreet packaging, and reliable fulfillment as priorities.</p>
       </details>
 
     </div>
