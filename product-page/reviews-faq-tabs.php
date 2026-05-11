@@ -47,7 +47,7 @@ $product_name = $product ? $product->get_name() : get_the_title();
   <div class="axiom-product-tab-panel" data-panel="faq">
     <div class="axiom-faq-list">
 
-      <details class="axiom-faq-item" open>
+      <details class="axiom-faq-item">
         <summary>What does “research use only” mean?</summary>
         <p>All products sold by Axiom Peptides are intended strictly for in-vitro research and laboratory use only. They are not intended for human or animal consumption. By purchasing, you confirm that you are acquiring these products for legitimate research purposes.</p>
       </details>
@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const buttons = section.querySelectorAll('.axiom-product-tab-btn');
   const panels = section.querySelectorAll('.axiom-product-tab-panel');
+  const faqItems = section.querySelectorAll('.axiom-faq-item');
 
   buttons.forEach(function (button) {
     button.addEventListener('click', function () {
@@ -112,6 +113,18 @@ document.addEventListener('DOMContentLoaded', function () {
       if (activePanel) {
         activePanel.classList.add('is-active');
       }
+    });
+  });
+
+  faqItems.forEach(function (item) {
+    item.addEventListener('toggle', function () {
+      if (!item.open) return;
+
+      faqItems.forEach(function (otherItem) {
+        if (otherItem !== item) {
+          otherItem.open = false;
+        }
+      });
     });
   });
 });
