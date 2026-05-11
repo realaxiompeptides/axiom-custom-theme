@@ -126,6 +126,52 @@ foreach ($axiom_function_files as $axiom_file) {
 }
 
 /**
+ * LEGAL PAGE TEMPLATES
+ * Allows WordPress to show templates stored in /templates/legal/
+ */
+add_filter('theme_page_templates', 'axiom_register_legal_page_templates', 20, 4);
+
+function axiom_register_legal_page_templates($templates, $theme, $post, $post_type) {
+    if ($post_type !== 'page') {
+        return $templates;
+    }
+
+    $templates['templates/legal/page-terms.php'] = 'Axiom Terms of Service';
+
+    return $templates;
+}
+
+add_filter('template_include', 'axiom_load_legal_page_templates', 99);
+
+function axiom_load_legal_page_templates($template) {
+    if (!is_page()) {
+        return $template;
+    }
+
+    $page_id = get_queried_object_id();
+
+    if (!$page_id) {
+        return $template;
+    }
+
+    $selected_template = get_page_template_slug($page_id);
+
+    $legal_templates = array(
+        'templates/legal/page-terms.php',
+    );
+
+    if (in_array($selected_template, $legal_templates, true)) {
+        $custom_template = get_template_directory() . '/' . $selected_template;
+
+        if (file_exists($custom_template)) {
+            return $custom_template;
+        }
+    }
+
+    return $template;
+}
+
+/**
  * ADMIN HELPER — Open thank-you page.
  */
 add_action('woocommerce_admin_order_data_after_order_details', 'axiom_show_admin_thankyou_test_link');
