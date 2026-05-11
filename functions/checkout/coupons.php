@@ -5,6 +5,54 @@ if (!defined('ABSPATH')) {
 
 /**
  * ==========================================================
+ * Axiom Kit Coupon Block
+ * Discount codes cannot apply when cart contains kit products.
+ * ==========================================================
+ */
+
+function axiom_coupon_cart_contains_kit_product() {
+    if (!function_exists('WC') || !WC()->cart) {
+        return false;
+    }
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $product_id   = !empty($cart_item['product_id']) ? (int) $cart_item['product_id'] : 0;
+        $variation_id = !empty($cart_item['variation_id']) ? (int) $cart_item['variation_id'] : 0;
+
+        if ($product_id && has_term(array('kits', 'kit'), 'product_cat', $product_id)) {
+            return true;
+        }
+
+        if ($variation_id && has_term(array('kits', 'kit'), 'product_cat', $variation_id)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+add_filter('woocommerce_coupon_is_valid', 'axiom_disable_coupons_for_kit_products', 20, 2);
+
+function axiom_disable_coupons_for_kit_products($valid, $coupon) {
+    if (axiom_coupon_cart_contains_kit_product()) {
+        return false;
+    }
+
+    return $valid;
+}
+
+add_filter('woocommerce_coupon_error', 'axiom_kit_coupon_error_message', 30, 3);
+
+function axiom_kit_coupon_error_message($message, $error_code, $coupon) {
+    if (axiom_coupon_cart_contains_kit_product()) {
+        return 'Discount codes cannot be applied to kit products.';
+    }
+
+    return $message;
+}
+
+/**
+ * ==========================================================
  * Axiom Apply Coupon AJAX
  * Used by custom checkout/cart coupon UI.
  * ==========================================================
@@ -18,6 +66,12 @@ function axiom_apply_coupon() {
         ));
     }
 
+    if (axiom_coupon_cart_contains_kit_product()) {
+        wp_send_json_error(array(
+            'message' => 'Discount codes cannot be applied to kit products.',
+        ));
+    }
+
     $coupon_code = isset($_POST['coupon_code'])
         ? wc_format_coupon_code(wc_clean(wp_unslash($_POST['coupon_code'])))
         : '';
@@ -28,11 +82,6 @@ function axiom_apply_coupon() {
         ));
     }
 
-    /**
-     * IMPORTANT:
-     * Before WooCommerce validates popup coupons, save the checkout
-     * email into the WooCommerce customer/session.
-     */
     axiom_sync_live_checkout_email_to_customer();
 
     if (WC()->cart->has_discount($coupon_code)) {
@@ -86,23 +135,12 @@ function axiom_apply_coupon() {
 add_action('wp_ajax_axiom_apply_coupon', 'axiom_apply_coupon');
 add_action('wp_ajax_nopriv_axiom_apply_coupon', 'axiom_apply_coupon');
 
-
 /**
  * ==========================================================
  * Axiom Popup Coupon Email Validation Fix
- *
- * Fixes WELCOME10 / WELCOME15 coupons failing even when the
- * checkout email visually matches.
- *
- * Reason:
- * Custom coupon AJAX can validate the coupon before WooCommerce
- * saves the checkout email into the customer session.
  * ==========================================================
  */
 
-/**
- * Check whether coupon is one of the generated popup coupons.
- */
 function axiom_popup_coupon_code_is_generated_coupon($coupon_code) {
     $coupon_code = strtoupper(trim((string) $coupon_code));
 
@@ -112,9 +150,6 @@ function axiom_popup_coupon_code_is_generated_coupon($coupon_code) {
     );
 }
 
-/**
- * Get the first email restriction from a coupon.
- */
 function axiom_get_coupon_email_restriction($coupon) {
     if (!$coupon instanceof WC_Coupon) {
         return '';
@@ -131,30 +166,17 @@ function axiom_get_coupon_email_restriction($coupon) {
     return is_email($email) ? strtolower($email) : '';
 }
 
-/**
- * Get billing email from current checkout/cart request.
- */
 function axiom_get_live_checkout_email_for_coupon() {
     $email = '';
 
-    /**
-     * Custom checkout coupon JS should send this:
-     * axiom_billing_email
-     */
     if (!empty($_POST['axiom_billing_email'])) {
         $email = sanitize_email(wp_unslash($_POST['axiom_billing_email']));
     }
 
-    /**
-     * Direct billing_email field from checkout request.
-     */
     if (!$email && !empty($_POST['billing_email'])) {
         $email = sanitize_email(wp_unslash($_POST['billing_email']));
     }
 
-    /**
-     * WooCommerce checkout AJAX often sends serialized post_data.
-     */
     if (!$email && !empty($_POST['post_data'])) {
         parse_str(wp_unslash($_POST['post_data']), $posted_data);
 
@@ -163,9 +185,6 @@ function axiom_get_live_checkout_email_for_coupon() {
         }
     }
 
-    /**
-     * Session fallback.
-     */
     if (!$email && function_exists('WC') && WC()->session) {
         $session_email = WC()->session->get('axiom_live_checkout_email');
 
@@ -174,9 +193,6 @@ function axiom_get_live_checkout_email_for_coupon() {
         }
     }
 
-    /**
-     * WooCommerce customer fallback.
-     */
     if (!$email && function_exists('WC') && WC()->customer) {
         $email = sanitize_email(WC()->customer->get_billing_email());
     }
@@ -184,9 +200,6 @@ function axiom_get_live_checkout_email_for_coupon() {
     return is_email($email) ? strtolower($email) : '';
 }
 
-/**
- * Save checkout email into WC customer/session before coupon validation.
- */
 function axiom_sync_live_checkout_email_to_customer() {
     if (!function_exists('WC')) {
         return '';
@@ -210,9 +223,6 @@ function axiom_sync_live_checkout_email_to_customer() {
     return $email;
 }
 
-/**
- * Early sync when coupon AJAX hits PHP.
- */
 add_action('init', function () {
     if (
         !empty($_POST['coupon_code']) ||
@@ -224,18 +234,12 @@ add_action('init', function () {
     }
 }, 1);
 
-/**
- * Before totals calculate, sync live checkout email.
- */
 add_action('woocommerce_before_calculate_totals', 'axiom_sync_checkout_email_before_coupon_validation', 1);
 
 function axiom_sync_checkout_email_before_coupon_validation() {
     axiom_sync_live_checkout_email_to_customer();
 }
 
-/**
- * Save checkout email into customer session whenever checkout updates.
- */
 add_action('woocommerce_checkout_update_order_review', 'axiom_save_checkout_email_on_order_review_update', 1);
 
 function axiom_save_checkout_email_on_order_review_update($post_data) {
@@ -263,14 +267,15 @@ function axiom_save_checkout_email_on_order_review_update($post_data) {
     }
 }
 
-/**
- * Make WELCOME10 / WELCOME15 coupons validate against the live checkout email.
- */
 add_filter('woocommerce_coupon_is_valid_for_customer', 'axiom_validate_popup_coupon_with_live_checkout_email', 999, 3);
 
 function axiom_validate_popup_coupon_with_live_checkout_email($valid, $coupon, $customer) {
     if (!$coupon instanceof WC_Coupon) {
         return $valid;
+    }
+
+    if (axiom_coupon_cart_contains_kit_product()) {
+        return false;
     }
 
     $coupon_code = $coupon->get_code();
@@ -304,9 +309,6 @@ function axiom_validate_popup_coupon_with_live_checkout_email($valid, $coupon, $
     return strtolower($checkout_email) === strtolower($restricted_email);
 }
 
-/**
- * On checkout, if billing email is empty but session has live email, preload it.
- */
 add_filter('woocommerce_checkout_get_value', 'axiom_prefill_checkout_email_from_popup_coupon', 20, 2);
 
 function axiom_prefill_checkout_email_from_popup_coupon($value, $input) {
@@ -331,12 +333,13 @@ function axiom_prefill_checkout_email_from_popup_coupon($value, $input) {
     return $value;
 }
 
-/**
- * Cleaner popup coupon error message.
- */
 add_filter('woocommerce_coupon_error', 'axiom_clean_popup_coupon_email_error', 20, 3);
 
 function axiom_clean_popup_coupon_email_error($message, $error_code, $coupon) {
+    if (axiom_coupon_cart_contains_kit_product()) {
+        return 'Discount codes cannot be applied to kit products.';
+    }
+
     if (!$coupon instanceof WC_Coupon) {
         return $message;
     }
