@@ -30,6 +30,35 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-footer', $theme_uri . '/assets/css/footer.css', array('axiom-base'), '2.0');
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
+    /*
+     * Legal / policy pages
+     * File: /assets/css/legal/legal.css
+     * Templates: /templates/legal/page-*.php
+     */
+    if (
+        function_exists('is_page_template') &&
+        (
+            is_page_template('templates/legal/page-terms.php') ||
+            is_page_template('templates/legal/page-privacy.php') ||
+            is_page_template('templates/legal/page-shipping.php') ||
+            is_page_template('templates/legal/page-refunds.php') ||
+            is_page_template('templates/legal/page-research-use-only.php') ||
+            is_page_template('templates/legal/page-fda-medical-disclaimer.php') ||
+            is_page_template('templates/legal/page-age-21-policy.php') ||
+            is_page_template('templates/legal/page-payment-policy.php') ||
+            is_page_template('templates/legal/page-coa-testing-disclaimer.php') ||
+            is_page_template('templates/legal/page-marketing-terms.php')
+        ) &&
+        file_exists($theme_path . '/assets/css/legal/legal.css')
+    ) {
+        wp_enqueue_style(
+            'axiom-legal',
+            $theme_uri . '/assets/css/legal/legal.css',
+            array('axiom-base'),
+            filemtime($theme_path . '/assets/css/legal/legal.css')
+        );
+    }
+
     if (file_exists($theme_path . '/assets/css/popup/popup-layout.css')) {
         wp_enqueue_style(
             'axiom-popup-layout',
