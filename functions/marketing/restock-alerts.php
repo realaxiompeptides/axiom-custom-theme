@@ -18,12 +18,34 @@ function axiom_restock_test_email_to() {
     return 'cheapeptides@gmail.com';
 }
 
+/**
+ * Use the same sender as WooCommerce emails.
+ * This prevents Zoho/SMTP From-address mismatch issues.
+ */
 function axiom_restock_from_email() {
+    $wc_from = get_option('woocommerce_email_from_address');
+
+    if (!empty($wc_from) && is_email($wc_from)) {
+        return $wc_from;
+    }
+
+    $admin_email = get_option('admin_email');
+
+    if (!empty($admin_email) && is_email($admin_email)) {
+        return $admin_email;
+    }
+
     return 'support@axiomresearch.shop';
 }
 
 function axiom_restock_from_name() {
-    return 'Axiom Peptides';
+    $wc_name = get_option('woocommerce_email_from_name');
+
+    if (!empty($wc_name)) {
+        return wp_specialchars_decode($wc_name, ENT_QUOTES);
+    }
+
+    return wp_specialchars_decode(get_bloginfo('name'), ENT_QUOTES);
 }
 
 /**
@@ -36,7 +58,7 @@ function axiom_restock_debug_enabled() {
 }
 
 /**
- * Email headers for Zoho/SMTP.
+ * Email headers.
  */
 function axiom_restock_email_headers() {
     return array(
@@ -61,20 +83,22 @@ function axiom_restock_manual_test_email() {
 
     $to      = axiom_restock_test_email_to();
     $subject = '[TEST] Axiom Restock Email System Works';
-    $message = "This is a manual test email from the Axiom restock alert system.\n\n";
-    $message .= "If you received this, WordPress/Zoho email sending is working.\n\n";
+
+    $message  = "This is a manual test email from the Axiom restock alert system.\n\n";
+    $message .= "If you received this, WordPress/WooCommerce email sending is working.\n\n";
     $message .= "Customers were NOT emailed.\n";
     $message .= "SMS was NOT sent.\n\n";
-    $message .= "From: " . axiom_restock_from_email() . "\n";
+    $message .= "From Email: " . axiom_restock_from_email() . "\n";
+    $message .= "From Name: " . axiom_restock_from_name() . "\n";
     $message .= "Time: " . current_time('mysql') . "\n";
 
     $sent = wp_mail($to, $subject, $message, axiom_restock_email_headers());
 
     if ($sent) {
-        wp_die('Test email sent to ' . esc_html($to) . '. Check inbox, spam, promotions, and all mail.');
+        wp_die('Test email sent to ' . esc_html($to) . '. From: ' . esc_html(axiom_restock_from_email()) . '. Check inbox, spam, promotions, and all mail.');
     }
 
-    wp_die('wp_mail returned false. Check that your SMTP From Email matches ' . esc_html(axiom_restock_from_email()) . '.');
+    wp_die('wp_mail returned false. Your active mail plugin/server rejected this custom email. From email being used: ' . esc_html(axiom_restock_from_email()) . '.');
 }
 
 /**
@@ -145,10 +169,10 @@ function axiom_restock_direct_test() {
     $sent = axiom_restock_send_test_email($product, 0, $new_stock, 'direct_force_test');
 
     if ($sent) {
-        wp_die('Direct restock test email sent to ' . esc_html(axiom_restock_test_email_to()) . '.');
+        wp_die('Direct restock test email sent to ' . esc_html(axiom_restock_test_email_to()) . '. From: ' . esc_html(axiom_restock_from_email()) . '.');
     }
 
-    wp_die('Direct restock test tried to send, but wp_mail returned false.');
+    wp_die('Direct restock test tried to send, but wp_mail returned false. From email being used: ' . esc_html(axiom_restock_from_email()) . '.');
 }
 
 /**
@@ -309,6 +333,8 @@ function axiom_restock_get_product_debug_report($product, $source = 'unknown') {
     $report .= "Last known qty meta: " . var_export(get_post_meta($product_id, '_axiom_restock_last_known_qty', true), true) . "\n";
     $report .= "Last alert time meta: " . var_export(get_post_meta($product_id, '_axiom_restock_last_alert_time', true), true) . "\n";
     $report .= "Allowed product: " . ($reason === '' ? 'YES' : 'NO') . "\n";
+    $report .= "From Email: " . axiom_restock_from_email() . "\n";
+    $report .= "From Name: " . axiom_restock_from_name() . "\n";
 
     if ($reason !== '') {
         $report .= "Blocked reason: " . $reason . "\n";
