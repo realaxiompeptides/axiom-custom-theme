@@ -2,7 +2,7 @@
 /**
  * Axiom Restock Alerts — TEST MODE ONLY
  *
- * Sends test restock emails only to cheapeptides@gmail.com.
+ * Sends test/debug restock emails only to cheapeptides@gmail.com.
  * Does NOT send to customers.
  * Does NOT send SMS.
  */
@@ -19,12 +19,20 @@ function axiom_restock_test_email_to() {
 }
 
 /**
+ * Debug mode.
+ *
+ * true  = email you when a product is skipped and explains why.
+ * false = only email when a valid restock is detected.
+ */
+function axiom_restock_debug_enabled() {
+    return true;
+}
+
+/**
  * Manual test email endpoint.
  *
- * After uploading this file, visit:
+ * Visit:
  * /wp-admin/admin-post.php?action=axiom_restock_test_email
- *
- * This confirms whether WordPress/Zoho SMTP can send at all.
  */
 add_action('admin_post_axiom_restock_test_email', 'axiom_restock_manual_test_email');
 
@@ -49,30 +57,92 @@ function axiom_restock_manual_test_email() {
 }
 
 /**
- * Check if this product is allowed to trigger restock alerts.
+ * Reset one product's restock memory/cooldown.
+ *
+ * Visit:
+ * /wp-admin/admin-post.php?action=axiom_restock_force_test&product_id=123
+ */
+add_action('admin_post_axiom_restock_force_test', 'axiom_restock_force_test');
+
+function axiom_restock_force_test() {
+    if (!current_user_can('manage_woocommerce') && !current_user_can('manage_options')) {
+        wp_die('Not allowed.');
+    }
+
+    $product_id = isset($_GET['product_id']) ? absint($_GET['product_id']) : 0;
+
+    if (!$product_id) {
+        wp_die('Missing product_id.');
+    }
+
+    $product = wc_get_product($product_id);
+
+    if (!$product || !is_a($product, 'WC_Product')) {
+        wp_die('Invalid product.');
+    }
+
+    delete_post_meta($product_id, '_axiom_restock_last_known_qty');
+    delete_post_meta($product_id, '_axiom_restock_last_alert_time');
+
+    wp_die(
+        'Restock memory reset for product ID ' . esc_html($product_id) . '. ' .
+        'Now set stock to a lower number and save. Then set stock higher and save again.'
+    );
+}
+
+/**
+ * Show product eligibility info.
+ *
+ * Visit:
+ * /wp-admin/admin-post.php?action=axiom_restock_debug_product&product_id=123
+ */
+add_action('admin_post_axiom_restock_debug_product', 'axiom_restock_debug_product_endpoint');
+
+function axiom_restock_debug_product_endpoint() {
+    if (!current_user_can('manage_woocommerce') && !current_user_can('manage_options')) {
+        wp_die('Not allowed.');
+    }
+
+    $product_id = isset($_GET['product_id']) ? absint($_GET['product_id']) : 0;
+
+    if (!$product_id) {
+        wp_die('Missing product_id.');
+    }
+
+    $product = wc_get_product($product_id);
+
+    if (!$product || !is_a($product, 'WC_Product')) {
+        wp_die('Invalid product.');
+    }
+
+    $debug = axiom_restock_get_product_debug_report($product, 'manual_debug_endpoint');
+
+    wp_die('<pre>' . esc_html($debug) . '</pre>');
+}
+
+/**
+ * Check if product is allowed.
  */
 function axiom_restock_is_allowed_product($product) {
+    return axiom_restock_get_disallow_reason($product) === '';
+}
+
+/**
+ * Return blank string if allowed, otherwise exact reason it is blocked.
+ */
+function axiom_restock_get_disallow_reason($product) {
     if (!$product || !is_a($product, 'WC_Product')) {
-        return false;
+        return 'Invalid product object.';
     }
 
     $product_id = $product->get_id();
     $parent_id  = $product->is_type('variation') ? $product->get_parent_id() : 0;
     $check_id   = $parent_id ?: $product_id;
 
-    /**
-     * ONLY products in this category can trigger restock alerts.
-     *
-     * Your normal peptide products must be in WooCommerce category slug:
-     * peptides
-     */
     $allowed_categories = array(
         'peptides',
     );
 
-    /**
-     * These categories can NEVER trigger restock alerts.
-     */
     $excluded_categories = array(
         'kits',
         'kit',
@@ -85,9 +155,6 @@ function axiom_restock_is_allowed_product($product) {
         'testing',
     );
 
-    /**
-     * These exact product slugs can NEVER trigger restock alerts.
-     */
     $excluded_slugs = array(
         'shipping-protection',
         'research-starter-pack',
@@ -99,25 +166,22 @@ function axiom_restock_is_allowed_product($product) {
     $product_slug = $product_post ? $product_post->post_name : '';
 
     if (in_array($product_slug, $excluded_slugs, true)) {
-        return false;
+        return 'Blocked because product slug is excluded: ' . $product_slug;
     }
 
     if (has_term($excluded_categories, 'product_cat', $check_id)) {
-        return false;
+        return 'Blocked because product is in an excluded category.';
     }
 
     if (!has_term($allowed_categories, 'product_cat', $check_id)) {
-        return false;
+        return 'Blocked because product is not in allowed category slug: peptides.';
     }
 
-    return true;
+    return '';
 }
 
 /**
- * Get clean product name, including variation details when available.
- *
- * Example:
- * KISSPEPTIN - 5mg / 3mL
+ * Product display name.
  */
 function axiom_restock_get_product_display_name($product) {
     if (!$product || !is_a($product, 'WC_Product')) {
@@ -157,32 +221,75 @@ function axiom_restock_get_product_display_name($product) {
 }
 
 /**
+ * Debug report.
+ */
+function axiom_restock_get_product_debug_report($product, $source = 'unknown') {
+    $product_id = $product->get_id();
+    $parent_id  = $product->is_type('variation') ? $product->get_parent_id() : 0;
+    $check_id   = $parent_id ?: $product_id;
+
+    $terms = get_the_terms($check_id, 'product_cat');
+    $cats  = array();
+
+    if (!empty($terms) && !is_wp_error($terms)) {
+        foreach ($terms as $term) {
+            $cats[] = $term->name . ' (' . $term->slug . ')';
+        }
+    }
+
+    $report  = "AXIOM RESTOCK DEBUG REPORT\n";
+    $report .= "-------------------------\n";
+    $report .= "Source: " . $source . "\n";
+    $report .= "Product: " . axiom_restock_get_product_display_name($product) . "\n";
+    $report .= "Product ID: " . $product_id . "\n";
+    $report .= "Parent ID: " . $parent_id . "\n";
+    $report .= "Check ID: " . $check_id . "\n";
+    $report .= "Type: " . $product->get_type() . "\n";
+    $report .= "Manage stock: " . ($product->managing_stock() ? 'YES' : 'NO') . "\n";
+    $report .= "Current stock: " . var_export($product->get_stock_quantity(), true) . "\n";
+    $report .= "Stock status: " . $product->get_stock_status() . "\n";
+    $report .= "Categories: " . (!empty($cats) ? implode(', ', $cats) : 'none') . "\n";
+    $report .= "Last known qty meta: " . var_export(get_post_meta($product_id, '_axiom_restock_last_known_qty', true), true) . "\n";
+    $report .= "Last alert time meta: " . var_export(get_post_meta($product_id, '_axiom_restock_last_alert_time', true), true) . "\n";
+
+    $reason = axiom_restock_get_disallow_reason($product);
+
+    $report .= "Allowed product: " . ($reason === '' ? 'YES' : 'NO') . "\n";
+
+    if ($reason !== '') {
+        $report .= "Blocked reason: " . $reason . "\n";
+    }
+
+    return $report;
+}
+
+/**
  * Main restock checker.
  */
 function axiom_restock_check_product_stock($product_id, $source = 'unknown') {
     $product = wc_get_product($product_id);
 
     if (!$product || !is_a($product, 'WC_Product')) {
+        axiom_restock_send_debug_email('Skipped restock check — invalid product ID', 'Product ID: ' . $product_id . "\nSource: " . $source);
         return;
     }
 
-    /**
-     * Only products/variations with Manage Stock enabled.
-     */
     if (!$product->managing_stock()) {
+        axiom_restock_send_skip_debug($product, $source, 'Product does not have Manage stock enabled.');
         return;
     }
 
-    /**
-     * Only allowed normal peptide products.
-     */
-    if (!axiom_restock_is_allowed_product($product)) {
+    $disallow_reason = axiom_restock_get_disallow_reason($product);
+
+    if ($disallow_reason !== '') {
+        axiom_restock_send_skip_debug($product, $source, $disallow_reason);
         return;
     }
 
     $new_stock = $product->get_stock_quantity();
 
     if ($new_stock === null) {
+        axiom_restock_send_skip_debug($product, $source, 'Stock quantity is null.');
         return;
     }
 
@@ -191,50 +298,31 @@ function axiom_restock_check_product_stock($product_id, $source = 'unknown') {
     $last_stock_key = '_axiom_restock_last_known_qty';
     $old_stock_raw  = get_post_meta($product_id, $last_stock_key, true);
 
-    /**
-     * First time this file sees this product:
-     * save current stock but do NOT send.
-     *
-     * This prevents fake mass alerts when you first install the code.
-     */
     if ($old_stock_raw === '') {
         update_post_meta($product_id, $last_stock_key, $new_stock);
+        axiom_restock_send_skip_debug($product, $source, 'First time seeing product. Saved baseline stock only. Increase stock again to trigger alert.');
         return;
     }
 
     $old_stock = (int) $old_stock_raw;
 
-    /**
-     * Always update stored stock number.
-     */
     update_post_meta($product_id, $last_stock_key, $new_stock);
 
-    /**
-     * Only send if stock increased.
-     *
-     * 0 -> 20 sends
-     * 5 -> 30 sends
-     * 30 -> 0 does not send
-     * 30 -> 20 does not send
-     */
     if ($new_stock <= $old_stock) {
+        axiom_restock_send_skip_debug($product, $source, 'Stock did not increase. Old stock: ' . $old_stock . '. New stock: ' . $new_stock . '.');
         return;
     }
 
-    /**
-     * Never send if new stock is zero or below.
-     */
     if ($new_stock <= 0) {
+        axiom_restock_send_skip_debug($product, $source, 'New stock is zero or below.');
         return;
     }
 
-    /**
-     * Prevent duplicate emails if multiple WooCommerce hooks fire on the same save.
-     */
     $cooldown_key  = '_axiom_restock_last_alert_time';
     $last_alert_at = (int) get_post_meta($product_id, $cooldown_key, true);
 
     if ($last_alert_at && (time() - $last_alert_at) < 10 * MINUTE_IN_SECONDS) {
+        axiom_restock_send_skip_debug($product, $source, 'Cooldown active. Prevented duplicate alert within 10 minutes.');
         return;
     }
 
@@ -244,8 +332,7 @@ function axiom_restock_check_product_stock($product_id, $source = 'unknown') {
 }
 
 /**
- * Hook 1:
- * Fires when WooCommerce directly changes stock.
+ * Hooks.
  */
 add_action('woocommerce_product_set_stock', 'axiom_restock_stock_object_hook', 20, 1);
 add_action('woocommerce_variation_set_stock', 'axiom_restock_stock_object_hook', 20, 1);
@@ -258,24 +345,37 @@ function axiom_restock_stock_object_hook($product) {
     axiom_restock_check_product_stock($product->get_id(), 'stock_object_hook');
 }
 
-/**
- * Hook 2:
- * Fallback for manually saving simple products in WooCommerce admin.
- */
 add_action('woocommerce_update_product', 'axiom_restock_product_save_hook', 999, 1);
 
 function axiom_restock_product_save_hook($product_id) {
     axiom_restock_check_product_stock($product_id, 'woocommerce_update_product');
 }
 
-/**
- * Hook 3:
- * Fallback for manually saving variations in WooCommerce admin.
- */
 add_action('woocommerce_update_product_variation', 'axiom_restock_variation_save_hook', 999, 1);
 
 function axiom_restock_variation_save_hook($variation_id) {
     axiom_restock_check_product_stock($variation_id, 'woocommerce_update_product_variation');
+}
+
+/**
+ * Skip/debug email.
+ */
+function axiom_restock_send_skip_debug($product, $source, $reason) {
+    if (!axiom_restock_debug_enabled()) {
+        return;
+    }
+
+    $message  = "A restock check ran, but no restock email was sent.\n\n";
+    $message .= "REASON\n";
+    $message .= "-------------------------\n";
+    $message .= $reason . "\n\n";
+    $message .= axiom_restock_get_product_debug_report($product, $source);
+
+    axiom_restock_send_debug_email('[DEBUG] Axiom Restock Skipped: ' . axiom_restock_get_product_display_name($product), $message);
+}
+
+function axiom_restock_send_debug_email($subject, $message) {
+    wp_mail(axiom_restock_test_email_to(), $subject, $message);
 }
 
 /**
@@ -293,26 +393,27 @@ function axiom_restock_send_test_email($product, $old_stock, $new_stock, $source
 
     $subject = '[TEST] Axiom Restock Detected: ' . $product_name;
 
-    $customer_subject = 'Limited Restock: ' . $product_name . ' is back';
+    $customer_subject = 'Inventory Update: ' . $product_name;
 
-    $customer_body = $product_name . " has officially been restocked at Axiom Research.\n\n";
+    $customer_body = $product_name . " inventory has been updated at Axiom Research.\n\n";
     $customer_body .= "Current available stock: " . $new_stock . " units.\n\n";
-    $customer_body .= "This is a limited restock, and availability may change quickly.\n\n";
-    $customer_body .= "Shop now:\n";
+    $customer_body .= "Availability may change quickly.\n\n";
+    $customer_body .= "View product:\n";
     $customer_body .= $product_url . "\n\n";
-    $customer_body .= "Research use only. Not for human consumption.\n\n";
+    $customer_body .= "21+ only. Research use only. Not for human consumption.\n";
+    $customer_body .= "Not intended to diagnose, treat, cure, or prevent any disease.\n\n";
     $customer_body .= "Axiom Research\n";
     $customer_body .= "Ships from California\n";
     $customer_body .= home_url();
 
-    $sms_body = 'Axiom Research: ' . $product_name . ' is back in stock. Limited quantity available: ' . $product_url . ' Reply STOP to opt out.';
+    $sms_body = 'Axiom Research: Inventory updated for ' . $product_name . '. Limited quantity may be available. 21+ • Research Use Only. Reply STOP to opt out.';
 
-    $message = "TEST MODE ONLY\n";
+    $message  = "TEST MODE ONLY\n";
     $message .= "This was sent only to " . $to . ".\n";
     $message .= "Customers were NOT emailed.\n";
     $message .= "SMS was NOT sent.\n\n";
 
-    $message .= "A valid restock was detected.\n\n";
+    $message .= "A valid stock increase/restock was detected.\n\n";
 
     $message .= "TRIGGER SOURCE\n";
     $message .= "-------------------------\n";
@@ -343,12 +444,7 @@ function axiom_restock_send_test_email($product, $old_stock, $new_stock, $source
     $message .= "IMPORTANT\n";
     $message .= "-------------------------\n";
     $message .= "This is only the test trigger.\n";
-    $message .= "After testing, connect this to Zoho Campaigns for real customer email sends.\n";
+    $message .= "After testing, we can switch this to real customer sends.\n";
 
-    /**
-     * Do NOT force a From header here.
-     * Some Zoho SMTP setups reject emails when the From header
-     * does not match the authenticated SMTP mailbox/alias.
-     */
     wp_mail($to, $subject, $message);
 }
