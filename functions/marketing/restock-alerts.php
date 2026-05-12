@@ -463,3 +463,27 @@ function axiom_restock_send_test_email($product, $old_stock, $new_stock, $source
 
     wp_mail($to, $subject, $message);
 }
+
+add_action('admin_post_axiom_restock_direct_test', 'axiom_restock_direct_test');
+
+function axiom_restock_direct_test() {
+    if (!current_user_can('manage_woocommerce') && !current_user_can('manage_options')) {
+        wp_die('Not allowed.');
+    }
+
+    $product_id = isset($_GET['product_id']) ? absint($_GET['product_id']) : 0;
+
+    if (!$product_id) {
+        wp_die('Missing product_id.');
+    }
+
+    $product = wc_get_product($product_id);
+
+    if (!$product || !is_a($product, 'WC_Product')) {
+        wp_die('Invalid product.');
+    }
+
+    axiom_restock_send_test_email($product, 0, (int) $product->get_stock_quantity(), 'direct_force_test');
+
+    wp_die('Direct restock test sent for product/variation ID ' . esc_html($product_id) . ' to ' . esc_html(axiom_restock_test_email_to()) . '.');
+}
