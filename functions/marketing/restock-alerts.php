@@ -2,7 +2,7 @@
 /**
  * Axiom Restock Alerts — TEST MODE ONLY
  *
- * Sends test/debug restock emails only to cheapeptides@gmail.com.
+ * Sends valid restock test emails only to cheapeptides@gmail.com.
  * Does NOT send to customers.
  * Does NOT send SMS.
  */
@@ -21,11 +21,11 @@ function axiom_restock_test_email_to() {
 /**
  * Debug mode.
  *
- * true  = email you when a product is skipped and explains why.
- * false = only email when a valid restock is detected.
+ * false = do NOT send skipped/debug emails.
+ * true  = email you every skip reason. Only turn on temporarily.
  */
 function axiom_restock_debug_enabled() {
-    return true;
+    return false;
 }
 
 /**
@@ -46,7 +46,7 @@ function axiom_restock_manual_test_email() {
     $sent = wp_mail(
         $to,
         '[TEST] Axiom Restock Email System Works',
-        "This is a manual test email from the Axiom restock alert system.\n\nIf you received this, WordPress email sending is working.\n\nCustomers were NOT emailed."
+        "This is a manual test email from the Axiom restock alert system.\n\nIf you received this, WordPress email sending is working.\n\nCustomers were NOT emailed.\nSMS was NOT sent."
     );
 
     if ($sent) {
@@ -86,12 +86,13 @@ function axiom_restock_force_test() {
 
     wp_die(
         'Restock memory reset for product ID ' . esc_html($product_id) . '. ' .
-        'Now set stock to a lower number and save. Then set stock higher and save again.'
+        'Now set stock to a lower number and save. Then set stock higher and save again. ' .
+        'Only valid restock test emails will send to ' . esc_html(axiom_restock_test_email_to()) . '.'
     );
 }
 
 /**
- * Show product eligibility info.
+ * Show product eligibility info without sending an email.
  *
  * Visit:
  * /wp-admin/admin-post.php?action=axiom_restock_debug_product&product_id=123
@@ -375,6 +376,10 @@ function axiom_restock_send_skip_debug($product, $source, $reason) {
 }
 
 function axiom_restock_send_debug_email($subject, $message) {
+    if (!axiom_restock_debug_enabled()) {
+        return;
+    }
+
     wp_mail(axiom_restock_test_email_to(), $subject, $message);
 }
 
