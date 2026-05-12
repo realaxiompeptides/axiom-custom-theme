@@ -25,7 +25,7 @@ function axiom_restock_test_email_to() {
  * true  = email you every skip reason. Only turn on temporarily.
  */
 function axiom_restock_debug_enabled() {
-    return false;
+    return true; // TEMPORARILY TRUE so we can confirm variation hook is working.
 }
 
 /**
@@ -57,10 +57,10 @@ function axiom_restock_manual_test_email() {
 }
 
 /**
- * Reset one product's restock memory/cooldown.
+ * Reset one product/variation's restock memory/cooldown.
  *
  * Visit:
- * /wp-admin/admin-post.php?action=axiom_restock_force_test&product_id=123
+ * /wp-admin/admin-post.php?action=axiom_restock_force_test&product_id=852
  */
 add_action('admin_post_axiom_restock_force_test', 'axiom_restock_force_test');
 
@@ -85,17 +85,17 @@ function axiom_restock_force_test() {
     delete_post_meta($product_id, '_axiom_restock_last_alert_time');
 
     wp_die(
-        'Restock memory reset for product ID ' . esc_html($product_id) . '. ' .
+        'Restock memory reset for product/variation ID ' . esc_html($product_id) . '. ' .
         'Now set stock to a lower number and save. Then set stock higher and save again. ' .
         'Only valid restock test emails will send to ' . esc_html(axiom_restock_test_email_to()) . '.'
     );
 }
 
 /**
- * Show product eligibility info without sending an email.
+ * Show product/variation eligibility info without sending an email.
  *
  * Visit:
- * /wp-admin/admin-post.php?action=axiom_restock_debug_product&product_id=123
+ * /wp-admin/admin-post.php?action=axiom_restock_debug_product&product_id=852
  */
 add_action('admin_post_axiom_restock_debug_product', 'axiom_restock_debug_product_endpoint');
 
@@ -276,7 +276,7 @@ function axiom_restock_check_product_stock($product_id, $source = 'unknown') {
     }
 
     if (!$product->managing_stock()) {
-        axiom_restock_send_skip_debug($product, $source, 'Product does not have Manage stock enabled.');
+        axiom_restock_send_skip_debug($product, $source, 'Product/variation does not have Manage stock enabled.');
         return;
     }
 
@@ -301,7 +301,7 @@ function axiom_restock_check_product_stock($product_id, $source = 'unknown') {
 
     if ($old_stock_raw === '') {
         update_post_meta($product_id, $last_stock_key, $new_stock);
-        axiom_restock_send_skip_debug($product, $source, 'First time seeing product. Saved baseline stock only. Increase stock again to trigger alert.');
+        axiom_restock_send_skip_debug($product, $source, 'First time seeing product/variation. Saved baseline stock only. Increase stock again to trigger alert.');
         return;
     }
 
@@ -352,10 +352,20 @@ function axiom_restock_product_save_hook($product_id) {
     axiom_restock_check_product_stock($product_id, 'woocommerce_update_product');
 }
 
-add_action('woocommerce_update_product_variation', 'axiom_restock_variation_save_hook', 999, 1);
+add_action('woocommerce_update_product_variation', 'axiom_restock_variation_update_hook', 999, 1);
 
-function axiom_restock_variation_save_hook($variation_id) {
+function axiom_restock_variation_update_hook($variation_id) {
     axiom_restock_check_product_stock($variation_id, 'woocommerce_update_product_variation');
+}
+
+/**
+ * Extra hook for manually saving variations in admin.
+ * This is important for variable peptide products.
+ */
+add_action('woocommerce_save_product_variation', 'axiom_restock_variation_save_hook_extra', 999, 2);
+
+function axiom_restock_variation_save_hook_extra($variation_id, $i = 0) {
+    axiom_restock_check_product_stock($variation_id, 'woocommerce_save_product_variation');
 }
 
 /**
@@ -449,7 +459,7 @@ function axiom_restock_send_test_email($product, $old_stock, $new_stock, $source
     $message .= "IMPORTANT\n";
     $message .= "-------------------------\n";
     $message .= "This is only the test trigger.\n";
-    $message .= "After testing, we can switch this to real customer sends.\n";
+    $message .= "After testing, change axiom_restock_debug_enabled() back to false before real use.\n";
 
     wp_mail($to, $subject, $message);
 }
