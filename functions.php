@@ -32,6 +32,7 @@ $axiom_function_files = array(
     // CHECKOUT
     '/functions/checkout/fields.php',
     '/functions/checkout/shipping.php',
+    '/functions/checkout/shipping-rates-display.php',
     '/functions/checkout/shipping-tracking-email.php',
     '/functions/checkout/card-3ds-popup.php',
     '/functions/checkout/hide-ground-when-free.php',
