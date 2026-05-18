@@ -58,7 +58,6 @@ $axiom_function_files = array(
     '/functions/affiliate-program/affiliate-dashboard-modern.php',
     '/functions/affiliate-program/affiliate-partner-setup.php',
     '/functions/affiliate-program/affiliate-coupon-rules.php',
-    '/functions/affiliate-program/payment-method-commission-adjustment.php',
 
     // ACCOUNT
     '/functions/account/account.php',
