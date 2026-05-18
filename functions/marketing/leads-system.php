@@ -7,10 +7,28 @@ if (!defined('ABSPATH')) {
  * ==========================================
  * AXIOM LEADS SYSTEM
  * Stores popup emails, SMS numbers, checkout leads,
- * coupon codes, and allows CSV export.
+ * coupon codes, CSV export, and live Brevo sync.
  * ==========================================
  */
 
+/**
+ * ==========================================
+ * BREVO LIVE SYNC SETTINGS
+ * ==========================================
+ */
+if (!function_exists('axiom_brevo_api_key')) {
+    function axiom_brevo_api_key() {
+        return get_option('axiom_brevo_api_key', '');
+    }
+}
+
+function axiom_brevo_leads_list_id() {
+    return 3; // Brevo list ID: Axiom Leads
+}
+
+function axiom_brevo_sync_enabled() {
+    return true;
+}
 
 /**
  * ==========================================
@@ -33,6 +51,9 @@ function axiom_create_leads_table() {
         status VARCHAR(50) DEFAULT 'active',
         discount_code VARCHAR(100) NULL,
         discount_percent INT NULL,
+        brevo_synced TINYINT(1) DEFAULT 0,
+        brevo_last_sync DATETIME NULL,
+        brevo_error TEXT NULL,
         ip_address VARCHAR(100) NULL,
         user_agent TEXT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -41,7 +62,8 @@ function axiom_create_leads_table() {
         KEY email (email),
         KEY phone (phone),
         KEY source (source),
-        KEY discount_code (discount_code)
+        KEY discount_code (discount_code),
+        KEY brevo_synced (brevo_synced)
     ) {$charset};";
 
     require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -50,7 +72,6 @@ function axiom_create_leads_table() {
 
 add_action('after_setup_theme', 'axiom_create_leads_table');
 add_action('admin_init', 'axiom_create_leads_table');
-
 
 /**
  * ==========================================
@@ -79,6 +100,9 @@ function axiom_leads_maybe_add_column($column_name, $definition) {
 function axiom_leads_ensure_columns() {
     axiom_leads_maybe_add_column('discount_code', 'VARCHAR(100) NULL');
     axiom_leads_maybe_add_column('discount_percent', 'INT NULL');
+    axiom_leads_maybe_add_column('brevo_synced', 'TINYINT(1) DEFAULT 0');
+    axiom_leads_maybe_add_column('brevo_last_sync', 'DATETIME NULL');
+    axiom_leads_maybe_add_column('brevo_error', 'TEXT NULL');
     axiom_leads_maybe_add_column('ip_address', 'VARCHAR(100) NULL');
     axiom_leads_maybe_add_column('user_agent', 'TEXT NULL');
     axiom_leads_maybe_add_column('updated_at', 'DATETIME NULL');
@@ -86,10 +110,162 @@ function axiom_leads_ensure_columns() {
 
 add_action('admin_init', 'axiom_leads_ensure_columns');
 
+/**
+ * ==========================================
+ * 3. BREVO LIVE SYNC
+ * ==========================================
+ */
+function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '', $source = 'unknown', $discount_code = '', $discount_percent = null) {
+    global $wpdb;
+
+    if (!axiom_brevo_sync_enabled()) {
+        return false;
+    }
+
+    $api_key = axiom_brevo_api_key();
+
+    if (empty($api_key)) {
+        axiom_mark_brevo_sync_result($lead_id, false, 'Missing Brevo API key.');
+        return false;
+    }
+
+    $email = sanitize_email($email);
+
+    if (empty($email) || !is_email($email)) {
+        axiom_mark_brevo_sync_result($lead_id, false, 'Missing or invalid email.');
+        return false;
+    }
+
+    $phone      = sanitize_text_field($phone);
+    $first_name = sanitize_text_field($first_name);
+
+    $attributes = array();
+
+    if (!empty($first_name)) {
+        $attributes['FIRSTNAME'] = $first_name;
+    }
+
+    if (!empty($phone)) {
+        $attributes['SMS'] = $phone;
+    }
+
+    $payload = array(
+        'email'         => $email,
+        'listIds'       => array(axiom_brevo_leads_list_id()),
+        'updateEnabled' => true,
+    );
+
+    if (!empty($attributes)) {
+        $payload['attributes'] = $attributes;
+    }
+
+    $response = wp_remote_post(
+        'https://api.brevo.com/v3/contacts',
+        array(
+            'timeout' => 20,
+            'headers' => array(
+                'api-key'      => $api_key,
+                'Content-Type' => 'application/json',
+                'Accept'       => 'application/json',
+            ),
+            'body' => wp_json_encode($payload),
+        )
+    );
+
+    if (is_wp_error($response)) {
+        axiom_mark_brevo_sync_result($lead_id, false, $response->get_error_message());
+        return false;
+    }
+
+    $code = (int) wp_remote_retrieve_response_code($response);
+    $body = wp_remote_retrieve_body($response);
+
+    if (in_array($code, array(200, 201, 204), true)) {
+        axiom_mark_brevo_sync_result($lead_id, true, '');
+        return true;
+    }
+
+    axiom_mark_brevo_sync_result($lead_id, false, 'Brevo HTTP ' . $code . ': ' . $body);
+    return false;
+}
+
+function axiom_mark_brevo_sync_result($lead_id, $success, $error = '') {
+    global $wpdb;
+
+    $lead_id = absint($lead_id);
+
+    if (!$lead_id) {
+        return;
+    }
+
+    $table = $wpdb->prefix . 'axiom_leads';
+
+    $wpdb->update(
+        $table,
+        array(
+            'brevo_synced'    => $success ? 1 : 0,
+            'brevo_last_sync' => current_time('mysql'),
+            'brevo_error'     => $success ? '' : sanitize_textarea_field($error),
+            'updated_at'      => current_time('mysql'),
+        ),
+        array('id' => $lead_id),
+        array('%d', '%s', '%s', '%s'),
+        array('%d')
+    );
+}
+
+/**
+ * Manual sync all existing unsynced leads.
+ */
+add_action('admin_post_axiom_sync_leads_to_brevo', function() {
+    if (!current_user_can('manage_options')) {
+        wp_die('Unauthorized');
+    }
+
+    global $wpdb;
+
+    $table = $wpdb->prefix . 'axiom_leads';
+
+    $leads = $wpdb->get_results(
+        "SELECT * FROM {$table}
+         WHERE email IS NOT NULL
+         AND email != ''
+         AND (brevo_synced = 0 OR brevo_synced IS NULL)
+         ORDER BY id DESC
+         LIMIT 200",
+        ARRAY_A
+    );
+
+    $synced = 0;
+    $failed = 0;
+
+    foreach ($leads as $lead) {
+        $ok = axiom_sync_lead_to_brevo(
+            $lead['id'],
+            $lead['email'],
+            $lead['phone'],
+            $lead['first_name'],
+            $lead['source'],
+            $lead['discount_code'],
+            $lead['discount_percent']
+        );
+
+        if ($ok) {
+            $synced++;
+        } else {
+            $failed++;
+        }
+    }
+
+    wp_safe_redirect(
+        admin_url('admin.php?page=axiom-leads&brevo_synced=' . absint($synced) . '&brevo_failed=' . absint($failed))
+    );
+    exit;
+});
 
 /**
  * ==========================================
- * 3. CREATE UNIQUE ONE-TIME WOOCOMMERCE COUPON
+ * 4. CREATE UNIQUE ONE-TIME WOOCOMMERCE COUPON
  * ==========================================
  */
 function axiom_generate_popup_coupon($email, $discount_percent = 10) {
@@ -131,10 +307,9 @@ function axiom_generate_popup_coupon($email, $discount_percent = 10) {
     return $code;
 }
 
-
 /**
  * ==========================================
- * 4. SAVE LEAD FUNCTION
+ * 5. SAVE LEAD FUNCTION
  * Used by checkout and popup.
  * ==========================================
  */
@@ -197,9 +372,6 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
         '%s',
     );
 
-    /**
-     * If email already exists, update it instead of creating messy duplicates.
-     */
     if (!empty($email)) {
         $existing_id = $wpdb->get_var(
             $wpdb->prepare(
@@ -220,7 +392,19 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
                 array('%d')
             );
 
-            return absint($existing_id);
+            $lead_id = absint($existing_id);
+
+            axiom_sync_lead_to_brevo(
+                $lead_id,
+                $email,
+                $phone,
+                $first_name,
+                $source,
+                $discount_code,
+                $discount_percent
+            );
+
+            return $lead_id;
         }
     }
 
@@ -231,13 +415,24 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
         return false;
     }
 
-    return absint($wpdb->insert_id);
-}
+    $lead_id = absint($wpdb->insert_id);
 
+    axiom_sync_lead_to_brevo(
+        $lead_id,
+        $email,
+        $phone,
+        $first_name,
+        $source,
+        $discount_code,
+        $discount_percent
+    );
+
+    return $lead_id;
+}
 
 /**
  * ==========================================
- * 5. POPUP AJAX SAVE
+ * 6. POPUP AJAX SAVE
  * This matches your popup.js:
  * action=axiom_save_lead
  * ==========================================
@@ -246,10 +441,6 @@ add_action('wp_ajax_axiom_save_lead', 'axiom_ajax_save_lead');
 add_action('wp_ajax_nopriv_axiom_save_lead', 'axiom_ajax_save_lead');
 
 function axiom_ajax_save_lead() {
-    /**
-     * Nonce is recommended, but this will still work if your JS forgot to pass it.
-     * Once everything is confirmed working, you can make nonce required.
-     */
     if (!empty($_POST['nonce'])) {
         $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
 
@@ -320,10 +511,9 @@ function axiom_ajax_save_lead() {
     ));
 }
 
-
 /**
  * ==========================================
- * 6. OLD POPUP AJAX COMPATIBILITY
+ * 7. OLD POPUP AJAX COMPATIBILITY
  * Supports older JS using action=axiom_capture_lead
  * ==========================================
  */
@@ -354,10 +544,9 @@ function axiom_capture_lead() {
     ));
 }
 
-
 /**
  * ==========================================
- * 7. SAVE EMAIL / PHONE ON CHECKOUT
+ * 8. SAVE EMAIL / PHONE ON CHECKOUT
  * ==========================================
  */
 add_action('woocommerce_checkout_update_order_meta', function($order_id) {
@@ -371,8 +560,8 @@ add_action('woocommerce_checkout_update_order_meta', function($order_id) {
         return;
     }
 
-    $email = $order->get_billing_email();
-    $phone = $order->get_billing_phone();
+    $email      = $order->get_billing_email();
+    $phone      = $order->get_billing_phone();
     $first_name = $order->get_billing_first_name();
 
     $cart_items = array();
@@ -396,10 +585,9 @@ add_action('woocommerce_checkout_update_order_meta', function($order_id) {
     );
 });
 
-
 /**
  * ==========================================
- * 8. EXPORT CSV
+ * 9. EXPORT CSV
  * ==========================================
  */
 add_action('admin_post_axiom_export_leads', function() {
@@ -435,6 +623,9 @@ add_action('admin_post_axiom_export_leads', function() {
             'status',
             'discount_code',
             'discount_percent',
+            'brevo_synced',
+            'brevo_last_sync',
+            'brevo_error',
             'ip_address',
             'user_agent',
             'created_at',
@@ -446,10 +637,9 @@ add_action('admin_post_axiom_export_leads', function() {
     exit;
 });
 
-
 /**
  * ==========================================
- * 9. ADMIN PAGE
+ * 10. ADMIN PAGE
  * ==========================================
  */
 add_action('admin_menu', function() {
@@ -474,18 +664,27 @@ function axiom_leads_page() {
     $table = $wpdb->prefix . 'axiom_leads';
 
     $leads = $wpdb->get_results("SELECT * FROM {$table} ORDER BY id DESC LIMIT 100", ARRAY_A);
+
+    if (isset($_GET['brevo_synced']) || isset($_GET['brevo_failed'])) {
+        echo '<div class="notice notice-info"><p>Brevo sync complete. Synced: ' . esc_html(absint($_GET['brevo_synced'] ?? 0)) . ' | Failed: ' . esc_html(absint($_GET['brevo_failed'] ?? 0)) . '</p></div>';
+    }
     ?>
     <div class="wrap">
         <h1>Axiom Leads</h1>
 
         <p>
-            This stores popup emails, SMS numbers, checkout leads, and generated discount codes.
+            This stores popup emails, SMS numbers, checkout leads, generated discount codes, and syncs leads to Brevo list ID <?php echo esc_html(axiom_brevo_leads_list_id()); ?>.
         </p>
 
         <p>
             <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_export_leads')); ?>"
                class="button button-primary">
                 Export Leads CSV
+            </a>
+
+            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_sync_leads_to_brevo')); ?>"
+               class="button">
+                Sync Unsynced Leads to Brevo
             </a>
         </p>
 
@@ -503,6 +702,7 @@ function axiom_leads_page() {
                         <th>Source</th>
                         <th>Discount</th>
                         <th>Code</th>
+                        <th>Brevo</th>
                         <th>Status</th>
                         <th>Created</th>
                     </tr>
@@ -523,6 +723,16 @@ function axiom_leads_page() {
                                 ?>
                             </td>
                             <td><?php echo !empty($lead['discount_code']) ? esc_html($lead['discount_code']) : '—'; ?></td>
+                            <td>
+                                <?php if (!empty($lead['brevo_synced'])) : ?>
+                                    ✅ Synced
+                                <?php else : ?>
+                                    ❌ Not synced
+                                    <?php if (!empty($lead['brevo_error'])) : ?>
+                                        <br><small><?php echo esc_html(wp_trim_words($lead['brevo_error'], 12)); ?></small>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </td>
                             <td><?php echo esc_html($lead['status']); ?></td>
                             <td><?php echo esc_html($lead['created_at']); ?></td>
                         </tr>
