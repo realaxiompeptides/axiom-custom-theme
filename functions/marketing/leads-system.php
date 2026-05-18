@@ -31,6 +31,38 @@ function axiom_brevo_sync_enabled() {
 }
 
 /**
+ * Format phone numbers for Brevo.
+ * Brevo wants international format like +19262863779.
+ */
+function axiom_format_phone_for_brevo($phone) {
+    $phone = trim((string) $phone);
+
+    if ($phone === '') {
+        return '';
+    }
+
+    $digits = preg_replace('/\D+/', '', $phone);
+
+    if ($digits === '') {
+        return '';
+    }
+
+    if (strlen($digits) === 10) {
+        return '+1' . $digits;
+    }
+
+    if (strlen($digits) === 11 && substr($digits, 0, 1) === '1') {
+        return '+' . $digits;
+    }
+
+    if (strpos($phone, '+') === 0 && strlen($digits) >= 10) {
+        return '+' . $digits;
+    }
+
+    return '';
+}
+
+/**
  * ==========================================
  * 1. CREATE / UPDATE DATABASE TABLE
  * ==========================================
@@ -76,7 +108,6 @@ add_action('admin_init', 'axiom_create_leads_table');
 /**
  * ==========================================
  * 2. SAFE COLUMN CHECKER
- * Adds missing columns if old table already exists.
  * ==========================================
  */
 function axiom_leads_maybe_add_column($column_name, $definition) {
@@ -116,8 +147,6 @@ add_action('admin_init', 'axiom_leads_ensure_columns');
  * ==========================================
  */
 function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '', $source = 'unknown', $discount_code = '', $discount_percent = null) {
-    global $wpdb;
-
     if (!axiom_brevo_sync_enabled()) {
         return false;
     }
@@ -145,8 +174,10 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
         $attributes['FIRSTNAME'] = $first_name;
     }
 
-    if (!empty($phone)) {
-        $attributes['SMS'] = $phone;
+    $formatted_phone = axiom_format_phone_for_brevo($phone);
+
+    if (!empty($formatted_phone)) {
+        $attributes['SMS'] = $formatted_phone;
     }
 
     $payload = array(
@@ -215,7 +246,7 @@ function axiom_mark_brevo_sync_result($lead_id, $success, $error = '') {
 }
 
 /**
- * Manual sync all existing unsynced leads.
+ * Manual sync existing unsynced leads.
  */
 add_action('admin_post_axiom_sync_leads_to_brevo', function() {
     if (!current_user_can('manage_options')) {
@@ -232,7 +263,7 @@ add_action('admin_post_axiom_sync_leads_to_brevo', function() {
          AND email != ''
          AND (brevo_synced = 0 OR brevo_synced IS NULL)
          ORDER BY id DESC
-         LIMIT 200",
+         LIMIT 25",
         ARRAY_A
     );
 
@@ -310,7 +341,6 @@ function axiom_generate_popup_coupon($email, $discount_percent = 10) {
 /**
  * ==========================================
  * 5. SAVE LEAD FUNCTION
- * Used by checkout and popup.
  * ==========================================
  */
 function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_data = '', $extra = array()) {
@@ -332,15 +362,13 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
     $discount_code    = isset($extra['discount_code']) ? sanitize_text_field($extra['discount_code']) : '';
     $discount_percent = isset($extra['discount_percent']) ? absint($extra['discount_percent']) : null;
 
-    $ip_address = '';
-    if (!empty($_SERVER['REMOTE_ADDR'])) {
-        $ip_address = sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']));
-    }
+    $ip_address = !empty($_SERVER['REMOTE_ADDR'])
+        ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR']))
+        : '';
 
-    $user_agent = '';
-    if (!empty($_SERVER['HTTP_USER_AGENT'])) {
-        $user_agent = sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']));
-    }
+    $user_agent = !empty($_SERVER['HTTP_USER_AGENT'])
+        ? sanitize_text_field(wp_unslash($_SERVER['HTTP_USER_AGENT']))
+        : '';
 
     $data = array(
         'email'            => $email,
@@ -357,20 +385,7 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
         'updated_at'       => current_time('mysql'),
     );
 
-    $formats = array(
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-        '%d',
-        '%s',
-        '%s',
-        '%s',
-        '%s',
-    );
+    $formats = array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%s', '%s', '%s', '%s');
 
     if (!empty($email)) {
         $existing_id = $wpdb->get_var(
@@ -433,8 +448,6 @@ function axiom_save_lead($email = '', $phone = '', $source = 'unknown', $cart_da
 /**
  * ==========================================
  * 6. POPUP AJAX SAVE
- * This matches your popup.js:
- * action=axiom_save_lead
  * ==========================================
  */
 add_action('wp_ajax_axiom_save_lead', 'axiom_ajax_save_lead');
@@ -445,9 +458,7 @@ function axiom_ajax_save_lead() {
         $nonce = sanitize_text_field(wp_unslash($_POST['nonce']));
 
         if (!wp_verify_nonce($nonce, 'axiom_popup_capture')) {
-            wp_send_json_error(array(
-                'message' => 'Security check failed.',
-            ));
+            wp_send_json_error(array('message' => 'Security check failed.'));
         }
     }
 
@@ -459,9 +470,7 @@ function axiom_ajax_save_lead() {
         : 10;
 
     if (!is_email($email)) {
-        wp_send_json_error(array(
-            'message' => 'Please enter a valid email.',
-        ));
+        wp_send_json_error(array('message' => 'Please enter a valid email.'));
     }
 
     if ($discount_percent !== 15) {
@@ -472,18 +481,14 @@ function axiom_ajax_save_lead() {
         $digits = preg_replace('/\D+/', '', $phone);
 
         if (strlen($digits) < 10) {
-            wp_send_json_error(array(
-                'message' => 'Please enter a valid phone number.',
-            ));
+            wp_send_json_error(array('message' => 'Please enter a valid phone number.'));
         }
     }
 
     $coupon_code = axiom_generate_popup_coupon($email, $discount_percent);
 
     if (!$coupon_code) {
-        wp_send_json_error(array(
-            'message' => 'Could not create discount code.',
-        ));
+        wp_send_json_error(array('message' => 'Could not create discount code.'));
     }
 
     $lead_id = axiom_save_lead(
@@ -498,9 +503,7 @@ function axiom_ajax_save_lead() {
     );
 
     if (!$lead_id) {
-        wp_send_json_error(array(
-            'message' => 'Lead could not be saved.',
-        ));
+        wp_send_json_error(array('message' => 'Lead could not be saved.'));
     }
 
     wp_send_json_success(array(
@@ -514,7 +517,6 @@ function axiom_ajax_save_lead() {
 /**
  * ==========================================
  * 7. OLD POPUP AJAX COMPATIBILITY
- * Supports older JS using action=axiom_capture_lead
  * ==========================================
  */
 add_action('wp_ajax_axiom_capture_lead', 'axiom_capture_lead');
@@ -525,17 +527,13 @@ function axiom_capture_lead() {
     $phone = isset($_POST['phone']) ? sanitize_text_field(wp_unslash($_POST['phone'])) : '';
 
     if (empty($email) && empty($phone)) {
-        wp_send_json_error(array(
-            'message' => 'Missing email or phone.',
-        ));
+        wp_send_json_error(array('message' => 'Missing email or phone.'));
     }
 
     $lead_id = axiom_save_lead($email, $phone, 'popup');
 
     if (!$lead_id) {
-        wp_send_json_error(array(
-            'message' => 'Lead could not be saved.',
-        ));
+        wp_send_json_error(array('message' => 'Lead could not be saved.'));
     }
 
     wp_send_json_success(array(
@@ -579,9 +577,7 @@ add_action('woocommerce_checkout_update_order_meta', function($order_id) {
         $phone,
         'checkout',
         $cart_items,
-        array(
-            'first_name' => $first_name,
-        )
+        array('first_name' => $first_name)
     );
 });
 
@@ -612,25 +608,6 @@ add_action('admin_post_axiom_export_leads', function() {
         foreach ($results as $row) {
             fputcsv($output, $row);
         }
-    } else {
-        fputcsv($output, array(
-            'id',
-            'email',
-            'phone',
-            'first_name',
-            'source',
-            'cart_data',
-            'status',
-            'discount_code',
-            'discount_percent',
-            'brevo_synced',
-            'brevo_last_sync',
-            'brevo_error',
-            'ip_address',
-            'user_agent',
-            'created_at',
-            'updated_at',
-        ));
     }
 
     fclose($output);
@@ -677,13 +654,11 @@ function axiom_leads_page() {
         </p>
 
         <p>
-            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_export_leads')); ?>"
-               class="button button-primary">
+            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_export_leads')); ?>" class="button button-primary">
                 Export Leads CSV
             </a>
 
-            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_sync_leads_to_brevo')); ?>"
-               class="button">
+            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_sync_leads_to_brevo')); ?>" class="button">
                 Sync Unsynced Leads to Brevo
             </a>
         </p>
@@ -716,11 +691,7 @@ function axiom_leads_page() {
                             <td><?php echo esc_html($lead['phone']); ?></td>
                             <td><?php echo esc_html($lead['source']); ?></td>
                             <td>
-                                <?php
-                                echo !empty($lead['discount_percent'])
-                                    ? esc_html($lead['discount_percent']) . '%'
-                                    : '—';
-                                ?>
+                                <?php echo !empty($lead['discount_percent']) ? esc_html($lead['discount_percent']) . '%' : '—'; ?>
                             </td>
                             <td><?php echo !empty($lead['discount_code']) ? esc_html($lead['discount_code']) : '—'; ?></td>
                             <td>
