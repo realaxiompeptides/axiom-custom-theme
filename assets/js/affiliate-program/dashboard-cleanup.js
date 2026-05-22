@@ -44,16 +44,6 @@
         );
     }
 
-    function axiomIsCouponsTab(sliceArea) {
-        if (!sliceArea) {
-            return false;
-        }
-
-        return !!sliceArea.querySelector(
-            '.slicewp-nav-tab.slicewp-active[data-slicewp-tab="coupons"]'
-        );
-    }
-
     function axiomIsInsideNav(el) {
         return !!(
             el &&
@@ -524,17 +514,17 @@
     }
 
     function axiomAddCouponCodeRequestBox(sliceArea) {
-        if (!sliceArea || !axiomIsCouponsTab(sliceArea)) {
+        if (!sliceArea) {
             return;
         }
 
-        if (sliceArea.querySelector('.axiom-coupon-code-request-box')) {
+        var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
+
+        if (!dashboard) {
             return;
         }
 
-        var couponTable = sliceArea.querySelector('table');
-
-        if (!couponTable || !couponTable.parentNode) {
+        if (dashboard.querySelector('.axiom-coupon-code-request-box')) {
             return;
         }
 
@@ -543,15 +533,15 @@
         box.innerHTML =
             '<div class="axiom-coupon-code-request-icon"><i class="fa-brands fa-discord" aria-hidden="true"></i></div>' +
             '<div class="axiom-coupon-code-request-content">' +
-                '<strong>Want a different coupon code?</strong>' +
-                '<p>Email us to request a custom affiliate code, or join the Axiom affiliate Discord community for faster support.</p>' +
+                '<strong>Want a custom affiliate code?</strong>' +
+                '<p>If you want to change your coupon code, email us or join the Axiom affiliate Discord community for faster support.</p>' +
                 '<div class="axiom-coupon-code-request-actions">' +
-                    '<a href="mailto:realaxiompeptides@gmail.com?subject=Affiliate%20Coupon%20Code%20Request">Request by Email</a>' +
+                    '<a href="mailto:realaxiompeptides@gmail.com?subject=Affiliate%20Coupon%20Code%20Request">Request Code by Email</a>' +
                     '<a class="discord" href="https://discord.gg/53udgxM6A" target="_blank" rel="noopener">Join Discord</a>' +
                 '</div>' +
             '</div>';
 
-        couponTable.parentNode.insertBefore(box, couponTable.nextSibling);
+        dashboard.appendChild(box);
     }
 
     function axiomDashboardCleanup() {
