@@ -3,7 +3,27 @@
    File: assets/css/affiliate-program/dashboard-slicewp.css
 ========================================================= */
 
-/* Main SliceWP wrapper */
+:root {
+    --axiom-blue: #3B6FE0;
+    --axiom-blue-light: #5A8CFF;
+    --axiom-blue-dark: #2457c7;
+    --axiom-blue-soft: rgba(59, 111, 224, 0.10);
+    --axiom-blue-border: rgba(59, 111, 224, 0.18);
+    --axiom-blue-shadow: rgba(59, 111, 224, 0.18);
+    --axiom-ice: #f6faff;
+    --axiom-sky: #eef6ff;
+    --axiom-white: #ffffff;
+    --axiom-dark: #0c1220;
+    --axiom-text: #111827;
+    --axiom-muted: #667085;
+    --axiom-muted-soft: #98a2b3;
+    --axiom-border: rgba(12, 18, 32, 0.09);
+}
+
+/* =========================================================
+   Main SliceWP wrapper
+========================================================= */
+
 .axiom-affiliate-default-dashboard {
     width: 100% !important;
     max-width: 100% !important;
@@ -12,7 +32,12 @@
     box-sizing: border-box !important;
 }
 
-/* SliceWP inner wrappers */
+.axiom-affiliate-default-dashboard *,
+.axiom-affiliate-default-dashboard *::before,
+.axiom-affiliate-default-dashboard *::after {
+    box-sizing: border-box !important;
+}
+
 .axiom-affiliate-default-dashboard .slicewp-affiliate-account,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard,
 .axiom-affiliate-default-dashboard .slicewp-section,
@@ -25,7 +50,7 @@
 }
 
 /* =========================================================
-   SliceWP Navigation Tabs
+   SliceWP Navigation Tabs - Axiom Pill Dock
 ========================================================= */
 
 .axiom-affiliate-default-dashboard nav,
@@ -38,23 +63,28 @@
     flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: flex-start !important;
-    gap: 12px !important;
+    gap: 13px !important;
     width: 100% !important;
     max-width: 100% !important;
-    margin: 0 0 24px !important;
-    padding: 14px !important;
-    border-radius: 26px !important;
-    background: #f6f8fc !important;
-    border: 1px solid rgba(12, 18, 32, 0.08) !important;
+    margin: 0 0 28px !important;
+    padding: 16px !important;
+    border-radius: 30px !important;
+    background:
+        radial-gradient(circle at 8% 0%, rgba(90, 140, 255, 0.12), transparent 35%),
+        linear-gradient(180deg, #f8fbff 0%, #f2f6fc 100%) !important;
+    border: 1px solid rgba(59, 111, 224, 0.12) !important;
+    box-shadow:
+        0 16px 40px rgba(12, 18, 32, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
     overflow: visible !important;
     box-sizing: border-box !important;
 }
 
-/* Nav list items */
 .axiom-affiliate-default-dashboard nav li,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper li,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav li,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav li {
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav li,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab {
     display: block !important;
     width: auto !important;
     max-width: none !important;
@@ -68,31 +98,35 @@
 .axiom-affiliate-default-dashboard nav a,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab a {
+    position: relative !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 9px !important;
     width: auto !important;
-    min-width: 118px !important;
+    min-width: 122px !important;
     max-width: none !important;
-    min-height: 48px !important;
-    padding: 0 18px !important;
+    min-height: 52px !important;
+    padding: 0 20px !important;
     border-radius: 999px !important;
-    background: #ffffff !important;
-    color: #0c1220 !important;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #f9fbff 100%) !important;
+    color: var(--axiom-dark) !important;
     border: 1px solid rgba(12, 18, 32, 0.10) !important;
-    box-shadow: 0 8px 22px rgba(12, 18, 32, 0.04) !important;
+    box-shadow:
+        0 10px 24px rgba(12, 18, 32, 0.05),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
     font-size: 14px !important;
     line-height: 1 !important;
-    font-weight: 850 !important;
+    font-weight: 900 !important;
     text-decoration: none !important;
     white-space: nowrap !important;
     overflow: visible !important;
-    box-sizing: border-box !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, color 0.18s ease !important;
 }
 
-/* Nav icons */
 .axiom-affiliate-default-dashboard nav a i,
 .axiom-affiliate-default-dashboard nav a svg,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a i,
@@ -100,39 +134,55 @@
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a i,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a svg,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a i,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a svg {
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a svg,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab a i,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab a svg {
     flex: 0 0 auto !important;
-    width: 16px !important;
-    height: 16px !important;
+    width: 17px !important;
+    height: 17px !important;
     margin: 0 !important;
+    color: currentColor !important;
 }
 
-/* Active/current tab */
+/* Active tab */
 .axiom-affiliate-default-dashboard nav a.active,
 .axiom-affiliate-default-dashboard nav a.slicewp-active,
 .axiom-affiliate-default-dashboard nav a[aria-current="page"],
+.axiom-affiliate-default-dashboard .slicewp-nav-tab.slicewp-active > a,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab.active > a,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab.current > a,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a.active,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a.slicewp-active,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a.active,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a.slicewp-active,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a.active,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a.slicewp-active {
-    background: #0c1220 !important;
+    background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,0.34), transparent 30%),
+        linear-gradient(135deg, var(--axiom-blue) 0%, var(--axiom-blue-light) 100%) !important;
     color: #ffffff !important;
-    border-color: #0c1220 !important;
+    border-color: rgba(59, 111, 224, 0.42) !important;
+    box-shadow:
+        0 16px 34px rgba(59, 111, 224, 0.26),
+        inset 0 1px 0 rgba(255,255,255,0.28) !important;
 }
 
-/* Hover */
 .axiom-affiliate-default-dashboard nav a:hover,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a:hover,
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a:hover,
-.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a:hover {
-    color: #3B6FE0 !important;
-    border-color: rgba(59, 111, 224, 0.25) !important;
+.axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a:hover,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab a:hover {
+    transform: translateY(-1px) !important;
+    color: var(--axiom-blue) !important;
+    border-color: rgba(59, 111, 224, 0.26) !important;
+    box-shadow:
+        0 14px 30px rgba(59, 111, 224, 0.12),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
     text-decoration: none !important;
 }
 
-/* Active hover stays dark */
+.axiom-affiliate-default-dashboard .slicewp-nav-tab.slicewp-active > a:hover,
+.axiom-affiliate-default-dashboard .slicewp-nav-tab.active > a:hover,
 .axiom-affiliate-default-dashboard nav a.active:hover,
 .axiom-affiliate-default-dashboard nav a.slicewp-active:hover,
 .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a.active:hover,
@@ -141,12 +191,11 @@
 .axiom-affiliate-default-dashboard .slicewp-tabs-nav a.slicewp-active:hover,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a.active:hover,
 .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a.slicewp-active:hover {
-    background: #0c1220 !important;
     color: #ffffff !important;
 }
 
 /* =========================================================
-   SliceWP Metric Cards
+   SliceWP General Content Cards / Panels
 ========================================================= */
 
 .axiom-affiliate-default-dashboard .slicewp-grid,
@@ -163,46 +212,369 @@
 .axiom-affiliate-default-dashboard .slicewp-card,
 .axiom-affiliate-default-dashboard .slicewp-box,
 .axiom-affiliate-default-dashboard .slicewp-panel,
-.axiom-affiliate-default-dashboard .slicewp-dashboard-card {
-    border-radius: 22px !important;
+.axiom-affiliate-default-dashboard .slicewp-dashboard-card,
+.axiom-affiliate-default-dashboard .slicewp-section {
+    border-radius: 26px !important;
     border: 1px solid rgba(12, 18, 32, 0.08) !important;
-    background: #ffffff !important;
-    box-shadow: 0 10px 28px rgba(12, 18, 32, 0.04) !important;
+    background:
+        linear-gradient(180deg, #ffffff 0%, #fbfdff 100%) !important;
+    box-shadow:
+        0 14px 34px rgba(12, 18, 32, 0.055),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
     overflow: hidden !important;
 }
 
-/* Date range/filter area */
-.axiom-affiliate-default-dashboard select,
-.axiom-affiliate-default-dashboard input[type="text"],
-.axiom-affiliate-default-dashboard input[type="date"] {
-    min-height: 44px !important;
-    border-radius: 12px !important;
-    border: 1px solid rgba(12, 18, 32, 0.12) !important;
-    background: #ffffff !important;
-    color: #0c1220 !important;
-    font-weight: 700 !important;
+.axiom-affiliate-default-dashboard .slicewp-card,
+.axiom-affiliate-default-dashboard .slicewp-box,
+.axiom-affiliate-default-dashboard .slicewp-panel,
+.axiom-affiliate-default-dashboard .slicewp-dashboard-card {
+    padding: 22px !important;
 }
 
-/* Tables */
+/* =========================================================
+   Headings / Text Inside Default SliceWP Areas
+========================================================= */
+
+.axiom-affiliate-default-dashboard h1,
+.axiom-affiliate-default-dashboard h2,
+.axiom-affiliate-default-dashboard h3,
+.axiom-affiliate-default-dashboard h4 {
+    color: var(--axiom-dark) !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.045em !important;
+}
+
+.axiom-affiliate-default-dashboard p,
+.axiom-affiliate-default-dashboard li,
+.axiom-affiliate-default-dashboard td {
+    color: #1f2937 !important;
+}
+
+.axiom-affiliate-default-dashboard strong,
+.axiom-affiliate-default-dashboard b {
+    color: var(--axiom-dark) !important;
+    font-weight: 950 !important;
+}
+
+/* =========================================================
+   Filter / Apply / Form Styling
+========================================================= */
+
+.axiom-affiliate-default-dashboard form {
+    width: 100% !important;
+}
+
+.axiom-affiliate-default-dashboard label {
+    display: block !important;
+    color: var(--axiom-dark) !important;
+    font-weight: 850 !important;
+    margin-bottom: 8px !important;
+}
+
+.axiom-affiliate-default-dashboard select,
+.axiom-affiliate-default-dashboard input[type="text"],
+.axiom-affiliate-default-dashboard input[type="email"],
+.axiom-affiliate-default-dashboard input[type="url"],
+.axiom-affiliate-default-dashboard input[type="date"],
+.axiom-affiliate-default-dashboard input[type="password"],
+.axiom-affiliate-default-dashboard textarea {
+    width: 100% !important;
+    min-height: 54px !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(12, 18, 32, 0.12) !important;
+    background: #ffffff !important;
+    color: var(--axiom-dark) !important;
+    padding: 13px 17px !important;
+    font-size: 15px !important;
+    font-weight: 750 !important;
+    box-shadow:
+        0 10px 22px rgba(12, 18, 32, 0.035),
+        inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+
+.axiom-affiliate-default-dashboard textarea {
+    min-height: 130px !important;
+    resize: vertical !important;
+}
+
+.axiom-affiliate-default-dashboard input::placeholder,
+.axiom-affiliate-default-dashboard textarea::placeholder {
+    color: #b5bdca !important;
+    font-weight: 800 !important;
+}
+
+.axiom-affiliate-default-dashboard input:focus,
+.axiom-affiliate-default-dashboard textarea:focus,
+.axiom-affiliate-default-dashboard select:focus {
+    outline: none !important;
+    border-color: var(--axiom-blue) !important;
+    box-shadow:
+        0 0 0 4px rgba(59,111,224,0.10),
+        0 14px 30px rgba(59,111,224,0.10) !important;
+}
+
+/* All SliceWP buttons */
+.axiom-affiliate-default-dashboard button,
+.axiom-affiliate-default-dashboard input[type="submit"],
+.axiom-affiliate-default-dashboard .button,
+.axiom-affiliate-default-dashboard .slicewp-button,
+.axiom-affiliate-default-dashboard a.slicewp-button {
+    min-height: 52px !important;
+    border: none !important;
+    border-radius: 999px !important;
+    padding: 13px 24px !important;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,0.30), transparent 28%),
+        linear-gradient(135deg, var(--axiom-blue) 0%, var(--axiom-blue-light) 100%) !important;
+    color: #ffffff !important;
+    font-size: 15px !important;
+    font-weight: 950 !important;
+    text-decoration: none !important;
+    box-shadow:
+        0 14px 30px rgba(59, 111, 224, 0.26),
+        inset 0 1px 0 rgba(255,255,255,0.28) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease !important;
+}
+
+.axiom-affiliate-default-dashboard button:hover,
+.axiom-affiliate-default-dashboard input[type="submit"]:hover,
+.axiom-affiliate-default-dashboard .button:hover,
+.axiom-affiliate-default-dashboard .slicewp-button:hover,
+.axiom-affiliate-default-dashboard a.slicewp-button:hover {
+    transform: translateY(-1px) !important;
+    filter: brightness(1.04) !important;
+    text-decoration: none !important;
+    box-shadow:
+        0 18px 38px rgba(59, 111, 224, 0.32),
+        inset 0 1px 0 rgba(255,255,255,0.32) !important;
+}
+
+/* =========================================================
+   Tables
+========================================================= */
+
 .axiom-affiliate-default-dashboard table {
     width: 100% !important;
     border-collapse: separate !important;
     border-spacing: 0 !important;
-    border-radius: 18px !important;
+    border-radius: 20px !important;
     overflow: hidden !important;
     border: 1px solid rgba(12, 18, 32, 0.08) !important;
+    background: #ffffff !important;
+    box-shadow: 0 12px 28px rgba(12, 18, 32, 0.045) !important;
 }
 
 .axiom-affiliate-default-dashboard th,
 .axiom-affiliate-default-dashboard td {
-    padding: 14px 16px !important;
+    padding: 16px 17px !important;
     border-bottom: 1px solid rgba(12, 18, 32, 0.07) !important;
+    border-right: 1px solid rgba(12, 18, 32, 0.06) !important;
+    font-size: 14px !important;
+}
+
+.axiom-affiliate-default-dashboard th:last-child,
+.axiom-affiliate-default-dashboard td:last-child {
+    border-right: none !important;
+}
+
+.axiom-affiliate-default-dashboard tr:last-child td {
+    border-bottom: none !important;
 }
 
 .axiom-affiliate-default-dashboard th {
-    background: #f6f8fc !important;
-    color: #0c1220 !important;
+    background:
+        linear-gradient(180deg, #f8fbff 0%, #f1f5fb 100%) !important;
+    color: var(--axiom-dark) !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.01em !important;
+    text-transform: uppercase !important;
+}
+
+.axiom-affiliate-default-dashboard td {
+    color: #1f2937 !important;
+    font-weight: 650 !important;
+}
+
+/* =========================================================
+   Radio / Settings Payment Preference
+========================================================= */
+
+.axiom-affiliate-default-dashboard input[type="radio"] {
+    width: 24px !important;
+    height: 24px !important;
+    margin-right: 10px !important;
+    accent-color: var(--axiom-blue) !important;
+}
+
+.axiom-affiliate-default-dashboard input[type="radio"] + label,
+.axiom-affiliate-default-dashboard label:has(input[type="radio"]) {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: var(--axiom-dark) !important;
+}
+
+/* =========================================================
+   Premium Affiliate Support CTA
+========================================================= */
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    gap: 18px !important;
+    width: calc(100% - 28px) !important;
+    max-width: 960px !important;
+    margin: 34px auto 44px !important;
+    padding: 22px !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+    background:
+        radial-gradient(circle at 92% 8%, rgba(90, 140, 255, 0.34), transparent 34%),
+        radial-gradient(circle at 0% 100%, rgba(59, 111, 224, 0.16), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%) !important;
+    border: 1px solid rgba(59, 111, 224, 0.24) !important;
+    box-shadow:
+        0 22px 54px rgba(59, 111, 224, 0.16),
+        0 0 0 6px rgba(59, 111, 224, 0.045),
+        inset 0 1px 0 rgba(255,255,255,0.95) !important;
+}
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.72), transparent 42%),
+        linear-gradient(90deg, rgba(59,111,224,0.18), transparent 28%) !important;
+    opacity: 0.7 !important;
+}
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::after {
+    content: "AFFILIATE SUPPORT" !important;
+    position: absolute !important;
+    top: 18px !important;
+    right: 20px !important;
+    padding: 7px 11px !important;
+    border-radius: 999px !important;
+    background: rgba(59, 111, 224, 0.10) !important;
+    border: 1px solid rgba(59, 111, 224, 0.16) !important;
+    color: var(--axiom-blue) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.08em !important;
+}
+
+.axiom-coupon-code-request-icon {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 58px !important;
+    height: 58px !important;
+    flex: 0 0 58px !important;
+    border-radius: 21px !important;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.48), transparent 34%),
+        linear-gradient(135deg, #5A8CFF 0%, #3B6FE0 52%, #5865F2 100%) !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow:
+        0 16px 32px rgba(59, 111, 224, 0.30),
+        inset 0 1px 0 rgba(255,255,255,0.36) !important;
+}
+
+.axiom-coupon-code-request-icon i {
+    color: #ffffff !important;
+    font-size: 27px !important;
+    line-height: 1 !important;
+}
+
+.axiom-coupon-code-request-content {
+    position: relative !important;
+    z-index: 2 !important;
+    min-width: 0 !important;
+    padding-right: 118px !important;
+}
+
+.axiom-coupon-code-request-content strong {
+    display: block !important;
+    margin: 1px 0 8px !important;
+    color: var(--axiom-dark) !important;
+    font-size: 22px !important;
+    line-height: 1.12 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.045em !important;
+}
+
+.axiom-coupon-code-request-content p {
+    max-width: 660px !important;
+    margin: 0 0 17px !important;
+    color: var(--axiom-muted) !important;
+    font-size: 15.5px !important;
+    line-height: 1.52 !important;
+    font-weight: 750 !important;
+}
+
+.axiom-coupon-code-request-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 11px !important;
+    width: 100% !important;
+    max-width: 560px !important;
+}
+
+.axiom-coupon-code-request-actions a {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    min-height: 48px !important;
+    padding: 12px 17px !important;
+    border-radius: 999px !important;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,0.34), transparent 28%),
+        linear-gradient(135deg, var(--axiom-blue) 0%, var(--axiom-blue-light) 100%) !important;
+    color: #ffffff !important;
+    font-size: 14.5px !important;
+    line-height: 1.1 !important;
+    font-weight: 950 !important;
+    text-decoration: none !important;
+    box-shadow:
+        0 12px 26px rgba(59, 111, 224, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.28) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease !important;
+}
+
+.axiom-coupon-code-request-actions a:first-child::before {
+    content: "\f0e0" !important;
+    font-family: "Font Awesome 6 Free" !important;
     font-weight: 900 !important;
+    font-size: 14px !important;
+}
+
+.axiom-coupon-code-request-actions a.discord {
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,0.30), transparent 28%),
+        linear-gradient(135deg, #5865F2 0%, #4752C4 100%) !important;
+    box-shadow:
+        0 12px 26px rgba(88, 101, 242, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.26) !important;
+}
+
+.axiom-coupon-code-request-actions a.discord::before {
+    content: "\f392" !important;
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+}
+
+.axiom-coupon-code-request-actions a:hover {
+    transform: translateY(-2px) !important;
+    filter: brightness(1.04) !important;
+    text-decoration: none !important;
 }
 
 /* =========================================================
@@ -221,7 +593,7 @@
     .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a,
     .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
     .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
-        min-width: 118px !important;
+        min-width: 122px !important;
     }
 }
 
@@ -246,22 +618,61 @@
     .axiom-affiliate-default-dashboard nav,
     .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper,
     .axiom-affiliate-default-dashboard .slicewp-tabs-nav,
-    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav {
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        overflow-y: hidden !important;
-        -webkit-overflow-scrolling: touch !important;
-        padding: 12px !important;
-        gap: 10px !important;
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav,
+    .axiom-affiliate-default-dashboard ul.slicewp-nav-tab-wrapper,
+    .axiom-affiliate-default-dashboard ul.slicewp-tabs-nav {
+        display: grid !important;
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+        overflow: visible !important;
+        padding: 14px !important;
+        gap: 12px !important;
+        border-radius: 28px !important;
+    }
+
+    .axiom-affiliate-default-dashboard nav li,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper li,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav li,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav li,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab {
+        width: 100% !important;
+        flex: initial !important;
     }
 
     .axiom-affiliate-default-dashboard nav a,
     .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a,
     .axiom-affiliate-default-dashboard .slicewp-tabs-nav a,
-    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a {
-        flex: 0 0 auto !important;
-        min-width: 54px !important;
-        padding: 0 14px !important;
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab a {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 58px !important;
+        min-height: 58px !important;
+        padding: 0 !important;
+        border-radius: 21px !important;
+        font-size: 0 !important;
+        gap: 0 !important;
+    }
+
+    .axiom-affiliate-default-dashboard nav a span,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a span,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav a span,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a span,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab a span {
+        display: none !important;
+    }
+
+    .axiom-affiliate-default-dashboard nav a i,
+    .axiom-affiliate-default-dashboard nav a svg,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a i,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab-wrapper a svg,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav a i,
+    .axiom-affiliate-default-dashboard .slicewp-tabs-nav a svg,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a i,
+    .axiom-affiliate-default-dashboard .slicewp-user-dashboard-nav a svg,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab a i,
+    .axiom-affiliate-default-dashboard .slicewp-nav-tab a svg {
+        width: 22px !important;
+        height: 22px !important;
     }
 
     .axiom-affiliate-default-dashboard .slicewp-grid,
@@ -271,136 +682,82 @@
         grid-template-columns: 1fr !important;
     }
 
+    .axiom-affiliate-default-dashboard .slicewp-card,
+    .axiom-affiliate-default-dashboard .slicewp-box,
+    .axiom-affiliate-default-dashboard .slicewp-panel,
+    .axiom-affiliate-default-dashboard .slicewp-dashboard-card {
+        padding: 20px !important;
+        border-radius: 24px !important;
+    }
+
     .axiom-affiliate-default-dashboard table {
         display: block !important;
         overflow-x: auto !important;
         white-space: nowrap !important;
     }
-}
 
-/* =========================================================
-   Axiom Affiliate Coupon Request Box
-========================================================= */
+    .axiom-affiliate-default-dashboard th,
+    .axiom-affiliate-default-dashboard td {
+        padding: 14px 15px !important;
+        font-size: 13px !important;
+    }
 
-.axiom-coupon-code-request-box {
-    display: flex !important;
-    align-items: flex-start !important;
-    gap: 16px !important;
-    margin: 22px 0 28px !important;
-    padding: 20px !important;
-    border-radius: 26px !important;
-    background:
-        radial-gradient(circle at top right, rgba(90, 140, 255, 0.22), transparent 40%),
-        linear-gradient(180deg, #ffffff 0%, #f3f8ff 100%) !important;
-    border: 1px solid rgba(59, 111, 224, 0.20) !important;
-    box-shadow:
-        0 18px 42px rgba(59, 111, 224, 0.13),
-        inset 0 1px 0 rgba(255,255,255,0.9) !important;
-}
+    .axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        width: calc(100% - 28px) !important;
+        margin: 28px auto 38px !important;
+        padding: 20px !important;
+        border-radius: 28px !important;
+    }
 
-.axiom-coupon-code-request-icon {
-    width: 52px !important;
-    height: 52px !important;
-    flex: 0 0 52px !important;
-    border-radius: 18px !important;
-    background: #5865F2 !important;
-    color: #ffffff !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 14px 28px rgba(88, 101, 242, 0.28) !important;
-}
-
-.axiom-coupon-code-request-icon i {
-    color: #ffffff !important;
-    font-size: 25px !important;
-    line-height: 1 !important;
-}
-
-.axiom-coupon-code-request-content {
-    flex: 1 !important;
-    min-width: 0 !important;
-}
-
-.axiom-coupon-code-request-content strong {
-    display: block !important;
-    margin: 0 0 8px !important;
-    color: #101828 !important;
-    font-size: 20px !important;
-    line-height: 1.18 !important;
-    font-weight: 950 !important;
-    letter-spacing: -0.03em !important;
-}
-
-.axiom-coupon-code-request-content p {
-    margin: 0 0 16px !important;
-    color: #667085 !important;
-    font-size: 15px !important;
-    line-height: 1.5 !important;
-    font-weight: 700 !important;
-}
-
-.axiom-coupon-code-request-actions {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    gap: 10px !important;
-}
-
-.axiom-coupon-code-request-actions a {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 44px !important;
-    padding: 11px 16px !important;
-    border-radius: 999px !important;
-    background: linear-gradient(135deg, #3B6FE0 0%, #5A8CFF 100%) !important;
-    color: #ffffff !important;
-    font-size: 14px !important;
-    font-weight: 900 !important;
-    text-decoration: none !important;
-    box-shadow: 0 10px 22px rgba(59, 111, 224, 0.24) !important;
-}
-
-.axiom-coupon-code-request-actions a.discord {
-    background: #5865F2 !important;
-    box-shadow: 0 10px 22px rgba(88, 101, 242, 0.24) !important;
-}
-
-.axiom-coupon-code-request-actions a:hover {
-    transform: translateY(-1px) !important;
-    filter: brightness(1.04) !important;
-    text-decoration: none !important;
-}
-
-/* Mobile polish */
-@media (max-width: 640px) {
-    .axiom-coupon-code-request-box {
-        gap: 13px !important;
-        padding: 18px !important;
-        border-radius: 24px !important;
+    .axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::after {
+        top: 18px !important;
+        right: 18px !important;
+        font-size: 9px !important;
+        padding: 7px 10px !important;
     }
 
     .axiom-coupon-code-request-icon {
-        width: 46px !important;
-        height: 46px !important;
-        flex-basis: 46px !important;
-        border-radius: 16px !important;
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 18px !important;
+    }
+
+    .axiom-coupon-code-request-icon i {
+        font-size: 25px !important;
+    }
+
+    .axiom-coupon-code-request-content {
+        padding-right: 0 !important;
     }
 
     .axiom-coupon-code-request-content strong {
-        font-size: 18px !important;
+        max-width: 235px !important;
+        font-size: 21px !important;
+        line-height: 1.12 !important;
     }
 
     .axiom-coupon-code-request-content p {
-        font-size: 14px !important;
+        font-size: 14.5px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 16px !important;
     }
 
     .axiom-coupon-code-request-actions {
-        flex-direction: column !important;
-        gap: 9px !important;
+        grid-template-columns: 1fr !important;
+        max-width: 100% !important;
+        gap: 10px !important;
     }
 
     .axiom-coupon-code-request-actions a {
         width: 100% !important;
+        min-height: 50px !important;
+        font-size: 14.5px !important;
     }
+}
+
+/* Hide duplicate cleanup targets */
+.axiom-slicewp-duplicate-home-block {
+    display: none !important;
 }
