@@ -45,24 +45,37 @@
     }
 
     function axiomIsCouponsTab(sliceArea) {
-        var url = window.location.href.toLowerCase();
-
-        if (
-            url.indexOf('affiliate-account-tab=coupons') !== -1 ||
-            url.indexOf('tab=coupons') !== -1 ||
-            url.indexOf('affiliate-account-tab=affiliate-coupons') !== -1
-        ) {
-            return true;
-        }
-
         if (!sliceArea) {
             return false;
         }
 
-        return !!Array.prototype.slice.call(sliceArea.querySelectorAll('p, div, h1, h2, h3'))
-            .find(function (el) {
-                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
-            });
+        var activeLinks = Array.prototype.slice.call(sliceArea.querySelectorAll(
+            '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a'
+        )).filter(function (link) {
+            var parent = link.parentElement;
+
+            return (
+                link.classList.contains('active') ||
+                link.classList.contains('current') ||
+                link.classList.contains('slicewp-active') ||
+                link.getAttribute('aria-current') === 'page' ||
+                link.getAttribute('aria-selected') === 'true' ||
+                (parent && parent.classList.contains('active')) ||
+                (parent && parent.classList.contains('current')) ||
+                (parent && parent.classList.contains('slicewp-active'))
+            );
+        });
+
+        return activeLinks.some(function (link) {
+            var text = axiomText(link);
+            var href = axiomHref(link);
+
+            return (
+                text.indexOf('coupon') !== -1 ||
+                href.indexOf('coupon') !== -1 ||
+                href.indexOf('coupons') !== -1
+            );
+        });
     }
 
     function axiomIsInsideNav(el) {
@@ -560,7 +573,7 @@
 
     /* =========================================================
        Coupon tab custom request box
-       Shows only when the SliceWP Coupons tab/content is active.
+       Shows only when the SliceWP Coupons tab is active.
     ========================================================= */
 
     function axiomAddCouponCodeRequestBox(sliceArea) {
@@ -568,11 +581,16 @@
             return;
         }
 
+        var existingBox = sliceArea.querySelector('.axiom-coupon-code-request-box');
+
         if (!axiomIsCouponsTab(sliceArea)) {
+            if (existingBox) {
+                existingBox.remove();
+            }
             return;
         }
 
-        if (sliceArea.querySelector('.axiom-coupon-code-request-box')) {
+        if (existingBox) {
             return;
         }
 
