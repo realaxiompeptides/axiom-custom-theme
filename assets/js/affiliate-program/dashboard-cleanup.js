@@ -44,6 +44,27 @@
         );
     }
 
+    function axiomIsCouponsTab(sliceArea) {
+        var url = window.location.href.toLowerCase();
+
+        if (
+            url.indexOf('affiliate-account-tab=coupons') !== -1 ||
+            url.indexOf('tab=coupons') !== -1 ||
+            url.indexOf('affiliate-account-tab=affiliate-coupons') !== -1
+        ) {
+            return true;
+        }
+
+        if (!sliceArea) {
+            return false;
+        }
+
+        return !!Array.prototype.slice.call(sliceArea.querySelectorAll('p, div, h1, h2, h3'))
+            .find(function (el) {
+                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
+            });
+    }
+
     function axiomIsInsideNav(el) {
         return !!(
             el &&
@@ -90,12 +111,6 @@
 
     /* =========================================================
        Navigation cleanup
-       Keep:
-       Dashboard, Affiliate Links, Commissions, Visits, Coupons,
-       Payouts, Settings, Logout
-
-       Hide:
-       Creatives only
     ========================================================= */
 
     function axiomShouldHideNavButton(link) {
@@ -131,8 +146,6 @@
 
     /* =========================================================
        Payout schedule
-       Hide on dashboard home.
-       Show on Settings and Payouts only.
     ========================================================= */
 
     function axiomHandlePayoutScheduleVisibility(dashboard, sliceArea) {
@@ -166,8 +179,7 @@
     }
 
     /* =========================================================
-       Remove duplicated SliceWP bottom “All time / Program details”
-       Do NOT remove custom Axiom cards.
+       Remove duplicated SliceWP bottom blocks
     ========================================================= */
 
     function axiomFindChartBlock(sliceArea) {
@@ -504,7 +516,6 @@
 
     /* =========================================================
        Hide Partner Code field from dashboard settings only
-       It stays visible on affiliate registration page.
     ========================================================= */
 
     function axiomHideDashboardPartnerCodeField(sliceArea) {
@@ -548,6 +559,58 @@
     }
 
     /* =========================================================
+       Coupon tab custom request box
+       Shows only when the SliceWP Coupons tab/content is active.
+    ========================================================= */
+
+    function axiomAddCouponCodeRequestBox(sliceArea) {
+        if (!sliceArea) {
+            return;
+        }
+
+        if (!axiomIsCouponsTab(sliceArea)) {
+            return;
+        }
+
+        if (sliceArea.querySelector('.axiom-coupon-code-request-box')) {
+            return;
+        }
+
+        var couponText = Array.prototype.slice.call(sliceArea.querySelectorAll('p, div'))
+            .find(function (el) {
+                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
+            });
+
+        if (!couponText) {
+            return;
+        }
+
+        var couponTable =
+            couponText.parentElement.querySelector('table') ||
+            sliceArea.querySelector('.slicewp-table') ||
+            sliceArea.querySelector('table');
+
+        var box = document.createElement('div');
+        box.className = 'axiom-coupon-code-request-box';
+        box.innerHTML =
+            '<div class="axiom-coupon-code-request-icon"><i class="fa-brands fa-discord" aria-hidden="true"></i></div>' +
+            '<div class="axiom-coupon-code-request-content">' +
+                '<strong>Want a different coupon code?</strong>' +
+                '<p>Email us to request a custom affiliate code, or join the Axiom affiliate Discord community for faster support.</p>' +
+                '<div class="axiom-coupon-code-request-actions">' +
+                    '<a href="mailto:realaxiompeptides@gmail.com?subject=Affiliate%20Coupon%20Code%20Request">Request by Email</a>' +
+                    '<a class="discord" href="https://discord.gg/53udgxM6A" target="_blank" rel="noopener">Join Discord</a>' +
+                '</div>' +
+            '</div>';
+
+        if (couponTable && couponTable.parentNode) {
+            couponTable.parentNode.insertBefore(box, couponTable.nextSibling);
+        } else {
+            couponText.parentNode.insertBefore(box, couponText.nextSibling);
+        }
+    }
+
+    /* =========================================================
        Main cleanup runner
     ========================================================= */
 
@@ -575,6 +638,7 @@
         axiomHideDashboardPartnerCodeField(sliceArea);
         axiomSyncAffiliateSettingsFields(sliceArea);
         axiomBindAffiliateSettingsForm(sliceArea);
+        axiomAddCouponCodeRequestBox(sliceArea);
     }
 
     function axiomRunSoon() {
