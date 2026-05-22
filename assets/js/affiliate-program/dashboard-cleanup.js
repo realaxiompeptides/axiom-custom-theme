@@ -536,7 +536,7 @@
                 '<strong>Want a custom affiliate code?</strong>' +
                 '<p>If you want to change your coupon code, email us or join the Axiom affiliate Discord community for faster support.</p>' +
                 '<div class="axiom-coupon-code-request-actions">' +
-                    '<a href="mailto:realaxiompeptides@gmail.com?subject=Affiliate%20Coupon%20Code%20Request">Request Code by Email</a>' +
+                    '<a href="mailto:support@axiomresearch.shop?subject=Affiliate%20Coupon%20Code%20Request">Request Code by Email</a>' +
                     '<a class="discord" href="https://discord.gg/53udgxM6A" target="_blank" rel="noopener">Join Discord</a>' +
                 '</div>' +
             '</div>';
