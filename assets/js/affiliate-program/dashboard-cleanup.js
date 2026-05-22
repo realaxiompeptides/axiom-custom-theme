@@ -64,7 +64,12 @@
             '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a'
         )).filter(function (link) {
             var wrapper = link.closest('li') || link;
-            return wrapper.style.display !== 'none';
+
+            return (
+                wrapper &&
+                wrapper.style.display !== 'none' &&
+                wrapper.getAttribute('data-axiom-hidden-tab') !== 'true'
+            );
         });
     }
 
@@ -72,6 +77,9 @@
         if (!link || !sliceArea) {
             return 'other';
         }
+
+        var links = axiomGetDashboardNavLinks(sliceArea);
+        var index = links.indexOf(link);
 
         var href = axiomHref(link);
         var text = axiomText(link);
@@ -84,22 +92,16 @@
         var iconHref = icon ? axiomValue(icon.getAttribute('href') || icon.getAttribute('xlink:href')) : '';
 
         if (
-            href.indexOf('coupon') !== -1 ||
             text.indexOf('coupon') !== -1 ||
+            href.indexOf('coupon') !== -1 ||
             label.indexOf('coupon') !== -1 ||
             title.indexOf('coupon') !== -1 ||
             dataTab.indexOf('coupon') !== -1 ||
             dataSection.indexOf('coupon') !== -1 ||
             iconClass.indexOf('tag') !== -1 ||
-            iconHref.indexOf('tag') !== -1
+            iconHref.indexOf('tag') !== -1 ||
+            index === 4
         ) {
-            return 'coupons';
-        }
-
-        var links = axiomGetDashboardNavLinks(sliceArea);
-        var index = links.indexOf(link);
-
-        if (index === 4) {
             return 'coupons';
         }
 
@@ -127,7 +129,12 @@
             link.classList.add('axiom-tab-tracker-ready');
 
             link.addEventListener('click', function () {
-                dashboard.setAttribute('data-axiom-active-tab', axiomDetectTabFromLink(link, sliceArea));
+                var tab = axiomDetectTabFromLink(link, sliceArea);
+                dashboard.setAttribute('data-axiom-active-tab', tab);
+
+                setTimeout(axiomDashboardCleanup, 150);
+                setTimeout(axiomDashboardCleanup, 500);
+                setTimeout(axiomDashboardCleanup, 1000);
             });
         });
     }
