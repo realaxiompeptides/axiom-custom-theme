@@ -101,8 +101,11 @@
             var isStoreCredit = raw.indexOf('store') !== -1;
 
             var title = isStoreCredit ? 'Store Credit' : 'Bank Deposit';
-            var subtitle = isStoreCredit ? 'Added to wallet' : 'Via Zelle';
-            var icon = isStoreCredit ? '🛍️' : '🏦';
+            var subtitle = isStoreCredit ? 'Added to your Axiom wallet' : 'Fast payout via Zelle';
+
+            var icon = isStoreCredit
+                ? '<i class="fa-solid fa-wallet" aria-hidden="true"></i>'
+                : '<i class="fa-solid fa-building-columns" aria-hidden="true"></i>';
 
             label.classList.add('axiom-payment-preference-card');
 
