@@ -264,9 +264,9 @@
 
         submits.forEach(function (submit) {
             if (submit.tagName === 'INPUT') {
-                submit.value = 'Create Partner Account →→';
+                submit.value = 'Create Partner Account →';
             } else {
-                submit.textContent = 'Create Partner Account →→';
+                submit.textContent = 'Create Partner Account →';
             }
         });
     }
