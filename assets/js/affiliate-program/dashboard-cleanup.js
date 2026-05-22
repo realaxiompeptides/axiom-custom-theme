@@ -55,97 +55,15 @@
             }) || null;
     }
 
-    function axiomGetDashboardNavLinks(sliceArea) {
-        if (!sliceArea) {
-            return [];
-        }
-
-        return Array.prototype.slice.call(sliceArea.querySelectorAll(
-            '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a'
-        )).filter(function (link) {
-            var wrapper = link.closest('li') || link;
-
-            return (
-                wrapper &&
-                wrapper.style.display !== 'none' &&
-                wrapper.getAttribute('data-axiom-hidden-tab') !== 'true'
-            );
-        });
-    }
-
-    function axiomDetectTabFromLink(link, sliceArea) {
-        if (!link || !sliceArea) {
-            return 'other';
-        }
-
-        var links = axiomGetDashboardNavLinks(sliceArea);
-        var index = links.indexOf(link);
-
-        var href = axiomHref(link);
-        var text = axiomText(link);
-        var label = axiomValue(link.getAttribute('aria-label'));
-        var title = axiomValue(link.getAttribute('title'));
-        var dataTab = axiomValue(link.getAttribute('data-tab'));
-        var dataSection = axiomValue(link.getAttribute('data-section'));
-        var icon = link.querySelector('i, svg, use');
-        var iconClass = icon ? axiomValue(icon.getAttribute('class')) : '';
-        var iconHref = icon ? axiomValue(icon.getAttribute('href') || icon.getAttribute('xlink:href')) : '';
-
-        if (
-            text.indexOf('coupon') !== -1 ||
-            href.indexOf('coupon') !== -1 ||
-            label.indexOf('coupon') !== -1 ||
-            title.indexOf('coupon') !== -1 ||
-            dataTab.indexOf('coupon') !== -1 ||
-            dataSection.indexOf('coupon') !== -1 ||
-            iconClass.indexOf('tag') !== -1 ||
-            iconHref.indexOf('tag') !== -1 ||
-            index === 4
-        ) {
-            return 'coupons';
-        }
-
-        return 'other';
-    }
-
-    function axiomTrackActiveDashboardTab(sliceArea) {
-        if (!sliceArea) {
-            return;
-        }
-
-        var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
-
-        if (!dashboard) {
-            return;
-        }
-
-        var navLinks = axiomGetDashboardNavLinks(sliceArea);
-
-        navLinks.forEach(function (link) {
-            if (link.classList.contains('axiom-tab-tracker-ready')) {
-                return;
-            }
-
-            link.classList.add('axiom-tab-tracker-ready');
-
-            link.addEventListener('click', function () {
-                var tab = axiomDetectTabFromLink(link, sliceArea);
-                dashboard.setAttribute('data-axiom-active-tab', tab);
-
-                setTimeout(axiomDashboardCleanup, 150);
-                setTimeout(axiomDashboardCleanup, 500);
-                setTimeout(axiomDashboardCleanup, 1000);
-            });
-        });
-    }
-
     function axiomIsCouponsTab(sliceArea) {
-        var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
+        if (!sliceArea) {
+            return false;
+        }
 
-        return !!(
-            dashboard &&
-            dashboard.getAttribute('data-axiom-active-tab') === 'coupons' &&
-            axiomFindCouponIntroText(sliceArea)
+        return !!sliceArea.querySelector(
+            '.slicewp-nav-tab.slicewp-active[data-slicewp-tab="coupons"], ' +
+            '.slicewp-nav-tab.active[data-slicewp-tab="coupons"], ' +
+            '.slicewp-nav-tab.current[data-slicewp-tab="coupons"]'
         );
     }
 
@@ -685,7 +603,6 @@
 
         axiomUnhideCleanup(sliceArea);
         axiomHideBadNavButtons(sliceArea);
-        axiomTrackActiveDashboardTab(sliceArea);
         axiomHandlePayoutScheduleVisibility(dashboard, sliceArea);
         axiomHideDuplicateBottomAfterChart(sliceArea);
         axiomHideLooseDuplicateHeadings(sliceArea);
