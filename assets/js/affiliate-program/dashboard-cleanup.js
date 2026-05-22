@@ -55,19 +55,90 @@
             }) || null;
     }
 
-    function axiomIsCouponsTab(sliceArea) {
-        var couponText = axiomFindCouponIntroText(sliceArea);
-
-        if (!couponText) {
-            return false;
+    function axiomGetDashboardNavLinks(sliceArea) {
+        if (!sliceArea) {
+            return [];
         }
 
-        var text = axiomText(sliceArea);
+        return Array.prototype.slice.call(sliceArea.querySelectorAll(
+            '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a'
+        )).filter(function (link) {
+            var wrapper = link.closest('li') || link;
+            return wrapper.style.display !== 'none';
+        });
+    }
 
-        return (
-            text.indexOf('coupon code') !== -1 &&
-            text.indexOf('amount') !== -1 &&
-            text.indexOf('commissions') !== -1
+    function axiomDetectTabFromLink(link, sliceArea) {
+        if (!link || !sliceArea) {
+            return 'other';
+        }
+
+        var href = axiomHref(link);
+        var text = axiomText(link);
+        var label = axiomValue(link.getAttribute('aria-label'));
+        var title = axiomValue(link.getAttribute('title'));
+        var dataTab = axiomValue(link.getAttribute('data-tab'));
+        var dataSection = axiomValue(link.getAttribute('data-section'));
+        var icon = link.querySelector('i, svg, use');
+        var iconClass = icon ? axiomValue(icon.getAttribute('class')) : '';
+        var iconHref = icon ? axiomValue(icon.getAttribute('href') || icon.getAttribute('xlink:href')) : '';
+
+        if (
+            href.indexOf('coupon') !== -1 ||
+            text.indexOf('coupon') !== -1 ||
+            label.indexOf('coupon') !== -1 ||
+            title.indexOf('coupon') !== -1 ||
+            dataTab.indexOf('coupon') !== -1 ||
+            dataSection.indexOf('coupon') !== -1 ||
+            iconClass.indexOf('tag') !== -1 ||
+            iconHref.indexOf('tag') !== -1
+        ) {
+            return 'coupons';
+        }
+
+        var links = axiomGetDashboardNavLinks(sliceArea);
+        var index = links.indexOf(link);
+
+        if (index === 4) {
+            return 'coupons';
+        }
+
+        return 'other';
+    }
+
+    function axiomTrackActiveDashboardTab(sliceArea) {
+        if (!sliceArea) {
+            return;
+        }
+
+        var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
+
+        if (!dashboard) {
+            return;
+        }
+
+        var navLinks = axiomGetDashboardNavLinks(sliceArea);
+
+        navLinks.forEach(function (link) {
+            if (link.classList.contains('axiom-tab-tracker-ready')) {
+                return;
+            }
+
+            link.classList.add('axiom-tab-tracker-ready');
+
+            link.addEventListener('click', function () {
+                dashboard.setAttribute('data-axiom-active-tab', axiomDetectTabFromLink(link, sliceArea));
+            });
+        });
+    }
+
+    function axiomIsCouponsTab(sliceArea) {
+        var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
+
+        return !!(
+            dashboard &&
+            dashboard.getAttribute('data-axiom-active-tab') === 'coupons' &&
+            axiomFindCouponIntroText(sliceArea)
         );
     }
 
@@ -115,10 +186,6 @@
         });
     }
 
-    /* =========================================================
-       Navigation cleanup
-    ========================================================= */
-
     function axiomShouldHideNavButton(link) {
         var text = axiomText(link);
         var href = axiomHref(link);
@@ -150,10 +217,6 @@
         });
     }
 
-    /* =========================================================
-       Payout schedule
-    ========================================================= */
-
     function axiomHandlePayoutScheduleVisibility(dashboard, sliceArea) {
         if (!dashboard || !sliceArea) {
             return;
@@ -183,10 +246,6 @@
             nav.parentNode.insertBefore(payoutSchedule, nav.nextSibling);
         }
     }
-
-    /* =========================================================
-       Remove duplicated SliceWP bottom blocks
-    ========================================================= */
 
     function axiomFindChartBlock(sliceArea) {
         if (!sliceArea) {
@@ -273,10 +332,6 @@
             }
         });
     }
-
-    /* =========================================================
-       Affiliate settings form helpers
-    ========================================================= */
 
     function axiomFindAffiliateSettingsForm(sliceArea) {
         if (!sliceArea) {
@@ -490,11 +545,7 @@
         }
 
         if (zelleField && zelleField.wrapper) {
-            if (paymentPreference === 'store_credit') {
-                zelleField.wrapper.style.display = 'none';
-            } else {
-                zelleField.wrapper.style.display = '';
-            }
+            zelleField.wrapper.style.display = paymentPreference === 'store_credit' ? 'none' : '';
         }
     }
 
@@ -519,10 +570,6 @@
             axiomSyncAffiliateSettingsFields(sliceArea);
         });
     }
-
-    /* =========================================================
-       Hide Partner Code field from dashboard settings only
-    ========================================================= */
 
     function axiomHideDashboardPartnerCodeField(sliceArea) {
         if (!axiomIsSettingsTab()) {
@@ -563,10 +610,6 @@
             }
         });
     }
-
-    /* =========================================================
-       Coupon tab custom request box
-    ========================================================= */
 
     function axiomAddCouponCodeRequestBox(sliceArea) {
         if (!sliceArea) {
@@ -617,10 +660,6 @@
         }
     }
 
-    /* =========================================================
-       Main cleanup runner
-    ========================================================= */
-
     function axiomDashboardCleanup() {
         var dashboard = document.querySelector('.axiom-affiliate-dashboard-modern');
 
@@ -639,6 +678,7 @@
 
         axiomUnhideCleanup(sliceArea);
         axiomHideBadNavButtons(sliceArea);
+        axiomTrackActiveDashboardTab(sliceArea);
         axiomHandlePayoutScheduleVisibility(dashboard, sliceArea);
         axiomHideDuplicateBottomAfterChart(sliceArea);
         axiomHideLooseDuplicateHeadings(sliceArea);
