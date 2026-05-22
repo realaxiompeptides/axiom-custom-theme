@@ -761,3 +761,577 @@
 .axiom-slicewp-duplicate-home-block {
     display: none !important;
 }
+
+/* =========================================================
+   Axiom Affiliate Dashboard Final Premium Overrides
+   Paste at very bottom of dashboard-slicewp.css
+========================================================= */
+
+:root {
+    --axiom-blue: #3B6FE0;
+    --axiom-blue-light: #5A8CFF;
+    --axiom-blue-deep: #1f55d6;
+    --axiom-ice: #f4f8ff;
+    --axiom-ice-2: #eef5ff;
+    --axiom-dark: #081120;
+    --axiom-muted: #667085;
+    --axiom-border: rgba(59, 111, 224, 0.15);
+    --axiom-shadow: rgba(59, 111, 224, 0.16);
+}
+
+/* =========================================================
+   Reduce Big Top/Bottom Spacing
+========================================================= */
+
+.axiom-affiliate-default-dashboard {
+    margin-top: 18px !important;
+}
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box {
+    margin-top: 18px !important;
+    margin-bottom: 18px !important;
+}
+
+.axiom-affiliate-dashboard-modern + footer,
+.axiom-affiliate-dashboard-modern ~ footer,
+.site-footer {
+    margin-top: 0 !important;
+}
+
+/* Tighten content before footer */
+.axiom-affiliate-dashboard-modern {
+    padding-bottom: 12px !important;
+}
+
+/* =========================================================
+   Affiliate Code Hero Card - Make It More Axiom, Less Copied
+========================================================= */
+
+.axiom-partner-card,
+.axiom-affiliate-dashboard-header .axiom-partner-card,
+.axiom-affiliate-code-card,
+.axiom-referral-card {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 34px !important;
+    padding: 30px !important;
+    background:
+        radial-gradient(circle at 92% 0%, rgba(255,255,255,0.30), transparent 28%),
+        radial-gradient(circle at 0% 100%, rgba(90,140,255,0.34), transparent 36%),
+        linear-gradient(145deg, #2f6dea 0%, #5a8cff 55%, #3b6fe0 100%) !important;
+    border: 1px solid rgba(255,255,255,0.26) !important;
+    box-shadow:
+        0 22px 52px rgba(59,111,224,0.26),
+        inset 0 1px 0 rgba(255,255,255,0.32) !important;
+}
+
+.axiom-partner-card::before,
+.axiom-affiliate-code-card::before,
+.axiom-referral-card::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 14px !important;
+    border: 1px solid rgba(255,255,255,0.18) !important;
+    border-radius: 26px !important;
+    pointer-events: none !important;
+}
+
+.axiom-partner-card::after,
+.axiom-affiliate-code-card::after,
+.axiom-referral-card::after {
+    content: "AXIOM PARTNER ACCESS" !important;
+    position: absolute !important;
+    top: 24px !important;
+    right: 24px !important;
+    padding: 8px 12px !important;
+    border-radius: 999px !important;
+    background: rgba(255,255,255,0.16) !important;
+    border: 1px solid rgba(255,255,255,0.22) !important;
+    color: rgba(255,255,255,0.92) !important;
+    font-size: 10px !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.08em !important;
+}
+
+.axiom-partner-card h1,
+.axiom-partner-card h2,
+.axiom-partner-card h3,
+.axiom-partner-card strong,
+.axiom-partner-card p,
+.axiom-partner-card span,
+.axiom-affiliate-code-card h1,
+.axiom-affiliate-code-card h2,
+.axiom-affiliate-code-card h3,
+.axiom-affiliate-code-card strong,
+.axiom-affiliate-code-card p,
+.axiom-affiliate-code-card span {
+    color: #ffffff !important;
+}
+
+.axiom-partner-card input,
+.axiom-partner-card .axiom-copy-field,
+.axiom-partner-card .axiom-referral-link,
+.axiom-affiliate-code-card input,
+.axiom-affiliate-code-card .axiom-copy-field,
+.axiom-affiliate-code-card .axiom-referral-link {
+    background: rgba(255,255,255,0.13) !important;
+    border: 1px solid rgba(255,255,255,0.30) !important;
+    color: #ffffff !important;
+    border-radius: 22px !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.18) !important;
+}
+
+.axiom-partner-card button,
+.axiom-partner-card a,
+.axiom-affiliate-code-card button,
+.axiom-affiliate-code-card a {
+    background: rgba(255,255,255,0.14) !important;
+    border: 1px solid rgba(255,255,255,0.36) !important;
+    color: #ffffff !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+}
+
+.axiom-partner-card button:hover,
+.axiom-partner-card a:hover,
+.axiom-affiliate-code-card button:hover,
+.axiom-affiliate-code-card a:hover {
+    background: rgba(255,255,255,0.22) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* =========================================================
+   Stats Cards - Different Brand Twist
+========================================================= */
+
+.axiom-affiliate-stats-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 16px !important;
+    margin-top: 24px !important;
+}
+
+.axiom-affiliate-stats-grid > *,
+.axiom-stat-card,
+.axiom-affiliate-stat-card {
+    position: relative !important;
+    min-height: 172px !important;
+    padding: 22px !important;
+    border-radius: 28px !important;
+    background:
+        radial-gradient(circle at 92% 8%, rgba(90,140,255,0.18), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    border: 1px solid rgba(59,111,224,0.14) !important;
+    box-shadow:
+        0 16px 38px rgba(12,18,32,0.055),
+        inset 0 1px 0 rgba(255,255,255,0.95) !important;
+    overflow: hidden !important;
+}
+
+.axiom-affiliate-stats-grid > *::before,
+.axiom-stat-card::before,
+.axiom-affiliate-stat-card::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 24px !important;
+    width: 4px !important;
+    height: 44px !important;
+    border-radius: 0 999px 999px 0 !important;
+    background: linear-gradient(180deg, var(--axiom-blue), var(--axiom-blue-light)) !important;
+}
+
+.axiom-affiliate-stats-grid .icon,
+.axiom-affiliate-stats-grid i,
+.axiom-affiliate-stats-grid svg,
+.axiom-stat-card .icon,
+.axiom-stat-card i,
+.axiom-stat-card svg {
+    width: 54px !important;
+    height: 54px !important;
+    padding: 14px !important;
+    border-radius: 18px !important;
+    background: linear-gradient(180deg, #f1f6ff 0%, #eaf2ff 100%) !important;
+    color: var(--axiom-dark) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+
+.axiom-affiliate-stats-grid strong,
+.axiom-affiliate-stats-grid .value,
+.axiom-affiliate-stats-grid .number,
+.axiom-stat-card strong,
+.axiom-stat-card .value,
+.axiom-stat-card .number {
+    color: var(--axiom-dark) !important;
+    font-size: 44px !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.06em !important;
+}
+
+.axiom-affiliate-stats-grid p,
+.axiom-affiliate-stats-grid span,
+.axiom-stat-card p,
+.axiom-stat-card span {
+    color: #7a8495 !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+}
+
+/* Earnings green should stay clean */
+.axiom-affiliate-stats-grid *:contains("$0.00") {
+    color: #22a652 !important;
+}
+
+/* =========================================================
+   Payment Preference Section - Full Styling
+========================================================= */
+
+.axiom-affiliate-default-dashboard form,
+.axiom-affiliate-default-dashboard .slicewp-section-settings form,
+.axiom-affiliate-default-dashboard .slicewp-affiliate-account form {
+    position: relative !important;
+}
+
+/* Wrapper around radio groups */
+.axiom-affiliate-default-dashboard form:has(input[type="radio"]) {
+    padding: 0 !important;
+}
+
+.axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[type="radio"]),
+.axiom-affiliate-default-dashboard .slicewp-form-field:has(input[type="radio"]),
+.axiom-affiliate-default-dashboard p:has(input[type="radio"]),
+.axiom-affiliate-default-dashboard div:has(> input[type="radio"]) {
+    border-radius: 28px !important;
+    background:
+        radial-gradient(circle at 94% 6%, rgba(90,140,255,0.16), transparent 36%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    border: 1px solid rgba(59,111,224,0.14) !important;
+    box-shadow:
+        0 16px 36px rgba(12,18,32,0.055),
+        inset 0 1px 0 rgba(255,255,255,0.92) !important;
+    padding: 22px !important;
+}
+
+/* Payment Preference heading */
+.axiom-affiliate-default-dashboard label,
+.axiom-affiliate-default-dashboard .slicewp-field-label {
+    color: var(--axiom-dark) !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.025em !important;
+}
+
+/* Radio labels as clean cards */
+.axiom-affiliate-default-dashboard input[type="radio"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    margin: 0 12px 0 0 !important;
+    border-radius: 999px !important;
+    border: 2px solid rgba(12,18,32,0.20) !important;
+    background: #ffffff !important;
+    box-shadow: inset 0 0 0 6px #ffffff !important;
+    vertical-align: middle !important;
+}
+
+.axiom-affiliate-default-dashboard input[type="radio"]:checked {
+    border-color: var(--axiom-blue) !important;
+    background: var(--axiom-blue) !important;
+    box-shadow:
+        inset 0 0 0 7px #ffffff,
+        0 8px 18px rgba(59,111,224,0.24) !important;
+}
+
+.axiom-affiliate-default-dashboard input[type="radio"] + label,
+.axiom-affiliate-default-dashboard label:has(input[type="radio"]) {
+    display: flex !important;
+    align-items: center !important;
+    min-height: 56px !important;
+    padding: 12px 14px !important;
+    margin: 10px 0 !important;
+    border-radius: 18px !important;
+    background: rgba(244,248,255,0.72) !important;
+    border: 1px solid rgba(59,111,224,0.10) !important;
+    color: var(--axiom-dark) !important;
+    font-size: 17px !important;
+    font-weight: 900 !important;
+}
+
+/* If radio is directly inside label */
+.axiom-affiliate-default-dashboard label:has(input[type="radio"]:checked) {
+    background: linear-gradient(180deg, #eef5ff 0%, #f7fbff 100%) !important;
+    border-color: rgba(59,111,224,0.24) !important;
+    box-shadow: 0 10px 22px rgba(59,111,224,0.10) !important;
+}
+
+/* Save button spacing */
+.axiom-affiliate-default-dashboard input[type="submit"],
+.axiom-affiliate-default-dashboard button[type="submit"] {
+    margin-top: 18px !important;
+    min-width: 150px !important;
+}
+
+/* =========================================================
+   Premium Affiliate Support CTA - Less Spacing / Better Placement
+========================================================= */
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr !important;
+    gap: 18px !important;
+    width: calc(100% - 28px) !important;
+    max-width: 960px !important;
+    margin: 20px auto 18px !important;
+    padding: 22px !important;
+    border-radius: 30px !important;
+    overflow: hidden !important;
+    background:
+        radial-gradient(circle at 92% 8%, rgba(90, 140, 255, 0.32), transparent 34%),
+        radial-gradient(circle at 0% 100%, rgba(59, 111, 224, 0.15), transparent 34%),
+        linear-gradient(180deg, #ffffff 0%, #f4f8ff 100%) !important;
+    border: 1px solid rgba(59, 111, 224, 0.24) !important;
+    box-shadow:
+        0 16px 40px rgba(59, 111, 224, 0.14),
+        0 0 0 5px rgba(59, 111, 224, 0.04),
+        inset 0 1px 0 rgba(255,255,255,0.95) !important;
+}
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    background:
+        linear-gradient(135deg, rgba(255,255,255,0.72), transparent 42%),
+        linear-gradient(90deg, rgba(59,111,224,0.18), transparent 28%) !important;
+    opacity: 0.7 !important;
+}
+
+.axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::after {
+    content: "AFFILIATE SUPPORT" !important;
+    position: absolute !important;
+    top: 18px !important;
+    right: 20px !important;
+    padding: 7px 11px !important;
+    border-radius: 999px !important;
+    background: rgba(59, 111, 224, 0.10) !important;
+    border: 1px solid rgba(59, 111, 224, 0.16) !important;
+    color: var(--axiom-blue) !important;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.08em !important;
+}
+
+.axiom-coupon-code-request-icon {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 58px !important;
+    height: 58px !important;
+    flex: 0 0 58px !important;
+    border-radius: 21px !important;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.48), transparent 34%),
+        linear-gradient(135deg, #5A8CFF 0%, #3B6FE0 52%, #5865F2 100%) !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow:
+        0 14px 30px rgba(59, 111, 224, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.36) !important;
+}
+
+.axiom-coupon-code-request-icon i {
+    color: #ffffff !important;
+    font-size: 27px !important;
+    line-height: 1 !important;
+}
+
+.axiom-coupon-code-request-content {
+    position: relative !important;
+    z-index: 2 !important;
+    min-width: 0 !important;
+    padding-right: 118px !important;
+}
+
+.axiom-coupon-code-request-content strong {
+    display: block !important;
+    margin: 1px 0 8px !important;
+    color: var(--axiom-dark) !important;
+    font-size: 22px !important;
+    line-height: 1.12 !important;
+    font-weight: 950 !important;
+    letter-spacing: -0.045em !important;
+}
+
+.axiom-coupon-code-request-content p {
+    max-width: 660px !important;
+    margin: 0 0 17px !important;
+    color: var(--axiom-muted) !important;
+    font-size: 15.5px !important;
+    line-height: 1.52 !important;
+    font-weight: 750 !important;
+}
+
+.axiom-coupon-code-request-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 11px !important;
+    width: 100% !important;
+    max-width: 560px !important;
+}
+
+.axiom-coupon-code-request-actions a {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 9px !important;
+    min-height: 48px !important;
+    padding: 12px 17px !important;
+    border-radius: 999px !important;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,0.34), transparent 28%),
+        linear-gradient(135deg, var(--axiom-blue) 0%, var(--axiom-blue-light) 100%) !important;
+    color: #ffffff !important;
+    font-size: 14.5px !important;
+    line-height: 1.1 !important;
+    font-weight: 950 !important;
+    text-decoration: none !important;
+    box-shadow:
+        0 12px 26px rgba(59, 111, 224, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.28) !important;
+}
+
+.axiom-coupon-code-request-actions a:first-child::before {
+    content: "\f0e0" !important;
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+    font-size: 14px !important;
+}
+
+.axiom-coupon-code-request-actions a.discord {
+    background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,0.30), transparent 28%),
+        linear-gradient(135deg, #5865F2 0%, #4752C4 100%) !important;
+    box-shadow:
+        0 12px 26px rgba(88, 101, 242, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.26) !important;
+}
+
+.axiom-coupon-code-request-actions a.discord::before {
+    content: "\f392" !important;
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+    font-size: 16px !important;
+}
+
+/* =========================================================
+   Mobile Refinements
+========================================================= */
+
+@media (max-width: 640px) {
+    .axiom-affiliate-default-dashboard {
+        margin-top: 14px !important;
+    }
+
+    .axiom-affiliate-stats-grid {
+        gap: 14px !important;
+    }
+
+    .axiom-affiliate-stats-grid > *,
+    .axiom-stat-card,
+    .axiom-affiliate-stat-card {
+        min-height: 158px !important;
+        padding: 20px !important;
+        border-radius: 26px !important;
+    }
+
+    .axiom-affiliate-stats-grid strong,
+    .axiom-affiliate-stats-grid .value,
+    .axiom-affiliate-stats-grid .number,
+    .axiom-stat-card strong,
+    .axiom-stat-card .value,
+    .axiom-stat-card .number {
+        font-size: 39px !important;
+    }
+
+    .axiom-partner-card,
+    .axiom-affiliate-code-card,
+    .axiom-referral-card {
+        border-radius: 30px !important;
+        padding: 26px !important;
+    }
+
+    .axiom-partner-card::after,
+    .axiom-affiliate-code-card::after,
+    .axiom-referral-card::after {
+        display: none !important;
+    }
+
+    .axiom-affiliate-default-dashboard .slicewp-field-wrapper:has(input[type="radio"]),
+    .axiom-affiliate-default-dashboard .slicewp-form-field:has(input[type="radio"]),
+    .axiom-affiliate-default-dashboard p:has(input[type="radio"]),
+    .axiom-affiliate-default-dashboard div:has(> input[type="radio"]) {
+        padding: 20px !important;
+        border-radius: 26px !important;
+    }
+
+    .axiom-affiliate-default-dashboard input[type="radio"] + label,
+    .axiom-affiliate-default-dashboard label:has(input[type="radio"]) {
+        font-size: 16px !important;
+        min-height: 54px !important;
+    }
+
+    .axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+        width: calc(100% - 28px) !important;
+        margin: 18px auto 16px !important;
+        padding: 20px !important;
+        border-radius: 28px !important;
+    }
+
+    .axiom-affiliate-dashboard-modern .axiom-coupon-code-request-box::after {
+        top: 18px !important;
+        right: 18px !important;
+        font-size: 9px !important;
+        padding: 7px 10px !important;
+    }
+
+    .axiom-coupon-code-request-icon {
+        width: 52px !important;
+        height: 52px !important;
+        border-radius: 18px !important;
+    }
+
+    .axiom-coupon-code-request-content {
+        padding-right: 0 !important;
+    }
+
+    .axiom-coupon-code-request-content strong {
+        max-width: 235px !important;
+        font-size: 21px !important;
+    }
+
+    .axiom-coupon-code-request-content p {
+        font-size: 14.5px !important;
+        margin-bottom: 16px !important;
+    }
+
+    .axiom-coupon-code-request-actions {
+        grid-template-columns: 1fr !important;
+        max-width: 100% !important;
+        gap: 10px !important;
+    }
+
+    .axiom-coupon-code-request-actions a {
+        width: 100% !important;
+        min-height: 50px !important;
+        font-size: 14.5px !important;
+    }
+}
