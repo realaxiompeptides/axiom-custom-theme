@@ -44,26 +44,13 @@
         );
     }
 
-    function axiomFindCouponIntroText(sliceArea) {
-        if (!sliceArea) {
-            return null;
-        }
-
-        return Array.prototype.slice.call(sliceArea.querySelectorAll('p, div'))
-            .find(function (el) {
-                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
-            }) || null;
-    }
-
     function axiomIsCouponsTab(sliceArea) {
         if (!sliceArea) {
             return false;
         }
 
         return !!sliceArea.querySelector(
-            '.slicewp-nav-tab.slicewp-active[data-slicewp-tab="coupons"], ' +
-            '.slicewp-nav-tab.active[data-slicewp-tab="coupons"], ' +
-            '.slicewp-nav-tab.current[data-slicewp-tab="coupons"]'
+            '.slicewp-nav-tab.slicewp-active[data-slicewp-tab="coupons"]'
         );
     }
 
@@ -537,33 +524,19 @@
     }
 
     function axiomAddCouponCodeRequestBox(sliceArea) {
-        if (!sliceArea) {
+        if (!sliceArea || !axiomIsCouponsTab(sliceArea)) {
             return;
         }
 
-        var existingBox = sliceArea.querySelector('.axiom-coupon-code-request-box');
-
-        if (!axiomIsCouponsTab(sliceArea)) {
-            if (existingBox) {
-                existingBox.remove();
-            }
+        if (sliceArea.querySelector('.axiom-coupon-code-request-box')) {
             return;
         }
 
-        if (existingBox) {
+        var couponTable = sliceArea.querySelector('table');
+
+        if (!couponTable || !couponTable.parentNode) {
             return;
         }
-
-        var couponText = axiomFindCouponIntroText(sliceArea);
-
-        if (!couponText) {
-            return;
-        }
-
-        var couponTable =
-            couponText.parentElement.querySelector('table') ||
-            sliceArea.querySelector('.slicewp-table') ||
-            sliceArea.querySelector('table');
 
         var box = document.createElement('div');
         box.className = 'axiom-coupon-code-request-box';
@@ -578,11 +551,7 @@
                 '</div>' +
             '</div>';
 
-        if (couponTable && couponTable.parentNode) {
-            couponTable.parentNode.insertBefore(box, couponTable.nextSibling);
-        } else {
-            couponText.parentNode.insertBefore(box, couponText.nextSibling);
-        }
+        couponTable.parentNode.insertBefore(box, couponTable.nextSibling);
     }
 
     function axiomDashboardCleanup() {
