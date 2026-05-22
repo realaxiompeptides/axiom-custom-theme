@@ -110,7 +110,7 @@
                 '<span class="axiom-payment-preference-card-icon">' + icon + '</span>' +
                 '<span class="axiom-payment-preference-card-title">' + title + '</span>' +
                 '<span class="axiom-payment-preference-card-subtitle">' + subtitle + '</span>' +
-                (isStoreCredit ? '<span class="axiom-payment-preference-bonus">+15% BONUS</span>' : '');
+                (isStoreCredit ? '<span class="axiom-payment-preference-bonus">+10% BONUS</span>' : '');
 
             if (radio.parentElement !== label) {
                 label.insertBefore(radio, label.firstChild);
