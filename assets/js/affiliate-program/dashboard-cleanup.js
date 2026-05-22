@@ -44,38 +44,31 @@
         );
     }
 
-    function axiomIsCouponsTab(sliceArea) {
+    function axiomFindCouponIntroText(sliceArea) {
         if (!sliceArea) {
+            return null;
+        }
+
+        return Array.prototype.slice.call(sliceArea.querySelectorAll('p, div'))
+            .find(function (el) {
+                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
+            }) || null;
+    }
+
+    function axiomIsCouponsTab(sliceArea) {
+        var couponText = axiomFindCouponIntroText(sliceArea);
+
+        if (!couponText) {
             return false;
         }
 
-        var activeLinks = Array.prototype.slice.call(sliceArea.querySelectorAll(
-            '.slicewp-tabs-nav a, .slicewp-user-dashboard-nav a, .slicewp-nav-tab-wrapper a'
-        )).filter(function (link) {
-            var parent = link.parentElement;
+        var text = axiomText(sliceArea);
 
-            return (
-                link.classList.contains('active') ||
-                link.classList.contains('current') ||
-                link.classList.contains('slicewp-active') ||
-                link.getAttribute('aria-current') === 'page' ||
-                link.getAttribute('aria-selected') === 'true' ||
-                (parent && parent.classList.contains('active')) ||
-                (parent && parent.classList.contains('current')) ||
-                (parent && parent.classList.contains('slicewp-active'))
-            );
-        });
-
-        return activeLinks.some(function (link) {
-            var text = axiomText(link);
-            var href = axiomHref(link);
-
-            return (
-                text.indexOf('coupon') !== -1 ||
-                href.indexOf('coupon') !== -1 ||
-                href.indexOf('coupons') !== -1
-            );
-        });
+        return (
+            text.indexOf('coupon code') !== -1 &&
+            text.indexOf('amount') !== -1 &&
+            text.indexOf('commissions') !== -1
+        );
     }
 
     function axiomIsInsideNav(el) {
@@ -573,7 +566,6 @@
 
     /* =========================================================
        Coupon tab custom request box
-       Shows only when the SliceWP Coupons tab is active.
     ========================================================= */
 
     function axiomAddCouponCodeRequestBox(sliceArea) {
@@ -594,10 +586,7 @@
             return;
         }
 
-        var couponText = Array.prototype.slice.call(sliceArea.querySelectorAll('p, div'))
-            .find(function (el) {
-                return axiomText(el).indexOf('the following coupons have been linked') !== -1;
-            });
+        var couponText = axiomFindCouponIntroText(sliceArea);
 
         if (!couponText) {
             return;
