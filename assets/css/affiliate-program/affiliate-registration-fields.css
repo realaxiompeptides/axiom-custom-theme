@@ -6,24 +6,62 @@
 :root {
     --axiom-blue: #3B6FE0;
     --axiom-blue-light: #5A8CFF;
-    --axiom-blue-soft: rgba(59, 111, 224, 0.10);
-    --axiom-blue-glow: rgba(59, 111, 224, 0.18);
+    --axiom-blue-bright: #6FA3FF;
+    --axiom-blue-soft: rgba(59, 111, 224, 0.12);
+    --axiom-blue-glow: rgba(59, 111, 224, 0.34);
+    --axiom-ice: #f6fbff;
     --axiom-sky: #eef6ff;
-    --axiom-ice: #f7fbff;
-    --axiom-dark: #101828;
     --axiom-text: #172033;
     --axiom-muted: #6f7a8c;
     --axiom-muted-light: #9aa5b5;
     --axiom-border: rgba(59, 111, 224, 0.18);
-    --axiom-border-soft: rgba(16, 24, 40, 0.08);
 }
 
-/* Page */
+/* =========================================================
+   Page Blue Glow Background
+========================================================= */
+
 .axiom-affiliate-registration-page {
     background:
-        radial-gradient(circle at 50% 0%, rgba(90, 140, 255, 0.16), transparent 34%),
-        linear-gradient(180deg, #ffffff 0%, #f4f9ff 48%, #eef6ff 100%) !important;
+        radial-gradient(circle at 50% 0%, rgba(90, 140, 255, 0.28), transparent 34%),
+        radial-gradient(circle at 0% 42%, rgba(59, 111, 224, 0.20), transparent 32%),
+        radial-gradient(circle at 100% 48%, rgba(90, 140, 255, 0.24), transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #f4f9ff 45%, #eaf4ff 100%) !important;
+    position: relative !important;
+    overflow-x: hidden !important;
 }
+
+.axiom-affiliate-registration-page::before,
+.axiom-affiliate-registration-page::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 70px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.axiom-affiliate-registration-page::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(59,111,224,0.30), transparent);
+}
+
+.axiom-affiliate-registration-page::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(59,111,224,0.30), transparent);
+}
+
+.axiom-affiliate-registration-simple,
+.axiom-affiliate-registration-container,
+.axiom-affiliate-registration-card {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* =========================================================
+   Page Layout
+========================================================= */
 
 .axiom-affiliate-registration-simple {
     padding: 52px 16px 72px !important;
@@ -67,17 +105,21 @@
     font-weight: 700 !important;
 }
 
-/* Main Card */
+/* =========================================================
+   Main Card
+========================================================= */
+
 .axiom-affiliate-registration-card {
     width: 100% !important;
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid rgba(59, 111, 224, 0.14) !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    border: 1px solid rgba(90, 140, 255, 0.22) !important;
     border-radius: 34px !important;
     padding: 34px !important;
     box-shadow:
-        0 24px 70px rgba(59, 111, 224, 0.12),
-        inset 0 1px 0 rgba(255,255,255,0.9) !important;
-    backdrop-filter: blur(12px) !important;
+        0 0 45px rgba(59, 111, 224, 0.18),
+        0 28px 80px rgba(59, 111, 224, 0.16),
+        inset 0 1px 0 rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(14px) !important;
 }
 
 .axiom-affiliate-registration-page .container,
@@ -89,7 +131,10 @@
     margin-right: auto !important;
 }
 
-/* Form Wrapper */
+/* =========================================================
+   Form Wrapper
+========================================================= */
+
 .axiom-affiliate-form-wrap,
 .axiom-affiliate-form-wrap form,
 .axiom-affiliate-registration-page form {
@@ -120,19 +165,25 @@
     position: relative !important;
 }
 
-/* Labels */
+/* =========================================================
+   Labels
+========================================================= */
+
 .axiom-affiliate-registration-page label,
 .axiom-affiliate-form-wrap label {
     display: block !important;
     margin: 0 0 10px !important;
-    color: #687386 !important;
+    color: #667085 !important;
     font-size: 13px !important;
     font-weight: 900 !important;
     letter-spacing: 0.13em !important;
     text-transform: uppercase !important;
 }
 
-/* Inputs */
+/* =========================================================
+   Inputs
+========================================================= */
+
 .axiom-affiliate-registration-page input[type="text"],
 .axiom-affiliate-registration-page input[type="email"],
 .axiom-affiliate-registration-page input[type="password"],
@@ -142,31 +193,31 @@
     width: 100% !important;
     min-height: 58px !important;
     height: 58px !important;
-    border-radius: 19px !important;
-    border: 1px solid rgba(16, 24, 40, 0.12) !important;
-    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(59, 111, 224, 0.16) !important;
+    background: rgba(255,255,255,0.96) !important;
     color: var(--axiom-text) !important;
     padding: 14px 18px !important;
     font-size: 16px !important;
     font-weight: 700 !important;
     line-height: 1.2 !important;
-    box-shadow: 0 10px 25px rgba(59, 111, 224, 0.045) !important;
+    box-shadow: 0 10px 25px rgba(59, 111, 224, 0.055) !important;
 }
 
 .axiom-affiliate-registration-page textarea,
 .axiom-affiliate-form-wrap textarea {
     width: 100% !important;
     min-height: 155px !important;
-    border-radius: 22px !important;
-    border: 1px solid rgba(16, 24, 40, 0.12) !important;
-    background: #ffffff !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(59, 111, 224, 0.16) !important;
+    background: rgba(255,255,255,0.96) !important;
     color: var(--axiom-text) !important;
     padding: 16px 18px !important;
     font-size: 16px !important;
     font-weight: 700 !important;
     line-height: 1.45 !important;
     resize: vertical !important;
-    box-shadow: 0 10px 25px rgba(59, 111, 224, 0.045) !important;
+    box-shadow: 0 10px 25px rgba(59, 111, 224, 0.055) !important;
 }
 
 .axiom-affiliate-registration-page input::placeholder,
@@ -183,10 +234,15 @@
 .axiom-affiliate-form-wrap textarea:focus {
     outline: none !important;
     border-color: var(--axiom-blue) !important;
-    box-shadow: 0 0 0 4px var(--axiom-blue-soft), 0 14px 30px rgba(59,111,224,0.10) !important;
+    box-shadow:
+        0 0 0 4px var(--axiom-blue-soft),
+        0 0 28px rgba(59,111,224,0.18) !important;
 }
 
-/* Payment Preference Cards */
+/* =========================================================
+   Payment Preference Cards
+========================================================= */
+
 .axiom-payment-preference-cards {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
@@ -208,12 +264,12 @@
     justify-content: flex-start !important;
     min-height: 158px !important;
     padding: 22px !important;
-    border-radius: 26px !important;
+    border-radius: 28px !important;
     border: 1px solid rgba(59, 111, 224, 0.16) !important;
     background:
-        radial-gradient(circle at top right, rgba(90, 140, 255, 0.10), transparent 38%),
+        radial-gradient(circle at top right, rgba(90,140,255,0.14), transparent 42%),
         linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
-    box-shadow: 0 12px 28px rgba(59, 111, 224, 0.07) !important;
+    box-shadow: 0 12px 28px rgba(59, 111, 224, 0.075) !important;
     cursor: pointer !important;
     transition: 0.18s ease !important;
     overflow: hidden !important;
@@ -223,34 +279,44 @@
 
 .axiom-payment-preference-card:hover {
     transform: translateY(-2px) !important;
-    border-color: rgba(59, 111, 224, 0.45) !important;
-    box-shadow: 0 18px 38px rgba(59, 111, 224, 0.13) !important;
+    border-color: rgba(59, 111, 224, 0.42) !important;
+    box-shadow: 0 18px 38px rgba(59, 111, 224, 0.14) !important;
 }
 
 .axiom-payment-preference-card.is-selected {
     border-color: var(--axiom-blue) !important;
     background:
-        radial-gradient(circle at top right, rgba(90, 140, 255, 0.22), transparent 42%),
+        radial-gradient(circle at top right, rgba(90,140,255,0.26), transparent 42%),
         linear-gradient(180deg, #ffffff 0%, #eef6ff 100%) !important;
-    box-shadow: 0 22px 46px rgba(59, 111, 224, 0.20) !important;
+    box-shadow:
+        0 0 0 4px rgba(59,111,224,0.08),
+        0 0 30px rgba(59,111,224,0.18),
+        0 22px 46px rgba(59,111,224,0.20) !important;
 }
 
+/* Unique Axiom Checkmark */
 .axiom-payment-preference-card.is-selected::after {
-    content: "✓";
+    content: "\f00c";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
     position: absolute;
-    top: 17px;
-    right: 17px;
-    width: 34px;
-    height: 34px;
-    border-radius: 999px;
-    background: linear-gradient(135deg, #3B6FE0 0%, #5A8CFF 100%);
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 15px;
+    background:
+        radial-gradient(circle at 28% 20%, rgba(255,255,255,0.48), transparent 32%),
+        linear-gradient(135deg, #6FA3FF 0%, #3B6FE0 100%);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: 900;
-    box-shadow: 0 10px 22px rgba(59, 111, 224, 0.25);
+    font-size: 15px;
+    box-shadow:
+        0 12px 26px rgba(59,111,224,0.34),
+        inset 0 1px 0 rgba(255,255,255,0.35);
+    transform: rotate(4deg);
 }
 
 .axiom-payment-preference-card-icon {
@@ -262,11 +328,15 @@
     width: 48px !important;
     height: 48px !important;
     margin-bottom: 16px !important;
-    border-radius: 17px !important;
-    background: linear-gradient(180deg, #eef6ff 0%, #ffffff 100%) !important;
+    border-radius: 18px !important;
+    background:
+        radial-gradient(circle at top, rgba(255,255,255,0.9), transparent 44%),
+        linear-gradient(180deg, #eef6ff 0%, #ffffff 100%) !important;
     color: var(--axiom-blue) !important;
     font-size: 0 !important;
-    box-shadow: inset 0 0 0 1px rgba(59, 111, 224, 0.14), 0 10px 20px rgba(59, 111, 224, 0.08) !important;
+    box-shadow:
+        inset 0 0 0 1px rgba(59, 111, 224, 0.16),
+        0 10px 20px rgba(59, 111, 224, 0.10) !important;
 }
 
 .axiom-payment-preference-card-icon i,
@@ -313,7 +383,7 @@
     margin-top: 13px !important;
     padding: 7px 14px !important;
     border-radius: 999px !important;
-    background: linear-gradient(135deg, #3B6FE0 0%, #5A8CFF 100%) !important;
+    background: linear-gradient(135deg, #5A8CFF 0%, #3B6FE0 100%) !important;
     color: #ffffff !important;
     font-size: 12px !important;
     font-weight: 900 !important;
@@ -321,7 +391,10 @@
     box-shadow: 0 10px 20px rgba(59, 111, 224, 0.25) !important;
 }
 
-/* Conditional Zelle Field */
+/* =========================================================
+   Conditional Zelle Field
+========================================================= */
+
 .axiom-zelle-hidden {
     display: none !important;
 }
@@ -342,7 +415,10 @@
     line-height: 1.2 !important;
 }
 
-/* Partner Code */
+/* =========================================================
+   Partner Code
+========================================================= */
+
 .axiom-partner-code-field {
     margin-bottom: 28px !important;
 }
@@ -367,36 +443,53 @@
     font-weight: 900 !important;
 }
 
-/* Promotion */
+/* =========================================================
+   Promotion
+========================================================= */
+
 .axiom-promote-field textarea {
     min-height: 155px !important;
 }
 
-/* Submit Button */
+/* =========================================================
+   Submit Button - Blue Glow CTA
+========================================================= */
+
 .axiom-affiliate-registration-page button[type="submit"],
 .axiom-affiliate-registration-page input[type="submit"],
 .axiom-affiliate-form-wrap button[type="submit"],
 .axiom-affiliate-form-wrap input[type="submit"] {
     width: 100% !important;
-    min-height: 68px !important;
+    min-height: 72px !important;
     border: none !important;
-    border-radius: 22px !important;
-    background: linear-gradient(135deg, #3B6FE0 0%, #5A8CFF 100%) !important;
+    border-radius: 26px !important;
+    background:
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,0.38), transparent 28%),
+        linear-gradient(135deg, #6FA3FF 0%, #3B6FE0 54%, #2f62d8 100%) !important;
     color: #ffffff !important;
     font-size: 18px !important;
-    font-weight: 900 !important;
-    letter-spacing: 0.02em !important;
-    box-shadow: 0 18px 38px rgba(59, 111, 224, 0.28) !important;
+    font-weight: 950 !important;
+    letter-spacing: 0.01em !important;
+    box-shadow:
+        0 0 0 7px rgba(59, 111, 224, 0.08),
+        0 0 34px rgba(59, 111, 224, 0.36),
+        0 22px 48px rgba(59, 111, 224, 0.34),
+        inset 0 1px 0 rgba(255,255,255,0.36) !important;
     cursor: pointer !important;
     text-transform: none !important;
+    transition: 0.18s ease !important;
 }
 
 .axiom-affiliate-registration-page button[type="submit"]:hover,
 .axiom-affiliate-registration-page input[type="submit"]:hover,
 .axiom-affiliate-form-wrap button[type="submit"]:hover,
 .axiom-affiliate-form-wrap input[type="submit"]:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 22px 46px rgba(59, 111, 224, 0.35) !important;
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 0 0 8px rgba(59, 111, 224, 0.11),
+        0 0 46px rgba(59, 111, 224, 0.48),
+        0 28px 58px rgba(59, 111, 224, 0.42),
+        inset 0 1px 0 rgba(255,255,255,0.40) !important;
 }
 
 .axiom-affiliate-registration-page button[type="submit"]::after,
@@ -404,7 +497,10 @@
     content: "" !important;
 }
 
-/* Footer Links */
+/* =========================================================
+   Footer Login Link
+========================================================= */
+
 .axiom-affiliate-registration-footer-links {
     margin-top: 24px !important;
     text-align: center !important;
@@ -423,13 +519,15 @@
     align-items: center !important;
     justify-content: center !important;
     color: var(--axiom-blue) !important;
-    background: rgba(255, 255, 255, 0.72) !important;
-    border: 1px solid rgba(59, 111, 224, 0.22) !important;
+    background: rgba(255, 255, 255, 0.78) !important;
+    border: 1px solid rgba(59, 111, 224, 0.25) !important;
     border-radius: 999px !important;
     padding: 12px 22px !important;
     text-decoration: none !important;
     font-weight: 900 !important;
-    box-shadow: 0 12px 28px rgba(59, 111, 224, 0.09) !important;
+    box-shadow:
+        0 0 24px rgba(59,111,224,0.13),
+        0 12px 28px rgba(59,111,224,0.10) !important;
 }
 
 .axiom-affiliate-registration-footer-links a:last-child:hover {
@@ -439,7 +537,10 @@
     text-decoration: none !important;
 }
 
-/* Mobile */
+/* =========================================================
+   Mobile
+========================================================= */
+
 @media (max-width: 640px) {
     .axiom-affiliate-registration-simple {
         padding: 34px 14px 54px !important;
@@ -447,7 +548,7 @@
 
     .axiom-affiliate-registration-card {
         padding: 22px !important;
-        border-radius: 28px !important;
+        border-radius: 30px !important;
     }
 
     .axiom-affiliate-registration-header h1 {
@@ -466,7 +567,16 @@
     .axiom-payment-preference-card {
         min-height: 148px !important;
         padding: 16px !important;
-        border-radius: 23px !important;
+        border-radius: 24px !important;
+    }
+
+    .axiom-payment-preference-card.is-selected::after {
+        top: 14px;
+        right: 14px;
+        width: 32px;
+        height: 32px;
+        border-radius: 13px;
+        font-size: 13px;
     }
 
     .axiom-payment-preference-card-icon {
@@ -518,6 +628,15 @@
     .axiom-partner-code-preview {
         font-size: 13px !important;
         margin-top: 8px !important;
+    }
+
+    .axiom-affiliate-registration-page button[type="submit"],
+    .axiom-affiliate-registration-page input[type="submit"],
+    .axiom-affiliate-form-wrap button[type="submit"],
+    .axiom-affiliate-form-wrap input[type="submit"] {
+        min-height: 68px !important;
+        border-radius: 24px !important;
+        font-size: 17px !important;
     }
 
     .axiom-affiliate-registration-footer-links a:last-child {
