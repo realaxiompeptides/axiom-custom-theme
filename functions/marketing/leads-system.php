@@ -7,32 +7,59 @@ if (!defined('ABSPATH')) {
  * ==========================================
  * AXIOM LEADS SYSTEM
  * Stores popup emails, SMS numbers, checkout leads,
- * coupon codes, CSV export, and live Brevo sync.
+ * coupon codes, CSV export, and live Omnisend sync.
+ *
+ * IMPORTANT:
+ * The database columns still use "brevo_*" names so your
+ * existing table does not break. The sync now goes to Omnisend.
  * ==========================================
  */
 
 /**
  * ==========================================
- * BREVO LIVE SYNC SETTINGS
+ * OMNISEND LIVE SYNC SETTINGS
  * ==========================================
+ */
+
+if (!function_exists('axiom_omnisend_api_key')) {
+    function axiom_omnisend_api_key() {
+        if (defined('AXIOM_OMNISEND_API_KEY') && AXIOM_OMNISEND_API_KEY) {
+            return trim((string) AXIOM_OMNISEND_API_KEY);
+        }
+
+        return trim((string) get_option('axiom_omnisend_api_key', ''));
+    }
+}
+
+/**
+ * Backward-compatible function name.
+ * Other old code can still call axiom_brevo_api_key(),
+ * but this now returns your Omnisend API key.
  */
 if (!function_exists('axiom_brevo_api_key')) {
     function axiom_brevo_api_key() {
-        return get_option('axiom_brevo_api_key', '');
+        return axiom_omnisend_api_key();
     }
 }
 
 function axiom_brevo_leads_list_id() {
-    return 3; // Brevo list ID: Axiom Leads
+    return 0;
 }
 
-function axiom_brevo_sync_enabled() {
+function axiom_omnisend_sync_enabled() {
     return true;
 }
 
 /**
- * Format phone numbers for Brevo.
- * Brevo wants international format like +19262863779.
+ * Backward-compatible function name.
+ */
+function axiom_brevo_sync_enabled() {
+    return axiom_omnisend_sync_enabled();
+}
+
+/**
+ * Format phone numbers for Omnisend.
+ * Omnisend wants international format like +19262863779.
  */
 function axiom_format_phone_for_brevo($phone) {
     $phone = trim((string) $phone);
@@ -143,18 +170,24 @@ add_action('admin_init', 'axiom_leads_ensure_columns');
 
 /**
  * ==========================================
- * 3. BREVO LIVE SYNC
+ * 3. OMNISEND LIVE SYNC
  * ==========================================
+ *
+ * Popup leads = subscribed marketing contacts.
+ * Checkout leads = nonSubscribed contacts unless they came from popup.
+ *
+ * This lowers risk because checkout customers are NOT automatically
+ * opted into marketing unless they clearly submitted the popup.
  */
 function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '', $source = 'unknown', $discount_code = '', $discount_percent = null) {
-    if (!axiom_brevo_sync_enabled()) {
+    if (!axiom_omnisend_sync_enabled()) {
         return false;
     }
 
-    $api_key = axiom_brevo_api_key();
+    $api_key = axiom_omnisend_api_key();
 
     if (empty($api_key)) {
-        axiom_mark_brevo_sync_result($lead_id, false, 'Missing Brevo API key.');
+        axiom_mark_brevo_sync_result($lead_id, false, 'Missing Omnisend API key.');
         return false;
     }
 
@@ -165,39 +198,79 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
         return false;
     }
 
-    $phone      = sanitize_text_field($phone);
-    $first_name = sanitize_text_field($first_name);
+    $phone            = sanitize_text_field($phone);
+    $first_name       = sanitize_text_field($first_name);
+    $source           = sanitize_text_field($source);
+    $discount_code    = sanitize_text_field($discount_code);
+    $discount_percent = !is_null($discount_percent) ? absint($discount_percent) : null;
 
-    $attributes = array();
+    $is_popup_optin = ($source === 'popup');
 
-    if (!empty($first_name)) {
-        $attributes['FIRSTNAME'] = $first_name;
+    $email_status = $is_popup_optin ? 'subscribed' : 'nonSubscribed';
+
+    $tags = array(
+        'source: axiom website',
+        'axiom_lead',
+    );
+
+    if ($is_popup_optin) {
+        $tags[] = 'source: axiom popup';
+        $tags[] = 'popup_subscriber';
+    } else {
+        $tags[] = 'source: ' . $source;
     }
+
+    if (!empty($discount_percent)) {
+        $tags[] = 'discount_' . $discount_percent;
+    }
+
+    if (!empty($discount_code)) {
+        $tags[] = 'has_coupon_code';
+    }
+
+    $custom_properties = array(
+        'source'           => $source,
+        'discount_code'    => $discount_code,
+        'discount_percent' => $discount_percent,
+        'axiom_popup'      => $is_popup_optin ? 'yes' : 'no',
+    );
 
     $formatted_phone = axiom_format_phone_for_brevo($phone);
 
     if (!empty($formatted_phone)) {
-        $attributes['SMS'] = $formatted_phone;
+        $custom_properties['phone'] = $formatted_phone;
     }
 
-    $payload = array(
-        'email'         => $email,
-        'listIds'       => array(axiom_brevo_leads_list_id()),
-        'updateEnabled' => true,
+    $identifier = array(
+        'type' => 'email',
+        'id'   => $email,
+        'channels' => array(
+            'email' => array(
+                'status'     => $email_status,
+                'statusDate' => gmdate('c'),
+            ),
+        ),
     );
 
-    if (!empty($attributes)) {
-        $payload['attributes'] = $attributes;
+    $payload = array(
+        'identifiers'      => array($identifier),
+        'tags'             => $tags,
+        'customProperties' => $custom_properties,
+    );
+
+    if (!empty($first_name)) {
+        $payload['firstName'] = $first_name;
     }
 
     $response = wp_remote_post(
-        'https://api.brevo.com/v3/contacts',
+        'https://api.omnisend.com/api/contacts',
         array(
             'timeout' => 20,
             'headers' => array(
-                'api-key'      => $api_key,
-                'Content-Type' => 'application/json',
-                'Accept'       => 'application/json',
+                'Authorization'    => 'Omnisend-API-Key ' . $api_key,
+                'Omnisend-Version' => '2026-03-15',
+                'Content-Type'     => 'application/json',
+                'Accept'           => 'application/json',
             ),
             'body' => wp_json_encode($payload),
         )
@@ -211,12 +284,12 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
     $code = (int) wp_remote_retrieve_response_code($response);
     $body = wp_remote_retrieve_body($response);
 
-    if (in_array($code, array(200, 201, 204), true)) {
+    if (in_array($code, array(200, 201, 202, 204), true)) {
         axiom_mark_brevo_sync_result($lead_id, true, '');
         return true;
     }
 
-    axiom_mark_brevo_sync_result($lead_id, false, 'Brevo HTTP ' . $code . ': ' . $body);
+    axiom_mark_brevo_sync_result($lead_id, false, 'Omnisend HTTP ' . $code . ': ' . $body);
     return false;
 }
 
@@ -248,7 +321,7 @@ function axiom_mark_brevo_sync_result($lead_id, $success, $error = '') {
 /**
  * Manual sync existing unsynced leads.
  */
-add_action('admin_post_axiom_sync_leads_to_brevo', function() {
+function axiom_sync_unsynced_leads_to_omnisend_handler() {
     if (!current_user_can('manage_options')) {
         wp_die('Unauthorized');
     }
@@ -289,10 +362,13 @@ add_action('admin_post_axiom_sync_leads_to_brevo', function() {
     }
 
     wp_safe_redirect(
-        admin_url('admin.php?page=axiom-leads&brevo_synced=' . absint($synced) . '&brevo_failed=' . absint($failed))
+        admin_url('admin.php?page=axiom-leads&omnisend_synced=' . absint($synced) . '&omnisend_failed=' . absint($failed))
     );
     exit;
-});
+}
+
+add_action('admin_post_axiom_sync_leads_to_brevo', 'axiom_sync_unsynced_leads_to_omnisend_handler');
+add_action('admin_post_axiom_sync_leads_to_omnisend', 'axiom_sync_unsynced_leads_to_omnisend_handler');
 
 /**
  * ==========================================
@@ -546,6 +622,10 @@ function axiom_capture_lead() {
  * ==========================================
  * 8. SAVE EMAIL / PHONE ON CHECKOUT
  * ==========================================
+ *
+ * This stores checkout leads, but Omnisend sync marks them as nonSubscribed.
+ * Do not automatically subscribe checkout customers unless you add a real
+ * marketing consent checkbox later.
  */
 add_action('woocommerce_checkout_update_order_meta', function($order_id) {
     if (!function_exists('wc_get_order')) {
@@ -642,24 +722,40 @@ function axiom_leads_page() {
 
     $leads = $wpdb->get_results("SELECT * FROM {$table} ORDER BY id DESC LIMIT 100", ARRAY_A);
 
-    if (isset($_GET['brevo_synced']) || isset($_GET['brevo_failed'])) {
-        echo '<div class="notice notice-info"><p>Brevo sync complete. Synced: ' . esc_html(absint($_GET['brevo_synced'] ?? 0)) . ' | Failed: ' . esc_html(absint($_GET['brevo_failed'] ?? 0)) . '</p></div>';
+    if (isset($_GET['omnisend_synced']) || isset($_GET['omnisend_failed'])) {
+        echo '<div class="notice notice-info"><p>Omnisend sync complete. Synced: ' . esc_html(absint($_GET['omnisend_synced'] ?? 0)) . ' | Failed: ' . esc_html(absint($_GET['omnisend_failed'] ?? 0)) . '</p></div>';
     }
+
+    if (isset($_GET['brevo_synced']) || isset($_GET['brevo_failed'])) {
+        echo '<div class="notice notice-info"><p>Omnisend sync complete. Synced: ' . esc_html(absint($_GET['brevo_synced'] ?? 0)) . ' | Failed: ' . esc_html(absint($_GET['brevo_failed'] ?? 0)) . '</p></div>';
+    }
+
+    $has_api_key = !empty(axiom_omnisend_api_key());
     ?>
     <div class="wrap">
         <h1>Axiom Leads</h1>
 
         <p>
-            This stores popup emails, SMS numbers, checkout leads, generated discount codes, and syncs leads to Brevo list ID <?php echo esc_html(axiom_brevo_leads_list_id()); ?>.
+            This stores popup emails, SMS numbers, checkout leads, generated discount codes, and syncs popup subscribers to Omnisend.
         </p>
+
+        <?php if ($has_api_key) : ?>
+            <div class="notice notice-success inline">
+                <p><strong>Omnisend API key:</strong> Saved in WordPress.</p>
+            </div>
+        <?php else : ?>
+            <div class="notice notice-error inline">
+                <p><strong>Omnisend API key missing.</strong> Save your key in the <code>axiom_omnisend_api_key</code> WordPress option before syncing.</p>
+            </div>
+        <?php endif; ?>
 
         <p>
             <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_export_leads')); ?>" class="button button-primary">
                 Export Leads CSV
             </a>
 
-            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_sync_leads_to_brevo')); ?>" class="button">
-                Sync Unsynced Leads to Brevo
+            <a href="<?php echo esc_url(admin_url('admin-post.php?action=axiom_sync_leads_to_omnisend')); ?>" class="button">
+                Sync Unsynced Leads to Omnisend
             </a>
         </p>
 
@@ -677,7 +773,7 @@ function axiom_leads_page() {
                         <th>Source</th>
                         <th>Discount</th>
                         <th>Code</th>
-                        <th>Brevo</th>
+                        <th>Omnisend</th>
                         <th>Status</th>
                         <th>Created</th>
                     </tr>
@@ -700,7 +796,7 @@ function axiom_leads_page() {
                                 <?php else : ?>
                                     ❌ Not synced
                                     <?php if (!empty($lead['brevo_error'])) : ?>
-                                        <br><small><?php echo esc_html(wp_trim_words($lead['brevo_error'], 12)); ?></small>
+                                        <br><small><?php echo esc_html(wp_trim_words($lead['brevo_error'], 16)); ?></small>
                                     <?php endif; ?>
                                 <?php endif; ?>
                             </td>
