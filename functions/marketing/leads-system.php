@@ -206,6 +206,10 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
 
     $is_popup_optin = ($source === 'popup');
 
+    /**
+     * Popup = subscribed.
+     * Checkout = nonSubscribed, so checkout customers are not auto-marketed without consent.
+     */
     $email_status = $is_popup_optin ? 'subscribed' : 'nonSubscribed';
 
     $tags = array(
@@ -216,6 +220,7 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
     if ($is_popup_optin) {
         $tags[] = 'source: axiom popup';
         $tags[] = 'popup_subscriber';
+        $tags[] = 'welcome_eligible';
     } else {
         $tags[] = 'source: ' . $source;
     }
@@ -251,6 +256,15 @@ function axiom_sync_lead_to_brevo($lead_id, $email, $phone = '', $first_name = '
             ),
         ),
     );
+
+    /**
+     * IMPORTANT:
+     * This tells Omnisend this API-created popup subscriber should be treated
+     * like a real welcome-eligible subscription event.
+     */
+    if ($is_popup_optin) {
+        $identifier['sendWelcomeMessage'] = true;
+    }
 
     $payload = array(
         'identifiers'      => array($identifier),
