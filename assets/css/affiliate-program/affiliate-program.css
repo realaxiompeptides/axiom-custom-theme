@@ -1,553 +1,898 @@
+:root {
+    --axap-blue: #0b63f6;
+    --axap-blue-dark: #073b91;
+    --axap-navy: #07111f;
+    --axap-navy-2: #0b1728;
+    --axap-text: #111827;
+    --axap-muted: #64748b;
+    --axap-line: rgba(15, 23, 42, 0.1);
+    --axap-card: rgba(255, 255, 255, 0.86);
+    --axap-radius: 28px;
+    --axap-shadow: 0 24px 70px rgba(15, 23, 42, 0.12);
+}
+
+.axiom-affiliate-page,
+.axiom-affiliate-page * {
+    box-sizing: border-box;
+}
+
 .axiom-affiliate-page {
-  padding: 24px 0 60px;
-  background: #ffffff;
-}
-
-.axiom-affiliate-hero,
-.axiom-affiliate-main {
-  position: relative;
-}
-
-.axiom-affiliate-hero .container,
-.axiom-affiliate-main .container {
-  max-width: 1200px;
-}
-
-.axiom-affiliate-hero {
-  margin-bottom: 24px;
-}
-
-.axiom-affiliate-hero-card,
-.axiom-affiliate-card {
-  background: #ffffff;
-  border: 1px solid #d9e5f0;
-  border-radius: 30px;
-  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
-}
-
-.axiom-affiliate-hero-card {
-  padding: 36px 28px;
-  text-align: center;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
-}
-
-.axiom-affiliate-kicker,
-.axiom-affiliate-section-kicker {
-  margin: 0 0 10px;
-  color: #59a8df;
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.axiom-affiliate-hero-card h1 {
-  margin: 0 0 14px;
-  color: #0d1835;
-  font-size: 54px;
-  line-height: 0.98;
-  font-weight: 900;
-  letter-spacing: -0.04em;
-}
-
-.axiom-affiliate-subtitle {
-  max-width: 760px;
-  margin: 0 auto;
-  color: #64748b;
-  font-size: 19px;
-  line-height: 1.7;
-}
-
-.axiom-affiliate-hero-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin: 22px 0 0;
-}
-
-.axiom-affiliate-hero-pills span {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  border: 1px solid #dbe7f2;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #0d1835;
-  font-size: 14px;
-  font-weight: 700;
-}
-
-.axiom-affiliate-primary-btn,
-.axiom-affiliate-secondary-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0 26px;
-  border-radius: 999px;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 900;
-  transition: 0.2s ease;
-  border: 0;
-  box-shadow: none;
-}
-
-.axiom-affiliate-primary-btn {
-  margin-top: 22px;
-  background: #59a8df;
-  color: #ffffff;
-}
-
-.axiom-affiliate-primary-btn:hover {
-  background: #4699d4;
-  color: #ffffff;
-}
-
-.axiom-affiliate-secondary-btn {
-  width: 100%;
-  background: #59a8df;
-  color: #ffffff;
-}
-
-.axiom-affiliate-secondary-btn:hover {
-  background: #4699d4;
-  color: #ffffff;
-}
-
-.axiom-affiliate-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
-  gap: 24px;
-  align-items: start;
-}
-
-.axiom-affiliate-left,
-.axiom-affiliate-right {
-  display: grid;
-  gap: 22px;
-  min-width: 0;
-}
-
-.axiom-affiliate-card {
-  padding: 28px;
-  overflow: hidden;
-}
-
-.axiom-affiliate-card h2,
-.axiom-affiliate-card h3 {
-  margin: 0 0 12px;
-  color: #0d1835;
-  font-size: 36px;
-  line-height: 1.04;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-}
-
-.axiom-affiliate-section-copy,
-.axiom-affiliate-help-card p {
-  margin: 0;
-  color: #64748b;
-  font-size: 17px;
-  line-height: 1.75;
-}
-
-.axiom-affiliate-feature-list {
-  display: grid;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.axiom-affiliate-feature-item {
-  display: flex;
-  gap: 14px;
-  padding: 16px 18px;
-  border: 1px solid #e5edf5;
-  border-radius: 20px;
-  background: #f8fbff;
-}
-
-.axiom-affiliate-feature-icon {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  border-radius: 999px;
-  background: #dff0fb;
-  color: #59a8df;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 17px;
-}
-
-.axiom-affiliate-feature-copy strong {
-  display: block;
-  margin-bottom: 5px;
-  color: #0d1835;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.axiom-affiliate-feature-copy span {
-  display: block;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-.axiom-affiliate-rules-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.axiom-affiliate-rule-box {
-  padding: 18px;
-  border: 1px solid #e5edf5;
-  border-radius: 22px;
-  background: #f8fbff;
-}
-
-.axiom-affiliate-rule-box strong {
-  display: block;
-  margin-bottom: 8px;
-  color: #0d1835;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.axiom-affiliate-rule-box span {
-  display: block;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-.axiom-affiliate-form-note {
-  margin: 16px 0 18px;
-  padding: 14px 16px;
-  border: 1px solid #d9e7f2;
-  border-radius: 16px;
-  background: #f8fbff;
-  color: #5f7389;
-  font-size: 14px;
-  line-height: 1.6;
-}
-
-.axiom-affiliate-form-wrap {
-  margin-top: 6px;
-}
-
-/* SliceWP form */
-.axiom-affiliate-form-wrap form,
-.axiom-affiliate-form-wrap .slicewp-form {
-  margin: 0 !important;
-}
-
-.axiom-affiliate-form-wrap p,
-.axiom-affiliate-form-wrap .slicewp-form-field,
-.axiom-affiliate-form-wrap .slicewp-field-wrapper,
-.axiom-affiliate-form-wrap .slicewp-form-row {
-  margin-bottom: 16px !important;
-}
-
-.axiom-affiliate-form-wrap label {
-  display: block !important;
-  margin-bottom: 8px !important;
-  color: #0d1835 !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-  line-height: 1.35 !important;
-}
-
-.axiom-affiliate-form-wrap input[type="text"],
-.axiom-affiliate-form-wrap input[type="email"],
-.axiom-affiliate-form-wrap input[type="password"],
-.axiom-affiliate-form-wrap input[type="url"],
-.axiom-affiliate-form-wrap input[type="tel"],
-.axiom-affiliate-form-wrap textarea,
-.axiom-affiliate-form-wrap select {
-  width: 100% !important;
-  min-height: 56px !important;
-  padding: 16px 18px !important;
-  border: 1px solid #d6e2ee !important;
-  border-radius: 18px !important;
-  background: #fbfdff !important;
-  color: #0d1835 !important;
-  font-size: 16px !important;
-  box-shadow: none !important;
-  outline: none !important;
-  margin: 0 !important;
-}
-
-.axiom-affiliate-form-wrap textarea {
-  min-height: 140px !important;
-  resize: vertical !important;
-}
-
-.axiom-affiliate-form-wrap input:focus,
-.axiom-affiliate-form-wrap textarea:focus,
-.axiom-affiliate-form-wrap select:focus {
-  border-color: #59a8df !important;
-  background: #ffffff !important;
-}
-
-.axiom-affiliate-form-wrap .show-password-input,
-.axiom-affiliate-form-wrap button.show-password-input {
-  right: 16px !important;
-}
-
-.axiom-affiliate-form-wrap button,
-.axiom-affiliate-form-wrap input[type="submit"],
-.axiom-affiliate-form-wrap .button,
-.axiom-affiliate-form-wrap .slicewp-button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  min-height: 56px !important;
-  padding: 0 24px !important;
-  border: 0 !important;
-  border-radius: 999px !important;
-  background: #59a8df !important;
-  color: #ffffff !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  box-shadow: none !important;
-  text-align: center !important;
-}
-
-.axiom-affiliate-form-wrap button:hover,
-.axiom-affiliate-form-wrap input[type="submit"]:hover,
-.axiom-affiliate-form-wrap .button:hover,
-.axiom-affiliate-form-wrap .slicewp-button:hover {
-  background: #4699d4 !important;
-  color: #ffffff !important;
-}
-
-@media (max-width: 991px) {
-  .axiom-affiliate-grid {
-    grid-template-columns: 1fr;
-    gap: 18px;
-  }
-
-  .axiom-affiliate-left,
-  .axiom-affiliate-right {
-    gap: 18px;
-  }
-
-  .axiom-affiliate-hero-card h1 {
-    font-size: 42px;
-  }
-
-  .axiom-affiliate-rules-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 767px) {
-  .axiom-affiliate-page {
-    padding: 18px 0 44px;
-  }
-
-  .axiom-affiliate-hero-card,
-  .axiom-affiliate-card {
-    padding: 22px 18px;
-    border-radius: 24px;
-  }
-
-  .axiom-affiliate-hero-card h1 {
-    font-size: 34px;
-    line-height: 1.02;
-  }
-
-  .axiom-affiliate-subtitle {
-    font-size: 16px;
-    line-height: 1.7;
-  }
-
-  .axiom-affiliate-card h2,
-  .axiom-affiliate-card h3 {
-    font-size: 28px;
-    line-height: 1.06;
-  }
-
-  .axiom-affiliate-rules-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .axiom-affiliate-feature-item,
-  .axiom-affiliate-rule-box {
-    padding: 16px;
-    border-radius: 18px;
-  }
-
-  .axiom-affiliate-form-wrap input[type="text"],
-  .axiom-affiliate-form-wrap input[type="email"],
-  .axiom-affiliate-form-wrap input[type="password"],
-  .axiom-affiliate-form-wrap input[type="url"],
-  .axiom-affiliate-form-wrap input[type="tel"],
-  .axiom-affiliate-form-wrap textarea,
-  .axiom-affiliate-form-wrap select {
-    min-height: 54px !important;
-    font-size: 16px !important;
-  }
-
-  .axiom-affiliate-form-wrap textarea {
-    min-height: 130px !important;
-  }
-
-  .axiom-affiliate-primary-btn,
-  .axiom-affiliate-secondary-btn {
     width: 100%;
-  }
+    overflow-x: hidden;
+    background:
+        radial-gradient(circle at top left, rgba(11, 99, 246, 0.11), transparent 32rem),
+        linear-gradient(180deg, #f8fbff 0%, #ffffff 42%, #f5f8ff 100%);
+    color: var(--axap-text);
 }
 
-.axiom-affiliate-login-text{
-  margin:14px 0 0;
-  text-align:center;
-  color:#64748b;
-  font-size:15px;
-  line-height:1.6;
+.axap-shell {
+    width: min(1180px, calc(100% - 32px));
+    margin: 0 auto;
 }
 
-.axiom-affiliate-login-text a{
-  color:#0f172a;
-  font-weight:800;
-  text-decoration:none;
+.axap-hero {
+    position: relative;
+    padding: clamp(44px, 7vw, 96px) 0 36px;
 }
 
-.axiom-affiliate-login-text a:hover,
-.axiom-affiliate-login-text a:focus{
-  text-decoration:underline;
+.axap-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(135deg, rgba(11, 99, 246, 0.08), transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(8, 54, 130, 0.12), transparent 24rem);
+    pointer-events: none;
 }
 
-/* =========================================================
-   Affiliate Program / Registration Page Extras
-========================================================= */
-
-.axiom-affiliate-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-  margin-top: 22px;
-}
-
-.axiom-affiliate-secondary-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  padding: 0 22px;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #d9e5f0;
-  color: #0d1835;
-  font-size: 15px;
-  font-weight: 900;
-  text-decoration: none;
-}
-
-.axiom-affiliate-secondary-link:hover,
-.axiom-affiliate-secondary-link:focus {
-  color: #0d1835;
-  border-color: #59a8df;
-  text-decoration: none;
-}
-
-.axiom-affiliate-full-btn {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.axiom-affiliate-program-stats {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
-  margin-bottom: 24px;
-}
-
-.axiom-affiliate-program-stat {
-  background: #ffffff;
-  border: 1px solid #d9e5f0;
-  border-radius: 26px;
-  padding: 22px;
-  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
-}
-
-.axiom-affiliate-program-stat-icon {
-  width: 54px;
-  height: 54px;
-  border-radius: 18px;
-  background: #dff0fb;
-  color: #59a8df;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  margin-bottom: 16px;
-}
-
-.axiom-affiliate-program-stat strong {
-  display: block;
-  color: #0d1835;
-  font-size: 26px;
-  line-height: 1.1;
-  font-weight: 900;
-  letter-spacing: -0.035em;
-  margin-bottom: 8px;
-}
-
-.axiom-affiliate-program-stat span {
-  display: block;
-  color: #64748b;
-  font-size: 15px;
-  line-height: 1.55;
-  font-weight: 700;
-}
-
-.axiom-affiliate-registration-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
-  gap: 24px;
-  align-items: start;
-}
-
-.axiom-affiliate-registration-sidebar {
-  display: grid;
-  gap: 22px;
-}
-
-.axiom-affiliate-registration-card {
-  min-width: 0;
-}
-
-@media (max-width: 991px) {
-  .axiom-affiliate-program-stats {
-    grid-template-columns: 1fr;
-  }
-
-  .axiom-affiliate-registration-layout {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 767px) {
-  .axiom-affiliate-hero-actions {
+.axap-hero-grid {
+    position: relative;
     display: grid;
-    grid-template-columns: 1fr;
-  }
+    grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
+    gap: 28px;
+    align-items: stretch;
+}
 
-  .axiom-affiliate-secondary-link {
-    width: 100%;
-  }
+.axap-hero-copy,
+.axap-hero-card,
+.axap-card,
+.axap-calculator,
+.axap-final-card {
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: var(--axap-card);
+    box-shadow: var(--axap-shadow);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
 
-  .axiom-affiliate-program-stat {
+.axap-hero-copy {
+    padding: clamp(28px, 5vw, 58px);
+    border-radius: 34px;
+}
+
+.axap-eyebrow {
+    margin: 0 0 12px;
+    color: var(--axap-blue);
+    font-size: 12px;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.axap-hero h1,
+.axap-content h2,
+.axap-center-head h2,
+.axap-card h2,
+.axap-final-card h2 {
+    margin: 0;
+    color: #08111f;
+    font-weight: 950;
+    letter-spacing: -0.055em;
+}
+
+.axap-hero h1 {
+    max-width: 760px;
+    font-size: clamp(42px, 7vw, 82px);
+    line-height: 0.92;
+}
+
+.axap-hero-text {
+    max-width: 680px;
+    margin: 24px 0 0;
+    color: #475569;
+    font-size: clamp(16px, 1.6vw, 20px);
+    line-height: 1.7;
+}
+
+.axap-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.axap-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 22px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 900;
+    text-decoration: none !important;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, color 0.22s ease;
+}
+
+.axap-btn:hover {
+    transform: translateY(-2px);
+}
+
+.axap-btn-primary {
+    color: #ffffff !important;
+    background: linear-gradient(135deg, #0b63f6, #063b9b);
+    box-shadow: 0 16px 36px rgba(11, 99, 246, 0.28);
+}
+
+.axap-btn-primary:hover {
+    box-shadow: 0 20px 44px rgba(11, 99, 246, 0.36);
+}
+
+.axap-btn-secondary {
+    color: #0b254a !important;
+    background: #ffffff;
+    border: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.axap-proof-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 28px;
+}
+
+.axap-proof-row span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(11, 99, 246, 0.08);
+    color: #0b254a;
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.axap-proof-row i {
+    color: var(--axap-blue);
+}
+
+.axap-hero-card {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(24px, 4vw, 42px);
+    border-radius: 34px;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 20% 15%, rgba(56, 189, 248, 0.24), transparent 18rem),
+        linear-gradient(145deg, #07111f 0%, #0b1f3c 55%, #05101f 100%);
+}
+
+.axap-hero-card::after {
+    content: "";
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    right: -90px;
+    bottom: -90px;
+    border-radius: 50%;
+    background: rgba(11, 99, 246, 0.22);
+    filter: blur(2px);
+}
+
+.axap-rating-line {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.axap-rating-line strong {
+    color: #ffffff;
+}
+
+.axap-big-percent {
+    position: relative;
+    z-index: 1;
+    margin-top: 42px;
+    font-size: clamp(74px, 10vw, 118px);
+    line-height: 0.9;
+    font-weight: 950;
+    letter-spacing: -0.08em;
+}
+
+.axap-hero-card p {
+    position: relative;
+    z-index: 1;
+    max-width: 320px;
+    margin: 16px 0 0;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.65;
+}
+
+.axap-mini-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 34px;
+}
+
+.axap-mini-grid div {
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.axap-mini-grid strong,
+.axap-mini-grid span {
+    display: block;
+}
+
+.axap-mini-grid strong {
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 950;
+}
+
+.axap-mini-grid span {
+    margin-top: 6px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 13px;
+}
+
+.axap-card-link {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    color: #ffffff !important;
+    font-weight: 900;
+    text-decoration: none !important;
+}
+
+.axap-strip {
+    padding: 18px 0 38px;
+}
+
+.axap-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.axap-strip-grid div {
+    min-height: 152px;
+    padding: 22px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
     border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+}
+
+.axap-strip-grid i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    margin-bottom: 16px;
+    border-radius: 14px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0b63f6, #063b9b);
+}
+
+.axap-strip-grid strong,
+.axap-strip-grid span {
+    display: block;
+}
+
+.axap-strip-grid strong {
+    font-size: 16px;
+    font-weight: 950;
+    color: #0f172a;
+}
+
+.axap-strip-grid span {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.axap-section {
+    padding: clamp(44px, 7vw, 88px) 0;
+}
+
+.axap-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.axap-two-col-reverse {
+    grid-template-columns: minmax(320px, 0.9fr) minmax(0, 1fr);
+}
+
+.axap-content,
+.axap-card,
+.axap-calculator {
+    border-radius: var(--axap-radius);
+}
+
+.axap-content {
+    padding: clamp(6px, 2vw, 12px);
+}
+
+.axap-content h2,
+.axap-center-head h2,
+.axap-card h2,
+.axap-final-card h2 {
+    font-size: clamp(34px, 4vw, 56px);
+    line-height: 1;
+}
+
+.axap-content p,
+.axap-card p,
+.axap-final-card p {
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.75;
+}
+
+.axap-feature-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 28px;
+}
+
+.axap-feature {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 16px;
+    padding: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+}
+
+.axap-feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+    color: #ffffff;
+    background: linear-gradient(135deg, #0b63f6, #063b9b);
+}
+
+.axap-feature strong,
+.axap-feature span {
+    display: block;
+}
+
+.axap-feature strong {
+    color: #0f172a;
+    font-size: 17px;
+    font-weight: 950;
+}
+
+.axap-feature span {
+    margin-top: 5px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+.axap-calculator {
+    position: sticky;
+    top: 110px;
+    padding: clamp(24px, 4vw, 34px);
+    background:
+        radial-gradient(circle at top right, rgba(11, 99, 246, 0.12), transparent 16rem),
+        #ffffff;
+}
+
+.axap-calc-top h3 {
+    margin: 0;
+    color: #0f172a;
+    font-size: clamp(26px, 3vw, 36px);
+    line-height: 1.05;
+    font-weight: 950;
+    letter-spacing: -0.045em;
+}
+
+.axap-calc-top span,
+.axap-calc-note {
+    display: block;
+    margin-top: 10px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.axap-calc-control {
+    margin-top: 26px;
+}
+
+.axap-calc-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    color: #475569;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.axap-calc-label strong {
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 950;
+}
+
+.axap-calc-control input[type="range"] {
+    width: 100%;
+    height: 8px;
+    margin-top: 14px;
+    border-radius: 999px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background: linear-gradient(90deg, #0b63f6 0%, #0b63f6 35%, #dbeafe 35%, #dbeafe 100%);
+}
+
+.axap-calc-control input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 26px;
+    height: 26px;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+    background: #0b63f6;
+    box-shadow: 0 0 0 6px rgba(11, 99, 246, 0.13);
+    cursor: pointer;
+}
+
+.axap-calc-control input[type="range"]::-moz-range-thumb {
+    width: 26px;
+    height: 26px;
+    border: 4px solid #ffffff;
+    border-radius: 50%;
+    background: #0b63f6;
+    box-shadow: 0 0 0 6px rgba(11, 99, 246, 0.13);
+    cursor: pointer;
+}
+
+.axap-calc-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 30px;
+}
+
+.axap-calc-results div {
     padding: 20px;
-  }
+    border-radius: 20px;
+    background: #f1f6ff;
+    border: 1px solid rgba(11, 99, 246, 0.12);
+}
+
+.axap-calc-results span,
+.axap-calc-results strong {
+    display: block;
+}
+
+.axap-calc-results span {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 850;
+}
+
+.axap-calc-results strong {
+    margin-top: 8px;
+    color: #063b9b;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1;
+    font-weight: 950;
+    letter-spacing: -0.05em;
+}
+
+.axap-dark-section {
+    color: #ffffff;
+    background:
+        radial-gradient(circle at 15% 10%, rgba(11, 99, 246, 0.24), transparent 22rem),
+        linear-gradient(135deg, #07111f, #0b1f3c);
+}
+
+.axap-dark-section .axap-center-head h2,
+.axap-dark-section .axap-eyebrow {
+    color: #ffffff;
+}
+
+.axap-center-head {
+    max-width: 760px;
+    margin: 0 auto 34px;
+    text-align: center;
+}
+
+.axap-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.axap-step {
+    padding: 26px;
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.axap-step span {
+    display: inline-flex;
+    margin-bottom: 32px;
+    color: #60a5fa;
+    font-size: 13px;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+}
+
+.axap-step h3 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 22px;
+    font-weight: 950;
+}
+
+.axap-step p {
+    margin: 10px 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.65;
+}
+
+.axap-card {
+    padding: clamp(24px, 4vw, 36px);
+    background: #ffffff;
+}
+
+.axap-check-list {
+    display: grid;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.axap-check-list div {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: #334155;
+    font-weight: 800;
+    line-height: 1.5;
+}
+
+.axap-check-list i {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+    border-radius: 50%;
+    color: #ffffff;
+    background: #0b63f6;
+    font-size: 12px;
+}
+
+.axap-rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.axap-rules-grid div {
+    padding: 18px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    border-radius: 18px;
+    background: #f8fbff;
+}
+
+.axap-rules-grid strong,
+.axap-rules-grid span {
+    display: block;
+}
+
+.axap-rules-grid strong {
+    color: #0f172a;
+    font-weight: 950;
+}
+
+.axap-rules-grid span {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.axap-faq-section {
+    background: #ffffff;
+}
+
+.axap-faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.axap-faq {
+    border: 1px solid rgba(15, 23, 42, 0.1);
+    border-radius: 20px;
+    background: #f8fbff;
+    overflow: hidden;
+}
+
+.axap-faq summary {
+    cursor: pointer;
+    padding: 20px 22px;
+    color: #0f172a;
+    font-weight: 950;
+    list-style: none;
+}
+
+.axap-faq summary::-webkit-details-marker {
+    display: none;
+}
+
+.axap-faq summary::after {
+    content: "+";
+    float: right;
+    color: #0b63f6;
+    font-size: 20px;
+}
+
+.axap-faq[open] summary::after {
+    content: "–";
+}
+
+.axap-faq p {
+    margin: 0;
+    padding: 0 22px 22px;
+    color: #64748b;
+    line-height: 1.65;
+}
+
+.axap-final-cta {
+    padding: clamp(44px, 7vw, 86px) 0;
+}
+
+.axap-final-card {
+    overflow: hidden;
+    position: relative;
+    padding: clamp(30px, 6vw, 62px);
+    border-radius: 34px;
+    background:
+        radial-gradient(circle at 90% 20%, rgba(11, 99, 246, 0.17), transparent 20rem),
+        linear-gradient(135deg, #ffffff, #f5f9ff);
+}
+
+.axap-final-card::after {
+    content: "";
+    position: absolute;
+    right: -80px;
+    bottom: -120px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: rgba(11, 99, 246, 0.08);
+}
+
+.axap-final-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.axap-final-card p {
+    max-width: 640px;
+}
+
+.axap-mobile-sticky {
+    display: none;
+}
+
+.axap-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.axap-reveal.axap-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .axap-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .axap-btn {
+        transition: none;
+    }
+
+    .axap-btn:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .axap-hero-grid,
+    .axap-two-col,
+    .axap-two-col-reverse {
+        grid-template-columns: 1fr;
+    }
+
+    .axap-calculator {
+        position: relative;
+        top: auto;
+    }
+
+    .axap-strip-grid,
+    .axap-steps {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .axap-shell {
+        width: min(100% - 22px, 1180px);
+    }
+
+    .axap-hero {
+        padding-top: 26px;
+    }
+
+    .axap-hero-copy,
+    .axap-hero-card,
+    .axap-card,
+    .axap-calculator,
+    .axap-final-card {
+        border-radius: 22px;
+    }
+
+    .axap-hero-copy {
+        padding: 26px 20px;
+    }
+
+    .axap-hero h1 {
+        font-size: clamp(38px, 12vw, 54px);
+        line-height: 0.95;
+    }
+
+    .axap-hero-text {
+        font-size: 15.5px;
+        line-height: 1.65;
+    }
+
+    .axap-hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .axap-btn {
+        width: 100%;
+    }
+
+    .axap-proof-row {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .axap-proof-row span {
+        justify-content: center;
+    }
+
+    .axap-mini-grid,
+    .axap-strip-grid,
+    .axap-steps,
+    .axap-calc-results,
+    .axap-rules-grid,
+    .axap-faq-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .axap-strip-grid div {
+        min-height: auto;
+    }
+
+    .axap-section {
+        padding: 42px 0;
+    }
+
+    .axap-content h2,
+    .axap-center-head h2,
+    .axap-card h2,
+    .axap-final-card h2 {
+        font-size: clamp(30px, 10vw, 42px);
+    }
+
+    .axap-feature {
+        grid-template-columns: 44px 1fr;
+        padding: 16px;
+    }
+
+    .axap-feature-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 15px;
+    }
+
+    .axap-mobile-sticky {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: calc(82px + env(safe-area-inset-bottom));
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        border-radius: 999px;
+        color: #ffffff !important;
+        background: linear-gradient(135deg, #0b63f6, #063b9b);
+        box-shadow: 0 18px 40px rgba(11, 99, 246, 0.34);
+        font-size: 14px;
+        font-weight: 950;
+        text-decoration: none !important;
+    }
+
+    .axiom-affiliate-page {
+        padding-bottom: 78px;
+    }
+}
+
+@media (max-width: 390px) {
+    .axap-shell {
+        width: min(100% - 18px, 1180px);
+    }
+
+    .axap-hero-copy,
+    .axap-hero-card,
+    .axap-card,
+    .axap-calculator,
+    .axap-final-card {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .axap-big-percent {
+        font-size: 76px;
+    }
 }
