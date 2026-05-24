@@ -451,14 +451,6 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
                     <span>Not satisfied? Contact us and we will help make it right.</span>
                   </div>
                 </div>
-
-                <div class="product-assurance-card">
-                  <i class="fa-solid fa-flag-usa"></i>
-                  <div>
-                    <strong>USA shipped</strong>
-                    <span>Fulfilled from the United States with tracking after shipment.</span>
-                  </div>
-                </div>
               </div>
 
             </div>
