@@ -24,7 +24,7 @@ function axiom_affiliate_program_assets() {
         'axiom-affiliate-program',
         get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-program.css',
         array(),
-        file_exists($css_path) ? filemtime($css_path) : '2.0.0'
+        file_exists($css_path) ? filemtime($css_path) : '4.0.0'
     );
 
     if ($is_affiliate_program_page) {
@@ -34,7 +34,7 @@ function axiom_affiliate_program_assets() {
             'axiom-affiliate-program',
             get_template_directory_uri() . '/assets/js/affiliate-program/affiliate-program.js',
             array(),
-            file_exists($js_path) ? filemtime($js_path) : '2.0.0',
+            file_exists($js_path) ? filemtime($js_path) : '4.0.0',
             true
         );
     }
