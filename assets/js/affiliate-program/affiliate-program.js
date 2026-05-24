@@ -97,8 +97,49 @@
         });
     }
 
+    function initMobileStickyButton() {
+        var sticky = document.querySelector(".axap-mobile-sticky");
+        if (!sticky) return;
+
+        function toggleSticky() {
+            if (window.innerWidth > 720) {
+                sticky.classList.remove("axap-sticky-show");
+                return;
+            }
+
+            if (window.scrollY > 420) {
+                sticky.classList.add("axap-sticky-show");
+            } else {
+                sticky.classList.remove("axap-sticky-show");
+            }
+        }
+
+        window.addEventListener("scroll", toggleSticky, { passive: true });
+        window.addEventListener("resize", toggleSticky);
+        toggleSticky();
+    }
+
+    function initFaqAccordion() {
+        var faqs = document.querySelectorAll(".axap-faq");
+        if (!faqs.length) return;
+
+        faqs.forEach(function (faq) {
+            faq.addEventListener("toggle", function () {
+                if (!faq.open) return;
+
+                faqs.forEach(function (otherFaq) {
+                    if (otherFaq !== faq) {
+                        otherFaq.open = false;
+                    }
+                });
+            });
+        });
+    }
+
     document.addEventListener("DOMContentLoaded", function () {
         initCalculator();
         initRevealAnimations();
+        initMobileStickyButton();
+        initFaqAccordion();
     });
 })();
