@@ -24,8 +24,20 @@ function axiom_affiliate_program_assets() {
         'axiom-affiliate-program',
         get_template_directory_uri() . '/assets/css/affiliate-program/affiliate-program.css',
         array(),
-        file_exists($css_path) ? filemtime($css_path) : '1.0.0'
+        file_exists($css_path) ? filemtime($css_path) : '2.0.0'
     );
+
+    if ($is_affiliate_program_page) {
+        $js_path = get_template_directory() . '/assets/js/affiliate-program/affiliate-program.js';
+
+        wp_enqueue_script(
+            'axiom-affiliate-program',
+            get_template_directory_uri() . '/assets/js/affiliate-program/affiliate-program.js',
+            array(),
+            file_exists($js_path) ? filemtime($js_path) : '2.0.0',
+            true
+        );
+    }
 
     if ($is_affiliate_registration_page) {
         $registration_css_path = get_template_directory() . '/assets/css/affiliate-program/affiliate-registration-fields.css';
