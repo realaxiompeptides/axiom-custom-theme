@@ -1179,3 +1179,52 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 8.4px !important;
   }
 }
+
+/* =========================================================
+   FINAL TWEAK: more bottom space inside the 4 checkout trust boxes
+   Put this at the VERY BOTTOM of the CSS file
+========================================================= */
+
+.axiom-place-order-trust-item {
+  min-height: 104px !important;
+  height: 104px !important;
+  padding: 12px 6px 16px !important;
+  grid-template-rows: 34px auto auto !important;
+  align-content: start !important;
+}
+
+.axiom-place-order-trust-item strong {
+  margin: 7px 0 0 !important;
+}
+
+.axiom-place-order-trust-item small {
+  margin: 6px 0 0 !important;
+  padding-bottom: 2px !important;
+  line-height: 1.12 !important;
+}
+
+@media (max-width: 767px) {
+  .axiom-place-order-trust-item {
+    min-height: 108px !important;
+    height: 108px !important;
+    padding: 12px 5px 16px !important;
+  }
+
+  .axiom-place-order-trust-item strong {
+    margin-top: 7px !important;
+  }
+
+  .axiom-place-order-trust-item small {
+    margin-top: 6px !important;
+    padding-bottom: 3px !important;
+    line-height: 1.12 !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .axiom-place-order-trust-item {
+    min-height: 110px !important;
+    height: 110px !important;
+    padding: 11px 4px 16px !important;
+  }
+}
