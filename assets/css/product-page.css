@@ -936,3 +936,225 @@
     font-size: 14px;
   }
 }
+
+/* ===== Product page desktop/mobile optimization v2 ===== */
+
+.product-main {
+  padding: clamp(22px, 3vw, 42px) 0 clamp(48px, 5vw, 78px);
+}
+
+.product-shell .container {
+  width: min(1320px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.product-layout {
+  display: grid;
+  grid-template-columns: minmax(420px, 0.92fr) minmax(420px, 0.98fr);
+  gap: clamp(28px, 4vw, 58px);
+  align-items: start;
+  justify-content: center;
+}
+
+.product-gallery-stack {
+  width: 100%;
+  max-width: 620px;
+  justify-self: end;
+}
+
+.product-gallery-card {
+  width: 100%;
+  padding: clamp(18px, 2vw, 26px);
+}
+
+.product-gallery-main {
+  min-height: 520px;
+  aspect-ratio: 1 / 1;
+}
+
+.product-gallery-main img {
+  max-width: 82%;
+  max-height: 82%;
+}
+
+.product-info-card {
+  width: 100%;
+  max-width: 620px;
+  justify-self: start;
+  padding: clamp(28px, 3vw, 42px);
+}
+
+.product-info-card h1 {
+  margin-top: 0;
+  font-size: clamp(3rem, 4.7vw, 5.8rem);
+  letter-spacing: -0.06em;
+}
+
+.product-price-current,
+.product-price-current .amount {
+  font-size: clamp(2rem, 2.8vw, 3rem);
+}
+
+.product-icon-benefits {
+  gap: 12px;
+}
+
+.product-icon-benefit {
+  min-height: 68px;
+  align-items: center;
+  padding: 16px 18px;
+}
+
+.product-purchase-box {
+  margin-top: 22px;
+}
+
+.product-variant-select,
+.product-qty-wrap,
+.product-add-to-cart-btn {
+  min-height: 60px;
+}
+
+.product-add-to-cart-btn {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.product-add-to-cart-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 34px rgba(36, 74, 165, 0.26);
+}
+
+.product-description-card,
+.product-why-choose {
+  max-width: 1320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Make desktop product area centered instead of stuck left */
+@media (min-width: 1180px) {
+  .product-layout {
+    grid-template-columns: 590px 590px;
+  }
+}
+
+/* Laptop / small desktop */
+@media (max-width: 1179px) and (min-width: 901px) {
+  .product-layout {
+    grid-template-columns: minmax(390px, 1fr) minmax(390px, 1fr);
+    gap: 28px;
+  }
+
+  .product-gallery-stack,
+  .product-info-card {
+    max-width: none;
+  }
+
+  .product-gallery-main {
+    min-height: 440px;
+  }
+
+  .product-info-card h1 {
+    font-size: clamp(2.7rem, 4.5vw, 4.4rem);
+  }
+}
+
+/* Tablet + mobile stack */
+@media (max-width: 900px) {
+  .product-shell .container {
+    width: min(100% - 24px, 720px);
+  }
+
+  .product-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .product-gallery-stack,
+  .product-info-card {
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  .product-gallery-main {
+    min-height: auto;
+  }
+
+  .product-gallery-main img {
+    max-width: 86%;
+    max-height: 86%;
+  }
+
+  .product-info-card {
+    padding: 24px 20px;
+  }
+
+  .product-info-card h1 {
+    font-size: clamp(2.4rem, 12vw, 4.2rem);
+  }
+}
+
+/* Phone cleanup */
+@media (max-width: 520px) {
+  .product-shell .container {
+    width: min(100% - 18px, 520px);
+  }
+
+  .product-breadcrumbs {
+    font-size: 13px;
+    gap: 7px;
+    margin-bottom: 14px;
+  }
+
+  .product-gallery-card,
+  .product-info-card,
+  .product-description-card,
+  .product-why-choose {
+    border-radius: 22px;
+  }
+
+  .product-gallery-card {
+    padding: 14px;
+  }
+
+  .product-gallery-main {
+    border-radius: 18px;
+  }
+
+  .product-info-card {
+    padding: 22px 16px;
+  }
+
+  .product-info-card h1 {
+    font-size: clamp(2.25rem, 13vw, 3.25rem);
+    line-height: 0.96;
+  }
+
+  .product-price-current,
+  .product-price-current .amount {
+    font-size: 26px;
+  }
+
+  .product-icon-benefit {
+    min-height: auto;
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .product-variant-select,
+  .product-qty-wrap,
+  .product-add-to-cart-btn {
+    min-height: 56px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 370px) {
+  .product-shell .container {
+    width: min(100% - 14px, 370px);
+  }
+
+  .product-info-card h1 {
+    font-size: 2.1rem;
+  }
+}
