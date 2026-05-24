@@ -145,9 +145,6 @@ if ($is_variable) {
     }
 }
 
-$coa_page = get_page_by_path('coa');
-$coa_url  = $coa_page ? get_permalink($coa_page->ID) : '';
-
 $coa_matches = function_exists('axiom_coa_get_matching_attachments_for_product')
     ? axiom_coa_get_matching_attachments_for_product($product)
     : array();
@@ -227,7 +224,10 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
         </div>
 
         <div class="product-info-card">
-          <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
+          <div class="product-title-area">
+            <p class="product-kicker">Axiom Research</p>
+            <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
+          </div>
 
           <div class="product-price-stack">
             <div class="product-price-row">
@@ -352,49 +352,76 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
               </div>
             <?php endif; ?>
 
-            <div class="product-payment-icons">
-              <span class="payment-icon-pill" aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></span>
-              <span class="payment-icon-pill" aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
-              <span class="payment-icon-pill" aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></span>
-              <span class="payment-icon-pill" aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></span>
-
-              <span class="payment-icon-pill payment-icon-image-pill" aria-label="Venmo">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo">
-              </span>
-
-              <span class="payment-icon-pill payment-icon-image-pill" aria-label="Zelle">
-                <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle">
-              </span>
-
-              <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
-            </div>
-
-            <div class="product-afterpay-box">
-              <div class="product-afterpay-row">
-                <i class="fa-solid fa-truck-fast"></i>
-                <span>Same day shipping on orders before 2pm PST</span>
-              </div>
-
-              <div class="product-afterpay-row">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Research use only</span>
-              </div>
-
-              <div class="product-trust-stack">
-                <div class="product-trust-card product-trust-card-green">
-                  <div class="product-trust-card-icon">🛡️</div>
-                  <div class="product-trust-card-copy">
-                    <strong>30-Day Money-Back Guarantee</strong>
-                    <span>Not satisfied? Contact us and we will make it right.</span>
+            <div class="product-conversion-panel">
+              <div class="product-delivery-box">
+                <div class="product-delivery-row">
+                  <div class="product-delivery-icon">
+                    <i class="fa-solid fa-truck-fast"></i>
+                  </div>
+                  <div>
+                    <strong>Estimated delivery: 3–5 business days</strong>
+                    <span>Orders placed before 2 PM PST are prepared for same-day shipping.</span>
                   </div>
                 </div>
 
-                <div class="product-trust-card product-trust-card-blue">
-                  <div class="product-trust-card-icon">📦</div>
-                  <div class="product-trust-card-copy">
-                    <strong>Shipment Protection Included</strong>
-                    <span>Lost or damaged in transit? We will help resolve it quickly.</span>
+                <div class="product-delivery-row">
+                  <div class="product-delivery-icon">
+                    <i class="fa-solid fa-location-dot"></i>
                   </div>
+                  <div>
+                    <strong>Ships from the United States</strong>
+                    <span>Fulfilled domestically with tracking provided after shipment.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="product-payment-section">
+                <div class="product-payment-title">
+                  <i class="fa-solid fa-lock"></i>
+                  <span>Secure checkout options</span>
+                </div>
+
+                <div class="product-payment-icons">
+                  <span class="payment-icon-pill" aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></span>
+                  <span class="payment-icon-pill" aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
+                  <span class="payment-icon-pill" aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></span>
+                  <span class="payment-icon-pill" aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></span>
+
+                  <span class="payment-icon-pill payment-icon-image-pill" aria-label="Venmo">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo">
+                  </span>
+
+                  <span class="payment-icon-pill payment-icon-image-pill" aria-label="Zelle">
+                    <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle">
+                  </span>
+
+                  <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
+                </div>
+              </div>
+
+              <div class="product-confidence-grid">
+                <div class="product-confidence-card">
+                  <i class="fa-solid fa-flag-usa"></i>
+                  <strong>USA Shipped</strong>
+                  <span>Fulfilled from the United States.</span>
+                </div>
+
+                <div class="product-confidence-card">
+                  <i class="fa-solid fa-lock"></i>
+                  <strong>SSL Secure</strong>
+                  <span>Encrypted checkout experience.</span>
+                </div>
+
+                <div class="product-confidence-card">
+                  <i class="fa-solid fa-file-shield"></i>
+                  <strong>COA Available</strong>
+                  <span>Testing documentation when provided.</span>
+                </div>
+
+                <div class="product-confidence-card">
+                  <i class="fa-solid fa-flask-vial"></i>
+                  <strong>Research Use Only</strong>
+                  <span>For laboratory research use only.</span>
                 </div>
               </div>
             </div>
