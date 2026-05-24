@@ -430,8 +430,8 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
                 </div>
 
                 <div class="product-mini-trust-item">
-                  <i class="fa-solid fa-file-shield"></i>
-                  <span>COA available</span>
+                  <i class="fa-solid fa-flag-usa"></i>
+                  <span>USA shipped</span>
                 </div>
               </div>
 
