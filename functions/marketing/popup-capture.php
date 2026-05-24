@@ -108,6 +108,10 @@ add_action('wp_footer', function () {
                         Claim My 10% Discount →
                     </button>
 
+                    <p class="axiom-popup-marketing-consent">
+                        By submitting, you agree to receive email marketing from Axiom Peptides, including research-use product updates, restock alerts, launch alerts, and promotional offers. Unsubscribe anytime.
+                    </p>
+
                     <div class="axiom-popup-trust-row">
                         <span>🔬 Research grade</span>
                         <span>🔒 No spam</span>
@@ -138,6 +142,10 @@ add_action('wp_footer', function () {
                     <button type="button" class="axiom-popup-main-btn" id="axiomClaim15">
                         Unlock Full 15% Discount →
                     </button>
+
+                    <p class="axiom-popup-marketing-consent axiom-popup-sms-consent">
+                        By submitting your email and phone number, you agree to receive email and recurring SMS marketing from Axiom Peptides, including research-use product updates, restock alerts, launch alerts, and promotional offers. Message and data rates may apply. Message frequency varies. Reply STOP to opt out of SMS. Unsubscribe from emails anytime.
+                    </p>
 
                     <button type="button" class="axiom-popup-skip-btn" id="axiomSkipSms">
                         No thanks, just give me 10%
@@ -186,6 +194,10 @@ add_action('wp_footer', function () {
                         <span>Shop Now</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
+
+                    <p class="axiom-popup-marketing-consent axiom-popup-success-consent">
+                        You are subscribed to receive email marketing from Axiom Peptides, including research-use product updates, restock alerts, launch alerts, and promotional offers. Unsubscribe anytime.
+                    </p>
                 </div>
             </div>
         </div>
