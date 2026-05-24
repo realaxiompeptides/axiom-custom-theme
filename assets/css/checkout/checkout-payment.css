@@ -1228,3 +1228,117 @@ button[name="woocommerce_checkout_place_order"] {
     padding: 11px 4px 16px !important;
   }
 }
+
+/* =========================================================
+   Axiom Checkout Payment Cards - Selected Blue Glow
+   ONLY changes payment method card selected/hover styling.
+   Put at the VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+/* Make each payment method feel like a clean card */
+.woocommerce-checkout #payment ul.payment_methods li {
+  position: relative !important;
+  border: 2px solid #dbe7f3 !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  margin: 0 0 14px !important;
+  padding: 20px 22px !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease !important;
+}
+
+/* Remove the old connected borders from the UL list look */
+.woocommerce-checkout #payment ul.payment_methods {
+  border: 0 !important;
+  background: transparent !important;
+  overflow: visible !important;
+  display: grid !important;
+  gap: 0 !important;
+}
+
+/* Hover effect */
+.woocommerce-checkout #payment ul.payment_methods li:hover {
+  border-color: rgba(74, 167, 232, 0.55) !important;
+  box-shadow: 0 14px 32px rgba(47, 132, 191, 0.10) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Selected payment method: brand blue glow */
+.woocommerce-checkout #payment ul.payment_methods li:has(input[type="radio"]:checked),
+.woocommerce-checkout #payment ul.payment_methods li:has(input.input-radio:checked) {
+  border-color: #4aa7e8 !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.12),
+    0 18px 42px rgba(47, 132, 191, 0.18) !important;
+}
+
+/* Radio buttons: brand blue */
+.woocommerce-checkout #payment ul.payment_methods li input[type="radio"],
+.woocommerce-checkout #payment ul.payment_methods li input.input-radio {
+  width: 22px !important;
+  height: 22px !important;
+  accent-color: #4aa7e8 !important;
+  margin: 1px 14px 0 0 !important;
+}
+
+/* Label text cleaner */
+.woocommerce-checkout #payment ul.payment_methods li > label {
+  color: #07111f !important;
+  font-size: 16px !important;
+  font-weight: 950 !important;
+  line-height: 1.2 !important;
+}
+
+/* Selected label slightly stronger */
+.woocommerce-checkout #payment ul.payment_methods li:has(input[type="radio"]:checked) > label,
+.woocommerce-checkout #payment ul.payment_methods li:has(input.input-radio:checked) > label {
+  color: #07111f !important;
+}
+
+/* Payment description box inside selected method */
+.woocommerce-checkout #payment div.payment_box {
+  border-color: rgba(74, 167, 232, 0.20) !important;
+  background: #f8fbff !important;
+  border-radius: 18px !important;
+}
+
+/* Make Pay by Bank look slightly premium, but still blue brand style */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_bacs:has(input[type="radio"]:checked),
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_link_money:has(input[type="radio"]:checked),
+.woocommerce-checkout #payment ul.payment_methods li[class*="bank"]:has(input[type="radio"]:checked),
+.woocommerce-checkout #payment ul.payment_methods li[class*="link"]:has(input[type="radio"]:checked) {
+  border-color: #4aa7e8 !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.20), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #eef9ff 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.14),
+    0 20px 46px rgba(47, 132, 191, 0.20) !important;
+}
+
+/* Mobile polish */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods li {
+    padding: 18px 16px !important;
+    border-radius: 18px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods li > label {
+    font-size: 15.5px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods li input[type="radio"],
+  .woocommerce-checkout #payment ul.payment_methods li input.input-radio {
+    width: 21px !important;
+    height: 21px !important;
+    margin-right: 12px !important;
+  }
+}
