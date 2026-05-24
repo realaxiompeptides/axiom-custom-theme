@@ -353,34 +353,8 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
             <?php endif; ?>
 
             <div class="product-conversion-panel">
-              <div class="product-delivery-box">
-                <div class="product-delivery-row">
-                  <div class="product-delivery-icon">
-                    <i class="fa-solid fa-truck-fast"></i>
-                  </div>
-                  <div>
-                    <strong>Estimated delivery: 3–5 business days</strong>
-                    <span>Orders placed before 2 PM PST are prepared for same-day shipping.</span>
-                  </div>
-                </div>
 
-                <div class="product-delivery-row">
-                  <div class="product-delivery-icon">
-                    <i class="fa-solid fa-location-dot"></i>
-                  </div>
-                  <div>
-                    <strong>Ships from the United States</strong>
-                    <span>Fulfilled domestically with tracking provided after shipment.</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="product-payment-section">
-                <div class="product-payment-title">
-                  <i class="fa-solid fa-lock"></i>
-                  <span>Secure checkout options</span>
-                </div>
-
+              <div class="product-payment-section product-payment-section-tight">
                 <div class="product-payment-icons">
                   <span class="payment-icon-pill" aria-label="Visa"><i class="fa-brands fa-cc-visa"></i></span>
                   <span class="payment-icon-pill" aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
@@ -399,31 +373,40 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
                 </div>
               </div>
 
-              <div class="product-confidence-grid">
-                <div class="product-confidence-card">
-                  <i class="fa-solid fa-flag-usa"></i>
-                  <strong>USA Shipped</strong>
-                  <span>Fulfilled from the United States.</span>
+              <div class="product-mini-trust-row">
+                <div class="product-mini-trust-item">
+                  <i class="fa-solid fa-truck-fast"></i>
+                  <span>3–5 day delivery</span>
                 </div>
 
-                <div class="product-confidence-card">
+                <div class="product-mini-trust-item">
+                  <i class="fa-solid fa-clock"></i>
+                  <span>Same-day ship before 2 PM PST</span>
+                </div>
+
+                <div class="product-mini-trust-item">
                   <i class="fa-solid fa-lock"></i>
-                  <strong>SSL Secure</strong>
-                  <span>Encrypted checkout experience.</span>
-                </div>
-
-                <div class="product-confidence-card">
-                  <i class="fa-solid fa-file-shield"></i>
-                  <strong>COA Available</strong>
-                  <span>Testing documentation when provided.</span>
-                </div>
-
-                <div class="product-confidence-card">
-                  <i class="fa-solid fa-flask-vial"></i>
-                  <strong>Research Use Only</strong>
-                  <span>For laboratory research use only.</span>
+                  <span>SSL secure checkout</span>
                 </div>
               </div>
+
+              <div class="product-secondary-trust-row">
+                <div class="product-secondary-trust-item">
+                  <i class="fa-solid fa-flag-usa"></i>
+                  <span>USA shipped</span>
+                </div>
+
+                <div class="product-secondary-trust-item">
+                  <i class="fa-solid fa-file-shield"></i>
+                  <span>COA available</span>
+                </div>
+
+                <div class="product-secondary-trust-item">
+                  <i class="fa-solid fa-box"></i>
+                  <span>Tracked package</span>
+                </div>
+              </div>
+
             </div>
 
           </div>
