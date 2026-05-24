@@ -71,6 +71,7 @@ if ($is_variable) {
 
     foreach ($available_variations as $variation) {
         $variation_obj = wc_get_product($variation['variation_id']);
+
         if (!$variation_obj) {
             continue;
         }
@@ -193,6 +194,7 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
 <main class="product-main">
   <section class="product-shell">
     <div class="container">
+
       <div class="product-breadcrumbs-wrap">
         <div class="product-breadcrumbs">
           <a href="<?php echo esc_url(home_url('/')); ?>">Home</a>
@@ -204,22 +206,25 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
       </div>
 
       <div class="product-layout">
-        <div class="product-gallery-card">
-          <?php if ($is_on_sale) : ?>
-            <div class="product-badge">Sale</div>
-          <?php endif; ?>
 
-          <div class="product-gallery-main">
-            <img id="productMainImage" src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" />
+        <div class="product-gallery-stack">
+          <div class="product-gallery-card">
+            <?php if ($is_on_sale) : ?>
+              <div class="product-badge">Sale</div>
+            <?php endif; ?>
+
+            <div class="product-gallery-main">
+              <img id="productMainImage" src="<?php echo esc_url($product_image_url); ?>" alt="<?php echo esc_attr($product_name); ?>" />
+            </div>
+
+            <?php
+            $product_image_trust_icons = get_template_directory() . '/product-page/product-image-trust-icons.php';
+            if (file_exists($product_image_trust_icons)) {
+                include $product_image_trust_icons;
+            }
+            ?>
           </div>
         </div>
-
-        <?php
-        $product_image_trust_icons = get_template_directory() . '/product-page/product-image-trust-icons.php';
-        if (file_exists($product_image_trust_icons)) {
-            include $product_image_trust_icons;
-        }
-        ?>
 
         <div class="product-info-card">
           <h1 id="productName"><?php echo esc_html($product_name); ?></h1>
@@ -352,12 +357,15 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
               <span class="payment-icon-pill" aria-label="Mastercard"><i class="fa-brands fa-cc-mastercard"></i></span>
               <span class="payment-icon-pill" aria-label="American Express"><i class="fa-brands fa-cc-amex"></i></span>
               <span class="payment-icon-pill" aria-label="Discover"><i class="fa-brands fa-cc-discover"></i></span>
+
               <span class="payment-icon-pill payment-icon-image-pill" aria-label="Venmo">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/venmo.jpg'); ?>" alt="Venmo">
               </span>
+
               <span class="payment-icon-pill payment-icon-image-pill" aria-label="Zelle">
                 <img src="<?php echo esc_url(get_template_directory_uri() . '/assets/images/zelle.jpg'); ?>" alt="Zelle">
               </span>
+
               <span class="payment-icon-pill" aria-label="Crypto"><i class="fa-brands fa-bitcoin"></i></span>
             </div>
 
@@ -390,8 +398,10 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
                 </div>
               </div>
             </div>
+
           </div>
         </div>
+
       </div>
 
       <section class="product-description-card">
@@ -429,12 +439,14 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
           <div class="product-disclaimer-icon">
             <i class="fa-solid fa-triangle-exclamation"></i>
           </div>
+
           <div class="product-disclaimer-copy">
             <strong>Research Use Only</strong>
             <p>This product is intended strictly for laboratory, analytical, and in-vitro research use only. Not for human or veterinary consumption. By purchasing, you confirm that the material will be used only in a controlled research setting.</p>
           </div>
         </div>
       </section>
+
     </div>
   </section>
 </main>
@@ -524,6 +536,7 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
               src="<?php echo esc_url($first_coa['thumb']); ?>"
               alt="<?php echo esc_attr($first_coa['title']); ?>"
             />
+
             <div id="productCoaModalPdfState" class="product-coa-modal-pdf-state" hidden>
               <span class="product-coa-modal-pdf-badge">PDF</span>
               <p>This COA is a PDF file.</p>
@@ -538,6 +551,7 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
             </div>
           <?php else : ?>
             <img id="productCoaModalImage" class="product-coa-modal-image" src="" alt="" hidden />
+
             <div id="productCoaModalPdfState" class="product-coa-modal-pdf-state">
               <span class="product-coa-modal-pdf-badge">PDF</span>
               <p>This COA is a PDF file.</p>
