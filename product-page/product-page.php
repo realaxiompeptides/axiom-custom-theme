@@ -12,6 +12,50 @@ if (!$product) {
     return;
 }
 
+if (!function_exists('axiom_product_add_business_days')) {
+    function axiom_product_add_business_days($date, $days) {
+        $result = clone $date;
+        $added = 0;
+
+        while ($added < $days) {
+            $result = $result->modify('+1 day');
+            $day_of_week = (int) $result->format('N');
+
+            if ($day_of_week < 6) {
+                $added++;
+            }
+        }
+
+        return $result;
+    }
+}
+
+if (!function_exists('axiom_product_delivery_window_text')) {
+    function axiom_product_delivery_window_text() {
+        $now = function_exists('current_datetime') ? current_datetime() : new DateTimeImmutable('now');
+
+        $ship_date = clone $now;
+        $day_of_week = (int) $ship_date->format('N');
+        $hour = (int) $ship_date->format('G');
+
+        if ($day_of_week >= 6 || $hour >= 14) {
+            do {
+                $ship_date = $ship_date->modify('+1 day');
+                $day_of_week = (int) $ship_date->format('N');
+            } while ($day_of_week >= 6);
+        }
+
+        $start = axiom_product_add_business_days($ship_date, 3);
+        $end   = axiom_product_add_business_days($ship_date, 5);
+
+        if ($start->format('M') === $end->format('M')) {
+            return $start->format('M j') . ' – ' . $end->format('j');
+        }
+
+        return $start->format('M j') . ' – ' . $end->format('M j');
+    }
+}
+
 $product_id        = $product->get_id();
 $product_name      = $product->get_name();
 $product_image_id  = $product->get_image_id();
@@ -21,6 +65,7 @@ $product_long      = $product->get_description();
 $product_price     = $product->get_price_html();
 $is_variable       = $product->is_type('variable');
 $is_on_sale        = $product->is_on_sale();
+$delivery_window   = axiom_product_delivery_window_text();
 
 $regular_price = $product->get_regular_price();
 $sale_price    = $product->get_sale_price();
@@ -375,35 +420,44 @@ $first_coa     = $coa_has_items ? $coa_items[0] : null;
 
               <div class="product-mini-trust-row">
                 <div class="product-mini-trust-item">
-                  <i class="fa-solid fa-truck-fast"></i>
-                  <span>3–5 day delivery</span>
-                </div>
-
-                <div class="product-mini-trust-item">
-                  <i class="fa-solid fa-clock"></i>
-                  <span>Same-day ship before 2 PM PST</span>
+                  <i class="fa-solid fa-calendar-days"></i>
+                  <span>Delivery <?php echo esc_html($delivery_window); ?></span>
                 </div>
 
                 <div class="product-mini-trust-item">
                   <i class="fa-solid fa-lock"></i>
-                  <span>SSL secure checkout</span>
-                </div>
-              </div>
-
-              <div class="product-secondary-trust-row">
-                <div class="product-secondary-trust-item">
-                  <i class="fa-solid fa-flag-usa"></i>
-                  <span>USA shipped</span>
+                  <span>Secure checkout</span>
                 </div>
 
-                <div class="product-secondary-trust-item">
+                <div class="product-mini-trust-item">
                   <i class="fa-solid fa-file-shield"></i>
                   <span>COA available</span>
                 </div>
+              </div>
 
-                <div class="product-secondary-trust-item">
-                  <i class="fa-solid fa-box"></i>
-                  <span>Tracked package</span>
+              <div class="product-assurance-grid">
+                <div class="product-assurance-card">
+                  <i class="fa-solid fa-truck-fast"></i>
+                  <div>
+                    <strong>Same-day shipping</strong>
+                    <span>Orders placed before 2 PM PST are prepared for same-day shipment.</span>
+                  </div>
+                </div>
+
+                <div class="product-assurance-card">
+                  <i class="fa-solid fa-shield-halved"></i>
+                  <div>
+                    <strong>30-day money-back guarantee</strong>
+                    <span>Not satisfied? Contact us and we will help make it right.</span>
+                  </div>
+                </div>
+
+                <div class="product-assurance-card">
+                  <i class="fa-solid fa-flag-usa"></i>
+                  <div>
+                    <strong>USA shipped</strong>
+                    <span>Fulfilled from the United States with tracking after shipment.</span>
+                  </div>
                 </div>
               </div>
 
