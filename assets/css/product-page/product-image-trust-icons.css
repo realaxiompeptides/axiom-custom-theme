@@ -1,42 +1,43 @@
 .axiom-product-image-trust-icons {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 10px !important;
-    margin: 12px 0 20px !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    margin: 18px 0 0 !important;
+    width: 100% !important;
 }
 
 .axiom-product-image-trust-item {
-    min-height: 70px !important;
-    padding: 12px 8px !important;
-    border-radius: 16px !important;
-    border: 1px solid rgba(7, 17, 31, 0.08) !important;
-    background: rgba(255, 255, 255, 0.78) !important;
-    box-shadow: 0 8px 20px rgba(7, 17, 31, 0.04) !important;
+    min-height: 76px !important;
+    padding: 14px 10px !important;
+    border-radius: 18px !important;
+    border: 1px solid rgba(15, 23, 42, 0.09) !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 9px !important;
     text-align: center !important;
 }
 
 .axiom-product-image-trust-item i {
-    color: #07111f !important;
-    font-size: 19px !important;
+    color: #244aa5 !important;
+    font-size: 20px !important;
     line-height: 1 !important;
 }
 
 .axiom-product-image-trust-item span {
-    color: #344054 !important;
+    color: #0f172a !important;
     font-size: 13px !important;
-    line-height: 1.1 !important;
-    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    font-weight: 900 !important;
 }
 
 @media (max-width: 768px) {
     .axiom-product-image-trust-icons {
         gap: 8px !important;
-        margin: 10px 0 18px !important;
+        margin-top: 14px !important;
     }
 
     .axiom-product-image-trust-item {
@@ -46,10 +47,25 @@
     }
 
     .axiom-product-image-trust-item i {
-        font-size: 18px !important;
+        font-size: 17px !important;
     }
 
     .axiom-product-image-trust-item span {
-        font-size: 12px !important;
+        font-size: 11px !important;
+        line-height: 1.1 !important;
+    }
+}
+
+@media (max-width: 390px) {
+    .axiom-product-image-trust-icons {
+        grid-template-columns: 1fr !important;
+    }
+
+    .axiom-product-image-trust-item {
+        min-height: 52px !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        padding: 12px 14px !important;
+        text-align: left !important;
     }
 }
