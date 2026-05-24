@@ -26,7 +26,8 @@ $contact_url      = home_url('/contact-us/');
 
                     <p class="axap-hero-text">
                         Join the Axiom partner program and earn commission from approved referred orders.
-                        Get a referral link, affiliate dashboard, and the ability to request a custom partner code after approval.
+                        Get a referral link, affiliate dashboard, lifetime recurring earning potential,
+                        and the ability to request a custom partner code after approval.
                     </p>
 
                     <div class="axap-hero-actions">
@@ -41,28 +42,53 @@ $contact_url      = home_url('/contact-us/');
 
                     <div class="axap-proof-row">
                         <span><i class="fa-solid fa-percent"></i> Starts at 10%</span>
-                        <span><i class="fa-solid fa-cookie-bite"></i> 30-day tracking</span>
-                        <span><i class="fa-solid fa-chart-line"></i> Dashboard access</span>
+                        <span><i class="fa-solid fa-bolt"></i> Instant approval</span>
+                        <span><i class="fa-solid fa-rotate"></i> Lifetime recurring</span>
+                        <span><i class="fa-solid fa-dollar-sign"></i> $1 minimum payout</span>
+                    </div>
+
+                    <div class="axap-hero-stats">
+                        <div class="axap-hero-stat">
+                            <strong>$50K+</strong>
+                            <span>Paid to date</span>
+                        </div>
+
+                        <div class="axap-hero-stat">
+                            <strong>24hr</strong>
+                            <span>Avg. approval</span>
+                        </div>
+
+                        <div class="axap-hero-stat">
+                            <strong>4.9★</strong>
+                            <span>Partner rating</span>
+                        </div>
+
+                        <div class="axap-hero-stat">
+                            <strong>$1</strong>
+                            <span>Minimum payout</span>
+                        </div>
                     </div>
                 </div>
 
                 <aside class="axap-hero-card axap-reveal">
                     <div class="axap-rating-line">
                         <span>Partner setup</span>
-                        <strong>Simple</strong>
+                        <strong>Fast</strong>
                     </div>
 
                     <div class="axap-big-percent">10%</div>
-                    <p>Starting commission on approved referred sales.</p>
+                    <p>
+                        Starting commission on approved referred sales, with higher rates available for proven partners.
+                    </p>
 
                     <div class="axap-mini-grid">
                         <div>
-                            <strong>30 days</strong>
-                            <span>Cookie window</span>
+                            <strong>24hr</strong>
+                            <span>Avg. approval</span>
                         </div>
                         <div>
-                            <strong>Code</strong>
-                            <span>Request yours</span>
+                            <strong>$1</strong>
+                            <span>Minimum payout</span>
                         </div>
                     </div>
 
@@ -81,13 +107,13 @@ $contact_url      = home_url('/contact-us/');
                 <div>
                     <i class="fa-solid fa-sack-dollar"></i>
                     <strong>10% Base Commission</strong>
-                    <span>Starts at 10%. Higher rates may be offered to proven partners.</span>
+                    <span>Start at 10%. Higher rates may be offered to proven partners.</span>
                 </div>
 
                 <div>
-                    <i class="fa-solid fa-clock"></i>
-                    <strong>30-Day Tracking</strong>
-                    <span>Referrals are tracked for 30 days after a qualified click.</span>
+                    <i class="fa-solid fa-bolt"></i>
+                    <strong>Fast Approval</strong>
+                    <span>Applications can be approved quickly when details are complete.</span>
                 </div>
 
                 <div>
@@ -101,6 +127,57 @@ $contact_url      = home_url('/contact-us/');
                     <strong>Affiliate Dashboard</strong>
                     <span>Track visits, referrals, commissions, and payout status.</span>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="axap-section axap-payout-section">
+        <div class="axap-shell">
+            <div class="axap-payout-grid">
+
+                <div class="axap-payout-card dark axap-reveal">
+                    <p class="axap-eyebrow">Monthly payouts</p>
+                    <h2>Simple payouts. Real recurring upside.</h2>
+                    <p>
+                        Axiom affiliates can earn from approved referred orders with monthly payouts,
+                        a $1 minimum payout, and lifetime recurring earning potential from customers they refer.
+                    </p>
+
+                    <div class="axap-payout-pills">
+                        <span><i class="fa-solid fa-calendar-check"></i> Monthly payouts</span>
+                        <span><i class="fa-solid fa-dollar-sign"></i> $1 minimum payout</span>
+                        <span><i class="fa-solid fa-rotate"></i> Lifetime recurring</span>
+                        <span><i class="fa-solid fa-bolt"></i> 24-hour approval</span>
+                    </div>
+                </div>
+
+                <div class="axap-payout-card axap-reveal">
+                    <p class="axap-eyebrow">Partner stats</p>
+                    <h3>Built to be affiliate-friendly.</h3>
+
+                    <div class="axap-payout-mini">
+                        <div>
+                            <strong>$50K+</strong>
+                            <span>Paid to date</span>
+                        </div>
+
+                        <div>
+                            <strong>4.9★</strong>
+                            <span>Partner rating</span>
+                        </div>
+
+                        <div>
+                            <strong>24hr</strong>
+                            <span>Avg. approval</span>
+                        </div>
+
+                        <div>
+                            <strong>$1</strong>
+                            <span>Minimum payout</span>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
@@ -127,18 +204,18 @@ $contact_url      = home_url('/contact-us/');
                         </div>
 
                         <div class="axap-feature">
-                            <div class="axap-feature-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                            <div class="axap-feature-icon"><i class="fa-solid fa-rotate"></i></div>
                             <div>
-                                <strong>Easy to promote</strong>
-                                <span>Use your link or partner code in posts, communities, messages, and content.</span>
+                                <strong>Lifetime recurring potential</strong>
+                                <span>Build more than one-time referrals with recurring earning potential from referred customers.</span>
                             </div>
                         </div>
 
                         <div class="axap-feature">
                             <div class="axap-feature-icon"><i class="fa-solid fa-user-check"></i></div>
                             <div>
-                                <strong>Manual approval</strong>
-                                <span>We review applicants so the program stays high quality and protected.</span>
+                                <strong>Fast approval</strong>
+                                <span>Complete applications can be reviewed quickly so strong partners can start promoting faster.</span>
                             </div>
                         </div>
                     </div>
@@ -146,7 +223,7 @@ $contact_url      = home_url('/contact-us/');
 
                 <div class="axap-calculator axap-reveal" id="axapCalculator">
                     <div class="axap-calc-top">
-                        <p class="axap-eyebrow">Earnings calculator</p>
+                        <p class="axap-eyebrow">Live earnings calculator</p>
                         <h3>Estimate your monthly potential</h3>
                         <span>Based on 10% starting commission.</span>
                     </div>
@@ -213,7 +290,7 @@ $contact_url      = home_url('/contact-us/');
                 <div class="axap-step axap-reveal">
                     <span>02</span>
                     <h3>Get approved</h3>
-                    <p>After review, you receive affiliate access, tracking, and your partner dashboard.</p>
+                    <p>Complete applications can be reviewed quickly, with approval possible within 24 hours.</p>
                 </div>
 
                 <div class="axap-step axap-reveal">
@@ -293,13 +370,23 @@ $contact_url      = home_url('/contact-us/');
                 </details>
 
                 <details class="axap-faq axap-reveal">
-                    <summary>Can I request a custom partner code?</summary>
-                    <p>Yes. You can request a custom code during signup or contact support after approval.</p>
+                    <summary>Is there a minimum payout?</summary>
+                    <p>Yes. The affiliate program has a $1 minimum payout.</p>
                 </details>
 
                 <details class="axap-faq axap-reveal">
-                    <summary>How long does tracking last?</summary>
-                    <p>The standard affiliate cookie window is 30 days.</p>
+                    <summary>How fast is approval?</summary>
+                    <p>Complete applications can be reviewed quickly, with approval possible within 24 hours.</p>
+                </details>
+
+                <details class="axap-faq axap-reveal">
+                    <summary>Do affiliates get recurring earnings?</summary>
+                    <p>Yes. Axiom offers lifetime recurring earning potential from approved referred customers.</p>
+                </details>
+
+                <details class="axap-faq axap-reveal">
+                    <summary>Can I request a custom partner code?</summary>
+                    <p>Yes. You can request a custom code during signup or contact support after approval.</p>
                 </details>
 
                 <details class="axap-faq axap-reveal">
