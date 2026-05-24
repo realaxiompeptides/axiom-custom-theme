@@ -1342,3 +1342,96 @@ button[name="woocommerce_checkout_place_order"] {
     margin-right: 12px !important;
   }
 }
+
+/* =========================================================
+   FIX: Only one payment card can show selected blue glow
+   Put this at the VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+/* Reset all payment cards first */
+.woocommerce-checkout #payment ul.payment_methods > li {
+  position: relative !important;
+  border: 2px solid #dbe7f3 !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  margin: 0 0 14px !important;
+  padding: 20px 22px !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
+  transform: none !important;
+}
+
+/* Keep payment methods separated, not connected */
+.woocommerce-checkout #payment ul.payment_methods {
+  border: 0 !important;
+  background: transparent !important;
+  overflow: visible !important;
+  display: grid !important;
+  gap: 0 !important;
+}
+
+/* Hover only */
+.woocommerce-checkout #payment ul.payment_methods > li:hover {
+  border-color: rgba(74, 167, 232, 0.45) !important;
+  box-shadow: 0 14px 32px rgba(47, 132, 191, 0.10) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* IMPORTANT:
+   Selected state ONLY checks the direct WooCommerce payment radio,
+   not nested radios inside the payment box.
+*/
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input.input-radio:checked),
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input[type="radio"]:checked) {
+  border-color: #4aa7e8 !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.12),
+    0 18px 42px rgba(47, 132, 191, 0.18) !important;
+  transform: none !important;
+}
+
+/* Radio button blue */
+.woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
+.woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
+  width: 22px !important;
+  height: 22px !important;
+  accent-color: #4aa7e8 !important;
+  margin: 1px 14px 0 0 !important;
+}
+
+/* Make only the selected method's main radio blue/fill cleanly */
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input.input-radio:checked) > input.input-radio,
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input[type="radio"]:checked) > input[type="radio"] {
+  accent-color: #4aa7e8 !important;
+}
+
+/* Prevent nested radios inside payment descriptions from styling the whole card */
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box input[type="radio"] {
+  accent-color: #4aa7e8 !important;
+}
+
+/* Payment box still looks clean, but does not trigger the outer selected state */
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box {
+  margin-top: 16px !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  background: #f8fbff !important;
+  border-radius: 18px !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods > li {
+    padding: 18px 16px !important;
+    border-radius: 18px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
+  .woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
+    width: 21px !important;
+    height: 21px !important;
+    margin-right: 12px !important;
+  }
+}
