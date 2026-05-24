@@ -1024,3 +1024,158 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 8.5px !important;
   }
 }
+
+/* =========================================================
+   FINAL FIX: Place Order Trust Icons - Same Blue + Even Alignment
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+.axiom-place-order-trust-icons {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+  align-items: stretch !important;
+}
+
+.axiom-place-order-trust-item {
+  display: grid !important;
+  grid-template-rows: 34px auto auto !important;
+  align-items: start !important;
+  justify-items: center !important;
+  min-height: 92px !important;
+  height: 92px !important;
+  padding: 12px 5px 10px !important;
+  border: 1px solid rgba(74, 167, 232, 0.26) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%) !important;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.045) !important;
+  text-align: center !important;
+  overflow: hidden !important;
+}
+
+/* Same exact brand-blue icon box for all four */
+.axiom-place-order-trust-emoji,
+.axiom-place-order-trust-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 16px rgba(47, 132, 191, 0.24) !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+.axiom-place-order-trust-emoji i,
+.axiom-place-order-trust-icon i,
+.axiom-place-order-trust-item i,
+.axiom-place-order-trust-item svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+/* Kill different nth-child colors from earlier CSS */
+.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-emoji,
+.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-icon,
+.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-emoji,
+.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-icon,
+.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-emoji,
+.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-icon,
+.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-emoji,
+.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-icon {
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  box-shadow: 0 8px 16px rgba(47, 132, 191, 0.24) !important;
+}
+
+.axiom-place-order-trust-item strong {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+  margin: 6px 0 0 !important;
+  color: #07111f !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+  text-align: center !important;
+}
+
+.axiom-place-order-trust-item small {
+  display: flex !important;
+  align-items: start !important;
+  justify-content: center !important;
+  min-height: 20px !important;
+  margin: 4px 0 0 !important;
+  color: #64748b !important;
+  font-size: 9.5px !important;
+  font-weight: 750 !important;
+  line-height: 1.08 !important;
+  text-align: center !important;
+}
+
+/* Mobile: still one clean row */
+@media (max-width: 767px) {
+  .axiom-place-order-trust-icons {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .axiom-place-order-trust-item {
+    height: 90px !important;
+    min-height: 90px !important;
+    padding: 11px 4px 9px !important;
+    border-radius: 15px !important;
+  }
+
+  .axiom-place-order-trust-emoji,
+  .axiom-place-order-trust-icon {
+    width: 31px !important;
+    height: 31px !important;
+    border-radius: 12px !important;
+  }
+
+  .axiom-place-order-trust-item strong {
+    font-size: 10.5px !important;
+  }
+
+  .axiom-place-order-trust-item small {
+    font-size: 9px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .axiom-place-order-trust-icons {
+    gap: 5px !important;
+  }
+
+  .axiom-place-order-trust-item {
+    height: 86px !important;
+    min-height: 86px !important;
+    padding: 10px 3px 8px !important;
+    border-radius: 13px !important;
+  }
+
+  .axiom-place-order-trust-emoji,
+  .axiom-place-order-trust-icon {
+    width: 28px !important;
+    height: 28px !important;
+    border-radius: 10px !important;
+  }
+
+  .axiom-place-order-trust-item strong {
+    font-size: 9.6px !important;
+  }
+
+  .axiom-place-order-trust-item small {
+    font-size: 8.4px !important;
+  }
+}
