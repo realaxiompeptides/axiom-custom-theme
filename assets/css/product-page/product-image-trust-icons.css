@@ -7,29 +7,29 @@
 }
 
 .axiom-product-image-trust-item {
-    min-height: 76px !important;
-    padding: 14px 10px !important;
+    min-height: 74px !important;
+    padding: 13px 10px !important;
     border-radius: 18px !important;
-    border: 1px solid rgba(15, 23, 42, 0.09) !important;
-    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%) !important;
+    border: 1px solid rgba(15, 23, 42, 0.08) !important;
+    background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%) !important;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 9px !important;
+    gap: 8px !important;
     text-align: center !important;
 }
 
 .axiom-product-image-trust-item i {
-    color: #244aa5 !important;
-    font-size: 20px !important;
+    color: #2563eb !important;
+    font-size: 19px !important;
     line-height: 1 !important;
 }
 
 .axiom-product-image-trust-item span {
     color: #0f172a !important;
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     line-height: 1.15 !important;
     font-weight: 900 !important;
 }
@@ -52,7 +52,6 @@
 
     .axiom-product-image-trust-item span {
         font-size: 11px !important;
-        line-height: 1.1 !important;
     }
 }
 
