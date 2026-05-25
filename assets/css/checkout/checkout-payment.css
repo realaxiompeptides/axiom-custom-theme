@@ -67,39 +67,107 @@
   margin: 0 !important;
   padding: 0 !important;
   list-style: none !important;
-  border: 1px solid #dbe7f3 !important;
-  border-radius: 22px !important;
-  background: #ffffff !important;
-  overflow: hidden;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  overflow: visible !important;
+  display: grid !important;
+  gap: 0 !important;
 }
 
-.woocommerce-checkout #payment ul.payment_methods li {
-  margin: 0 !important;
+.woocommerce-checkout #payment ul.payment_methods > li {
+  position: relative !important;
+  margin: 0 0 14px !important;
   padding: 20px 22px !important;
-  border-top: 1px solid #e7eef5 !important;
+  border: 2px solid #dbe7f3 !important;
+  border-radius: 20px !important;
+  background: #ffffff !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
+  transform: none !important;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease !important;
 }
 
-.woocommerce-checkout #payment ul.payment_methods li:first-child {
-  border-top: 0 !important;
+.woocommerce-checkout #payment ul.payment_methods > li:first-child {
+  border-top: 2px solid #dbe7f3 !important;
 }
 
-.woocommerce-checkout #payment ul.payment_methods li label {
-  color: #0f172a;
-  font-size: 16px;
-  font-weight: 900;
+.woocommerce-checkout #payment ul.payment_methods > li:hover {
+  border-color: rgba(74, 167, 232, 0.45) !important;
+  box-shadow: 0 14px 32px rgba(47, 132, 191, 0.10) !important;
+  transform: translateY(-1px) !important;
 }
 
-.woocommerce-checkout #payment div.payment_box {
-  margin: 12px 0 0 !important;
+/* selected payment card - only direct WooCommerce payment radio */
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input.input-radio:checked),
+.woocommerce-checkout #payment ul.payment_methods > li:has(> input[type="radio"]:checked) {
+  border-color: #4aa7e8 !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.12),
+    0 18px 42px rgba(47, 132, 191, 0.18) !important;
+  transform: none !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
+.woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
+  float: none !important;
+  display: inline-block !important;
+  vertical-align: top !important;
+  width: 22px !important;
+  height: 22px !important;
+  accent-color: #4aa7e8 !important;
+  margin: 1px 14px 0 0 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li > label {
+  display: inline-flex !important;
+  align-items: center !important;
+  vertical-align: top !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #07111f !important;
+  font-size: 16px !important;
+  font-weight: 950 !important;
+  line-height: 1.2 !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box {
+  clear: both !important;
+  margin: 16px 0 0 !important;
   padding: 16px 18px !important;
-  background: #f8fbff !important;
-  border: 1px solid #dbe7f3 !important;
-  color: #5f6f84 !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
   border-radius: 18px !important;
+  background: #f8fbff !important;
+  color: #5f6f84 !important;
+  box-shadow: none !important;
 }
 
-.woocommerce-checkout #payment div.payment_box::before {
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box::before {
   display: none !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box input[type="radio"],
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box input.input-radio {
+  accent-color: #4aa7e8 !important;
+}
+
+/* specifically helps the card gateway title stay beside the radio */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_woo_merchant_gateway > label,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce > label,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_cod > label,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_bacs > label {
+  display: inline-flex !important;
+  align-items: center !important;
+  width: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 /* Gift card plugin styling */
@@ -442,130 +510,89 @@ button[name="woocommerce_checkout_place_order"] {
   margin: 0 !important;
 }
 
+/* Place Order Trust Icons */
 .axiom-place-order-trust-icons {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 8px !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-top: 16px !important;
+  padding: 0 !important;
+  align-items: stretch !important;
 }
 
 .axiom-place-order-trust-item {
-  padding: 16px 10px;
-  border: 1px solid #d9e4f0;
-  border-radius: 18px;
-  background: #ffffff;
-  text-align: center;
+  display: grid !important;
+  grid-template-rows: 34px auto auto !important;
+  align-items: start !important;
+  justify-items: center !important;
+  min-width: 0 !important;
+  min-height: 104px !important;
+  height: 104px !important;
+  padding: 12px 6px 16px !important;
+  border: 1px solid rgba(74, 167, 232, 0.26) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%) !important;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.045) !important;
+  text-align: center !important;
+  overflow: hidden !important;
+  align-content: start !important;
 }
 
-.axiom-place-order-trust-emoji {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 24px;
-  line-height: 1;
+.axiom-place-order-trust-emoji,
+.axiom-place-order-trust-icon {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 32px !important;
+  height: 32px !important;
+  margin: 0 !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 16px rgba(47, 132, 191, 0.24) !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+}
+
+.axiom-place-order-trust-emoji i,
+.axiom-place-order-trust-icon i,
+.axiom-place-order-trust-item i,
+.axiom-place-order-trust-item svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
 }
 
 .axiom-place-order-trust-item strong {
-  display: block;
-  color: #26314b;
-  font-size: 16px;
-  font-weight: 900;
-  line-height: 1.25;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 24px !important;
+  margin: 7px 0 0 !important;
+  color: #07111f !important;
+  font-size: 11px !important;
+  font-weight: 950 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.03em !important;
+  text-align: center !important;
+  max-width: 100% !important;
 }
 
 .axiom-place-order-trust-item small {
-  display: block;
-  margin-top: 5px;
-  color: #7b8798;
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-@media (max-width: 767px) {
-  .axiom-payment-subtotal-section {
-    margin-bottom: 24px;
-  }
-
-  .axiom-summary-card {
-    margin-bottom: 12px;
-  }
-
-  .axiom-summary-items {
-    padding: 16px 16px 8px;
-    gap: 12px;
-  }
-
-  .axiom-summary-item {
-    padding: 14px;
-    border-radius: 20px;
-  }
-
-  .axiom-summary-thumb {
-    width: 60px;
-    height: 60px;
-    flex: 0 0 60px;
-    border-radius: 16px;
-  }
-
-  .axiom-summary-copy strong {
-    font-size: 16px;
-  }
-
-  .axiom-summary-copy span {
-    font-size: 13px;
-  }
-
-  .axiom-summary-price {
-    font-size: 17px;
-  }
-
-  .axiom-summary-totals,
-  .axiom-summary-benefits {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .axiom-summary-row span,
-  .axiom-summary-row strong {
-    font-size: 15px;
-  }
-
-  .axiom-summary-row.axiom-summary-total span,
-  .axiom-summary-row.axiom-summary-total strong {
-    font-size: 20px;
-  }
-
-  .axiom-summary-benefit {
-    font-size: 14px;
-  }
-
-  .axiom-place-order-trust-icons {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-
-  .axiom-place-order-trust-item {
-    padding: 14px 8px;
-    border-radius: 16px;
-  }
-
-  .axiom-place-order-trust-item strong {
-    font-size: 15px;
-  }
-
-  .axiom-place-order-trust-item small {
-    font-size: 12px;
-  }
-
-  .wc_gc_cart_redeem_form,
-  .wc_gc_checkout_redeem_form,
-  .wc_gc_redeem_form,
-  .woocommerce-gift-cards-form,
-  .giftcard-section,
-  .giftcard_form,
-  .wc-gift-card-form {
-    padding: 16px !important;
-    border-radius: 20px !important;
-  }
+  display: flex !important;
+  align-items: start !important;
+  justify-content: center !important;
+  min-height: 20px !important;
+  margin: 6px 0 0 !important;
+  padding-bottom: 2px !important;
+  color: #64748b !important;
+  font-size: 9.5px !important;
+  font-weight: 750 !important;
+  line-height: 1.12 !important;
+  text-align: center !important;
+  max-width: 100% !important;
 }
 
 /* aggressive gift card styling fallback */
@@ -668,60 +695,7 @@ button[name="woocommerce_checkout_place_order"] {
   pointer-events: none;
 }
 
-@media (max-width: 767px) {
-  .axiom-inline-coupon-row {
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .axiom-inline-coupon-button {
-    flex: 1 1 auto;
-    width: 100%;
-    margin-top: 0;
-  }
-}
-
-/* --- fix payment method title alignment --- */
-.woocommerce-checkout #payment ul.payment_methods li {
-  position: relative;
-}
-
-.woocommerce-checkout #payment ul.payment_methods li > input[type="radio"] {
-  float: none !important;
-  display: inline-block !important;
-  vertical-align: top !important;
-  margin: 2px 14px 0 0 !important;
-}
-
-.woocommerce-checkout #payment ul.payment_methods li > label {
-  display: inline-flex !important;
-  align-items: center !important;
-  vertical-align: top !important;
-  width: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  line-height: 1.2 !important;
-}
-
-/* specifically helps the card gateway title stay beside the radio */
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_woo_merchant_gateway > label,
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce > label,
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_cod > label,
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_bacs > label {
-  display: inline-flex !important;
-  align-items: center !important;
-  width: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
-
-/* keep payment description box lower, not the title */
-.woocommerce-checkout #payment div.payment_box {
-  clear: both !important;
-  margin: 16px 0 0 !important;
-}
-
-/* --- spacing between payment methods box and discount code section --- */
+/* spacing between payment methods box and discount code section */
 .axiom-payment-methods-section {
   margin-bottom: 28px !important;
 }
@@ -739,26 +713,10 @@ button[name="woocommerce_checkout_place_order"] {
   margin-bottom: 14px !important;
 }
 
-/* if your coupon heading is plain text right under payment methods */
 .axiom-inline-coupon-form,
 .axiom-inline-coupon-feedback,
 .axiom-inline-coupon-row {
   margin-top: 0 !important;
-}
-
-@media (max-width: 767px) {
-  .axiom-payment-methods-section {
-    margin-bottom: 24px !important;
-  }
-
-  .axiom-payment-coupon-box,
-  .axiom-payment-subtotal-section {
-    margin-top: 22px !important;
-  }
-
-  .woocommerce-checkout #payment ul.payment_methods li > input[type="radio"] {
-    margin-top: 1px !important;
-  }
 }
 
 /* remove the default Paymento image/banner completely */
@@ -767,45 +725,7 @@ button[name="woocommerce_checkout_place_order"] {
 .woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .crypto-accepted-here,
 .woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-accepted-here,
 .woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-banner,
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-gateway-banner {
-  display: none !important;
-}
-
-/* keep the crypto title on one line and make the 5% text normal text */
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce > label {
-  display: inline !important;
-  width: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  color: #0f172a !important;
-  font-size: 16px !important;
-  font-weight: 900 !important;
-  line-height: 1.2 !important;
-  white-space: normal !important;
-}
-
-/* remove the blue special styling from the appended discount text */
-.axiom-payment-discount-label {
-  color: #0f172a !important;
-  font-weight: 900 !important;
-  margin-left: 6px !important;
-  white-space: nowrap !important;
-}
-
-/* make sure no image spacing is left behind */
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce label img {
-  display: none !important;
-  width: 0 !important;
-  height: 0 !important;
-  margin: 0 !important;
-}
-
-/* keep the payment description box below nicely */
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .payment_box {
-  margin-top: 16px !important;
-}
-
-/* REMOVE ALL Paymento / crypto gateway images and banners */
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .paymento-gateway-banner,
 .woocommerce-checkout #payment li[class*="paymento"] img,
 .woocommerce-checkout #payment li[class*="paymento"] svg,
 .woocommerce-checkout #payment li[class*="paymento"] .payment_box img,
@@ -815,7 +735,6 @@ button[name="woocommerce_checkout_place_order"] {
   display: none !important;
 }
 
-/* make crypto title display clean like the others */
 .woocommerce-checkout #payment li[class*="paymento"] > label {
   display: inline-flex !important;
   align-items: center !important;
@@ -829,7 +748,6 @@ button[name="woocommerce_checkout_place_order"] {
   line-height: 1.2 !important;
 }
 
-/* remove leftover spacing from hidden banner */
 .woocommerce-checkout #payment li[class*="paymento"] label img {
   display: none !important;
   width: 0 !important;
@@ -837,12 +755,11 @@ button[name="woocommerce_checkout_place_order"] {
   margin: 0 !important;
 }
 
-/* keep payment box clean below title */
-.woocommerce-checkout #payment li[class*="paymento"] .payment_box {
+.woocommerce-checkout #payment li[class*="paymento"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods li.payment_method_paymento_gateway_for_woocommerce .payment_box {
   margin-top: 16px !important;
 }
 
-/* make discount text plain black if your span still exists */
 .axiom-payment-discount-label {
   color: #0f172a !important;
   font-weight: 900 !important;
@@ -850,113 +767,81 @@ button[name="woocommerce_checkout_place_order"] {
   white-space: nowrap !important;
 }
 
-/* =========================================================
-   Axiom Place Order Trust Icons - Premium 4 Across Upgrade
-   ONLY changes the four trust icons under the Place Order button.
-========================================================= */
-
-.axiom-place-order-trust-icons {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 10px !important;
-  width: 100% !important;
-  margin-top: 16px !important;
-  padding: 0 !important;
-}
-
-.axiom-place-order-trust-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-width: 0 !important;
-  min-height: 96px !important;
-  padding: 14px 8px !important;
-  border: 1px solid rgba(74, 167, 232, 0.26) !important;
-  border-radius: 18px !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f5fbff 100%) !important;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.045) !important;
-  text-align: center !important;
-  overflow: hidden !important;
-}
-
-/* Supports your current icon/emoji class AND Font Awesome icons */
-.axiom-place-order-trust-emoji,
-.axiom-place-order-trust-icon {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 36px !important;
-  height: 36px !important;
-  margin: 0 0 8px !important;
-  border-radius: 14px !important;
-  color: #ffffff !important;
-  font-size: 16px !important;
-  line-height: 1 !important;
-}
-
-.axiom-place-order-trust-emoji i,
-.axiom-place-order-trust-icon i,
-.axiom-place-order-trust-item i,
-.axiom-place-order-trust-item svg {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  font-size: 16px !important;
-  line-height: 1 !important;
-}
-
-/* 1: SSL */
-.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-icon {
-  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
-  box-shadow: 0 8px 18px rgba(74, 167, 232, 0.28) !important;
-}
-
-/* 2: Purity */
-.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-icon {
-  background: linear-gradient(135deg, #38bdf8 0%, #2563eb 100%) !important;
-  box-shadow: 0 8px 18px rgba(56, 189, 248, 0.25) !important;
-}
-
-/* 3: U.S. Based */
-.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-icon {
-  background: linear-gradient(135deg, #2563eb 0%, #1746a2 100%) !important;
-  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.25) !important;
-}
-
-/* 4: Same-Day Ship */
-.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-icon {
-  background: linear-gradient(135deg, #0ea5e9 0%, #1d4ed8 100%) !important;
-  box-shadow: 0 8px 18px rgba(14, 165, 233, 0.25) !important;
-}
-
-.axiom-place-order-trust-item strong {
-  display: block !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  color: #07111f !important;
-  font-size: 13px !important;
-  font-weight: 950 !important;
-  line-height: 1.12 !important;
-  letter-spacing: -0.02em !important;
-  overflow-wrap: normal !important;
-}
-
-.axiom-place-order-trust-item small {
-  display: block !important;
-  max-width: 100% !important;
-  margin: 5px 0 0 !important;
-  color: #64748b !important;
-  font-size: 11px !important;
-  font-weight: 700 !important;
-  line-height: 1.18 !important;
-}
-
-/* Mobile: force one row, not 2x2 */
 @media (max-width: 767px) {
+  .axiom-payment-subtotal-section {
+    margin-bottom: 24px;
+  }
+
+  .axiom-summary-card {
+    margin-bottom: 12px;
+  }
+
+  .axiom-summary-items {
+    padding: 16px 16px 8px;
+    gap: 12px;
+  }
+
+  .axiom-summary-item {
+    padding: 14px;
+    border-radius: 20px;
+  }
+
+  .axiom-summary-thumb {
+    width: 60px;
+    height: 60px;
+    flex: 0 0 60px;
+    border-radius: 16px;
+  }
+
+  .axiom-summary-copy strong {
+    font-size: 16px;
+  }
+
+  .axiom-summary-copy span {
+    font-size: 13px;
+  }
+
+  .axiom-summary-price {
+    font-size: 17px;
+  }
+
+  .axiom-summary-totals,
+  .axiom-summary-benefits {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .axiom-summary-row span,
+  .axiom-summary-row strong {
+    font-size: 15px;
+  }
+
+  .axiom-summary-row.axiom-summary-total span,
+  .axiom-summary-row.axiom-summary-total strong {
+    font-size: 20px;
+  }
+
+  .axiom-summary-benefit {
+    font-size: 14px;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li {
+    padding: 18px 16px !important;
+    border-radius: 18px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li > label {
+    font-size: 15.5px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
+  .woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
+    width: 21px !important;
+    height: 21px !important;
+    margin-right: 12px !important;
+  }
+
   .axiom-place-order-trust-icons {
     grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: 7px !important;
@@ -964,175 +849,9 @@ button[name="woocommerce_checkout_place_order"] {
   }
 
   .axiom-place-order-trust-item {
-    min-height: 86px !important;
-    padding: 10px 4px !important;
-    border-radius: 15px !important;
-  }
-
-  .axiom-place-order-trust-emoji,
-  .axiom-place-order-trust-icon {
-    width: 30px !important;
-    height: 30px !important;
-    margin-bottom: 7px !important;
-    border-radius: 11px !important;
-    font-size: 13px !important;
-  }
-
-  .axiom-place-order-trust-emoji i,
-  .axiom-place-order-trust-icon i,
-  .axiom-place-order-trust-item i,
-  .axiom-place-order-trust-item svg {
-    font-size: 13px !important;
-  }
-
-  .axiom-place-order-trust-item strong {
-    font-size: 10.5px !important;
-    line-height: 1.08 !important;
-  }
-
-  .axiom-place-order-trust-item small {
-    font-size: 9.5px !important;
-    line-height: 1.08 !important;
-  }
-}
-
-/* Very small phones: keep 4 across, just tighter */
-@media (max-width: 390px) {
-  .axiom-place-order-trust-icons {
-    gap: 5px !important;
-  }
-
-  .axiom-place-order-trust-item {
-    min-height: 80px !important;
-    padding: 9px 3px !important;
-    border-radius: 13px !important;
-  }
-
-  .axiom-place-order-trust-emoji,
-  .axiom-place-order-trust-icon {
-    width: 28px !important;
-    height: 28px !important;
-    margin-bottom: 6px !important;
-    border-radius: 10px !important;
-  }
-
-  .axiom-place-order-trust-item strong {
-    font-size: 9.5px !important;
-  }
-
-  .axiom-place-order-trust-item small {
-    font-size: 8.5px !important;
-  }
-}
-
-/* =========================================================
-   FINAL FIX: Place Order Trust Icons - Same Blue + Even Alignment
-   Put at VERY BOTTOM of checkout-payment.css
-========================================================= */
-
-.axiom-place-order-trust-icons {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-  width: 100% !important;
-  margin-top: 16px !important;
-  align-items: stretch !important;
-}
-
-.axiom-place-order-trust-item {
-  display: grid !important;
-  grid-template-rows: 34px auto auto !important;
-  align-items: start !important;
-  justify-items: center !important;
-  min-height: 92px !important;
-  height: 92px !important;
-  padding: 12px 5px 10px !important;
-  border: 1px solid rgba(74, 167, 232, 0.26) !important;
-  border-radius: 16px !important;
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%) !important;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.045) !important;
-  text-align: center !important;
-  overflow: hidden !important;
-}
-
-/* Same exact brand-blue icon box for all four */
-.axiom-place-order-trust-emoji,
-.axiom-place-order-trust-icon {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 32px !important;
-  height: 32px !important;
-  margin: 0 !important;
-  border-radius: 12px !important;
-  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
-  color: #ffffff !important;
-  box-shadow: 0 8px 16px rgba(47, 132, 191, 0.24) !important;
-  font-size: 14px !important;
-  line-height: 1 !important;
-}
-
-.axiom-place-order-trust-emoji i,
-.axiom-place-order-trust-icon i,
-.axiom-place-order-trust-item i,
-.axiom-place-order-trust-item svg {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  font-size: 14px !important;
-  line-height: 1 !important;
-}
-
-/* Kill different nth-child colors from earlier CSS */
-.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(1) .axiom-place-order-trust-icon,
-.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(2) .axiom-place-order-trust-icon,
-.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(3) .axiom-place-order-trust-icon,
-.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-emoji,
-.axiom-place-order-trust-item:nth-child(4) .axiom-place-order-trust-icon {
-  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
-  box-shadow: 0 8px 16px rgba(47, 132, 191, 0.24) !important;
-}
-
-.axiom-place-order-trust-item strong {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  min-height: 24px !important;
-  margin: 6px 0 0 !important;
-  color: #07111f !important;
-  font-size: 11px !important;
-  font-weight: 950 !important;
-  line-height: 1.08 !important;
-  letter-spacing: -0.03em !important;
-  text-align: center !important;
-}
-
-.axiom-place-order-trust-item small {
-  display: flex !important;
-  align-items: start !important;
-  justify-content: center !important;
-  min-height: 20px !important;
-  margin: 4px 0 0 !important;
-  color: #64748b !important;
-  font-size: 9.5px !important;
-  font-weight: 750 !important;
-  line-height: 1.08 !important;
-  text-align: center !important;
-}
-
-/* Mobile: still one clean row */
-@media (max-width: 767px) {
-  .axiom-place-order-trust-icons {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    gap: 7px !important;
-  }
-
-  .axiom-place-order-trust-item {
-    height: 90px !important;
-    min-height: 90px !important;
-    padding: 11px 4px 9px !important;
+    min-height: 108px !important;
+    height: 108px !important;
+    padding: 12px 5px 16px !important;
     border-radius: 15px !important;
   }
 
@@ -1144,11 +863,47 @@ button[name="woocommerce_checkout_place_order"] {
   }
 
   .axiom-place-order-trust-item strong {
+    margin-top: 7px !important;
     font-size: 10.5px !important;
+    line-height: 1.08 !important;
   }
 
   .axiom-place-order-trust-item small {
+    margin-top: 6px !important;
+    padding-bottom: 3px !important;
     font-size: 9px !important;
+    line-height: 1.12 !important;
+  }
+
+  .wc_gc_cart_redeem_form,
+  .wc_gc_checkout_redeem_form,
+  .wc_gc_redeem_form,
+  .woocommerce-gift-cards-form,
+  .giftcard-section,
+  .giftcard_form,
+  .wc-gift-card-form {
+    padding: 16px !important;
+    border-radius: 20px !important;
+  }
+
+  .axiom-inline-coupon-row {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .axiom-inline-coupon-button {
+    flex: 1 1 auto;
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .axiom-payment-methods-section {
+    margin-bottom: 24px !important;
+  }
+
+  .axiom-payment-coupon-box,
+  .axiom-payment-subtotal-section {
+    margin-top: 22px !important;
   }
 }
 
@@ -1158,9 +913,9 @@ button[name="woocommerce_checkout_place_order"] {
   }
 
   .axiom-place-order-trust-item {
-    height: 86px !important;
-    min-height: 86px !important;
-    padding: 10px 3px 8px !important;
+    min-height: 110px !important;
+    height: 110px !important;
+    padding: 11px 4px 16px !important;
     border-radius: 13px !important;
   }
 
@@ -1177,261 +932,5 @@ button[name="woocommerce_checkout_place_order"] {
 
   .axiom-place-order-trust-item small {
     font-size: 8.4px !important;
-  }
-}
-
-/* =========================================================
-   FINAL TWEAK: more bottom space inside the 4 checkout trust boxes
-   Put this at the VERY BOTTOM of the CSS file
-========================================================= */
-
-.axiom-place-order-trust-item {
-  min-height: 104px !important;
-  height: 104px !important;
-  padding: 12px 6px 16px !important;
-  grid-template-rows: 34px auto auto !important;
-  align-content: start !important;
-}
-
-.axiom-place-order-trust-item strong {
-  margin: 7px 0 0 !important;
-}
-
-.axiom-place-order-trust-item small {
-  margin: 6px 0 0 !important;
-  padding-bottom: 2px !important;
-  line-height: 1.12 !important;
-}
-
-@media (max-width: 767px) {
-  .axiom-place-order-trust-item {
-    min-height: 108px !important;
-    height: 108px !important;
-    padding: 12px 5px 16px !important;
-  }
-
-  .axiom-place-order-trust-item strong {
-    margin-top: 7px !important;
-  }
-
-  .axiom-place-order-trust-item small {
-    margin-top: 6px !important;
-    padding-bottom: 3px !important;
-    line-height: 1.12 !important;
-  }
-}
-
-@media (max-width: 390px) {
-  .axiom-place-order-trust-item {
-    min-height: 110px !important;
-    height: 110px !important;
-    padding: 11px 4px 16px !important;
-  }
-}
-
-/* =========================================================
-   Axiom Checkout Payment Cards - Selected Blue Glow
-   ONLY changes payment method card selected/hover styling.
-   Put at the VERY BOTTOM of checkout-payment.css
-========================================================= */
-
-/* Make each payment method feel like a clean card */
-.woocommerce-checkout #payment ul.payment_methods li {
-  position: relative !important;
-  border: 2px solid #dbe7f3 !important;
-  border-radius: 20px !important;
-  background: #ffffff !important;
-  margin: 0 0 14px !important;
-  padding: 20px 22px !important;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
-  transition:
-    border-color 0.18s ease,
-    background 0.18s ease,
-    box-shadow 0.18s ease,
-    transform 0.18s ease !important;
-}
-
-/* Remove the old connected borders from the UL list look */
-.woocommerce-checkout #payment ul.payment_methods {
-  border: 0 !important;
-  background: transparent !important;
-  overflow: visible !important;
-  display: grid !important;
-  gap: 0 !important;
-}
-
-/* Hover effect */
-.woocommerce-checkout #payment ul.payment_methods li:hover {
-  border-color: rgba(74, 167, 232, 0.55) !important;
-  box-shadow: 0 14px 32px rgba(47, 132, 191, 0.10) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* Selected payment method: brand blue glow */
-.woocommerce-checkout #payment ul.payment_methods li:has(input[type="radio"]:checked),
-.woocommerce-checkout #payment ul.payment_methods li:has(input.input-radio:checked) {
-  border-color: #4aa7e8 !important;
-  background:
-    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
-  box-shadow:
-    0 0 0 4px rgba(74, 167, 232, 0.12),
-    0 18px 42px rgba(47, 132, 191, 0.18) !important;
-}
-
-/* Radio buttons: brand blue */
-.woocommerce-checkout #payment ul.payment_methods li input[type="radio"],
-.woocommerce-checkout #payment ul.payment_methods li input.input-radio {
-  width: 22px !important;
-  height: 22px !important;
-  accent-color: #4aa7e8 !important;
-  margin: 1px 14px 0 0 !important;
-}
-
-/* Label text cleaner */
-.woocommerce-checkout #payment ul.payment_methods li > label {
-  color: #07111f !important;
-  font-size: 16px !important;
-  font-weight: 950 !important;
-  line-height: 1.2 !important;
-}
-
-/* Selected label slightly stronger */
-.woocommerce-checkout #payment ul.payment_methods li:has(input[type="radio"]:checked) > label,
-.woocommerce-checkout #payment ul.payment_methods li:has(input.input-radio:checked) > label {
-  color: #07111f !important;
-}
-
-/* Payment description box inside selected method */
-.woocommerce-checkout #payment div.payment_box {
-  border-color: rgba(74, 167, 232, 0.20) !important;
-  background: #f8fbff !important;
-  border-radius: 18px !important;
-}
-
-/* Make Pay by Bank look slightly premium, but still blue brand style */
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_bacs:has(input[type="radio"]:checked),
-.woocommerce-checkout #payment ul.payment_methods li.payment_method_link_money:has(input[type="radio"]:checked),
-.woocommerce-checkout #payment ul.payment_methods li[class*="bank"]:has(input[type="radio"]:checked),
-.woocommerce-checkout #payment ul.payment_methods li[class*="link"]:has(input[type="radio"]:checked) {
-  border-color: #4aa7e8 !important;
-  background:
-    radial-gradient(circle at top right, rgba(74, 167, 232, 0.20), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #eef9ff 100%) !important;
-  box-shadow:
-    0 0 0 4px rgba(74, 167, 232, 0.14),
-    0 20px 46px rgba(47, 132, 191, 0.20) !important;
-}
-
-/* Mobile polish */
-@media (max-width: 767px) {
-  .woocommerce-checkout #payment ul.payment_methods li {
-    padding: 18px 16px !important;
-    border-radius: 18px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .woocommerce-checkout #payment ul.payment_methods li > label {
-    font-size: 15.5px !important;
-  }
-
-  .woocommerce-checkout #payment ul.payment_methods li input[type="radio"],
-  .woocommerce-checkout #payment ul.payment_methods li input.input-radio {
-    width: 21px !important;
-    height: 21px !important;
-    margin-right: 12px !important;
-  }
-}
-
-/* =========================================================
-   FIX: Only one payment card can show selected blue glow
-   Put this at the VERY BOTTOM of checkout-payment.css
-========================================================= */
-
-/* Reset all payment cards first */
-.woocommerce-checkout #payment ul.payment_methods > li {
-  position: relative !important;
-  border: 2px solid #dbe7f3 !important;
-  border-radius: 20px !important;
-  background: #ffffff !important;
-  margin: 0 0 14px !important;
-  padding: 20px 22px !important;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
-  transform: none !important;
-}
-
-/* Keep payment methods separated, not connected */
-.woocommerce-checkout #payment ul.payment_methods {
-  border: 0 !important;
-  background: transparent !important;
-  overflow: visible !important;
-  display: grid !important;
-  gap: 0 !important;
-}
-
-/* Hover only */
-.woocommerce-checkout #payment ul.payment_methods > li:hover {
-  border-color: rgba(74, 167, 232, 0.45) !important;
-  box-shadow: 0 14px 32px rgba(47, 132, 191, 0.10) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* IMPORTANT:
-   Selected state ONLY checks the direct WooCommerce payment radio,
-   not nested radios inside the payment box.
-*/
-.woocommerce-checkout #payment ul.payment_methods > li:has(> input.input-radio:checked),
-.woocommerce-checkout #payment ul.payment_methods > li:has(> input[type="radio"]:checked) {
-  border-color: #4aa7e8 !important;
-  background:
-    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
-  box-shadow:
-    0 0 0 4px rgba(74, 167, 232, 0.12),
-    0 18px 42px rgba(47, 132, 191, 0.18) !important;
-  transform: none !important;
-}
-
-/* Radio button blue */
-.woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
-.woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
-  width: 22px !important;
-  height: 22px !important;
-  accent-color: #4aa7e8 !important;
-  margin: 1px 14px 0 0 !important;
-}
-
-/* Make only the selected method's main radio blue/fill cleanly */
-.woocommerce-checkout #payment ul.payment_methods > li:has(> input.input-radio:checked) > input.input-radio,
-.woocommerce-checkout #payment ul.payment_methods > li:has(> input[type="radio"]:checked) > input[type="radio"] {
-  accent-color: #4aa7e8 !important;
-}
-
-/* Prevent nested radios inside payment descriptions from styling the whole card */
-.woocommerce-checkout #payment ul.payment_methods > li .payment_box input[type="radio"] {
-  accent-color: #4aa7e8 !important;
-}
-
-/* Payment box still looks clean, but does not trigger the outer selected state */
-.woocommerce-checkout #payment ul.payment_methods > li .payment_box {
-  margin-top: 16px !important;
-  border: 1px solid rgba(74, 167, 232, 0.18) !important;
-  background: #f8fbff !important;
-  border-radius: 18px !important;
-}
-
-/* Mobile */
-@media (max-width: 767px) {
-  .woocommerce-checkout #payment ul.payment_methods > li {
-    padding: 18px 16px !important;
-    border-radius: 18px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .woocommerce-checkout #payment ul.payment_methods > li > input.input-radio,
-  .woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"] {
-    width: 21px !important;
-    height: 21px !important;
-    margin-right: 12px !important;
   }
 }
