@@ -1514,3 +1514,302 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 9.6px !important;
   }
 }
+
+/* =========================================================
+   Axiom Zelle Payment Upgrade
+   Custom selected-payment section for Zelle 5% discount.
+========================================================= */
+
+.axiom-zelle-default-copy-hidden {
+  display: none !important;
+}
+
+.axiom-zelle-upgrade {
+  display: grid !important;
+  gap: 10px !important;
+  margin-top: 14px !important;
+}
+
+.axiom-zelle-head {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 13px !important;
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.16), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #f3faff 100%) !important;
+}
+
+.axiom-zelle-title {
+  display: grid !important;
+  grid-template-columns: 40px 1fr !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.axiom-zelle-icon {
+  width: 40px !important;
+  height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 20px rgba(47, 132, 191, 0.22) !important;
+}
+
+.axiom-zelle-icon i {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+}
+
+.axiom-zelle-title strong {
+  display: block !important;
+  color: #07111f !important;
+  font-size: 16px !important;
+  font-weight: 950 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.axiom-zelle-title span {
+  display: block !important;
+  margin-top: 3px !important;
+  color: #5f6f84 !important;
+  font-size: 12px !important;
+  font-weight: 750 !important;
+  line-height: 1.3 !important;
+}
+
+.axiom-zelle-badge {
+  min-height: 30px !important;
+  padding: 0 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  font-size: 10.5px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  box-shadow: 0 10px 20px rgba(47, 132, 191, 0.20) !important;
+}
+
+.axiom-zelle-highlight {
+  display: grid !important;
+  grid-template-columns: 30px 1fr !important;
+  gap: 10px !important;
+  align-items: center !important;
+  padding: 12px !important;
+  border: 1px solid rgba(74, 167, 232, 0.24) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #f7fcff 0%, #eef8ff 100%) !important;
+}
+
+.axiom-zelle-highlight > i {
+  width: 30px !important;
+  height: 30px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 11px !important;
+  background: rgba(74, 167, 232, 0.14) !important;
+  color: #2f84bf !important;
+  font-size: 14px !important;
+}
+
+.axiom-zelle-highlight strong {
+  display: block !important;
+  color: #07111f !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+}
+
+.axiom-zelle-highlight span {
+  display: block !important;
+  margin-top: 3px !important;
+  color: #5f6f84 !important;
+  font-size: 11.2px !important;
+  font-weight: 750 !important;
+  line-height: 1.25 !important;
+}
+
+.axiom-zelle-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.axiom-zelle-card {
+  min-height: 92px !important;
+  padding: 10px !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  border-radius: 15px !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035) !important;
+}
+
+.axiom-zelle-card i {
+  width: 25px !important;
+  height: 25px !important;
+  margin-bottom: 7px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9px !important;
+  background: rgba(74, 167, 232, 0.12) !important;
+  color: #2f84bf !important;
+  font-size: 12px !important;
+}
+
+.axiom-zelle-card strong {
+  display: block !important;
+  color: #07111f !important;
+  font-size: 11.5px !important;
+  font-weight: 950 !important;
+  line-height: 1.12 !important;
+}
+
+.axiom-zelle-card span {
+  display: block !important;
+  margin-top: 4px !important;
+  color: #5f6f84 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  line-height: 1.18 !important;
+}
+
+.axiom-zelle-note {
+  display: grid !important;
+  grid-template-columns: 22px 1fr !important;
+  gap: 8px !important;
+  align-items: start !important;
+  padding: 10px 11px !important;
+  border-radius: 14px !important;
+  background: #fffdf5 !important;
+  border: 1px solid rgba(234, 179, 8, 0.24) !important;
+  color: #7a5a00 !important;
+}
+
+.axiom-zelle-note i {
+  color: #ca8a04 !important;
+  font-size: 13px !important;
+  line-height: 1.3 !important;
+  margin-top: 1px !important;
+}
+
+.axiom-zelle-note span {
+  color: #7a5a00 !important;
+  font-size: 10.8px !important;
+  font-weight: 750 !important;
+  line-height: 1.3 !important;
+}
+
+@media (max-width: 767px) {
+  .axiom-zelle-upgrade {
+    gap: 9px !important;
+    margin-top: 12px !important;
+  }
+
+  .axiom-zelle-head {
+    grid-template-columns: 1fr !important;
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .axiom-zelle-title {
+    grid-template-columns: 38px 1fr !important;
+    gap: 10px !important;
+  }
+
+  .axiom-zelle-icon {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 13px !important;
+  }
+
+  .axiom-zelle-title strong {
+    font-size: 15px !important;
+  }
+
+  .axiom-zelle-title span {
+    font-size: 11.5px !important;
+  }
+
+  .axiom-zelle-badge {
+    width: fit-content !important;
+    min-height: 27px !important;
+    padding: 0 11px !important;
+    font-size: 10px !important;
+    margin-left: 48px !important;
+  }
+
+  .axiom-zelle-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+  }
+
+  .axiom-zelle-card {
+    min-height: 88px !important;
+    padding: 9px 7px !important;
+    border-radius: 13px !important;
+  }
+
+  .axiom-zelle-card i {
+    width: 23px !important;
+    height: 23px !important;
+    margin-bottom: 6px !important;
+    font-size: 11px !important;
+  }
+
+  .axiom-zelle-card strong {
+    font-size: 10.5px !important;
+  }
+
+  .axiom-zelle-card span {
+    font-size: 9.2px !important;
+    line-height: 1.15 !important;
+  }
+
+  .axiom-zelle-highlight {
+    padding: 11px !important;
+    border-radius: 15px !important;
+  }
+
+  .axiom-zelle-note {
+    padding: 9px 10px !important;
+  }
+
+  .axiom-zelle-note span {
+    font-size: 10px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .axiom-zelle-grid {
+    gap: 6px !important;
+  }
+
+  .axiom-zelle-card {
+    min-height: 86px !important;
+    padding: 8px 6px !important;
+  }
+
+  .axiom-zelle-card strong {
+    font-size: 10px !important;
+  }
+
+  .axiom-zelle-card span {
+    font-size: 8.8px !important;
+  }
+}
