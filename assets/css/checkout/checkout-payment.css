@@ -1289,3 +1289,228 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 17px !important;
   }
 }
+
+/* =========================================================
+   FINAL COMPACT FIX: Make Same-Day Bank Payment section thinner
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_link_money,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="link"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="bank"] {
+  padding: 16px 16px !important;
+}
+
+/* Whole custom bank panel smaller */
+.axiom-bank-upgrade {
+  margin-top: 14px !important;
+  gap: 9px !important;
+}
+
+/* Top Pay by Bank card thinner */
+.axiom-bank-upgrade-head {
+  padding: 11px 12px !important;
+  border-radius: 16px !important;
+  min-height: 0 !important;
+}
+
+.axiom-bank-upgrade-title {
+  grid-template-columns: 36px 1fr !important;
+  gap: 10px !important;
+}
+
+.axiom-bank-upgrade-icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+  border-radius: 12px !important;
+}
+
+.axiom-bank-upgrade-icon i,
+.axiom-bank-upgrade-icon svg {
+  width: 15px !important;
+  height: 15px !important;
+  font-size: 15px !important;
+}
+
+.axiom-bank-upgrade-title strong {
+  font-size: 15px !important;
+  line-height: 1.08 !important;
+}
+
+.axiom-bank-upgrade-title span {
+  margin-top: 2px !important;
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+}
+
+.axiom-bank-upgrade-badge {
+  min-height: 25px !important;
+  padding: 0 10px !important;
+  font-size: 10px !important;
+}
+
+/* Make the 4 benefit boxes much thinner */
+.axiom-bank-upgrade-grid {
+  gap: 7px !important;
+}
+
+.axiom-bank-upgrade-card {
+  min-height: 82px !important;
+  padding: 9px 10px !important;
+  border-radius: 13px !important;
+}
+
+.axiom-bank-upgrade-card i {
+  width: 23px !important;
+  height: 23px !important;
+  margin-bottom: 5px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+}
+
+.axiom-bank-upgrade-card strong {
+  font-size: 11.5px !important;
+  line-height: 1.08 !important;
+}
+
+.axiom-bank-upgrade-card span {
+  margin-top: 3px !important;
+  font-size: 10px !important;
+  line-height: 1.18 !important;
+}
+
+/* Compact save bank row */
+.axiom-bank-save-row {
+  padding: 10px 11px !important;
+  border-radius: 14px !important;
+  gap: 9px !important;
+}
+
+.axiom-bank-save-row > i {
+  width: 22px !important;
+  height: 22px !important;
+  flex: 0 0 22px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+}
+
+.axiom-bank-save-row strong {
+  font-size: 12px !important;
+  line-height: 1.12 !important;
+}
+
+.axiom-bank-save-row span {
+  margin-top: 2px !important;
+  font-size: 10.5px !important;
+  line-height: 1.22 !important;
+}
+
+/* Footer row thinner */
+.axiom-bank-upgrade-foot {
+  margin-top: 2px !important;
+  padding-top: 8px !important;
+  gap: 5px 8px !important;
+  font-size: 10px !important;
+  line-height: 1.18 !important;
+}
+
+/* Hide repeated default paragraph if it is making section taller */
+.axiom-bank-upgrade + p,
+.axiom-bank-default-copy-hidden {
+  display: none !important;
+}
+
+/* Mobile: keep it compact like Evo */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_link_money,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="link"],
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="bank"] {
+    padding: 15px 14px !important;
+  }
+
+  .axiom-bank-upgrade {
+    margin-top: 12px !important;
+    gap: 8px !important;
+  }
+
+  .axiom-bank-upgrade-head {
+    padding: 10px 11px !important;
+    border-radius: 15px !important;
+  }
+
+  .axiom-bank-upgrade-title {
+    grid-template-columns: 34px 1fr !important;
+    gap: 9px !important;
+  }
+
+  .axiom-bank-upgrade-icon {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  .axiom-bank-upgrade-title strong {
+    font-size: 14px !important;
+  }
+
+  .axiom-bank-upgrade-title span {
+    font-size: 11px !important;
+    line-height: 1.22 !important;
+  }
+
+  .axiom-bank-upgrade-badge {
+    min-height: 24px !important;
+    font-size: 9.5px !important;
+    margin-left: 43px !important;
+  }
+
+  .axiom-bank-upgrade-grid {
+    gap: 7px !important;
+  }
+
+  .axiom-bank-upgrade-card {
+    min-height: 78px !important;
+    padding: 8px 8px !important;
+    border-radius: 12px !important;
+  }
+
+  .axiom-bank-upgrade-card i {
+    width: 22px !important;
+    height: 22px !important;
+    margin-bottom: 5px !important;
+  }
+
+  .axiom-bank-upgrade-card strong {
+    font-size: 11px !important;
+  }
+
+  .axiom-bank-upgrade-card span {
+    font-size: 9.6px !important;
+    line-height: 1.15 !important;
+  }
+
+  .axiom-bank-save-row {
+    padding: 9px 10px !important;
+    border-radius: 13px !important;
+  }
+
+  .axiom-bank-save-row strong {
+    font-size: 11.5px !important;
+  }
+
+  .axiom-bank-save-row span {
+    font-size: 10px !important;
+  }
+
+  .axiom-bank-upgrade-foot {
+    font-size: 9.6px !important;
+  }
+}
