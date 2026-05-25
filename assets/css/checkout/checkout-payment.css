@@ -1813,3 +1813,73 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 8.8px !important;
   }
 }
+
+/* =========================================================
+   Zelle hero icon centering fix
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+.axiom-zelle-hero-icon,
+.axiom-zelle-top-icon,
+.axiom-zelle-card-icon {
+  width: 56px !important;
+  height: 56px !important;
+  min-width: 56px !important;
+  min-height: 56px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 18px !important;
+  background: linear-gradient(135deg, #66b4ef 0%, #2f84bf 100%) !important;
+  box-shadow: 0 12px 26px rgba(47, 132, 191, 0.18) !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* center the actual icon inside */
+.axiom-zelle-hero-icon i,
+.axiom-zelle-hero-icon svg,
+.axiom-zelle-hero-icon img,
+.axiom-zelle-top-icon i,
+.axiom-zelle-top-icon svg,
+.axiom-zelle-top-icon img,
+.axiom-zelle-card-icon i,
+.axiom-zelle-card-icon svg,
+.axiom-zelle-card-icon img {
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  transform: translate(1px, 0) !important;
+}
+
+/* if it is a font awesome icon */
+.axiom-zelle-hero-icon i,
+.axiom-zelle-top-icon i,
+.axiom-zelle-card-icon i {
+  font-size: 22px !important;
+  color: #ffffff !important;
+}
+
+/* if it is an svg */
+.axiom-zelle-hero-icon svg,
+.axiom-zelle-top-icon svg,
+.axiom-zelle-card-icon svg {
+  width: 22px !important;
+  height: 22px !important;
+  fill: #ffffff !important;
+}
+
+/* if it is an image */
+.axiom-zelle-hero-icon img,
+.axiom-zelle-top-icon img,
+.axiom-zelle-card-icon img {
+  width: 22px !important;
+  height: 22px !important;
+  object-fit: contain !important;
+}
