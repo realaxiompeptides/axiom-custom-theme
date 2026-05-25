@@ -934,3 +934,283 @@ button[name="woocommerce_checkout_place_order"] {
     font-size: 8.4px !important;
   }
 }
+
+/* =========================================================
+   Axiom Same-Day Bank Payment Upgrade
+   Shows inside the selected Link Money / bank payment box
+========================================================= */
+
+.axiom-bank-upgrade {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.axiom-bank-upgrade-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid rgba(74, 167, 232, 0.24);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.16), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%);
+}
+
+.axiom-bank-upgrade-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.axiom-bank-upgrade-icon {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%);
+  color: #ffffff;
+  box-shadow: 0 10px 20px rgba(47, 132, 191, 0.22);
+}
+
+.axiom-bank-upgrade-icon i {
+  color: #ffffff;
+  font-size: 15px;
+}
+
+.axiom-bank-upgrade-title strong {
+  display: block;
+  color: #07111f;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+
+.axiom-bank-upgrade-title span {
+  display: block;
+  margin-top: 5px;
+  color: #5f6f84;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.axiom-bank-upgrade-badge {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px rgba(47, 132, 191, 0.20);
+}
+
+.axiom-bank-upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.axiom-bank-upgrade-card {
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgba(74, 167, 232, 0.18);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.035);
+}
+
+.axiom-bank-upgrade-card i {
+  display: inline-flex;
+  width: 28px;
+  height: 28px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 9px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(74, 167, 232, 0.16), rgba(47, 132, 191, 0.10));
+  color: #2f84bf;
+  font-size: 13px;
+}
+
+.axiom-bank-upgrade-card strong {
+  display: block;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.2;
+}
+
+.axiom-bank-upgrade-card span {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.axiom-bank-save-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(47, 132, 191, 0.26);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(242, 250, 255, 0.95), rgba(232, 246, 255, 0.95));
+}
+
+.axiom-bank-save-row > i {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%);
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.axiom-bank-save-row strong {
+  display: block;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+  line-height: 1.25;
+}
+
+.axiom-bank-save-row span {
+  display: block;
+  margin-top: 4px;
+  color: #5f6f84;
+  font-size: 12.5px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.axiom-bank-upgrade-foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  padding-top: 2px;
+  color: #64748b;
+  font-size: 12.5px;
+  font-weight: 750;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.axiom-bank-upgrade-foot span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.axiom-bank-upgrade-foot i {
+  color: #2f84bf;
+  font-size: 12px;
+}
+
+/* Make the Link Money default area sit nicely below the custom upgrade */
+.woocommerce-checkout #payment ul.payment_methods > li .payment_box .axiom-bank-upgrade + * {
+  margin-top: 16px !important;
+}
+
+@media (max-width: 767px) {
+  .axiom-bank-upgrade {
+    gap: 14px;
+  }
+
+  .axiom-bank-upgrade-head {
+    padding: 15px;
+    border-radius: 18px;
+  }
+
+  .axiom-bank-upgrade-title strong {
+    font-size: 15.5px;
+  }
+
+  .axiom-bank-upgrade-title span {
+    font-size: 13px;
+  }
+
+  .axiom-bank-upgrade-badge {
+    min-height: 28px;
+    padding: 0 10px;
+    font-size: 10px;
+  }
+
+  .axiom-bank-upgrade-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .axiom-bank-upgrade-card {
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .axiom-bank-upgrade-card strong {
+    font-size: 13px;
+  }
+
+  .axiom-bank-upgrade-card span {
+    font-size: 11.5px;
+  }
+
+  .axiom-bank-save-row {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .axiom-bank-upgrade-foot {
+    font-size: 11.5px;
+    gap: 7px 10px;
+  }
+}
+
+@media (max-width: 390px) {
+  .axiom-bank-upgrade-head {
+    flex-direction: column;
+  }
+
+  .axiom-bank-upgrade-badge {
+    align-self: flex-start;
+  }
+
+  .axiom-bank-upgrade-grid {
+    gap: 8px;
+  }
+
+  .axiom-bank-upgrade-card {
+    padding: 12px 10px;
+  }
+
+  .axiom-bank-upgrade-card strong {
+    font-size: 12px;
+  }
+
+  .axiom-bank-upgrade-card span {
+    font-size: 11px;
+  }
+}
