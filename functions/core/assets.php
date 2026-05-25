@@ -385,6 +385,16 @@ function axiom_custom_theme_assets() {
                 true
             );
         }
+
+        if (file_exists($theme_path . '/assets/js/checkout/checkout-zelle-payment.js')) {
+            wp_enqueue_script(
+                'axiom-checkout-zelle-payment',
+                $theme_uri . '/assets/js/checkout/checkout-zelle-payment.js',
+                array('jquery', 'wc-checkout'),
+                filemtime($theme_path . '/assets/js/checkout/checkout-zelle-payment.js'),
+                true
+            );
+        }
     }
 
     if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
