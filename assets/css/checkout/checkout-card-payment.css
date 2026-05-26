@@ -579,3 +579,239 @@
     margin-right: 0 !important;
   }
 }
+
+/* =========================================================
+   FINAL QUIKLIE FIX
+   Plugin: Quiklie Payment Gateway
+   Put at VERY BOTTOM of checkout-card-payment.css
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"],
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="quik"]),
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="quick"]),
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="lupa"]) {
+  overflow: visible !important;
+}
+
+/* Main Quiklie payment box */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="quik"]) .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="quick"]) .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li:has(> label img[src*="lupa"]) .payment_box {
+  margin-top: 18px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(74, 167, 232, 0.28) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.16), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 14px 34px rgba(47, 132, 191, 0.10) !important;
+  overflow: hidden !important;
+}
+
+/* Hide Woo default arrow */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::before {
+  display: none !important;
+}
+
+/* Processor card logos */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box img {
+  max-height: 34px !important;
+  width: auto !important;
+  margin: 0 7px 10px 0 !important;
+  border-radius: 8px !important;
+  object-fit: contain !important;
+}
+
+/* Processor warning text */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box p {
+  margin: 0 0 16px !important;
+  padding: 13px 14px !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.78) !important;
+  color: #475569 !important;
+  font-size: 14px !important;
+  font-weight: 750 !important;
+  line-height: 1.5 !important;
+}
+
+/* Labels */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box label {
+  display: block !important;
+  margin: 0 0 8px !important;
+  color: #07111f !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+}
+
+/* Form rows */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row {
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+}
+
+/* Inputs */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box select,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box select,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box select,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box select,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box select {
+  width: 100% !important;
+  min-height: 56px !important;
+  height: 56px !important;
+  padding: 0 17px !important;
+  border: 1px solid #d8e6f3 !important;
+  border-radius: 17px !important;
+  background: #ffffff !important;
+  color: #07111f !important;
+  font-size: 16px !important;
+  font-weight: 750 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 18px rgba(15, 23, 42, 0.035) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Focus */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input:focus {
+  border-color: #4aa7e8 !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.14),
+    0 12px 24px rgba(47, 132, 191, 0.12) !important;
+}
+
+/* Placeholder */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 700 !important;
+}
+
+/* Make expiry + CVV better */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-first {
+  width: calc(50% - 6px) !important;
+  float: left !important;
+  margin-right: 12px !important;
+  clear: none !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-last {
+  width: calc(50% - 6px) !important;
+  float: left !important;
+  clear: none !important;
+}
+
+/* Trust strip */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::after {
+  content: "256-bit encrypted checkout • Secure card authorization • Instant payment confirmation";
+  display: block !important;
+  clear: both !important;
+  margin-top: 14px !important;
+  padding: 12px 13px !important;
+  border: 1px solid rgba(74, 167, 232, 0.2) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #f7fcff 0%, #eef8ff 100%) !important;
+  color: #2f84bf !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box {
+    padding: 14px !important;
+    border-radius: 20px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input {
+    min-height: 53px !important;
+    height: 53px !important;
+    border-radius: 15px !important;
+    font-size: 15px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-first {
+    width: calc(50% - 5px) !important;
+    margin-right: 10px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-last {
+    width: calc(50% - 5px) !important;
+  }
+}
