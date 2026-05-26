@@ -7,6 +7,18 @@
     return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
   }
 
+  function getThemeUrl() {
+    if (typeof AXIOM_THEME !== 'undefined' && AXIOM_THEME.themeUrl) {
+      return AXIOM_THEME.themeUrl.replace(/\/$/, '');
+    }
+
+    return '';
+  }
+
+  function getZelleIconUrl() {
+    return getThemeUrl() + '/assets/images/zelle.jpg';
+  }
+
   function isZellePaymentMethod($method) {
     if (!$method || !$method.length) {
       return false;
@@ -30,13 +42,15 @@
   }
 
   function buildZellePanel() {
+    var zelleIconUrl = getZelleIconUrl();
+
     return $(
       [
         '<div class="' + ZELLE_PANEL_CLASS + '" data-axiom-zelle-upgrade="1">',
           '<div class="axiom-zelle-head">',
             '<div class="axiom-zelle-title">',
               '<span class="axiom-zelle-icon" aria-hidden="true">',
-                '<i class="fa-solid fa-paper-plane"></i>',
+                '<img src="' + zelleIconUrl + '" alt="Zelle" />',
               '</span>',
               '<div>',
                 '<strong>Zelle Payment</strong>',
