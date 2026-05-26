@@ -32,8 +32,6 @@ function axiom_custom_theme_assets() {
 
     /*
      * Legal / policy pages
-     * File: /assets/css/legal/legal.css
-     * Templates: /templates/legal/page-*.php
      */
     if (
         function_exists('is_page_template') &&
@@ -138,58 +136,24 @@ function axiom_custom_theme_assets() {
     }
 
     if (function_exists('is_page_template') && is_page_template('page-kits.php')) {
-        if (file_exists($theme_path . '/assets/css/kits/kits-base.css')) {
-            wp_enqueue_style(
-                'axiom-kits-base',
-                $theme_uri . '/assets/css/kits/kits-base.css',
-                array('axiom-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-base.css')
-            );
-        }
+        $kits_css_files = array(
+            'axiom-kits-base'       => '/assets/css/kits/kits-base.css',
+            'axiom-kits-hero'       => '/assets/css/kits/kits-hero.css',
+            'axiom-kits-info-strip' => '/assets/css/kits/kits-info-strip.css',
+            'axiom-kits-explainer'  => '/assets/css/kits/kits-explainer.css',
+            'axiom-kits-grid'       => '/assets/css/kits/kits-grid.css',
+            'axiom-kits-faq'        => '/assets/css/kits/kits-faq.css',
+        );
 
-        if (file_exists($theme_path . '/assets/css/kits/kits-hero.css')) {
-            wp_enqueue_style(
-                'axiom-kits-hero',
-                $theme_uri . '/assets/css/kits/kits-hero.css',
-                array('axiom-base', 'axiom-kits-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-hero.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/kits/kits-info-strip.css')) {
-            wp_enqueue_style(
-                'axiom-kits-info-strip',
-                $theme_uri . '/assets/css/kits/kits-info-strip.css',
-                array('axiom-base', 'axiom-kits-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-info-strip.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/kits/kits-explainer.css')) {
-            wp_enqueue_style(
-                'axiom-kits-explainer',
-                $theme_uri . '/assets/css/kits/kits-explainer.css',
-                array('axiom-base', 'axiom-kits-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-explainer.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/kits/kits-grid.css')) {
-            wp_enqueue_style(
-                'axiom-kits-grid',
-                $theme_uri . '/assets/css/kits/kits-grid.css',
-                array('axiom-base', 'axiom-kits-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-grid.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/kits/kits-faq.css')) {
-            wp_enqueue_style(
-                'axiom-kits-faq',
-                $theme_uri . '/assets/css/kits/kits-faq.css',
-                array('axiom-base', 'axiom-kits-base'),
-                filemtime($theme_path . '/assets/css/kits/kits-faq.css')
-            );
+        foreach ($kits_css_files as $handle => $file_path) {
+            if (file_exists($theme_path . $file_path)) {
+                wp_enqueue_style(
+                    $handle,
+                    $theme_uri . $file_path,
+                    array('axiom-base'),
+                    filemtime($theme_path . $file_path)
+                );
+            }
         }
 
         if (file_exists($theme_path . '/assets/js/kits/kits-faq.js')) {
@@ -249,40 +213,22 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-description', $theme_uri . '/assets/css/product-page/description.css', array('axiom-base', 'axiom-product-layout'), '1.2');
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
-        if (file_exists($theme_path . '/assets/css/product-page/why-choose-us.css')) {
-            wp_enqueue_style(
-                'axiom-product-why-choose-us',
-                $theme_uri . '/assets/css/product-page/why-choose-us.css',
-                array('axiom-base', 'axiom-product-layout', 'axiom-product-description'),
-                filemtime($theme_path . '/assets/css/product-page/why-choose-us.css')
-            );
-        }
+        $product_optional_css = array(
+            'axiom-product-why-choose-us'       => '/assets/css/product-page/why-choose-us.css',
+            'axiom-product-reviews-faq-tabs'   => '/assets/css/product-page/reviews-faq-tabs.css',
+            'axiom-product-image-trust-icons'  => '/assets/css/product-page/product-image-trust-icons.css',
+            'axiom-enhanced-product'           => '/assets/css/product-page/enhanced-product.css',
+        );
 
-        if (file_exists($theme_path . '/assets/css/product-page/reviews-faq-tabs.css')) {
-            wp_enqueue_style(
-                'axiom-product-reviews-faq-tabs',
-                $theme_uri . '/assets/css/product-page/reviews-faq-tabs.css',
-                array(),
-                filemtime($theme_path . '/assets/css/product-page/reviews-faq-tabs.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/product-page/product-image-trust-icons.css')) {
-            wp_enqueue_style(
-                'axiom-product-image-trust-icons',
-                $theme_uri . '/assets/css/product-page/product-image-trust-icons.css',
-                array('axiom-base', 'axiom-product-layout'),
-                filemtime($theme_path . '/assets/css/product-page/product-image-trust-icons.css')
-            );
-        }
-
-        if (file_exists($theme_path . '/assets/css/product-page/enhanced-product.css')) {
-            wp_enqueue_style(
-                'axiom-enhanced-product',
-                $theme_uri . '/assets/css/product-page/enhanced-product.css',
-                array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'),
-                filemtime($theme_path . '/assets/css/product-page/enhanced-product.css')
-            );
+        foreach ($product_optional_css as $handle => $file_path) {
+            if (file_exists($theme_path . $file_path)) {
+                wp_enqueue_style(
+                    $handle,
+                    $theme_uri . $file_path,
+                    array('axiom-base', 'axiom-product-layout'),
+                    filemtime($theme_path . $file_path)
+                );
+            }
         }
 
         if (file_exists($theme_path . '/assets/js/product-page.js')) {
@@ -349,16 +295,19 @@ function axiom_custom_theme_assets() {
         }
     }
 
+    /*
+     * Checkout assets
+     */
     if (function_exists('is_checkout') && is_checkout() && !is_order_received_page()) {
-        $checkout_layout_css          = '/assets/css/checkout/checkout-layout.css';
-        $checkout_fields_css          = '/assets/css/checkout/checkout-fields.css';
-        $checkout_order_summary_css   = '/assets/css/checkout/checkout-order-summary.css';
-        $checkout_payment_css         = '/assets/css/checkout/checkout-payment.css';
-        $checkout_card_css            = '/assets/css/checkout/checkout-card-payment.css';
-        $checkout_venmo_css           = '/assets/css/checkout/checkout-venmo-payment.css';
-        $checkout_shipping_css        = '/assets/css/checkout/checkout-shipping-methods.css';
-        $checkout_research_css        = '/assets/css/checkout/checkout-research-box.css';
-        $checkout_mobile_css          = '/assets/css/checkout/checkout-mobile.css';
+        $checkout_layout_css        = '/assets/css/checkout/checkout-layout.css';
+        $checkout_fields_css        = '/assets/css/checkout/checkout-fields.css';
+        $checkout_order_summary_css = '/assets/css/checkout/checkout-order-summary.css';
+        $checkout_payment_css       = '/assets/css/checkout/checkout-payment.css';
+        $checkout_card_css          = '/assets/css/checkout/checkout-card-payment.css';
+        $checkout_venmo_css         = '/assets/css/checkout/checkout-venmo-payment.css';
+        $checkout_shipping_css      = '/assets/css/checkout/checkout-shipping-methods.css';
+        $checkout_research_css      = '/assets/css/checkout/checkout-research-box.css';
+        $checkout_mobile_css        = '/assets/css/checkout/checkout-mobile.css';
 
         wp_enqueue_style(
             'axiom-checkout-layout',
@@ -397,8 +346,8 @@ function axiom_custom_theme_assets() {
         );
 
         /*
-         * Card payment styling
-         * File: /assets/css/checkout/checkout-card-payment.css
+         * IMPORTANT:
+         * Loads AFTER checkout-payment.css so Quiklie/card styling can override it.
          */
         if (file_exists($theme_path . $checkout_card_css)) {
             wp_enqueue_style(
@@ -411,10 +360,6 @@ function axiom_custom_theme_assets() {
             $checkout_mobile_deps[] = 'axiom-checkout-card-payment';
         }
 
-        /*
-         * Venmo payment styling
-         * File: /assets/css/checkout/checkout-venmo-payment.css
-         */
         if (file_exists($theme_path . $checkout_venmo_css)) {
             wp_enqueue_style(
                 'axiom-checkout-venmo-payment',
