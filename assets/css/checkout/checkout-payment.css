@@ -2253,3 +2253,203 @@ button[name="woocommerce_checkout_place_order"] {
     max-height: 28px !important;
   }
 }
+
+/* =========================================================
+   Axiom Card Payment Gateway Upgrade
+   Styles the selected Pay by Card box only.
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+/* Target Pay by Card selected payment box */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box {
+  padding: 18px !important;
+  border: 1px solid rgba(74, 167, 232, 0.20) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.12), transparent 35%),
+    linear-gradient(180deg, #ffffff 0%, #f6fbff 100%) !important;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.045) !important;
+  color: #5f6f84 !important;
+}
+
+/* Card logos row */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box img {
+  max-height: 38px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  border-radius: 8px !important;
+  margin: 0 7px 12px 0 !important;
+  vertical-align: middle !important;
+}
+
+/* Processor notice text */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box p {
+  margin: 0 0 16px !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+  font-weight: 650 !important;
+  line-height: 1.55 !important;
+}
+
+/* Make processor statement name less ugly */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box p strong,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box p strong,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box p strong,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box b,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box b,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box b {
+  color: #0f172a !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Field rows */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row {
+  margin: 0 0 15px !important;
+  padding: 0 !important;
+}
+
+/* Labels */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box label {
+  display: block !important;
+  margin: 0 0 8px !important;
+  color: #101827 !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+  line-height: 1.2 !important;
+}
+
+/* Required stars */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box .required,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box .required,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .required {
+  color: #ef4444 !important;
+  text-decoration: none !important;
+}
+
+/* Inputs */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box iframe,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box iframe,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box iframe {
+  width: 100% !important;
+  min-height: 58px !important;
+  border: 1px solid #d8e2ef !important;
+  border-radius: 17px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 650 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.035) !important;
+  box-sizing: border-box !important;
+}
+
+/* Native input padding */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input {
+  padding: 0 17px !important;
+}
+
+/* Placeholder */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input::placeholder {
+  color: #a8b0bd !important;
+  font-weight: 500 !important;
+}
+
+/* Focus state */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input:focus {
+  outline: none !important;
+  border-color: #4aa7e8 !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.13),
+    0 10px 22px rgba(47, 132, 191, 0.10) !important;
+}
+
+/* Try to make expiry/CVV cleaner if plugin uses two half rows */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-last {
+  width: 100% !important;
+  float: none !important;
+}
+
+/* Add a better secure payment badge before fields */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after {
+  content: "🔒 Encrypted card checkout · Secure payment processing";
+  display: block !important;
+  margin-top: 4px !important;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  border-radius: 15px !important;
+  background: #eef8ff !important;
+  color: #2f84bf !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+}
+
+/* Mobile polish */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box {
+    padding: 15px !important;
+    border-radius: 20px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box img,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box img,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box img {
+    max-height: 34px !important;
+    margin-right: 5px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box p,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box p,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box iframe,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box iframe,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box iframe {
+    min-height: 56px !important;
+    border-radius: 16px !important;
+    font-size: 15.5px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after {
+    font-size: 12px !important;
+    padding: 11px 12px !important;
+  }
+}
