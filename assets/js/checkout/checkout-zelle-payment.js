@@ -16,7 +16,7 @@
   }
 
   function getZelleIconUrl() {
-    return getThemeUrl() + '/assets/images/zelle.jpg';
+    return getThemeUrl() + '/assets/images/zelle-checkout.JPG';
   }
 
   function isZellePaymentMethod($method) {
@@ -26,7 +26,9 @@
 
     var methodClass = normalizeText($method.attr('class'));
     var labelText = normalizeText($method.children('label').first().text());
-    var inputValue = normalizeText($method.children('input.input-radio, input[type="radio"]').first().val());
+    var inputValue = normalizeText(
+      $method.children('input.input-radio, input[type="radio"]').first().val()
+    );
 
     return (
       methodClass.indexOf('zelle') !== -1 ||
@@ -50,7 +52,7 @@
           '<div class="axiom-zelle-head">',
             '<div class="axiom-zelle-title">',
               '<span class="axiom-zelle-icon" aria-hidden="true">',
-                '<img src="' + zelleIconUrl + '" alt="Zelle" />',
+                '<img class="axiom-zelle-icon-image" src="' + zelleIconUrl + '" alt="Zelle" />',
               '</span>',
               '<div>',
                 '<strong>Zelle Payment</strong>',
@@ -165,8 +167,12 @@
     refreshZellePanel();
   });
 
-  $(document).on('change', '.woocommerce-checkout #payment ul.payment_methods > li > input.input-radio, .woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"]', function () {
-    setTimeout(refreshZellePanel, 25);
-  });
+  $(document).on(
+    'change',
+    '.woocommerce-checkout #payment ul.payment_methods > li > input.input-radio, .woocommerce-checkout #payment ul.payment_methods > li > input[type="radio"]',
+    function () {
+      setTimeout(refreshZellePanel, 25);
+    }
+  );
 
 })(jQuery);
