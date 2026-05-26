@@ -66,79 +66,12 @@ function axiom_get_single_variation_for_upsell($product) {
 }
 
 function axiom_find_bac_water_upsell_product() {
-    $candidate_slugs = array(
-        'bac-water-10ml',
-        'bac-water-10mL',
-        'bac-water',
-    );
-
-    foreach ($candidate_slugs as $slug) {
-        $page = get_page_by_path($slug, OBJECT, 'product');
-        if (!$page) continue;
-
-        $product = wc_get_product($page->ID);
-
-        if (!$product || !$product->is_purchasable()) continue;
-
-        if ($product->is_type('variable')) {
-            $single_variation = axiom_get_single_variation_for_upsell($product);
-
-            if ($single_variation) {
-                return array(
-                    'product'      => $product,
-                    'variation_id' => $single_variation['variation_id'],
-                    'attributes'   => $single_variation['attributes'],
-                );
-            }
-        } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-            return array(
-                'product'      => $product,
-                'variation_id' => 0,
-                'attributes'   => array(),
-            );
-        }
-    }
-
-    $query = new WP_Query(array(
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
-        'posts_per_page' => 5,
-        's'              => 'BAC Water',
-    ));
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $product = wc_get_product(get_the_ID());
-
-            if (!$product || !$product->is_purchasable()) continue;
-
-            if ($product->is_type('variable')) {
-                $single_variation = axiom_get_single_variation_for_upsell($product);
-
-                if ($single_variation) {
-                    wp_reset_postdata();
-
-                    return array(
-                        'product'      => $product,
-                        'variation_id' => $single_variation['variation_id'],
-                        'attributes'   => $single_variation['attributes'],
-                    );
-                }
-            } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-                wp_reset_postdata();
-
-                return array(
-                    'product'      => $product,
-                    'variation_id' => 0,
-                    'attributes'   => array(),
-                );
-            }
-        }
-
-        wp_reset_postdata();
-    }
-
+    /*
+     * TEMPORARILY DISABLED:
+     * Returning null hides the BAC Water cart drawer upsell without deleting the code structure.
+     *
+     * To turn it back on later, remove this return null; line and restore the old lookup logic.
+     */
     return null;
 }
 
@@ -187,34 +120,10 @@ function axiom_get_cart_drawer_payload() {
         );
     }
 
+    /*
+     * BAC Water upsell is temporarily hidden.
+     */
     $upsell_data = null;
-    $upsell_wrap = axiom_find_bac_water_upsell_product();
-
-    if ($upsell_wrap && !empty($upsell_wrap['product']) && is_a($upsell_wrap['product'], 'WC_Product')) {
-        $upsell       = $upsell_wrap['product'];
-        $variation_id = !empty($upsell_wrap['variation_id']) ? (int) $upsell_wrap['variation_id'] : 0;
-        $attributes   = !empty($upsell_wrap['attributes']) && is_array($upsell_wrap['attributes'])
-            ? $upsell_wrap['attributes']
-            : array();
-
-        if (
-            !axiom_product_in_cart_by_product_or_parent($upsell->get_id()) &&
-            (!$variation_id || !axiom_product_in_cart_by_product_or_parent($variation_id))
-        ) {
-            $upsell_image         = wp_get_attachment_image_url($upsell->get_image_id(), 'woocommerce_thumbnail');
-            $upsell_price_product = $variation_id ? wc_get_product($variation_id) : $upsell;
-
-            $upsell_data = array(
-                'productId'   => $upsell->get_id(),
-                'variationId' => $variation_id,
-                'attributes'  => $attributes,
-                'name'        => $upsell->get_name(),
-                'image'       => $upsell_image ? $upsell_image : wc_placeholder_img_src(),
-                'priceHtml'   => $upsell_price_product ? $upsell_price_product->get_price_html() : $upsell->get_price_html(),
-                'link'        => get_permalink($upsell->get_id()),
-            );
-        }
-    }
 
     $discount_total = (float) WC()->cart->get_discount_total();
 
