@@ -2144,3 +2144,112 @@ button[name="woocommerce_checkout_place_order"] {
     max-height: 39px !important;
   }
 }
+
+/* =========================================================
+   FINAL FIX: Zelle icon box same size as Pay by Bank
+   Box stays small. Zelle image inside gets bigger.
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+.woocommerce-checkout #payment .axiom-zelle-title {
+  grid-template-columns: 36px 1fr !important;
+  gap: 10px !important;
+  align-items: center !important;
+}
+
+/* SAME SIZE AS PAY BY BANK ICON BOX */
+.woocommerce-checkout #payment .axiom-zelle-icon {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  min-height: 36px !important;
+  max-width: 36px !important;
+  max-height: 36px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  box-shadow: 0 8px 18px rgba(47, 132, 191, 0.22) !important;
+
+  overflow: hidden !important;
+  position: relative !important;
+  line-height: 1 !important;
+}
+
+/* Bigger Zelle logo INSIDE the same small box */
+.woocommerce-checkout #payment .axiom-zelle-icon img,
+.woocommerce-checkout #payment .axiom-zelle-icon .axiom-zelle-icon-image {
+  display: block !important;
+
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  max-width: 30px !important;
+  max-height: 30px !important;
+
+  object-fit: contain !important;
+  object-position: center center !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  position: static !important;
+  top: auto !important;
+  left: auto !important;
+  transform: none !important;
+
+  line-height: 1 !important;
+}
+
+/* Prevent old Font Awesome icon rules from affecting the Zelle image */
+.woocommerce-checkout #payment .axiom-zelle-icon i,
+.woocommerce-checkout #payment .axiom-zelle-icon svg {
+  display: none !important;
+}
+
+/* Mobile: same as Pay by Bank mobile size */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment .axiom-zelle-title {
+    grid-template-columns: 34px 1fr !important;
+    gap: 9px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-zelle-icon {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    min-height: 34px !important;
+    max-width: 34px !important;
+    max-height: 34px !important;
+    border-radius: 11px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-zelle-icon img,
+  .woocommerce-checkout #payment .axiom-zelle-icon .axiom-zelle-icon-image {
+    width: 29px !important;
+    height: 29px !important;
+    min-width: 29px !important;
+    min-height: 29px !important;
+    max-width: 29px !important;
+    max-height: 29px !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .woocommerce-checkout #payment .axiom-zelle-icon img,
+  .woocommerce-checkout #payment .axiom-zelle-icon .axiom-zelle-icon-image {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    min-height: 28px !important;
+    max-width: 28px !important;
+    max-height: 28px !important;
+  }
+}
