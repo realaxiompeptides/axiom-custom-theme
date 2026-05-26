@@ -1,82 +1,287 @@
 /* =========================================================
    Axiom Checkout Card Payment Styling
    File: /assets/css/checkout/checkout-card-payment.css
-   Purpose: Makes the credit/debit card fields look premium.
+   Purpose: Premium styling for Pay by Card gateway only
 ========================================================= */
 
-/* Target the card payment method only */
+/* =========================================================
+   1. Card gateway targeting
+========================================================= */
+
 .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"],
-.woocommerce-checkout #payment ul.payment_methods > li[class*="card"],
-.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"],
-.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] {
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] {
   overflow: visible !important;
 }
 
-/* Only style the payment box when the card method is selected/open */
-.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] .payment_box,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] .payment_box {
-  padding: 14px !important;
-  border: 1px solid rgba(74, 167, 232, 0.22) !important;
-  border-radius: 18px !important;
+/* Selected card method wrapper */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"]:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"]:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"]:has(> input:checked),
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"]:has(> input:checked) {
+  border-color: #4aa7e8 !important;
   background:
-    radial-gradient(circle at top right, rgba(74, 167, 232, 0.12), transparent 34%),
-    linear-gradient(180deg, #ffffff 0%, #f5fbff 100%) !important;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
-  color: #5f6f84 !important;
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.18), transparent 35%),
+    linear-gradient(180deg, #ffffff 0%, #f2faff 100%) !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.12),
+    0 18px 42px rgba(47, 132, 191, 0.16) !important;
 }
 
-/* Remove ugly default spacing */
-.woocommerce-checkout #payment .payment_box p {
-  margin: 0 0 10px !important;
+/* Card method label */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway > label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway > label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa > label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay > label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway > label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] > label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] > label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] > label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] > label {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  color: #07111f !important;
+  font-size: 17px !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.15 !important;
+}
+
+/* Gateway label logo */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway > label img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway > label img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa > label img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay > label img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway > label img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] > label img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] > label img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] > label img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] > label img {
+  width: 44px !important;
+  height: 44px !important;
+  max-width: 44px !important;
+  max-height: 44px !important;
+  margin-left: 10px !important;
+  border-radius: 12px !important;
+  object-fit: contain !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* =========================================================
+   2. Main card payment box
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box {
+  position: relative !important;
+  margin-top: 18px !important;
+  padding: 18px !important;
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 22px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.14), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f5fbff 100%) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 12px 28px rgba(15, 23, 42, 0.045) !important;
+  color: #5f6f84 !important;
+  overflow: hidden !important;
+}
+
+/* Remove Woo triangle */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::before,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::before {
+  display: none !important;
+}
+
+/* Hide ugly processor instruction paragraph if it is the first gateway text */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box > p:first-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box > p:first-of-type {
+  display: none !important;
+}
+
+/* Premium top notice */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after {
+  content: "Secure encrypted card checkout • Instant authorization • 256-bit SSL protected";
+  display: block !important;
+  clear: both !important;
+  margin-top: 14px !important;
+  padding: 12px 13px !important;
+  border: 1px solid rgba(74, 167, 232, 0.2) !important;
+  border-radius: 16px !important;
+  background: linear-gradient(180deg, #f7fcff 0%, #eef8ff 100%) !important;
+  color: #2f84bf !important;
+  font-size: 12px !important;
+  font-weight: 850 !important;
+  line-height: 1.35 !important;
+  text-align: center !important;
+  box-sizing: border-box !important;
+}
+
+/* =========================================================
+   3. Card icons row
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box img,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box img {
+  max-height: 30px !important;
+  width: auto !important;
+  object-fit: contain !important;
+  border-radius: 7px !important;
+}
+
+/* Common plugin icon wrappers */
+.woocommerce-checkout #payment .payment_box .card-icons,
+.woocommerce-checkout #payment .payment_box .credit-card-icons,
+.woocommerce-checkout #payment .payment_box .wc-credit-card-icons,
+.woocommerce-checkout #payment .payment_box .payment-icons,
+.woocommerce-checkout #payment .payment_box .accepted-cards,
+.woocommerce-checkout #payment .payment_box .cards {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 0 16px !important;
+  padding: 0 !important;
+}
+
+/* =========================================================
+   4. Labels and rows
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box p,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box p {
   color: #64748b !important;
   font-size: 13px !important;
   font-weight: 650 !important;
   line-height: 1.45 !important;
 }
 
-/* Generic form rows inside card box */
-.woocommerce-checkout #payment .payment_box .form-row,
-.woocommerce-checkout #payment .payment_box p.form-row,
-.woocommerce-checkout #payment .payment_box fieldset,
-.woocommerce-checkout #payment .payment_box .woocommerce-SavedPaymentMethods,
-.woocommerce-checkout #payment .payment_box .wc-payment-form {
-  margin: 0 0 12px !important;
+/* Form row reset */
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box p.form-row {
+  margin: 0 0 14px !important;
   padding: 0 !important;
   border: 0 !important;
 }
 
 /* Labels */
-.woocommerce-checkout #payment .payment_box label {
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box label,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box label {
   display: block !important;
-  margin: 0 0 7px !important;
-  color: #0f172a !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  line-height: 1.2 !important;
+  margin: 0 0 8px !important;
+  color: #07111f !important;
+  font-size: 13.5px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
 }
 
-/* Normal inputs */
-.woocommerce-checkout #payment .payment_box input[type="text"],
-.woocommerce-checkout #payment .payment_box input[type="tel"],
-.woocommerce-checkout #payment .payment_box input[type="email"],
-.woocommerce-checkout #payment .payment_box input[type="number"],
-.woocommerce-checkout #payment .payment_box input[type="password"],
-.woocommerce-checkout #payment .payment_box select {
+/* Required star */
+.woocommerce-checkout #payment .payment_box abbr.required,
+.woocommerce-checkout #payment .payment_box .required {
+  color: #ef4444 !important;
+  text-decoration: none !important;
+}
+
+/* =========================================================
+   5. Inputs
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input[type="text"],
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input[type="tel"],
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input[type="email"],
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input[type="number"],
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box input[type="password"],
+.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box select,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box select {
   width: 100% !important;
-  min-height: 52px !important;
-  height: 52px !important;
-  padding: 0 15px !important;
+  min-height: 54px !important;
+  height: 54px !important;
+  padding: 0 16px !important;
   border: 1px solid #d8e6f3 !important;
-  border-radius: 15px !important;
+  border-radius: 16px !important;
   background: #ffffff !important;
   color: #07111f !important;
-  font-size: 15px !important;
-  font-weight: 700 !important;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.025) !important;
+  font-size: 15.5px !important;
+  font-weight: 750 !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 18px rgba(15, 23, 42, 0.025) !important;
   outline: none !important;
   box-sizing: border-box !important;
   transition:
@@ -85,13 +290,12 @@
     background 0.18s ease !important;
 }
 
-/* Focus state */
-.woocommerce-checkout #payment .payment_box input[type="text"]:focus,
-.woocommerce-checkout #payment .payment_box input[type="tel"]:focus,
-.woocommerce-checkout #payment .payment_box input[type="email"]:focus,
-.woocommerce-checkout #payment .payment_box input[type="number"]:focus,
-.woocommerce-checkout #payment .payment_box input[type="password"]:focus,
-.woocommerce-checkout #payment .payment_box select:focus {
+/* Focus */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input:focus,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box select:focus {
   border-color: #4aa7e8 !important;
   background: #ffffff !important;
   box-shadow:
@@ -100,34 +304,59 @@
 }
 
 /* Placeholder */
-.woocommerce-checkout #payment .payment_box input::placeholder {
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input::placeholder,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input::placeholder {
   color: #94a3b8 !important;
-  font-weight: 650 !important;
+  font-weight: 700 !important;
 }
 
-/* Stripe / iframe style wrappers */
-.woocommerce-checkout #payment .payment_box .StripeElement,
-.woocommerce-checkout #payment .payment_box .wc-stripe-elements-field,
-.woocommerce-checkout #payment .payment_box .wc-stripe-iban-element-field,
-.woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-number,
-.woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-expiry,
-.woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-cvc,
-.woocommerce-checkout #payment .payment_box .input-text {
+/* Invalid fields */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box input.invalid,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box input.invalid,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input.invalid,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input.invalid,
+.woocommerce-checkout #payment .payment_box .StripeElement--invalid {
+  border-color: #fda4af !important;
+  background: #fff7f8 !important;
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.08) !important;
+}
+
+/* =========================================================
+   6. Stripe / iframe / hosted field wrappers
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .StripeElement,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .wc-stripe-elements-field,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .wc-credit-card-form-card-number,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .wc-credit-card-form-card-expiry,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .wc-credit-card-form-card-cvc,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .StripeElement,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .wc-stripe-elements-field,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .StripeElement,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .wc-stripe-elements-field,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .StripeElement,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .wc-stripe-elements-field,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .input-text {
   width: 100% !important;
-  min-height: 52px !important;
-  padding: 15px !important;
+  min-height: 54px !important;
+  height: 54px !important;
+  padding: 16px !important;
   border: 1px solid #d8e6f3 !important;
-  border-radius: 15px !important;
+  border-radius: 16px !important;
   background: #ffffff !important;
   color: #07111f !important;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.025) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 8px 18px rgba(15, 23, 42, 0.025) !important;
   box-sizing: border-box !important;
   transition:
     border-color 0.18s ease,
     box-shadow 0.18s ease !important;
 }
 
-/* Stripe focus */
+/* Hosted field focus */
 .woocommerce-checkout #payment .payment_box .StripeElement--focus,
 .woocommerce-checkout #payment .payment_box .wc-stripe-elements-field:focus,
 .woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-number:focus,
@@ -139,46 +368,62 @@
     0 12px 24px rgba(47, 132, 191, 0.10) !important;
 }
 
-/* Error state */
-.woocommerce-checkout #payment .payment_box .StripeElement--invalid,
-.woocommerce-checkout #payment .payment_box input.input-text.invalid,
-.woocommerce-checkout #payment .payment_box input.invalid {
-  border-color: #fda4af !important;
-  background: #fff7f8 !important;
-  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.08) !important;
-}
+/* =========================================================
+   7. Field layout
+========================================================= */
 
-/* Woo card form layout */
-.woocommerce-checkout #payment .payment_box .wc-credit-card-form {
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .wc-credit-card-form,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .wc-credit-card-form,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .wc-credit-card-form,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .wc-credit-card-form {
   display: grid !important;
-  gap: 12px !important;
+  gap: 14px !important;
   margin: 0 !important;
   padding: 0 !important;
   border: 0 !important;
 }
 
-/* Expiration + CVC side by side */
-.woocommerce-checkout #payment .payment_box .form-row-first,
-.woocommerce-checkout #payment .payment_box .form-row-last {
+/* Expiry + CVV side-by-side */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-first,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-first {
+  width: calc(50% - 6px) !important;
+  float: left !important;
+  clear: none !important;
+  margin-right: 12px !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-last,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-last {
   width: calc(50% - 6px) !important;
   float: left !important;
   clear: none !important;
 }
 
-.woocommerce-checkout #payment .payment_box .form-row-first {
-  margin-right: 12px !important;
-}
-
-.woocommerce-checkout #payment .payment_box .form-row-wide {
+.woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-wide,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-wide,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-wide,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-wide {
   width: 100% !important;
   clear: both !important;
 }
 
-/* Saved payment methods */
+/* Clear floats */
+.woocommerce-checkout #payment .payment_box .clear {
+  clear: both !important;
+}
+
+/* =========================================================
+   8. Saved cards / checkboxes
+========================================================= */
+
 .woocommerce-checkout #payment .payment_box ul.woocommerce-SavedPaymentMethods {
   display: grid !important;
   gap: 10px !important;
-  margin: 0 0 12px !important;
+  margin: 0 0 14px !important;
   padding: 0 !important;
   list-style: none !important;
 }
@@ -189,12 +434,13 @@
   gap: 10px !important;
   padding: 12px !important;
   border: 1px solid rgba(74, 167, 232, 0.18) !important;
-  border-radius: 14px !important;
+  border-radius: 15px !important;
   background: #ffffff !important;
   margin: 0 !important;
 }
 
-.woocommerce-checkout #payment .payment_box ul.woocommerce-SavedPaymentMethods input[type="radio"] {
+.woocommerce-checkout #payment .payment_box ul.woocommerce-SavedPaymentMethods input[type="radio"],
+.woocommerce-checkout #payment .payment_box input[type="checkbox"] {
   width: 18px !important;
   height: 18px !important;
   accent-color: #4aa7e8 !important;
@@ -203,12 +449,11 @@
 
 .woocommerce-checkout #payment .payment_box ul.woocommerce-SavedPaymentMethods label {
   margin: 0 !important;
-  font-size: 13px !important;
-  font-weight: 800 !important;
   color: #0f172a !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
 }
 
-/* Save card checkbox */
 .woocommerce-checkout #payment .payment_box .woocommerce-SavedPaymentMethods-saveNew,
 .woocommerce-checkout #payment .payment_box p.form-row.woocommerce-SavedPaymentMethods-saveNew {
   display: flex !important;
@@ -216,149 +461,119 @@
   gap: 9px !important;
   padding: 12px !important;
   border: 1px solid rgba(74, 167, 232, 0.16) !important;
-  border-radius: 14px !important;
-  background: rgba(248, 251, 255, 0.9) !important;
-}
-
-.woocommerce-checkout #payment .payment_box .woocommerce-SavedPaymentMethods-saveNew input[type="checkbox"] {
-  width: 18px !important;
-  height: 18px !important;
-  accent-color: #4aa7e8 !important;
-  margin: 0 !important;
+  border-radius: 15px !important;
+  background: rgba(248, 251, 255, 0.92) !important;
 }
 
 .woocommerce-checkout #payment .payment_box .woocommerce-SavedPaymentMethods-saveNew label {
   margin: 0 !important;
   color: #334155 !important;
   font-size: 12.5px !important;
-  font-weight: 750 !important;
+  font-weight: 800 !important;
 }
 
-/* Card icons/images inside gateway box */
-.woocommerce-checkout #payment .payment_box img,
-.woocommerce-checkout #payment .payment_box svg {
-  max-height: 24px !important;
-  width: auto !important;
-  object-fit: contain !important;
+/* =========================================================
+   9. Aggressive plugin-specific cleanup
+========================================================= */
+
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .testmode-info,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .woocommerce-info,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .wc-stripe-card-icons-container,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .testmode-info,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .woocommerce-info,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .testmode-info,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .woocommerce-info {
+  margin-bottom: 12px !important;
 }
 
-/* Add premium mini-trust row inside card payment box using CSS only */
-.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::after,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box::after,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] .payment_box::after,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] .payment_box::after {
-  content: "256-bit SSL secured • Encrypted card processing • Instant authorization";
-  display: block !important;
-  margin-top: 12px !important;
-  padding: 10px 12px !important;
-  border: 1px solid rgba(74, 167, 232, 0.18) !important;
-  border-radius: 14px !important;
-  background: linear-gradient(180deg, #f7fcff 0%, #eef8ff 100%) !important;
-  color: #2f84bf !important;
-  font-size: 11.5px !important;
-  font-weight: 850 !important;
-  line-height: 1.3 !important;
-  text-align: center !important;
-  box-sizing: border-box !important;
+/* Make processor text less ugly if it still appears */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box strong,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box strong,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box strong {
+  color: #334155 !important;
+  font-weight: 900 !important;
 }
 
-/* Remove excessive plugin instructions if they look bad */
-.woocommerce-checkout #payment .payment_box .testmode-info,
-.woocommerce-checkout #payment .payment_box .woocommerce-info,
-.woocommerce-checkout #payment .payment_box .wc-stripe-card-icons-container {
-  margin-bottom: 10px !important;
-}
+/* =========================================================
+   10. Mobile
+========================================================= */
 
-/* Make card payment method label look clean */
-.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway > label,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] > label,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] > label,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] > label,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] > label {
-  font-weight: 950 !important;
-  color: #07111f !important;
-}
-
-/* If gateway injects small card logos next to the label */
-.woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway > label img,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] > label img,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] > label img,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] > label img,
-.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] > label img {
-  max-height: 22px !important;
-  width: auto !important;
-  margin-left: 8px !important;
-  vertical-align: middle !important;
-  filter: none !important;
-}
-
-/* Force Woo field wrappers to behave */
-.woocommerce-checkout #payment .payment_box .clear {
-  clear: both !important;
-}
-
-.woocommerce-checkout #payment .payment_box:after {
-  clear: both;
-}
-
-/* Mobile */
 @media (max-width: 767px) {
   .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] .payment_box,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] .payment_box {
-    padding: 12px !important;
-    border-radius: 16px !important;
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box {
+    margin-top: 16px !important;
+    padding: 14px !important;
+    border-radius: 20px !important;
   }
 
-  .woocommerce-checkout #payment .payment_box input[type="text"],
-  .woocommerce-checkout #payment .payment_box input[type="tel"],
-  .woocommerce-checkout #payment .payment_box input[type="email"],
-  .woocommerce-checkout #payment .payment_box input[type="number"],
-  .woocommerce-checkout #payment .payment_box input[type="password"],
-  .woocommerce-checkout #payment .payment_box select,
-  .woocommerce-checkout #payment .payment_box .StripeElement,
-  .woocommerce-checkout #payment .payment_box .wc-stripe-elements-field,
-  .woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-number,
-  .woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-expiry,
-  .woocommerce-checkout #payment .payment_box .wc-credit-card-form-card-cvc,
-  .woocommerce-checkout #payment .payment_box .input-text {
-    min-height: 50px !important;
-    height: 50px !important;
-    border-radius: 14px !important;
-    font-size: 14.5px !important;
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box input,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box select,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .StripeElement,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .wc-stripe-elements-field,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .input-text {
+    min-height: 52px !important;
+    height: 52px !important;
+    border-radius: 15px !important;
+    font-size: 15px !important;
   }
 
-  .woocommerce-checkout #payment .payment_box label {
-    font-size: 12.5px !important;
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box label,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box label,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box label,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box label {
+    font-size: 13px !important;
   }
 
-  .woocommerce-checkout #payment .payment_box .form-row-first,
-  .woocommerce-checkout #payment .payment_box .form-row-last {
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-first {
     width: calc(50% - 5px) !important;
-  }
-
-  .woocommerce-checkout #payment .payment_box .form-row-first {
     margin-right: 10px !important;
   }
 
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-last {
+    width: calc(50% - 5px) !important;
+  }
+
   .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo_merchant_gateway .payment_box::after,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant"] .payment_box::after,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] .payment_box::after,
-  .woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] .payment_box::after {
-    font-size: 10.5px !important;
-    padding: 9px 10px !important;
-    border-radius: 13px !important;
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_woo-merchant-gateway .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupapay .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li.payment_method_lupa_gateway .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box::after {
+    font-size: 10.8px !important;
+    padding: 10px 11px !important;
+    border-radius: 14px !important;
   }
 }
 
 /* Very small phones */
 @media (max-width: 390px) {
-  .woocommerce-checkout #payment .payment_box .form-row-first,
-  .woocommerce-checkout #payment .payment_box .form-row-last {
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-first,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="woo_merchant"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="merchant_gateway"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row-last,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box .form-row-last {
     width: 100% !important;
     float: none !important;
     margin-right: 0 !important;
