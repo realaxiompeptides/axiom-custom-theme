@@ -354,6 +354,7 @@ function axiom_custom_theme_assets() {
         $checkout_fields_css          = '/assets/css/checkout/checkout-fields.css';
         $checkout_order_summary_css   = '/assets/css/checkout/checkout-order-summary.css';
         $checkout_payment_css         = '/assets/css/checkout/checkout-payment.css';
+        $checkout_card_css            = '/assets/css/checkout/checkout-card-payment.css';
         $checkout_venmo_css           = '/assets/css/checkout/checkout-venmo-payment.css';
         $checkout_shipping_css        = '/assets/css/checkout/checkout-shipping-methods.css';
         $checkout_research_css        = '/assets/css/checkout/checkout-research-box.css';
@@ -395,6 +396,25 @@ function axiom_custom_theme_assets() {
             'axiom-checkout-payment',
         );
 
+        /*
+         * Card payment styling
+         * File: /assets/css/checkout/checkout-card-payment.css
+         */
+        if (file_exists($theme_path . $checkout_card_css)) {
+            wp_enqueue_style(
+                'axiom-checkout-card-payment',
+                $theme_uri . $checkout_card_css,
+                array('axiom-base', 'axiom-checkout-layout', 'axiom-checkout-payment'),
+                filemtime($theme_path . $checkout_card_css)
+            );
+
+            $checkout_mobile_deps[] = 'axiom-checkout-card-payment';
+        }
+
+        /*
+         * Venmo payment styling
+         * File: /assets/css/checkout/checkout-venmo-payment.css
+         */
         if (file_exists($theme_path . $checkout_venmo_css)) {
             wp_enqueue_style(
                 'axiom-checkout-venmo-payment',
