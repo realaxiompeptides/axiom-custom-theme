@@ -16,7 +16,7 @@
   }
 
   function getZelleIconUrl() {
-    return getThemeUrl() + '/assets/images/zelle-checkout.JPG';
+    return getThemeUrl() + '/assets/images/zelle-checkout.PNG';
   }
 
   function isZellePaymentMethod($method) {
