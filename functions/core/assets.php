@@ -214,7 +214,13 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-catalog-disclaimer', $theme_uri . '/assets/css/shop/catalog-disclaimer.css', array('axiom-base', 'axiom-catalog-layout'), '1.0');
 
         if (file_exists($theme_path . '/assets/js/shop/catalog.js')) {
-            wp_enqueue_script('axiom-catalog', $theme_uri . '/assets/js/shop/catalog.js', array(), '1.0', true);
+            wp_enqueue_script(
+                'axiom-catalog',
+                $theme_uri . '/assets/js/shop/catalog.js',
+                array(),
+                filemtime($theme_path . '/assets/js/shop/catalog.js'),
+                true
+            );
 
             wp_localize_script('axiom-catalog', 'AXIOM_CATALOG', array(
                 'shopUrl' => function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/'),
@@ -226,7 +232,13 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-track-order', $theme_uri . '/assets/css/track-order/track-order.css', array('axiom-base'), '1.0');
 
         if (file_exists($theme_path . '/assets/js/track-order/track-order.js')) {
-            wp_enqueue_script('axiom-track-order', $theme_uri . '/assets/js/track-order/track-order.js', array(), '1.0', true);
+            wp_enqueue_script(
+                'axiom-track-order',
+                $theme_uri . '/assets/js/track-order/track-order.js',
+                array(),
+                filemtime($theme_path . '/assets/js/track-order/track-order.js'),
+                true
+            );
         }
     }
 
@@ -380,7 +392,7 @@ function axiom_custom_theme_assets() {
             wp_enqueue_script(
                 'axiom-checkout-bank-payment',
                 $theme_uri . '/assets/js/checkout/checkout-bank-payment.js',
-                array('jquery', 'wc-checkout'),
+                array('jquery', 'wc-checkout', 'axiom-main'),
                 filemtime($theme_path . '/assets/js/checkout/checkout-bank-payment.js'),
                 true
             );
@@ -390,8 +402,18 @@ function axiom_custom_theme_assets() {
             wp_enqueue_script(
                 'axiom-checkout-zelle-payment',
                 $theme_uri . '/assets/js/checkout/checkout-zelle-payment.js',
-                array('jquery', 'wc-checkout'),
+                array('jquery', 'wc-checkout', 'axiom-main'),
                 filemtime($theme_path . '/assets/js/checkout/checkout-zelle-payment.js'),
+                true
+            );
+        }
+
+        if (file_exists($theme_path . '/assets/js/checkout/checkout-venmo-payment.js')) {
+            wp_enqueue_script(
+                'axiom-checkout-venmo-payment',
+                $theme_uri . '/assets/js/checkout/checkout-venmo-payment.js',
+                array('jquery', 'wc-checkout', 'axiom-main'),
+                filemtime($theme_path . '/assets/js/checkout/checkout-venmo-payment.js'),
                 true
             );
         }
