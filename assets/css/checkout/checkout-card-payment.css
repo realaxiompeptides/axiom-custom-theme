@@ -815,3 +815,98 @@
     width: calc(50% - 5px) !important;
   }
 }
+
+/* =========================================================
+   FINAL CARD TRUST STRIP SPACING FIX
+   Makes the 256-bit strip closer to the CVV field and cleaner.
+   Put at VERY BOTTOM of checkout-card-payment.css
+========================================================= */
+
+/* Tighten the whole Quiklie/card payment box spacing */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box {
+  padding-bottom: 14px !important;
+}
+
+/* Reduce space after the final CVV row */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box .form-row:last-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box .form-row:last-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box .form-row:last-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box .form-row:last-of-type,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box .form-row:last-of-type {
+  margin-bottom: 6px !important;
+}
+
+/* Better 256-bit trust strip */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box::after,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::after {
+  content: "256-bit encrypted checkout • Secure card authorization • Instant payment confirmation" !important;
+  display: block !important;
+  clear: both !important;
+
+  margin-top: 6px !important;
+  margin-bottom: 0 !important;
+  padding: 10px 12px !important;
+
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 15px !important;
+  background:
+    radial-gradient(circle at top left, rgba(74, 167, 232, 0.12), transparent 34%),
+    linear-gradient(180deg, #f8fcff 0%, #eef8ff 100%) !important;
+
+  color: #247db8 !important;
+  font-size: 11.5px !important;
+  font-weight: 900 !important;
+  line-height: 1.32 !important;
+  letter-spacing: -0.01em !important;
+  text-align: center !important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.95),
+    0 8px 18px rgba(47, 132, 191, 0.055) !important;
+
+  box-sizing: border-box !important;
+}
+
+/* Make CVV input not leave huge spacing below */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input[name*="cvv"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input[name*="cvv"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input[name*="cvv"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input[name*="cvv"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input[name*="cvv"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box input[name*="cvc"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box input[name*="cvc"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box input[name*="cvc"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box input[name*="cvc"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box input[name*="cvc"] {
+  margin-bottom: 0 !important;
+}
+
+/* Mobile tuning */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box {
+    padding-bottom: 12px !important;
+  }
+
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box::after,
+  .woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box::after {
+    margin-top: 5px !important;
+    padding: 9px 10px !important;
+    border-radius: 14px !important;
+    font-size: 10.5px !important;
+    line-height: 1.28 !important;
+  }
+}
