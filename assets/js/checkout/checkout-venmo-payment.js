@@ -8,26 +8,15 @@
   }
 
   function getThemeUrl() {
-    if (typeof AXIOM_THEME !== 'undefined' && AXIOM_THEME.themeUrl) {
-      return AXIOM_THEME.themeUrl.replace(/\/$/, '');
+    if (typeof AXIOM_THEME !== 'undefined' && AXIOM_THEME && AXIOM_THEME.themeUrl) {
+      return AXIOM_THEME.themeUrl;
     }
 
-    var $themeAsset = $('link[href*="/wp-content/themes/"]').first();
-
-    if ($themeAsset.length) {
-      var href = $themeAsset.attr('href') || '';
-      var match = href.match(/^(.*\/wp-content\/themes\/[^/]+)/);
-
-      if (match && match[1]) {
-        return match[1].replace(/\/$/, '');
-      }
-    }
-
-    return '';
+    return window.location.origin + '/wp-content/themes/axiom-custom-theme';
   }
 
   function getVenmoIconUrl() {
-    return getThemeUrl() + '/assets/images/venmo.jpg';
+    return getThemeUrl() + '/assets/images/venmo-checkout.PNG';
   }
 
   function isVenmoPaymentMethod($method) {
@@ -53,13 +42,15 @@
   }
 
   function buildVenmoPanel() {
+    var venmoIconUrl = getVenmoIconUrl();
+
     return $(
       [
         '<div class="' + VENMO_PANEL_CLASS + '" data-axiom-venmo-upgrade="1">',
           '<div class="axiom-venmo-head">',
             '<div class="axiom-venmo-title">',
               '<span class="axiom-venmo-icon" aria-hidden="true">',
-                '<img class="axiom-venmo-icon-image" src="' + getVenmoIconUrl() + '" alt="Venmo" />',
+                '<img class="axiom-venmo-icon-image" src="' + venmoIconUrl + '" alt="">',
               '</span>',
               '<div>',
                 '<strong>Venmo Payment</strong>',
@@ -132,7 +123,8 @@
         text.indexOf('send payment') !== -1 ||
         text.indexOf('payment after checkout') !== -1 ||
         text.indexOf('order number') !== -1 ||
-        text.indexOf('mobile payment') !== -1
+        text.indexOf('mobile payment') !== -1 ||
+        text.indexOf('fast and easy') !== -1
       ) {
         $p.addClass('axiom-venmo-default-copy-hidden');
       }
