@@ -910,3 +910,389 @@
     line-height: 1.28 !important;
   }
 }
+
+/* =========================================================
+   FINAL CARD PANEL FIX
+   Fixes the custom JS card panel layout/styling
+   File: /assets/css/checkout/checkout-card-payment.css
+========================================================= */
+
+/* Make sure Quiklie/card box allows the custom panel to layout correctly */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"],
+.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] {
+  overflow: visible !important;
+}
+
+/* Main payment box */
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quik"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quick"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="quiklie"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="qpay"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="lupa"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="card"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="credit"] .payment_box,
+.woocommerce-checkout #payment ul.payment_methods > li[class*="debit"] .payment_box {
+  margin-top: 16px !important;
+  padding: 16px !important;
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 24px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.14), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f3faff 100%) !important;
+  box-shadow: 0 14px 34px rgba(47, 132, 191, 0.08) !important;
+  overflow: hidden !important;
+}
+
+/* Remove Woo arrow */
+.woocommerce-checkout #payment .payment_box::before {
+  display: none !important;
+}
+
+/* Hide ugly default Quiklie plugin description/card icons if JS panel exists */
+.woocommerce-checkout #payment .payment_box:has(.axiom-card-upgrade) > p,
+.woocommerce-checkout #payment .payment_box:has(.axiom-card-upgrade) > img,
+.woocommerce-checkout #payment .payment_box:has(.axiom-card-upgrade) > svg {
+  display: none !important;
+}
+
+/* Main custom card panel */
+.woocommerce-checkout #payment .axiom-card-upgrade,
+.woocommerce-checkout #payment [data-axiom-card-upgrade="1"] {
+  display: grid !important;
+  gap: 12px !important;
+  width: 100% !important;
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Top hero box */
+.woocommerce-checkout #payment .axiom-card-head {
+  display: grid !important;
+  grid-template-columns: 42px 1fr !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 14px !important;
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 18px !important;
+  background:
+    radial-gradient(circle at top right, rgba(74, 167, 232, 0.13), transparent 36%),
+    linear-gradient(180deg, #ffffff 0%, #f5fbff 100%) !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.035) !important;
+}
+
+/* Icon box */
+.woocommerce-checkout #payment .axiom-card-icon {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 22px rgba(47, 132, 191, 0.22) !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-icon i {
+  color: #ffffff !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+/* Hero copy */
+.woocommerce-checkout #payment .axiom-card-copy {
+  min-width: 0 !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-copy strong,
+.woocommerce-checkout #payment .axiom-card-title strong {
+  display: block !important;
+  margin: 0 !important;
+  color: #07111f !important;
+  font-size: 17px !important;
+  font-weight: 950 !important;
+  line-height: 1.12 !important;
+  letter-spacing: -0.03em !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-copy span,
+.woocommerce-checkout #payment .axiom-card-title span {
+  display: block !important;
+  margin: 4px 0 0 !important;
+  color: #5f6f84 !important;
+  font-size: 13px !important;
+  font-weight: 750 !important;
+  line-height: 1.32 !important;
+}
+
+/* Font Awesome card brand row */
+.woocommerce-checkout #payment .axiom-card-brands {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-brand {
+  width: 54px !important;
+  height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 11px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.035) !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-brand i {
+  font-size: 26px !important;
+  line-height: 1 !important;
+  color: #0f172a !important;
+}
+
+/* Important descriptor notice */
+.woocommerce-checkout #payment .axiom-card-notice {
+  display: grid !important;
+  grid-template-columns: 28px 1fr !important;
+  gap: 10px !important;
+  align-items: start !important;
+  padding: 13px 14px !important;
+  border: 1px solid rgba(74, 167, 232, 0.22) !important;
+  border-radius: 17px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03) !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-notice i {
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 10px !important;
+  background: rgba(74, 167, 232, 0.13) !important;
+  color: #2f84bf !important;
+  font-size: 13px !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-notice strong {
+  display: block !important;
+  margin: 0 !important;
+  color: #07111f !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-notice span,
+.woocommerce-checkout #payment .axiom-card-notice p {
+  display: block !important;
+  margin: 4px 0 0 !important;
+  color: #475569 !important;
+  font-size: 12.6px !important;
+  font-weight: 750 !important;
+  line-height: 1.36 !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-notice b,
+.woocommerce-checkout #payment .axiom-card-notice strong b {
+  color: #07111f !important;
+  font-weight: 950 !important;
+}
+
+/* Benefit cards */
+.woocommerce-checkout #payment .axiom-card-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-benefit,
+.woocommerce-checkout #payment .axiom-card-mini {
+  min-width: 0 !important;
+  min-height: 94px !important;
+  padding: 10px 9px !important;
+  border: 1px solid rgba(74, 167, 232, 0.18) !important;
+  border-radius: 15px !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.035) !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-benefit i,
+.woocommerce-checkout #payment .axiom-card-mini i {
+  width: 25px !important;
+  height: 25px !important;
+  margin: 0 0 7px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 9px !important;
+  background: rgba(74, 167, 232, 0.12) !important;
+  color: #2f84bf !important;
+  font-size: 12px !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-benefit strong,
+.woocommerce-checkout #payment .axiom-card-mini strong {
+  display: block !important;
+  margin: 0 !important;
+  color: #07111f !important;
+  font-size: 11.5px !important;
+  font-weight: 950 !important;
+  line-height: 1.12 !important;
+}
+
+.woocommerce-checkout #payment .axiom-card-benefit span,
+.woocommerce-checkout #payment .axiom-card-mini span {
+  display: block !important;
+  margin: 4px 0 0 !important;
+  color: #5f6f84 !important;
+  font-size: 9.8px !important;
+  font-weight: 700 !important;
+  line-height: 1.18 !important;
+}
+
+/* Real Quiklie form fields */
+.woocommerce-checkout #payment .payment_box .form-row {
+  margin: 0 0 13px !important;
+  padding: 0 !important;
+}
+
+.woocommerce-checkout #payment .payment_box label {
+  display: block !important;
+  margin: 0 0 8px !important;
+  color: #07111f !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  line-height: 1.15 !important;
+}
+
+.woocommerce-checkout #payment .payment_box input[type="text"],
+.woocommerce-checkout #payment .payment_box input[type="tel"],
+.woocommerce-checkout #payment .payment_box input[type="email"],
+.woocommerce-checkout #payment .payment_box input[type="number"],
+.woocommerce-checkout #payment .payment_box input[type="password"],
+.woocommerce-checkout #payment .payment_box select,
+.woocommerce-checkout #payment .payment_box .input-text {
+  width: 100% !important;
+  min-height: 55px !important;
+  height: 55px !important;
+  padding: 0 17px !important;
+  border: 1px solid #d8e6f3 !important;
+  border-radius: 17px !important;
+  background: #ffffff !important;
+  color: #07111f !important;
+  font-size: 16px !important;
+  font-weight: 750 !important;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.03) !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+}
+
+.woocommerce-checkout #payment .payment_box input:focus,
+.woocommerce-checkout #payment .payment_box select:focus {
+  border-color: #4aa7e8 !important;
+  box-shadow:
+    0 0 0 4px rgba(74, 167, 232, 0.13),
+    0 12px 24px rgba(47, 132, 191, 0.10) !important;
+}
+
+.woocommerce-checkout #payment .payment_box input::placeholder {
+  color: #94a3b8 !important;
+  font-weight: 700 !important;
+}
+
+/* Trust strip close to bottom */
+.woocommerce-checkout #payment .axiom-card-trust-strip {
+  display: block !important;
+  margin: 6px 0 0 !important;
+  padding: 10px 12px !important;
+  border: 1px solid rgba(74, 167, 232, 0.2) !important;
+  border-radius: 15px !important;
+  background: linear-gradient(180deg, #f7fcff 0%, #eef8ff 100%) !important;
+  color: #2f84bf !important;
+  font-size: 11.5px !important;
+  font-weight: 850 !important;
+  line-height: 1.32 !important;
+  text-align: center !important;
+}
+
+/* Remove old CSS-generated trust strip if your JS panel exists */
+.woocommerce-checkout #payment .payment_box:has(.axiom-card-upgrade)::after,
+.woocommerce-checkout #payment .payment_box:has([data-axiom-card-upgrade="1"])::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment .axiom-card-head {
+    grid-template-columns: 40px 1fr !important;
+    gap: 11px !important;
+    padding: 13px !important;
+    border-radius: 17px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-icon {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    min-height: 40px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-copy strong,
+  .woocommerce-checkout #payment .axiom-card-title strong {
+    font-size: 15.5px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-copy span,
+  .woocommerce-checkout #payment .axiom-card-title span {
+    font-size: 12px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-grid {
+    gap: 7px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-benefit,
+  .woocommerce-checkout #payment .axiom-card-mini {
+    min-height: 90px !important;
+    padding: 9px 7px !important;
+    border-radius: 14px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-benefit strong,
+  .woocommerce-checkout #payment .axiom-card-mini strong {
+    font-size: 10.5px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-card-benefit span,
+  .woocommerce-checkout #payment .axiom-card-mini span {
+    font-size: 9px !important;
+  }
+
+  .woocommerce-checkout #payment .payment_box input[type="text"],
+  .woocommerce-checkout #payment .payment_box input[type="tel"],
+  .woocommerce-checkout #payment .payment_box input[type="email"],
+  .woocommerce-checkout #payment .payment_box input[type="number"],
+  .woocommerce-checkout #payment .payment_box input[type="password"],
+  .woocommerce-checkout #payment .payment_box select,
+  .woocommerce-checkout #payment .payment_box .input-text {
+    min-height: 53px !important;
+    height: 53px !important;
+    border-radius: 15px !important;
+    font-size: 15px !important;
+  }
+}
