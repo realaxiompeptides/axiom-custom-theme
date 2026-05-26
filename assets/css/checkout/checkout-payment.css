@@ -1883,3 +1883,90 @@ button[name="woocommerce_checkout_place_order"] {
   height: 22px !important;
   object-fit: contain !important;
 }
+
+/* =========================================================
+   FINAL FIX: Zelle main icon true center
+   This targets the REAL class currently being used: .axiom-zelle-icon
+   Put at VERY BOTTOM of checkout-payment.css
+========================================================= */
+
+.woocommerce-checkout #payment .axiom-zelle-icon {
+  width: 40px !important;
+  height: 40px !important;
+  min-width: 40px !important;
+  min-height: 40px !important;
+  max-width: 40px !important;
+  max-height: 40px !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border-radius: 14px !important;
+  background: linear-gradient(135deg, #4aa7e8 0%, #2f84bf 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 20px rgba(47, 132, 191, 0.22) !important;
+
+  overflow: hidden !important;
+  position: relative !important;
+  line-height: 1 !important;
+}
+
+/* Kill Font Awesome spacing and force the plane dead center */
+.woocommerce-checkout #payment .axiom-zelle-icon i,
+.woocommerce-checkout #payment .axiom-zelle-icon svg,
+.woocommerce-checkout #payment .axiom-zelle-icon img {
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+
+  display: block !important;
+  margin: 0 !important;
+  padding: 0 !important;
+
+  width: 17px !important;
+  height: 17px !important;
+  font-size: 17px !important;
+  line-height: 1 !important;
+
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  object-fit: contain !important;
+
+  transform: translate(-50%, -50%) !important;
+}
+
+/* Paper-plane icons visually lean up/right, so this makes it look centered */
+.woocommerce-checkout #payment .axiom-zelle-icon .fa-paper-plane,
+.woocommerce-checkout #payment .axiom-zelle-icon .fa-paper-plane-top {
+  transform: translate(-54%, -47%) !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .woocommerce-checkout #payment .axiom-zelle-icon {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+    border-radius: 13px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-zelle-icon i,
+  .woocommerce-checkout #payment .axiom-zelle-icon svg,
+  .woocommerce-checkout #payment .axiom-zelle-icon img {
+    width: 16px !important;
+    height: 16px !important;
+    font-size: 16px !important;
+  }
+
+  .woocommerce-checkout #payment .axiom-zelle-icon .fa-paper-plane,
+  .woocommerce-checkout #payment .axiom-zelle-icon .fa-paper-plane-top {
+    transform: translate(-54%, -47%) !important;
+  }
+}
