@@ -214,10 +214,10 @@ function axiom_custom_theme_assets() {
         wp_enqueue_style('axiom-product-sticky-bar', $theme_uri . '/assets/css/product-page/sticky-bar.css', array('axiom-base', 'axiom-product-layout', 'axiom-product-purchase-box'), '1.2');
 
         $product_optional_css = array(
-            'axiom-product-why-choose-us'       => '/assets/css/product-page/why-choose-us.css',
-            'axiom-product-reviews-faq-tabs'   => '/assets/css/product-page/reviews-faq-tabs.css',
-            'axiom-product-image-trust-icons'  => '/assets/css/product-page/product-image-trust-icons.css',
-            'axiom-enhanced-product'           => '/assets/css/product-page/enhanced-product.css',
+            'axiom-product-why-choose-us'      => '/assets/css/product-page/why-choose-us.css',
+            'axiom-product-reviews-faq-tabs'  => '/assets/css/product-page/reviews-faq-tabs.css',
+            'axiom-product-image-trust-icons' => '/assets/css/product-page/product-image-trust-icons.css',
+            'axiom-enhanced-product'          => '/assets/css/product-page/enhanced-product.css',
         );
 
         foreach ($product_optional_css as $handle => $file_path) {
@@ -346,8 +346,9 @@ function axiom_custom_theme_assets() {
         );
 
         /*
-         * IMPORTANT:
-         * Loads AFTER checkout-payment.css so Quiklie/card styling can override it.
+         * Card / Quiklie styling
+         * File: /assets/css/checkout/checkout-card-payment.css
+         * Loads AFTER checkout-payment.css so it can override the default card gateway.
          */
         if (file_exists($theme_path . $checkout_card_css)) {
             wp_enqueue_style(
@@ -360,6 +361,10 @@ function axiom_custom_theme_assets() {
             $checkout_mobile_deps[] = 'axiom-checkout-card-payment';
         }
 
+        /*
+         * Venmo styling
+         * File: /assets/css/checkout/checkout-venmo-payment.css
+         */
         if (file_exists($theme_path . $checkout_venmo_css)) {
             wp_enqueue_style(
                 'axiom-checkout-venmo-payment',
@@ -410,6 +415,20 @@ function axiom_custom_theme_assets() {
                 'applyCouponAction' => 'axiom_apply_coupon',
                 'applyCouponNonce'  => wp_create_nonce('axiom_apply_coupon'),
             ));
+        }
+
+        /*
+         * Card / Quiklie custom panel JS
+         * File: /assets/js/checkout/checkout-card-payment.js
+         */
+        if (file_exists($theme_path . '/assets/js/checkout/checkout-card-payment.js')) {
+            wp_enqueue_script(
+                'axiom-checkout-card-payment',
+                $theme_uri . '/assets/js/checkout/checkout-card-payment.js',
+                array('jquery', 'wc-checkout', 'axiom-main'),
+                filemtime($theme_path . '/assets/js/checkout/checkout-card-payment.js'),
+                true
+            );
         }
 
         if (file_exists($theme_path . '/assets/js/checkout/checkout-bank-payment.js')) {
