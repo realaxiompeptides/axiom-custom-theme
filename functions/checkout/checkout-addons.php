@@ -51,15 +51,33 @@ function axiom_get_checkout_addon_image($product_id, $fallback_icon = '🛡️')
  * directly below coupon box and above Order summary.
  */
 add_action('axiom_checkout_after_coupon_before_summary', function () {
+    /*
+     * TEMPORARILY HIDE RESEARCH STARTER PACK:
+     * Set this to false when BAC Water is back in stock.
+     */
+    $axiom_hide_starter_pack_temporarily = true;
+
     $shipping_id = axiom_get_product_id_by_slug('shipping-protection');
     $starter_id  = axiom_get_product_id_by_slug('research-starter-pack');
 
-    if (!$shipping_id && !$starter_id) {
+    /*
+     * If the starter pack was already in the cart from an older session,
+     * remove it so it does not block checkout while hidden.
+     */
+    if ($axiom_hide_starter_pack_temporarily && $starter_id && axiom_cart_has_product($starter_id)) {
+        axiom_remove_product_from_cart($starter_id);
+
+        if (WC()->cart) {
+            WC()->cart->calculate_totals();
+        }
+    }
+
+    if (!$shipping_id && (!$starter_id || $axiom_hide_starter_pack_temporarily)) {
         return;
     }
 
     $shipping_checked = axiom_cart_has_product($shipping_id);
-    $starter_checked  = axiom_cart_has_product($starter_id);
+    $starter_checked  = (!$axiom_hide_starter_pack_temporarily && $starter_id) ? axiom_cart_has_product($starter_id) : false;
     ?>
 
     <div class="axiom-checkout-addons">
@@ -88,7 +106,7 @@ add_action('axiom_checkout_after_coupon_before_summary', function () {
             </label>
         <?php endif; ?>
 
-        <?php if ($starter_id) : ?>
+        <?php if (!$axiom_hide_starter_pack_temporarily && $starter_id) : ?>
             <label class="axiom-addon-card <?php echo $starter_checked ? 'is-selected' : ''; ?>">
                 <input
                     type="checkbox"
@@ -124,6 +142,12 @@ add_action('wp_ajax_nopriv_axiom_toggle_checkout_addon', 'axiom_toggle_checkout_
 function axiom_toggle_checkout_addon() {
     check_ajax_referer('axiom_checkout_addons_nonce', 'nonce');
 
+    /*
+     * TEMPORARILY BLOCK RESEARCH STARTER PACK:
+     * Set this to false when BAC Water is back in stock.
+     */
+    $axiom_hide_starter_pack_temporarily = true;
+
     if (!WC()->cart) {
         wp_send_json_error(array('message' => 'Cart not available.'));
     }
@@ -133,6 +157,20 @@ function axiom_toggle_checkout_addon() {
 
     if (!$product_id) {
         wp_send_json_error(array('message' => 'Missing product ID.'));
+    }
+
+    $starter_id = axiom_get_product_id_by_slug('research-starter-pack');
+
+    /*
+     * Safety:
+     * While starter pack is hidden, do not let it be added by AJAX.
+     * If it is already in cart, remove it.
+     */
+    if ($axiom_hide_starter_pack_temporarily && $starter_id && (int) $product_id === (int) $starter_id) {
+        axiom_remove_product_from_cart($starter_id);
+        WC()->cart->calculate_totals();
+
+        wp_send_json_success();
     }
 
     if ($checked) {
