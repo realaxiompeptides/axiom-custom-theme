@@ -462,9 +462,26 @@ function axiom_custom_theme_assets() {
         }
     }
 
-    if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
-        wp_enqueue_style('axiom-thankyou', $theme_uri . '/assets/css/order-received/thankyou.css', array('axiom-base'), '1.2');
-    }
+if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
+
+    wp_enqueue_style(
+        'axiom-thankyou',
+        $theme_uri . '/assets/css/order-received/thankyou.css',
+        array('axiom-base'),
+        file_exists($theme_path . '/assets/css/order-received/thankyou.css')
+            ? filemtime($theme_path . '/assets/css/order-received/thankyou.css')
+            : time()
+    );
+
+    wp_enqueue_style(
+        'axiom-thankyou-next-steps',
+        $theme_uri . '/assets/css/order-received/thankyou/next-steps.css',
+        array('axiom-base', 'axiom-thankyou'),
+        file_exists($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
+            ? filemtime($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
+            : time()
+    );
+}
 
     wp_enqueue_script('jquery');
     wp_enqueue_script('wc-cart-fragments');
