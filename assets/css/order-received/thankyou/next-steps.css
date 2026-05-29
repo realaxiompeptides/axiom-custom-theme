@@ -261,3 +261,71 @@
     opacity: 0;
   }
 }
+
+.axiom-delivery-mini {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 18px;
+  min-height: 78px;
+}
+
+.axiom-delivery-mini i {
+  width: 46px;
+  height: 46px;
+  min-width: 46px;
+  margin: 0;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fbff;
+  border: 1px solid #dbeafe;
+  color: #2563eb;
+  font-size: 21px;
+}
+
+.axiom-delivery-mini span {
+  margin: 0 0 6px;
+}
+
+.axiom-delivery-mini strong {
+  font-size: 18px;
+}
+
+.axiom-delivery-rules {
+  padding: 16px 18px;
+  gap: 12px;
+}
+
+.axiom-delivery-rules div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.axiom-delivery-rules i {
+  width: 22px;
+  min-width: 22px;
+  margin: 2px 0 0;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .axiom-delivery-mini {
+    padding: 13px 15px;
+    min-height: 72px;
+    gap: 14px;
+  }
+
+  .axiom-delivery-mini i {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    font-size: 19px;
+  }
+
+  .axiom-delivery-mini strong {
+    font-size: 17px;
+  }
+}
