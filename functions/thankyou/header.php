@@ -26,7 +26,10 @@ function axiom_render_custom_thankyou_header($order_id) {
         $shipping_label = $first_shipping ? $first_shipping->get_name() : '';
     }
 
-    $delivery = axiom_get_thankyou_delivery_estimate($order, $shipping_label);
+    $delivery      = axiom_get_thankyou_delivery_estimate($order, $shipping_label);
+    $has_backorder = axiom_order_has_backorder_items($order);
+    $shipped_date  = axiom_get_order_shipped_date($order);
+    $is_shipped    = !empty($shipped_date);
 
     $payment_method_id_lower = strtolower($payment_method_id);
     $payment_method_lower    = strtolower($payment_method);
@@ -90,11 +93,9 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '      <div class="axiom-payment-instructions-header"><h3>Zelle Payment Instructions</h3></div>';
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Please complete your payment through Zelle after placing your order.</p>';
-
         echo '          <div class="axiom-payment-copy-field"><span>Zelle phone</span><div class="axiom-payment-copy-row"><strong>916-233-5312</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'916-233-5312\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Zelle email</span><div class="axiom-payment-copy-row"><strong>jaxferone@gmail.com</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'jaxferone@gmail.com\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Payment note</span><div class="axiom-payment-copy-row"><strong>#' . esc_html($order_number) . '</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button></div></div>';
-
         echo '      </div>';
         echo '  </div>';
     }
@@ -110,11 +111,9 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '      <div class="axiom-payment-instructions-header"><h3>Venmo Payment Instructions</h3></div>';
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Please send your payment after placing your order.</p>';
-
         echo '          <div class="axiom-payment-copy-field"><span>Venmo username</span><div class="axiom-payment-copy-row"><strong>@thomas-harris-axiom</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'@thomas-harris-axiom\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Venmo link</span><div class="axiom-payment-copy-row"><strong><a href="https://venmo.com/thomas-harris-axiom" target="_blank" rel="noopener noreferrer">venmo.com/thomas-harris-axiom</a></strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'https://venmo.com/thomas-harris-axiom\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Payment note</span><div class="axiom-payment-copy-row"><strong>#' . esc_html($order_number) . '</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button></div></div>';
-
         echo '      </div>';
         echo '  </div>';
     }
@@ -138,10 +137,8 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '              <li>Paste our exact Bitcoin address below.</li>';
         echo '              <li>Send us your order number and transaction confirmation.</li>';
         echo '          </ol>';
-
         echo '          <div class="axiom-payment-copy-field"><span>Bitcoin address</span><div class="axiom-payment-copy-row"><strong style="font-size:14px; word-break:break-all;">bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Order number</span><div class="axiom-payment-copy-row"><strong>#' . esc_html($order_number) . '</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button></div></div>';
-
         echo '      </div>';
         echo '  </div>';
     }
@@ -150,7 +147,7 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      <div class="axiom-delivery-card-glow"></div>';
 
     echo '      <div class="axiom-delivery-card-top">';
-    echo '          <div class="axiom-usps-badge"><i class="fa-solid fa-truck-fast"></i><span>' . esc_html($delivery['service']) . '</span></div>';
+    echo '          <div class="axiom-usps-badge"><i class="fa-brands fa-usps"></i><span>' . esc_html($delivery['service']) . '</span></div>';
     echo '          <div class="axiom-delivery-confidence"><i class="fa-solid fa-circle-check"></i> Smart estimate</div>';
     echo '      </div>';
 
@@ -164,6 +161,34 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '          <div class="axiom-delivery-mini"><i class="fa-regular fa-calendar-check"></i><span>Order placed</span><strong class="axiom-local-datetime" data-ts="' . esc_attr($delivery['order_created_ts']) . '">' . esc_html($delivery['order_created_fallback']) . '</strong></div>';
     echo '          <div class="axiom-delivery-mini"><i class="fa-solid fa-box"></i><span>Ships by</span><strong class="axiom-local-date" data-ts="' . esc_attr($delivery['ship_ts']) . '">' . esc_html($delivery['ship_fallback']) . '</strong></div>';
     echo '          <div class="axiom-delivery-mini"><i class="fa-solid fa-route"></i><span>Transit time</span><strong>' . esc_html($delivery['transit_label']) . '</strong></div>';
+    echo '      </div>';
+
+    echo '      <div class="axiom-delivery-live-status">';
+
+    if ($is_shipped) {
+        echo '          <div class="axiom-live-status-row is-good">';
+        echo '              <span class="axiom-status-dot axiom-status-dot--green"></span>';
+        echo '              <div><strong>Shipped</strong><p>Your order shipped on ' . esc_html($shipped_date) . '.</p></div>';
+        echo '          </div>';
+    } else {
+        echo '          <div class="axiom-live-status-row is-warning">';
+        echo '              <span class="axiom-status-dot axiom-status-dot--red"></span>';
+        echo '              <div><strong>Not shipped yet</strong><p>Your order is still being prepared for shipment.</p></div>';
+        echo '          </div>';
+    }
+
+    if ($has_backorder) {
+        echo '          <div class="axiom-live-status-row is-warning">';
+        echo '              <span class="axiom-status-dot axiom-status-dot--red"></span>';
+        echo '              <div><strong>Backorder notice</strong><p>One or more items in this order are on backorder. Shipping may update once ready.</p></div>';
+        echo '          </div>';
+    } else {
+        echo '          <div class="axiom-live-status-row is-good">';
+        echo '              <span class="axiom-status-dot axiom-status-dot--green"></span>';
+        echo '              <div><strong>No backorder</strong><p>Your order does not currently show backordered items.</p></div>';
+        echo '          </div>';
+    }
+
     echo '      </div>';
 
     echo '      <div class="axiom-delivery-rules">';
@@ -290,6 +315,30 @@ function axiom_get_thankyou_delivery_estimate($order, $shipping_label) {
         'delivery_note' => $delivery_note,
         'cutoff_note' => $cutoff_note,
     );
+}
+
+function axiom_order_has_backorder_items($order) {
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+
+        if (!$product) continue;
+
+        if ($product->is_on_backorder((int) $item->get_quantity())) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function axiom_get_order_shipped_date($order) {
+    $completed_date = $order->get_date_completed();
+
+    if ($completed_date) {
+        return $completed_date->date_i18n('M j');
+    }
+
+    return '';
 }
 
 function axiom_add_usps_business_days(DateTime $date, $days) {
