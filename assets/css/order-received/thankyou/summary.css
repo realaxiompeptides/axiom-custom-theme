@@ -231,3 +231,45 @@
     grid-template-columns: 1fr;
   }
 }
+
+.axiom-thankyou-page .woocommerce-order-details {
+  margin-top: 28px;
+}
+
+.axiom-thankyou-page .woocommerce-order-details__title,
+.axiom-thankyou-page .woocommerce-customer-details h2 {
+  font-size: 42px;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  font-weight: 1000;
+  color: #071126;
+}
+
+.axiom-thankyou-page .woocommerce-table--order-details,
+.axiom-thankyou-page .woocommerce-customer-details address {
+  border-radius: 28px !important;
+  border: 1px solid #dbeafe !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+  overflow: hidden;
+}
+
+.axiom-thankyou-page .woocommerce-table--order-details th,
+.axiom-thankyou-page .woocommerce-table--order-details td {
+  padding: 18px 20px !important;
+}
+
+.axiom-thankyou-page .woocommerce-table--order-details tfoot tr:last-child th,
+.axiom-thankyou-page .woocommerce-table--order-details tfoot tr:last-child td {
+  font-size: 30px;
+  font-weight: 1000;
+  color: #071126;
+}
+
+.axiom-thankyou-page .woocommerce-customer-details address {
+  padding: 24px !important;
+  font-size: 19px;
+  line-height: 1.55;
+  color: #475569;
+  font-weight: 650;
+}
