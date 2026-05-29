@@ -178,3 +178,86 @@
     font-size: 46px;
   }
 }
+
+.axiom-usps-badge i.fa-usps {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.axiom-delivery-live-status {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.axiom-live-status-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px;
+  border-radius: 20px;
+  border: 1px solid #dbeafe;
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.axiom-live-status-row strong {
+  display: block;
+  color: #071126;
+  font-size: 15px;
+  font-weight: 950;
+  margin-bottom: 3px;
+}
+
+.axiom-live-status-row p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.45;
+  font-weight: 700;
+}
+
+.axiom-status-dot {
+  width: 14px;
+  height: 14px;
+  margin-top: 3px;
+  border-radius: 999px;
+  flex: 0 0 14px;
+  position: relative;
+}
+
+.axiom-status-dot:after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 999px;
+  opacity: .55;
+  animation: axiomPulseDot 1.45s infinite ease-out;
+}
+
+.axiom-status-dot--red {
+  background: #ef4444;
+}
+
+.axiom-status-dot--red:after {
+  background: #ef4444;
+}
+
+.axiom-status-dot--green {
+  background: #22c55e;
+}
+
+.axiom-status-dot--green:after {
+  background: #22c55e;
+}
+
+@keyframes axiomPulseDot {
+  0% {
+    transform: scale(.65);
+    opacity: .55;
+  }
+
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
