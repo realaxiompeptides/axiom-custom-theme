@@ -198,6 +198,34 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      </div>';
 
     echo '  </div>';
+
+    if (!is_user_logged_in()) {
+        $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
+
+        echo '<div class="axiom-thankyou-account-card">';
+        echo '  <div class="axiom-thankyou-account-icon"><i class="fa-solid fa-user-plus"></i></div>';
+        echo '  <div>';
+        echo '      <h3>Create your customer account</h3>';
+        echo '      <p>Track this order faster, save your shipping address, and view future order history.</p>';
+        echo '      <a href="' . esc_url($account_url) . '" class="axiom-thankyou-account-button">Create account or log in</a>';
+        echo '  </div>';
+        echo '</div>';
+    }
+
+    echo '<div class="axiom-thankyou-support-card">';
+    echo '  <div class="axiom-thankyou-support-top">';
+    echo '      <i class="fa-solid fa-headset"></i>';
+    echo '      <div>';
+    echo '          <h3>Need help with your order?</h3>';
+    echo '          <p>Contact support and include your order number: <strong>#' . esc_html($order_number) . '</strong></p>';
+    echo '      </div>';
+    echo '  </div>';
+    echo '  <div class="axiom-thankyou-support-actions">';
+    echo '      <a href="mailto:realaxiompeptides@gmail.com?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
+    echo '      <button type="button" class="axiom-thankyou-support-btn" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy order #</button>';
+    echo '  </div>';
+    echo '</div>';
+
     echo '</section>';
 
     echo '<script>
