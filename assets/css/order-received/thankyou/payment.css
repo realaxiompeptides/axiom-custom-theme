@@ -107,3 +107,11 @@
   color: #ffffff !important;
   opacity: 1 !important;
 }
+
+/* Hide duplicate/simple manual payment instructions box */
+.axiom-zelle-thankyou-note,
+.axiom-venmo-thankyou-note,
+.axiom-manual-payment-simple-note,
+.woocommerce-order .axiom-payment-simple-card {
+  display: none !important;
+}
