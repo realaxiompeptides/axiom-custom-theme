@@ -2,20 +2,32 @@ document.addEventListener("DOMContentLoaded", function () {
   const content = document.querySelector(".woocommerce-MyAccount-content");
   if (!content) return;
 
-  const path = window.location.pathname;
+  const path = window.location.pathname.replace(/\/+$/, "");
 
-  // Only run on the main Orders page, NOT single order details.
-  if (!path.includes("/my-account/orders")) return;
-  if (path.includes("/view-order")) return;
+  // STOP on single order details pages.
+  if (path.includes("/view-order/")) return;
 
+  // Only run on exact Orders page.
+  const isOrdersPage =
+    path.endsWith("/my-account/orders") ||
+    path.endsWith("/my-account/orders/page/1");
+
+  if (!isOrdersPage) return;
+
+  const originalHtml = content.innerHTML;
   const links = Array.from(content.querySelectorAll('a[href*="view-order"]'));
+
   if (!links.length) return;
 
   const text = content.innerText;
   const matches = [...text.matchAll(/#(\d+)\s+([A-Za-z]+)\s+Date:\s+(.+?)\s+Total:\s+\$?([\d.]+)\s+Items:\s+(\d+)/g)];
-  if (!matches.length) return;
 
-  const oldHero = content.querySelector(".axiom-account-page-hero");
+  if (!matches.length) {
+    content.innerHTML = originalHtml;
+    return;
+  }
+
+  const hero = content.querySelector(".axiom-account-page-hero");
 
   const list = document.createElement("div");
   list.className = "axiom-orders-modern-list";
@@ -47,10 +59,6 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   content.innerHTML = "";
-
-  if (oldHero) {
-    content.appendChild(oldHero);
-  }
-
+  if (hero) content.appendChild(hero);
   content.appendChild(list);
 });
