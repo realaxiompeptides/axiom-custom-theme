@@ -277,9 +277,12 @@ function axiom_custom_downloads_page() {
  * Custom Axiom Gift Cards page.
  */
 remove_action('woocommerce_account_giftcards_endpoint', 'woocommerce_account_giftcards');
+remove_action('woocommerce_account_gift-cards_endpoint', 'woocommerce_account_giftcards');
+remove_action('woocommerce_account_gift_cards_endpoint', 'woocommerce_account_giftcards');
 
-add_action('woocommerce_account_giftcards_endpoint', 'axiom_custom_giftcards_page', 1);
-add_action('woocommerce_account_gift-cards_endpoint', 'axiom_custom_giftcards_page', 1);
+add_action('woocommerce_account_giftcards_endpoint', 'axiom_custom_giftcards_page', 999);
+add_action('woocommerce_account_gift-cards_endpoint', 'axiom_custom_giftcards_page', 999);
+add_action('woocommerce_account_gift_cards_endpoint', 'axiom_custom_giftcards_page', 999);
 
 function axiom_custom_giftcards_page() {
     if (!is_user_logged_in()) {
@@ -289,9 +292,13 @@ function axiom_custom_giftcards_page() {
     ?>
     <section class="axiom-custom-giftcards-page">
         <div class="axiom-giftcards-hero">
-            <div class="axiom-giftcards-icon">🎁</div>
+            <div class="axiom-giftcards-icon">
+                <i class="fa-solid fa-gift"></i>
+            </div>
+
             <p class="axiom-giftcards-kicker">Gift Cards</p>
             <h2>Your Balance</h2>
+
             <div class="axiom-giftcards-balance">$0.00</div>
         </div>
 
