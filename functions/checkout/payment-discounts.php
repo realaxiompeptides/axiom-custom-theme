@@ -11,13 +11,6 @@ function axiom_crypto_btc_address() {
 }
 
 /**
- * Cash App Bitcoin address/display.
- */
-function axiom_cashapp_display_value() {
-    return 'bc1q5gwgacsd796tntenudj6janfnkt4ygzdzl4mn8';
-}
-
-/**
  * Zelle email.
  */
 function axiom_zelle_display_value() {
@@ -64,6 +57,7 @@ function axiom_get_gateway_object_by_id($gateway_id) {
 
 /**
  * Detect discount payment type.
+ * Cash App removed.
  */
 function axiom_get_discount_payment_type($gateway_id = '') {
     if (!$gateway_id) {
@@ -84,14 +78,6 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 
     if (strpos($haystack, 'zelle') !== false) {
         return 'zelle';
-    }
-
-    if (
-        strpos($haystack, 'cash app') !== false ||
-        strpos($haystack, 'cashapp') !== false ||
-        strpos($haystack, 'cash') !== false
-    ) {
-        return 'cashapp';
     }
 
     if (
@@ -119,10 +105,6 @@ function axiom_gateway_description_with_discount($description, $gateway_id) {
 
     if ($type === 'zelle') {
         $description .= '<p class="axiom-payment-discount-copy">Pay with Zelle and receive an automatic 5% discount on your order subtotal.</p>';
-    }
-
-    if ($type === 'cashapp') {
-        $description .= '<p class="axiom-payment-discount-copy">Pay with Cash App Bitcoin and receive an automatic 5% discount on your order subtotal.</p>';
     }
 
     if ($type === 'crypto') {
@@ -165,20 +147,13 @@ function axiom_apply_payment_method_discount($cart) {
         return;
     }
 
-    if ($type === 'zelle') {
-        $discount_label = 'Zelle Discount (5%)';
-    } elseif ($type === 'cashapp') {
-        $discount_label = 'Cash App Bitcoin Discount (5%)';
-    } else {
-        $discount_label = 'Crypto Discount (5%)';
-    }
+    $discount_label = ($type === 'zelle') ? 'Zelle Discount (5%)' : 'Crypto Discount (5%)';
 
     $cart->add_fee($discount_label, -$discount_amount, false);
 }
 
 /**
  * Refresh checkout totals only once when payment method actually changes.
- * This prevents the infinite checkout reload loop.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_checkout_discount_script');
 
@@ -191,7 +166,7 @@ function axiom_enqueue_checkout_discount_script() {
         'axiom-checkout-payment-discount',
         false,
         array('jquery', 'wc-checkout'),
-        '1.0.5',
+        '1.0.6',
         true
     );
 
@@ -258,6 +233,7 @@ function axiom_checkout_discount_styles() {
 
 /**
  * Save payment method display/instructions on order.
+ * Thank-you page duplicate output removed.
  */
 add_action('woocommerce_checkout_create_order', 'axiom_store_payment_instruction_meta', 20, 2);
 
@@ -275,12 +251,6 @@ function axiom_store_payment_instruction_meta($order, $data) {
         $order->update_meta_data('_axiom_payment_instruction_body', 'Send your payment via Zelle to ' . axiom_zelle_display_value() . '. Your 5% discount has already been applied to the order total.');
     }
 
-    if ($type === 'cashapp') {
-        $order->update_meta_data('_axiom_payment_method_display', 'Cash App Bitcoin');
-        $order->update_meta_data('_axiom_payment_instruction_title', 'Cash App Bitcoin Payment Instructions');
-        $order->update_meta_data('_axiom_payment_instruction_body', 'Send your Bitcoin payment via Cash App to ' . axiom_cashapp_display_value() . '. Your 5% discount has already been applied to the order total.');
-    }
-
     if ($type === 'crypto') {
         $order->update_meta_data('_axiom_payment_method_display', 'Bitcoin / Crypto');
         $order->update_meta_data('_axiom_payment_instruction_title', 'Bitcoin / Crypto Payment Instructions');
@@ -289,32 +259,14 @@ function axiom_store_payment_instruction_meta($order, $data) {
 }
 
 /**
- * Thank you page instructions.
+ * IMPORTANT:
+ * Duplicate thank-you payment box removed.
+ * Your main payment instructions still show from functions/thankyou/header.php.
  */
-add_action('woocommerce_thankyou', 'axiom_render_custom_payment_instructions_thankyou', 20);
-
-function axiom_render_custom_payment_instructions_thankyou($order_id) {
-    $order = wc_get_order($order_id);
-
-    if (!$order) {
-        return;
-    }
-
-    $title = $order->get_meta('_axiom_payment_instruction_title');
-    $body  = $order->get_meta('_axiom_payment_instruction_body');
-
-    if (!$title || !$body) {
-        return;
-    }
-
-    echo '<section class="axiom-thankyou-payment-box" style="margin:24px 0;padding:20px;border:1px solid #dbe6f2;border-radius:20px;background:#f8fbff;">';
-    echo '<h2 style="margin:0 0 10px;font-size:22px;font-weight:900;color:#0f172a;">' . esc_html($title) . '</h2>';
-    echo '<p style="margin:0;color:#475569;line-height:1.6;">' . esc_html($body) . '</p>';
-    echo '</section>';
-}
 
 /**
  * Order details page instructions.
+ * This still shows payment instructions inside My Account / order details, not on thank-you page.
  */
 add_action('woocommerce_order_details_after_order_table', 'axiom_render_custom_payment_instructions_order_details', 20);
 
