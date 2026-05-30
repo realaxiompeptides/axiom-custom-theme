@@ -1,83 +1,120 @@
-/* AXIOM DOWNLOADS PAGE */
+/* AXIOM CUSTOM DOWNLOADS PAGE */
 
-body.woocommerce-account.woocommerce-downloads .woocommerce-MyAccount-content,
-body.woocommerce-account .woocommerce-MyAccount-content {
-  overflow: visible !important;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info {
-  position: relative !important;
-  width: 100% !important;
-  max-width: 820px !important;
-  margin: 0 auto 34px !important;
-  padding: 42px 32px 34px !important;
-  border: 1px solid #dbeafe !important;
-  border-radius: 34px !important;
-  background:
-    radial-gradient(circle at top right, rgba(0, 174, 239, 0.10), transparent 38%),
-    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
-  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.07) !important;
-  color: #061525 !important;
-  font-size: 0 !important;
-  text-align: center !important;
-  overflow: hidden !important;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info::before,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::before {
-  content: "No downloads available yet";
-  display: block;
-  margin: 0 0 24px;
-  color: #061525;
-  font-size: clamp(30px, 6vw, 54px);
-  line-height: 0.92;
-  font-weight: 950;
-  letter-spacing: -0.07em;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info::after,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::after {
-  content: "Downloadable files from your orders will appear here once available.";
-  display: block;
-  max-width: 520px;
-  margin: 0 auto 28px;
-  color: #64748b;
-  font-size: 17px;
-  line-height: 1.55;
-  font-weight: 700;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info .button,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info .button,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Button.button {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  max-width: 560px !important;
-  min-height: 68px !important;
+.axiom-custom-downloads-page {
+  width: 100%;
+  max-width: 860px;
   margin: 0 auto !important;
-  padding: 18px 26px !important;
-  border: none !important;
-  border-radius: 999px !important;
-  background: #061525 !important;
-  color: #ffffff !important;
-  font-size: 20px !important;
-  font-weight: 950 !important;
-  text-align: center !important;
-  box-shadow: 0 18px 42px rgba(2, 8, 23, 0.16) !important;
+  padding: 0 16px;
+  box-sizing: border-box;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info .button:hover,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info .button:hover {
-  background: linear-gradient(135deg, #0057a8, #00aeef) !important;
+.axiom-downloads-card {
+  text-align: center;
+  padding: 42px 28px;
+  border: 1px solid #dbeafe;
+  border-radius: 36px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 174, 239, 0.12), transparent 36%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.axiom-downloads-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0057a8, #00aeef);
+  color: #ffffff;
+  font-size: 38px;
+  font-weight: 900;
+  box-shadow: 0 18px 38px rgba(0, 174, 239, 0.28);
+}
+
+.axiom-downloads-kicker {
+  margin: 0 0 10px !important;
+  color: #00aeef !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.axiom-downloads-card h2 {
+  margin: 0 0 16px !important;
+  color: #061525 !important;
+  font-size: clamp(42px, 8vw, 72px) !important;
+  line-height: .9 !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.08em !important;
+}
+
+.axiom-downloads-text {
+  max-width: 560px;
+  margin: 0 auto 28px !important;
+  color: #64748b !important;
+  font-size: 18px !important;
+  line-height: 1.6 !important;
+  font-weight: 750;
+}
+
+.axiom-downloads-button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 560px;
+  min-height: 68px;
+  border-radius: 999px;
+  background: #061525;
+  color: #ffffff !important;
+  font-size: 20px;
+  font-weight: 950;
+  text-decoration: none !important;
+  box-shadow: 0 18px 42px rgba(2, 8, 23, .16);
+}
+
+.axiom-downloads-button:hover {
+  background: linear-gradient(135deg, #0057a8, #00aeef);
+}
+
+.axiom-downloads-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.axiom-download-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid #dbe5ef;
+  border-radius: 22px;
+  background: #ffffff;
+  text-decoration: none !important;
+}
+
+.axiom-download-item span {
+  color: #061525;
+  font-weight: 900;
+}
+
+.axiom-download-item strong {
+  color: #00aeef;
+  font-weight: 950;
 }
 
 @media (max-width: 768px) {
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info,
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info {
-    padding: 34px 22px 28px !important;
-    border-radius: 30px !important;
+  .axiom-custom-downloads-page {
+    padding: 0 10px;
+  }
+
+  .axiom-downloads-card {
+    padding: 34px 22px;
+    border-radius: 30px;
   }
 }
