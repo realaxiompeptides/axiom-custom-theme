@@ -426,3 +426,138 @@
     border-top: 1px solid #dbeafe;
   }
 }
+
+/* ================================
+   View Order Responsive Fix
+================================ */
+
+.woocommerce-account .woocommerce {
+  max-width: 1280px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content {
+  max-width: 900px !important;
+  width: 100% !important;
+}
+
+.axiom-view-order-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  gap: 22px;
+}
+
+/* Better desktop size */
+@media (min-width: 1024px) {
+  .woocommerce-account .woocommerce {
+    grid-template-columns: 320px minmax(720px, 900px) !important;
+    justify-content: center !important;
+    gap: 36px !important;
+  }
+
+  .axiom-view-order-page {
+    max-width: 900px;
+  }
+
+  .axiom-view-order-hero h1 {
+    font-size: 56px !important;
+  }
+
+  .axiom-view-order-section h2,
+  .axiom-view-order-address-card h2,
+  .axiom-view-order-support h2 {
+    font-size: 38px !important;
+  }
+
+  .axiom-view-order-item-info strong {
+    font-size: 22px !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .woocommerce-account .woocommerce {
+    max-width: 860px !important;
+    display: block !important;
+    padding: 28px 22px 100px !important;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-content {
+    max-width: 100% !important;
+  }
+
+  .axiom-view-order-page {
+    max-width: 100%;
+  }
+}
+
+/* Mobile: make text smaller and cards cleaner */
+@media (max-width: 767px) {
+  .woocommerce-account .woocommerce {
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-content {
+    padding: 16px !important;
+    max-width: 100% !important;
+  }
+
+  .axiom-view-order-page {
+    max-width: 100%;
+    gap: 16px;
+  }
+
+  .axiom-view-order-hero,
+  .axiom-view-order-section,
+  .axiom-view-order-address-card,
+  .axiom-view-order-support,
+  .axiom-view-order-status-card {
+    border-radius: 24px !important;
+  }
+
+  .axiom-view-order-hero {
+    padding: 20px !important;
+  }
+
+  .axiom-view-order-hero h1 {
+    font-size: 42px !important;
+    letter-spacing: -0.065em !important;
+  }
+
+  .axiom-view-order-section h2,
+  .axiom-view-order-address-card h2,
+  .axiom-view-order-support h2 {
+    font-size: 32px !important;
+    letter-spacing: -0.055em !important;
+  }
+
+  .axiom-view-order-item {
+    grid-template-columns: 74px 1fr !important;
+    padding: 14px !important;
+  }
+
+  .axiom-view-order-item-info strong {
+    font-size: 19px !important;
+  }
+
+  .axiom-view-order-item-total {
+    font-size: 22px !important;
+  }
+
+  .axiom-view-order-total-row {
+    align-items: center;
+    padding: 15px !important;
+  }
+
+  .axiom-view-order-total-row strong {
+    font-size: 18px !important;
+    text-align: right;
+  }
+
+  .axiom-view-order-total-row.order_total strong {
+    font-size: 24px !important;
+  }
+}
