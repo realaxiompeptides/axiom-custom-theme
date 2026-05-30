@@ -1,4 +1,4 @@
-/* AXIOM ACCOUNT NAVIGATION */
+/* AXIOM ACCOUNT NAVIGATION — CLEAN PILLS */
 
 body.woocommerce-account .woocommerce-MyAccount-navigation {
   width: 100% !important;
@@ -7,16 +7,13 @@ body.woocommerce-account .woocommerce-MyAccount-navigation {
   padding: 28px !important;
   border: 1px solid #dbeafe !important;
   border-radius: 34px !important;
-  background:
-    radial-gradient(circle at top right, rgba(0,174,239,.08), transparent 35%),
-    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
   box-shadow: 0 22px 60px rgba(15,23,42,.07) !important;
-  box-sizing: border-box !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-navigation ul {
-  display: grid !important;
-  grid-template-columns: 1fr !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
   gap: 12px !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -29,109 +26,88 @@ body.woocommerce-account .woocommerce-MyAccount-navigation li {
   list-style: none !important;
 }
 
+body.woocommerce-account .woocommerce-MyAccount-navigation li::before,
 body.woocommerce-account .woocommerce-MyAccount-navigation li::marker {
+  display: none !important;
   content: "" !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-navigation a {
-  display: flex !important;
+  display: inline-flex !important;
   align-items: center !important;
-  gap: 14px !important;
-  min-height: 58px !important;
-  padding: 14px 18px !important;
+  justify-content: center !important;
+  min-height: 48px !important;
+  padding: 13px 20px !important;
   border: 1px solid #dbe5ef !important;
-  border-radius: 20px !important;
+  border-radius: 999px !important;
   background: #ffffff !important;
   color: #0f172a !important;
-  font-size: 17px !important;
+  font-size: 16px !important;
   font-weight: 900 !important;
+  line-height: 1 !important;
   text-decoration: none !important;
   box-shadow: 0 10px 28px rgba(15,23,42,.04) !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-navigation a::before {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  flex: 0 0 38px;
-  border-radius: 14px;
-  background: #eef8ff;
-  color: #00aeef;
-  font-family: "Font Awesome 6 Free";
-  font-weight: 900;
-  font-size: 16px;
+  content: "" !important;
+  width: 9px !important;
+  height: 9px !important;
+  margin-right: 10px !important;
+  border-radius: 999px !important;
+  background: #00aeef !important;
+  box-shadow: 0 0 0 5px rgba(0,174,239,.12) !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--dashboard a::before {
-  content: "\f015";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--orders a::before {
-  content: "\f291";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--downloads a::before {
-  content: "\f019";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--giftcards a::before,
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--gift-cards a::before,
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--gift_cards a::before {
-  content: "\f06b";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--edit-address a::before {
-  content: "\f3c5";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--edit-account a::before {
-  content: "\f007";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--loyalty_reward a::before,
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--points-rewards a::before {
-  content: "\f005";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation-link--customer-logout a::before {
-  content: "\f2f5";
-}
-
-body.woocommerce-account .woocommerce-MyAccount-navigation a:hover,
-body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a {
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a,
+body.woocommerce-account .woocommerce-MyAccount-navigation a:hover {
   background: linear-gradient(135deg, #0057a8, #00aeef) !important;
   color: #ffffff !important;
   border-color: transparent !important;
-  transform: translateY(-1px);
   box-shadow: 0 16px 38px rgba(0,174,239,.22) !important;
+  transform: translateY(-1px);
 }
 
-body.woocommerce-account .woocommerce-MyAccount-navigation a:hover::before,
-body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a::before {
-  background: rgba(255,255,255,.18);
-  color: #ffffff;
+body.woocommerce-account .woocommerce-MyAccount-navigation li.is-active a::before,
+body.woocommerce-account .woocommerce-MyAccount-navigation a:hover::before {
+  background: #ffffff !important;
+  box-shadow: 0 0 0 5px rgba(255,255,255,.18) !important;
 }
 
-/* Desktop side nav */
+/* desktop side nav */
 @media (min-width: 900px) {
   body.woocommerce-account .woocommerce-MyAccount-navigation {
-    max-width: 300px !important;
+    max-width: 320px !important;
     margin: 0 !important;
     position: sticky;
     top: 120px;
   }
 
+  body.woocommerce-account .woocommerce-MyAccount-navigation ul {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
   body.woocommerce-account .woocommerce-MyAccount-navigation a {
-    font-size: 15px !important;
-    min-height: 54px !important;
+    width: 100% !important;
+    justify-content: flex-start !important;
   }
 }
 
-/* Mobile */
+/* mobile */
 @media (max-width: 768px) {
   body.woocommerce-account .woocommerce-MyAccount-navigation {
     padding: 24px 18px !important;
     border-radius: 30px !important;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-navigation ul {
+    display: flex !important;
+    flex-wrap: wrap !important;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-navigation a {
+    font-size: 15px !important;
+    padding: 12px 16px !important;
   }
 }
