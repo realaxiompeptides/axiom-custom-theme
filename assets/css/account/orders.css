@@ -646,3 +646,103 @@
     font-size: 24px !important;
   }
 }
+
+.axiom-shipping-notice-card {
+  margin: 18px 0 22px;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid #dbeafe;
+  background:
+    radial-gradient(circle at top right, rgba(90,168,223,.18), transparent 38%),
+    linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+}
+
+.axiom-shipping-notice-top {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.axiom-shipping-notice-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #071126;
+  color: #fff;
+  font-size: 22px;
+  flex: 0 0 auto;
+}
+
+.axiom-shipping-notice-card span {
+  color: #5aa8df;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.axiom-shipping-notice-card h3 {
+  margin: 6px 0 8px;
+  color: #071126;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -.04em;
+  font-weight: 1000;
+}
+
+.axiom-shipping-notice-card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.axiom-shipping-carriers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.axiom-shipping-carriers div {
+  min-height: 54px;
+  border-radius: 18px;
+  border: 1px solid #dbeafe;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #071126;
+  font-weight: 1000;
+}
+
+.axiom-shipping-carriers i {
+  font-size: 22px;
+}
+
+.axiom-shipping-help {
+  margin-top: 14px !important;
+  padding-top: 14px;
+  border-top: 1px solid #dbeafe;
+  font-size: 14px !important;
+}
+
+@media (max-width: 640px) {
+  .axiom-shipping-notice-top {
+    flex-direction: column;
+  }
+
+  .axiom-shipping-carriers {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-shipping-notice-card h3 {
+    font-size: 24px;
+  }
+}
