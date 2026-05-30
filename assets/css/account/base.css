@@ -1,19 +1,30 @@
 .axiom-account-page {
+  width: 100%;
   padding: 24px 0 64px;
   background: #ffffff;
+  overflow-x: hidden;
 }
 
 .axiom-account-page .container {
-  max-width: 1180px;
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 28px;
+  padding-right: 28px;
+  box-sizing: border-box;
 }
 
 .axiom-account-hero {
-  margin-bottom: 24px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 32px;
   padding: 34px 28px;
   border: 1px solid #dbe5ef;
   border-radius: 30px;
   background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
   text-align: center;
+  box-sizing: border-box;
 }
 
 .axiom-account-kicker {
@@ -28,10 +39,10 @@
 .axiom-account-hero h1 {
   margin: 0 0 12px;
   color: #0f172a;
-  font-size: 52px;
-  line-height: 1;
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 0.95;
   font-weight: 900;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 }
 
 .axiom-account-subtitle {
@@ -43,11 +54,29 @@
 }
 
 .axiom-account-wrapper {
+  width: 100%;
+  max-width: 1180px;
+  margin-left: auto;
+  margin-right: auto;
   display: block;
+  box-sizing: border-box;
+}
+
+/* Force WooCommerce account layout centered */
+.woocommerce-account .axiom-account-wrapper > .woocommerce,
+.woocommerce-account .woocommerce {
+  width: 100%;
+  max-width: 1180px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  float: none !important;
+  box-sizing: border-box;
 }
 
 .woocommerce-account .woocommerce-notices-wrapper {
-  margin-bottom: 18px;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 18px;
 }
 
 .woocommerce-account .woocommerce-message,
@@ -59,4 +88,82 @@
   background: #f8fbff;
   color: #0f172a;
   list-style: none;
+  box-sizing: border-box;
+}
+
+/* Desktop account layout */
+@media (min-width: 900px) {
+  .axiom-account-page {
+    padding-top: 32px;
+    padding-bottom: 90px;
+  }
+
+  .axiom-account-page .container {
+    max-width: 1440px;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+
+  .axiom-account-wrapper {
+    max-width: 1280px;
+  }
+
+  .woocommerce-account .axiom-account-wrapper > .woocommerce,
+  .woocommerce-account .woocommerce {
+    max-width: 1280px;
+    display: grid !important;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 36px;
+    align-items: start;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-navigation {
+    width: 100% !important;
+    max-width: 300px;
+    float: none !important;
+    margin: 0 !important;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-content {
+    width: 100% !important;
+    max-width: none;
+    float: none !important;
+    margin: 0 !important;
+    min-width: 0;
+  }
+}
+
+/* Tablet/mobile */
+@media (max-width: 899px) {
+  .axiom-account-page .container {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .axiom-account-hero {
+    padding: 28px 20px;
+    border-radius: 24px;
+  }
+
+  .axiom-account-hero h1 {
+    font-size: 42px;
+  }
+
+  .axiom-account-subtitle {
+    font-size: 16px;
+  }
+
+  .woocommerce-account .axiom-account-wrapper > .woocommerce,
+  .woocommerce-account .woocommerce {
+    display: block !important;
+  }
+
+  .woocommerce-account .woocommerce-MyAccount-navigation,
+  .woocommerce-account .woocommerce-MyAccount-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    float: none !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
