@@ -139,7 +139,6 @@ function axiom_custom_rewards_balance_card() {
     }
 
     $user_id = get_current_user_id();
-
     $points = get_user_meta($user_id, 'wlr_points', true);
 
     if ($points === '' || $points === false) {
@@ -157,22 +156,14 @@ function axiom_custom_rewards_balance_card() {
     ?>
     <section class="axiom-rewards-custom-top">
         <div class="axiom-rewards-balance-card">
-            <div class="axiom-rewards-glow"></div>
+            <p class="axiom-rewards-kicker">Axiom Rewards</p>
 
-            <div class="axiom-rewards-card-header">
-                <div class="axiom-rewards-icon">
-                    <span>✦</span>
-                </div>
-
+            <div class="axiom-rewards-card-main">
                 <div>
-                    <p class="axiom-rewards-kicker">Axiom Rewards</p>
                     <h2>Points Balance</h2>
-                </div>
-            </div>
-
-            <div class="axiom-rewards-main-row">
-                <div class="axiom-rewards-points-number">
-                    <?php echo esc_html($points); ?>
+                    <div class="axiom-rewards-points-number">
+                        <?php echo esc_html($points); ?>
+                    </div>
                 </div>
 
                 <div class="axiom-rewards-earned-pill">
@@ -187,18 +178,6 @@ function axiom_custom_rewards_balance_card() {
 
             <div class="axiom-rewards-progress-bar">
                 <span style="width: <?php echo esc_attr($progress); ?>%;"></span>
-            </div>
-
-            <div class="axiom-rewards-mini-info">
-                <div>
-                    <span>Reward Value</span>
-                    <strong>100 pts = $5 off</strong>
-                </div>
-
-                <div>
-                    <span>Status</span>
-                    <strong><?php echo $points >= 100 ? 'Ready to redeem' : 'Keep earning'; ?></strong>
-                </div>
             </div>
         </div>
     </section>
