@@ -273,3 +273,92 @@
   color: #475569;
   font-weight: 650;
 }
+
+/* Better spacing before footer */
+.woocommerce-order-received .woocommerce-order {
+  padding-bottom: 70px;
+}
+
+.woocommerce-order-received .woocommerce-customer-details {
+  margin-bottom: 46px;
+}
+
+.woocommerce-order-received .site-footer,
+.woocommerce-order-received footer {
+  margin-top: 50px;
+}
+
+/* Upgrade order summary heading */
+.woocommerce-order-received .woocommerce-order-details__title {
+  margin: 34px 0 18px;
+  font-size: clamp(40px, 9vw, 58px);
+  line-height: .92;
+  letter-spacing: -.07em;
+  font-weight: 1000;
+  color: #071126;
+}
+
+/* Upgrade order summary card */
+.woocommerce-order-received .woocommerce-table--order-details {
+  border: 1px solid #dbeafe !important;
+  border-radius: 30px !important;
+  overflow: hidden;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, .07);
+}
+
+/* Tighter rows */
+.woocommerce-order-received .woocommerce-table--order-details th,
+.woocommerce-order-received .woocommerce-table--order-details td {
+  padding: 18px 20px !important;
+  border-color: #dbeafe !important;
+}
+
+/* Total row stronger */
+.woocommerce-order-received .woocommerce-table--order-details tfoot tr:last-child th,
+.woocommerce-order-received .woocommerce-table--order-details tfoot tr:last-child td {
+  font-size: 30px !important;
+  font-weight: 1000 !important;
+  color: #071126 !important;
+}
+
+/* Shipping section */
+.woocommerce-order-received .woocommerce-customer-details {
+  margin-top: 28px;
+}
+
+.woocommerce-order-received .woocommerce-customer-details h2 {
+  margin: 0 0 18px;
+  font-size: clamp(38px, 9vw, 56px);
+  line-height: .94;
+  letter-spacing: -.07em;
+  font-weight: 1000;
+  color: #071126;
+}
+
+.woocommerce-order-received .woocommerce-customer-details address {
+  padding: 25px !important;
+  border: 1px solid #dbeafe !important;
+  border-radius: 28px !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, .06);
+  color: #475569;
+  font-size: 19px;
+  line-height: 1.55;
+  font-weight: 650;
+}
+
+@media (max-width: 760px) {
+  .woocommerce-order-received .woocommerce-order {
+    padding-bottom: 90px;
+  }
+
+  .woocommerce-order-received .woocommerce-table--order-details th,
+  .woocommerce-order-received .woocommerce-table--order-details td {
+    padding: 16px 18px !important;
+  }
+
+  .woocommerce-order-received .woocommerce-customer-details {
+    margin-bottom: 70px;
+  }
+}
