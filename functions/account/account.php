@@ -127,3 +127,56 @@ function axiom_force_custom_view_order_template($order_id) {
         'order_id' => $order_id,
     ));
 }
+
+/**
+ * Custom Axiom Rewards balance card above plugin rewards page.
+ */
+add_action('woocommerce_account_loyalty_reward_endpoint', 'axiom_custom_rewards_balance_card', 1);
+
+function axiom_custom_rewards_balance_card() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    $user_id = get_current_user_id();
+
+    $points = get_user_meta($user_id, 'wlr_points', true);
+
+    if ($points === '' || $points === false) {
+        $points = 0;
+    }
+
+    $points = (int) $points;
+
+    $reward_points_needed = 100;
+    $reward_value = 5;
+
+    $points_to_go = max(0, $reward_points_needed - $points);
+    $progress = min(100, ($points / $reward_points_needed) * 100);
+
+    ?>
+    <div class="axiom-rewards-custom-top">
+        <div class="axiom-rewards-balance-card">
+            <div class="axiom-rewards-card-top">
+                <div>
+                    <p class="axiom-rewards-kicker">Points Balance</p>
+                    <h2><?php echo esc_html($points); ?></h2>
+                </div>
+
+                <div class="axiom-rewards-earned-pill">
+                    <?php echo esc_html($points); ?> earned
+                </div>
+            </div>
+
+            <div class="axiom-rewards-progress-info">
+                <span>$<?php echo esc_html($reward_value); ?> off at <?php echo esc_html($reward_points_needed); ?> points</span>
+                <strong><?php echo esc_html($points_to_go); ?> to go</strong>
+            </div>
+
+            <div class="axiom-rewards-progress-bar">
+                <span style="width: <?php echo esc_attr($progress); ?>%;"></span>
+            </div>
+        </div>
+    </div>
+    <?php
+}
