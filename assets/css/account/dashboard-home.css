@@ -231,3 +231,8 @@
     min-height: 82px;
   }
 }
+
+body.woocommerce-account .axiom-custom-dashboard-page ~ p,
+body.woocommerce-account .axiom-custom-dashboard-page ~ div {
+  display: none !important;
+}
