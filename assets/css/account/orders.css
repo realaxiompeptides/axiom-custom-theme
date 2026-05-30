@@ -1,44 +1,210 @@
-.woocommerce-account table.shop_table {
+/* ================================
+   Axiom Account Orders
+================================ */
+
+.woocommerce-account table.shop_table,
+.woocommerce-account .woocommerce-orders-table {
   width: 100%;
-  border-collapse: collapse;
-  padding: 22px;
-  border: 1px solid #dbe5ef;
-  border-radius: 30px;
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+  border: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 14px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Hide ugly table header on mobile */
+.woocommerce-account table.shop_table thead,
+.woocommerce-account .woocommerce-orders-table thead {
+  display: none !important;
+}
+
+.woocommerce-account table.shop_table tbody,
+.woocommerce-account table.shop_table tr,
+.woocommerce-account table.shop_table td,
+.woocommerce-account .woocommerce-orders-table tbody,
+.woocommerce-account .woocommerce-orders-table tr,
+.woocommerce-account .woocommerce-orders-table td {
+  display: block !important;
+  width: 100% !important;
+}
+
+/* Each order becomes a premium card */
+.woocommerce-account table.shop_table tr,
+.woocommerce-account .woocommerce-orders-table tr {
+  position: relative;
+  margin: 0 0 16px !important;
+  padding: 18px !important;
+  border-radius: 26px !important;
+  border: 1px solid #dbeafe !important;
+  background:
+    radial-gradient(circle at top right, rgba(59, 130, 246, 0.12), transparent 35%),
+    linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07);
   overflow: hidden;
 }
 
-.woocommerce-account table.shop_table th,
-.woocommerce-account table.shop_table td {
-  padding: 14px 10px;
-  border-bottom: 1px solid #e7eef5;
-  text-align: left;
-}
-
-.woocommerce-account table.shop_table th {
-  color: #0f172a;
-  font-size: 14px;
-  font-weight: 900;
-}
-
-.woocommerce-account table.shop_table td {
-  color: #64748b;
+.woocommerce-account table.shop_table td,
+.woocommerce-account .woocommerce-orders-table td {
+  padding: 0 !important;
+  border: 0 !important;
+  color: #475569;
   font-size: 15px;
+  line-height: 1.35;
+  font-weight: 750;
 }
 
+/* Order number */
+.woocommerce-account .woocommerce-orders-table__cell-order-number,
+.woocommerce-account .woocommerce-orders-table__cell-order-number a {
+  color: #071126 !important;
+  font-size: 28px !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em;
+  font-weight: 1000 !important;
+  text-decoration: none !important;
+}
+
+/* Status badge */
+.woocommerce-account .woocommerce-orders-table__cell-order-status {
+  display: inline-flex !important;
+  width: auto !important;
+  margin: 10px 0 14px !important;
+  padding: 8px 13px !important;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #991b1b !important;
+  font-size: 12px !important;
+  font-weight: 950 !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Meta rows */
+.woocommerce-account .woocommerce-orders-table__cell-order-date,
+.woocommerce-account .woocommerce-orders-table__cell-order-total {
+  margin-top: 10px;
+  color: #475569 !important;
+  font-size: 16px !important;
+  font-weight: 800 !important;
+}
+
+.woocommerce-account .woocommerce-orders-table__cell-order-date::before,
+.woocommerce-account .woocommerce-orders-table__cell-order-total::before {
+  display: block;
+  margin-bottom: 4px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.woocommerce-account .woocommerce-orders-table__cell-order-date::before {
+  content: "Date";
+}
+
+.woocommerce-account .woocommerce-orders-table__cell-order-total::before {
+  content: "Total";
+}
+
+/* View button */
+.woocommerce-account .woocommerce-orders-table__cell-order-actions {
+  margin-top: 16px;
+}
+
+.woocommerce-account .woocommerce-orders-table__cell-order-actions a,
+.woocommerce-account .woocommerce-orders-table__cell-order-actions .button,
 .woocommerce-account .woocommerce-button.button,
 .woocommerce-account a.button {
-  display: inline-flex;
+  width: 100% !important;
+  min-height: 48px !important;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  background: #071126 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+  font-size: 15px !important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: #5aa8df;
-  color: #ffffff;
-  font-size: 14px;
-  font-weight: 900;
-  text-decoration: none;
-  border: 0;
+}
+
+/* Better empty/no-order message */
+.woocommerce-account .woocommerce-message,
+.woocommerce-account .woocommerce-info {
+  border-radius: 24px;
+  border: 1px solid #dbeafe;
+  background: #f8fbff;
+  color: #475569;
+  font-weight: 750;
+}
+
+/* Desktop table */
+@media (min-width: 900px) {
+  .woocommerce-account table.shop_table,
+  .woocommerce-account .woocommerce-orders-table {
+    display: table !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    border-radius: 26px !important;
+    border: 1px solid #dbeafe !important;
+    overflow: hidden;
+    background: #ffffff !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.07) !important;
+  }
+
+  .woocommerce-account table.shop_table thead,
+  .woocommerce-account .woocommerce-orders-table thead {
+    display: table-header-group !important;
+  }
+
+  .woocommerce-account table.shop_table tbody,
+  .woocommerce-account .woocommerce-orders-table tbody {
+    display: table-row-group !important;
+  }
+
+  .woocommerce-account table.shop_table tr,
+  .woocommerce-account .woocommerce-orders-table tr {
+    display: table-row !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+  }
+
+  .woocommerce-account table.shop_table th,
+  .woocommerce-account table.shop_table td,
+  .woocommerce-account .woocommerce-orders-table th,
+  .woocommerce-account .woocommerce-orders-table td {
+    display: table-cell !important;
+    width: auto !important;
+    padding: 18px !important;
+    border-bottom: 1px solid #dbeafe !important;
+  }
+
+  .woocommerce-account table.shop_table th,
+  .woocommerce-account .woocommerce-orders-table th {
+    background: #f1f7ff;
+    color: #64748b;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 950;
+  }
+
+  .woocommerce-account .woocommerce-orders-table__cell-order-status {
+    margin: 0 !important;
+  }
+
+  .woocommerce-account .woocommerce-orders-table__cell-order-actions a,
+  .woocommerce-account .woocommerce-orders-table__cell-order-actions .button,
+  .woocommerce-account .woocommerce-button.button,
+  .woocommerce-account a.button {
+    width: auto !important;
+  }
 }
