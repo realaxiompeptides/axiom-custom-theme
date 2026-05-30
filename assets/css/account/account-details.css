@@ -1,0 +1,144 @@
+/* AXIOM ACCOUNT DETAILS PAGE */
+
+body.woocommerce-account .woocommerce-EditAccountForm {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto !important;
+  padding: 38px !important;
+  border: 1px solid #dbeafe !important;
+  border-radius: 36px !important;
+  background:
+    radial-gradient(circle at top right, rgba(0, 174, 239, 0.08), transparent 35%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08) !important;
+  box-sizing: border-box !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm p {
+  margin: 0 0 22px !important;
+  padding: 0 !important;
+  border: none !important;
+  background: transparent !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm label {
+  display: block !important;
+  margin: 0 0 10px !important;
+  color: #0f172a !important;
+  font-size: 16px !important;
+  font-weight: 900 !important;
+  line-height: 1.35 !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm input[type="text"],
+body.woocommerce-account .woocommerce-EditAccountForm input[type="email"],
+body.woocommerce-account .woocommerce-EditAccountForm input[type="password"] {
+  width: 100% !important;
+  min-height: 64px !important;
+  padding: 0 56px 0 20px !important;
+  border: 1px solid #dbe5ef !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  color: #0f172a !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04) !important;
+  box-sizing: border-box !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm input:focus {
+  outline: none !important;
+  border-color: #00aeef !important;
+  box-shadow: 0 0 0 4px rgba(0, 174, 239, 0.14) !important;
+}
+
+/* Password box */
+body.woocommerce-account .woocommerce-EditAccountForm fieldset {
+  margin: 34px 0 28px !important;
+  padding: 30px !important;
+  border: 1px solid #dbe5ef !important;
+  border-radius: 30px !important;
+  background: #ffffff !important;
+  box-shadow: 0 16px 45px rgba(15, 23, 42, 0.06) !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm legend {
+  padding: 0 16px !important;
+  color: #0f172a !important;
+  font-size: 26px !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.04em !important;
+}
+
+/* Move password eye icon to RIGHT */
+body.woocommerce-account .woocommerce-EditAccountForm .password-input {
+  position: relative !important;
+  display: block !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm .show-password-input {
+  position: absolute !important;
+  right: 18px !important;
+  left: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 28px !important;
+  height: 28px !important;
+  cursor: pointer !important;
+  opacity: 0.75 !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm .show-password-input:hover {
+  opacity: 1 !important;
+}
+
+/* Save button */
+body.woocommerce-account .woocommerce-EditAccountForm button[type="submit"],
+body.woocommerce-account .woocommerce-EditAccountForm .button {
+  width: 100% !important;
+  min-height: 68px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: linear-gradient(135deg, #07111f 0%, #081a2d 100%) !important;
+  color: #ffffff !important;
+  font-size: 20px !important;
+  font-weight: 950 !important;
+  box-shadow: 0 18px 42px rgba(2, 8, 23, 0.18) !important;
+}
+
+body.woocommerce-account .woocommerce-EditAccountForm button[type="submit"]:hover {
+  background: linear-gradient(135deg, #0057a8 0%, #00aeef 100%) !important;
+}
+
+/* Hide optional small notes if ugly */
+body.woocommerce-account .woocommerce-EditAccountForm em {
+  display: block !important;
+  margin-top: 8px !important;
+  color: #64748b !important;
+  font-size: 14px !important;
+  line-height: 1.45 !important;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  body.woocommerce-account .woocommerce-EditAccountForm {
+    padding: 26px 18px !important;
+    border-radius: 30px !important;
+  }
+
+  body.woocommerce-account .woocommerce-EditAccountForm fieldset {
+    padding: 24px 18px !important;
+    border-radius: 26px !important;
+  }
+
+  body.woocommerce-account .woocommerce-EditAccountForm legend {
+    font-size: 24px !important;
+  }
+
+  body.woocommerce-account .woocommerce-EditAccountForm input[type="text"],
+  body.woocommerce-account .woocommerce-EditAccountForm input[type="email"],
+  body.woocommerce-account .woocommerce-EditAccountForm input[type="password"] {
+    min-height: 62px !important;
+    font-size: 17px !important;
+  }
+}
