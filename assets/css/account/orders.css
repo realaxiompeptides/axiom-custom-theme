@@ -88,3 +88,36 @@
 .woocommerce-account .woocommerce-MyAccount-content > br {
   display: none !important;
 }
+
+/* View order details page */
+.woocommerce-account .woocommerce-order-details,
+.woocommerce-account .woocommerce-customer-details,
+.woocommerce-account .woocommerce-order-overview {
+  border-radius: 28px !important;
+  border: 1px solid #dbeafe !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 16px 40px rgba(15,23,42,.07);
+  padding: 20px !important;
+  margin-bottom: 22px !important;
+}
+
+.woocommerce-account .woocommerce-order-details__title,
+.woocommerce-account .woocommerce-column__title {
+  color: #071126;
+  font-size: 34px;
+  line-height: .95;
+  letter-spacing: -.06em;
+  font-weight: 1000;
+}
+
+.woocommerce-account .woocommerce-table--order-details {
+  border-radius: 24px !important;
+  overflow: hidden;
+  border: 1px solid #dbeafe !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details th,
+.woocommerce-account .woocommerce-table--order-details td {
+  padding: 15px !important;
+  border-color: #dbeafe !important;
+}
