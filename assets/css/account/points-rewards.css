@@ -209,3 +209,140 @@ body.woocommerce-account .wlr-page-myaccount input[type="submit"] {
     font-size: 42px !important;
   }
 }
+
+.axiom-rewards-custom-top {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto 34px;
+}
+
+.axiom-rewards-balance-card {
+  padding: 34px;
+  border-radius: 34px;
+  background: radial-gradient(circle at top right, rgba(24,174,226,.18), transparent 35%),
+              linear-gradient(135deg, #07111f 0%, #0b1728 100%);
+  border: 1px solid rgba(24,174,226,.28);
+  color: #fff;
+  box-shadow: 0 24px 70px rgba(15,23,42,.18);
+}
+
+.axiom-rewards-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.axiom-rewards-kicker {
+  margin: 0 0 12px !important;
+  color: rgba(255,255,255,.58) !important;
+  font-size: 13px !important;
+  font-weight: 900 !important;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.axiom-rewards-balance-card h2 {
+  margin: 0 !important;
+  color: #fff !important;
+  font-size: 68px !important;
+  line-height: .9 !important;
+  font-weight: 950 !important;
+}
+
+.axiom-rewards-earned-pill {
+  padding: 14px 22px;
+  border-radius: 18px;
+  background: rgba(61, 220, 132, .12);
+  border: 1px solid rgba(61, 220, 132, .35);
+  color: #4ade80;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.axiom-rewards-progress-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 26px;
+  color: rgba(255,255,255,.65);
+  font-size: 17px;
+}
+
+.axiom-rewards-progress-info strong {
+  color: #fff;
+}
+
+.axiom-rewards-progress-bar {
+  height: 10px;
+  margin-top: 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+  overflow: hidden;
+}
+
+.axiom-rewards-progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: #4ade80;
+}
+
+.axiom-rewards-earn-card {
+  margin-top: 26px;
+  padding: 30px;
+  border-radius: 30px;
+  background: #0f172a;
+  border: 1px solid rgba(255,255,255,.08);
+  color: #fff;
+}
+
+.axiom-rewards-earn-card h3 {
+  margin: 0 0 22px !important;
+  color: #fff !important;
+  font-size: 24px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.axiom-rewards-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 12px 0;
+  color: rgba(255,255,255,.64);
+  font-size: 18px;
+}
+
+.axiom-rewards-row strong {
+  color: #4ade80;
+  font-weight: 950;
+}
+
+.axiom-rewards-note {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 18px;
+  background: rgba(61,220,132,.08);
+  border: 1px solid rgba(61,220,132,.2);
+  color: rgba(255,255,255,.65);
+}
+
+@media (max-width: 768px) {
+  .axiom-rewards-custom-top {
+    max-width: 100%;
+  }
+
+  .axiom-rewards-balance-card,
+  .axiom-rewards-earn-card {
+    padding: 26px 22px;
+  }
+
+  .axiom-rewards-card-top {
+    flex-direction: column;
+  }
+
+  .axiom-rewards-balance-card h2 {
+    font-size: 58px !important;
+  }
+}
