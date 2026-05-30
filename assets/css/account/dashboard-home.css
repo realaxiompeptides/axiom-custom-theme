@@ -242,3 +242,14 @@ body.woocommerce-account .woocommerce-MyAccount-content > p:has(~ .axiom-custom-
 body.woocommerce-account .woocommerce-MyAccount-content > div:has(~ .axiom-custom-dashboard-page):not(.axiom-custom-dashboard-page) {
   display: none !important;
 }
+
+/* FORCE HIDE OLD AXIOM DASHBOARD BLOCKS */
+body.woocommerce-account .woocommerce-MyAccount-content > .axiom-dashboard-card,
+body.woocommerce-account .woocommerce-MyAccount-content > .axiom-dashboard-summary,
+body.woocommerce-account .woocommerce-MyAccount-content > .axiom-account-dashboard,
+body.woocommerce-account .woocommerce-MyAccount-content > .axiom-dashboard-quick-actions,
+body.woocommerce-account .woocommerce-MyAccount-content > .axiom-dashboard-home:not(.axiom-custom-dashboard-page),
+body.woocommerce-account .woocommerce-MyAccount-content > div:not(.axiom-custom-dashboard-page):not(.axiom-dashboard-hero):not(.axiom-dashboard-status-grid):not(.axiom-dashboard-actions-card):has(.quick-actions),
+body.woocommerce-account .woocommerce-MyAccount-content > div:not(.axiom-custom-dashboard-page):not(.axiom-dashboard-hero):not(.axiom-dashboard-status-grid):not(.axiom-dashboard-actions-card):has(.axiom-dashboard-action) {
+  display: none !important;
+}
