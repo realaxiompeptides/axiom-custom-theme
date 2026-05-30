@@ -39,9 +39,16 @@ function axiom_account_assets() {
         );
 
         wp_enqueue_style(
+            'axiom-account-navigation',
+            $theme_uri . '/assets/css/account/navigation.css',
+            array('axiom-account-dashboard'),
+            axiom_account_asset_version('/assets/css/account/navigation.css')
+        );
+
+        wp_enqueue_style(
             'axiom-account-forms',
             $theme_uri . '/assets/css/account/forms.css',
-            array('axiom-account-base'),
+            array('axiom-account-navigation'),
             axiom_account_asset_version('/assets/css/account/forms.css')
         );
 
@@ -80,6 +87,7 @@ function axiom_account_assets() {
                 'axiom-account-base',
                 'axiom-account-login',
                 'axiom-account-dashboard',
+                'axiom-account-navigation',
                 'axiom-account-forms',
                 'axiom-account-details',
                 'axiom-account-downloads',
@@ -96,6 +104,7 @@ function axiom_account_assets() {
                 'axiom-account-base',
                 'axiom-account-login',
                 'axiom-account-dashboard',
+                'axiom-account-navigation',
                 'axiom-account-forms',
                 'axiom-account-details',
                 'axiom-account-downloads',
@@ -293,7 +302,7 @@ function axiom_custom_giftcards_page() {
     <section class="axiom-custom-giftcards-page">
         <div class="axiom-giftcards-hero">
             <div class="axiom-giftcards-icon">
-                <i class="fa-solid fa-gift"></i>
+                <i class="fa-solid fa-gift" aria-hidden="true"></i>
             </div>
 
             <p class="axiom-giftcards-kicker">Gift Cards</p>
@@ -307,10 +316,10 @@ function axiom_custom_giftcards_page() {
             <p>Enter your gift card code below to add it to your account.</p>
 
             <form method="post" class="axiom-giftcards-form">
-                <input 
-                    type="text" 
-                    name="wc_gc_code" 
-                    placeholder="Enter gift card code..." 
+                <input
+                    type="text"
+                    name="wc_gc_code"
+                    placeholder="Enter gift card code..."
                     autocomplete="off"
                 >
 
