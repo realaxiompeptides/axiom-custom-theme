@@ -1,0 +1,109 @@
+/* AXIOM POINTS & REWARDS PAGE */
+
+body.woocommerce-account .woocommerce-MyAccount-content {
+  width: 100%;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content h1,
+body.woocommerce-account .woocommerce-MyAccount-content h2 {
+  font-size: clamp(42px, 5vw, 72px);
+  line-height: 0.9;
+  font-weight: 950;
+  letter-spacing: -0.07em;
+  text-transform: uppercase;
+  color: #101820;
+  margin: 0 0 28px;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content h1::before,
+body.woocommerce-account .woocommerce-MyAccount-content h2::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 54px;
+  margin-right: 14px;
+  background: #17aee2;
+  border-radius: 99px;
+  vertical-align: middle;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content table,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-content-wrapper {
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto 32px;
+  padding: 28px;
+  border: 1px solid #dce8f4;
+  border-radius: 34px;
+  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: 0 18px 55px rgba(15, 23, 42, 0.06);
+  box-sizing: border-box;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content table {
+  border-collapse: separate;
+  border-spacing: 0 14px;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content th,
+body.woocommerce-account .woocommerce-MyAccount-content td {
+  padding: 20px;
+  border: 1px solid #dbe5ef;
+  background: #ffffff;
+  color: #334155;
+  font-size: 16px;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content th:first-child,
+body.woocommerce-account .woocommerce-MyAccount-content td:first-child {
+  border-radius: 20px 0 0 20px;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content th:last-child,
+body.woocommerce-account .woocommerce-MyAccount-content td:last-child {
+  border-radius: 0 20px 20px 0;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .button,
+body.woocommerce-account .woocommerce-MyAccount-content button,
+body.woocommerce-account .woocommerce-MyAccount-content input[type="submit"] {
+  border: 0;
+  border-radius: 999px;
+  background: #17aee2;
+  color: #ffffff;
+  font-weight: 900;
+  padding: 14px 24px;
+  box-shadow: 0 12px 28px rgba(23, 174, 226, 0.28);
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content p,
+body.woocommerce-account .woocommerce-MyAccount-content li {
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  body.woocommerce-account .woocommerce-MyAccount-content {
+    padding: 0;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-content h1,
+  body.woocommerce-account .woocommerce-MyAccount-content h2 {
+    font-size: 44px;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-content table,
+  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-content-wrapper {
+    padding: 22px 16px;
+    border-radius: 28px;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-content th,
+  body.woocommerce-account .woocommerce-MyAccount-content td {
+    display: block;
+    width: 100%;
+    border-radius: 18px !important;
+    margin-bottom: 12px;
+  }
+}
