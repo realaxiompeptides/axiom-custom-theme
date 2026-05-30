@@ -1,28 +1,39 @@
 /* AXIOM GIFT CARDS PAGE */
 
-body.woocommerce-account .woocommerce-MyAccount-content h1,
-body.woocommerce-account .woocommerce-MyAccount-content h2 {
+body.woocommerce-account .woocommerce-MyAccount-content {
+  overflow: hidden !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content h2,
+body.woocommerce-account .woocommerce-MyAccount-content h3,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards h2,
+body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards h2 {
   color: #061525 !important;
+  font-size: clamp(38px, 6vw, 64px) !important;
+  line-height: 0.92 !important;
   font-weight: 950 !important;
-  letter-spacing: -0.07em !important;
+  letter-spacing: -0.075em !important;
+  margin: 0 0 28px !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-content form,
-body.woocommerce-account .woocommerce-MyAccount-content .gift-card,
+body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-add-gift-card-form,
 body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-giftcards,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards {
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards,
+body.woocommerce-account .woocommerce-MyAccount-content .giftcards,
+body.woocommerce-account .woocommerce-MyAccount-content .gift-card {
   width: 100% !important;
   max-width: 880px !important;
-  margin: 0 auto 32px !important;
+  margin: 0 auto 34px !important;
   padding: 34px !important;
   border: 1px solid #dbeafe !important;
   border-radius: 34px !important;
   background:
-    radial-gradient(circle at top right, rgba(0,174,239,.08), transparent 35%),
+    radial-gradient(circle at top right, rgba(0,174,239,.08), transparent 36%),
     linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
   box-shadow: 0 22px 60px rgba(15,23,42,.07) !important;
   box-sizing: border-box !important;
+  overflow: hidden !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-content input[type="text"],
@@ -34,10 +45,11 @@ body.woocommerce-account .woocommerce-MyAccount-content input[type="number"] {
   border: 1px solid #dbe5ef !important;
   border-radius: 22px !important;
   background: #ffffff !important;
-  color: #0f172a !important;
+  color: #061525 !important;
   font-size: 18px !important;
   font-weight: 800 !important;
   box-shadow: 0 10px 30px rgba(15,23,42,.04) !important;
+  box-sizing: border-box !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-content input:focus {
@@ -66,37 +78,47 @@ body.woocommerce-account .woocommerce-MyAccount-content .button:hover {
 }
 
 body.woocommerce-account .woocommerce-MyAccount-content table,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-table {
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-table,
+body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-myaccount-giftcards-table {
   width: 100% !important;
   max-width: 880px !important;
-  margin: 0 auto 32px !important;
-  padding: 24px !important;
+  margin: 0 auto 34px !important;
   border: 1px solid #dbeafe !important;
   border-radius: 30px !important;
   background: #ffffff !important;
   box-shadow: 0 18px 50px rgba(15,23,42,.06) !important;
   overflow: hidden !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
 }
 
 body.woocommerce-account .woocommerce-MyAccount-content td,
 body.woocommerce-account .woocommerce-MyAccount-content th {
-  padding: 18px !important;
+  padding: 20px !important;
   border-color: #e5eef8 !important;
   color: #334155 !important;
-  font-weight: 800 !important;
+  font-weight: 850 !important;
+  white-space: normal !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-message {
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
 }
 
 @media (max-width: 768px) {
   body.woocommerce-account .woocommerce-MyAccount-content form,
-  body.woocommerce-account .woocommerce-MyAccount-content .gift-card,
+  body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-add-gift-card-form,
   body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards,
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-giftcards,
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards {
+  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards,
+  body.woocommerce-account .woocommerce-MyAccount-content .giftcards,
+  body.woocommerce-account .woocommerce-MyAccount-content .gift-card {
     padding: 26px 18px !important;
     border-radius: 30px !important;
   }
 
-  body.woocommerce-account .woocommerce-MyAccount-content input[type="text"],
+  body.woocommerce-account .woocommerce-MyAccount-content input,
   body.woocommerce-account .woocommerce-MyAccount-content button,
   body.woocommerce-account .woocommerce-MyAccount-content .button {
     width: 100% !important;
