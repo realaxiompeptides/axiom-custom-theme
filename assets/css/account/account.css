@@ -536,3 +536,175 @@
     width: 100%;
   }
 }
+
+/* ================================
+   Axiom Account Page Upgrade
+================================ */
+
+.woocommerce-account .woocommerce {
+  padding-bottom: 100px;
+}
+
+.woocommerce-account .woocommerce-MyAccount-content,
+.woocommerce-account .woocommerce-MyAccount-navigation {
+  border-radius: 30px;
+  border: 1px solid #dbeafe;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, .07);
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation {
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation li {
+  margin: 0;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 18px;
+  border: 1px solid #dbeafe;
+  background: #ffffff;
+  color: #071126;
+  text-decoration: none;
+  font-weight: 900;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation .is-active a,
+.woocommerce-account .woocommerce-MyAccount-navigation a:hover {
+  background: #071126;
+  color: #ffffff;
+}
+
+/* Content card */
+.woocommerce-account .woocommerce-MyAccount-content {
+  padding: 22px;
+  color: #475569;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 600;
+}
+
+/* Orders page title/card */
+.woocommerce-account .woocommerce-MyAccount-content h2,
+.woocommerce-account .woocommerce-MyAccount-content h3 {
+  margin: 0 0 18px;
+  color: #071126;
+  font-size: clamp(34px, 8vw, 52px);
+  line-height: .95;
+  letter-spacing: -.06em;
+  font-weight: 1000;
+}
+
+/* Orders table */
+.woocommerce-account table.shop_table,
+.woocommerce-account .woocommerce-orders-table {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 26px !important;
+  border: 1px solid #dbeafe !important;
+  background: #ffffff !important;
+  box-shadow: 0 14px 38px rgba(15, 23, 42, .06);
+}
+
+.woocommerce-account table.shop_table th,
+.woocommerce-account table.shop_table td {
+  padding: 16px !important;
+  border-color: #dbeafe !important;
+  color: #071126;
+  font-weight: 750;
+}
+
+.woocommerce-account table.shop_table th {
+  background: #f1f7ff;
+  color: #64748b;
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 950;
+}
+
+/* View buttons */
+.woocommerce-account .woocommerce-button,
+.woocommerce-account .button,
+.woocommerce-account a.button {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px !important;
+  border-radius: 999px !important;
+  background: #071126 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  font-size: 14px !important;
+  font-weight: 950 !important;
+  text-decoration: none !important;
+}
+
+/* Mobile order table becomes cards */
+@media (max-width: 760px) {
+  .woocommerce-account .woocommerce-MyAccount-content {
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .woocommerce-account table.shop_table thead {
+    display: none;
+  }
+
+  .woocommerce-account table.shop_table,
+  .woocommerce-account table.shop_table tbody,
+  .woocommerce-account table.shop_table tr,
+  .woocommerce-account table.shop_table td {
+    display: block;
+    width: 100%;
+  }
+
+  .woocommerce-account table.shop_table tr {
+    margin-bottom: 14px;
+    padding: 16px;
+    border-radius: 22px;
+    border: 1px solid #dbeafe;
+    background: #ffffff;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, .05);
+  }
+
+  .woocommerce-account table.shop_table td {
+    padding: 7px 0 !important;
+    border: 0 !important;
+    font-size: 16px;
+  }
+
+  .woocommerce-account table.shop_table td::before {
+    content: attr(data-title);
+    display: block;
+    margin-bottom: 2px;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .woocommerce-account .woocommerce-button,
+  .woocommerce-account .button,
+  .woocommerce-account a.button {
+    width: 100%;
+    margin-top: 8px;
+  }
+}
