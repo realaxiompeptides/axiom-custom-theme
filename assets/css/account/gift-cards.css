@@ -1,126 +1,138 @@
-/* AXIOM GIFT CARDS PAGE */
+/* AXIOM CUSTOM GIFT CARDS PAGE */
 
-body.woocommerce-account .woocommerce-MyAccount-content {
-  overflow: hidden !important;
+.axiom-custom-giftcards-page {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content h2,
-body.woocommerce-account .woocommerce-MyAccount-content h3,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards h2,
-body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards h2 {
+.axiom-giftcards-hero,
+.axiom-giftcards-add-card,
+.axiom-giftcards-section {
+  margin-bottom: 28px;
+  padding: 34px;
+  border: 1px solid #dbeafe;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at top right, rgba(0,174,239,.10), transparent 36%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+  box-shadow: 0 22px 60px rgba(15,23,42,.07);
+}
+
+.axiom-giftcards-icon {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #0057a8, #00aeef);
+  color: #fff;
+  font-size: 34px;
+  box-shadow: 0 18px 38px rgba(0,174,239,.28);
+  margin-bottom: 20px;
+}
+
+.axiom-giftcards-kicker {
+  margin: 0 0 10px !important;
+  color: #00aeef !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.axiom-giftcards-hero h2,
+.axiom-giftcards-section h3,
+.axiom-giftcards-add-card h3 {
+  margin: 0 0 18px !important;
   color: #061525 !important;
-  font-size: clamp(38px, 6vw, 64px) !important;
-  line-height: 0.92 !important;
+  font-size: clamp(34px, 7vw, 62px) !important;
+  line-height: .9 !important;
   font-weight: 950 !important;
   letter-spacing: -0.075em !important;
-  margin: 0 0 28px !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content form,
-body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-add-gift-card-form,
-body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards,
-body.woocommerce-account .woocommerce-MyAccount-content .giftcards,
-body.woocommerce-account .woocommerce-MyAccount-content .gift-card {
-  width: 100% !important;
-  max-width: 880px !important;
-  margin: 0 auto 34px !important;
-  padding: 34px !important;
-  border: 1px solid #dbeafe !important;
-  border-radius: 34px !important;
-  background:
-    radial-gradient(circle at top right, rgba(0,174,239,.08), transparent 36%),
-    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
-  box-shadow: 0 22px 60px rgba(15,23,42,.07) !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
+.axiom-giftcards-balance {
+  padding: 28px;
+  border: 1px solid #dbe5ef;
+  border-radius: 28px;
+  background: #fff;
+  color: #475569;
+  font-size: clamp(56px, 12vw, 96px);
+  line-height: 1;
+  font-weight: 400;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content input[type="text"],
-body.woocommerce-account .woocommerce-MyAccount-content input[type="email"],
-body.woocommerce-account .woocommerce-MyAccount-content input[type="number"] {
-  width: 100% !important;
-  min-height: 64px !important;
-  padding: 0 20px !important;
+.axiom-giftcards-add-card p {
+  margin: 0 0 22px !important;
+  color: #64748b !important;
+  font-size: 17px !important;
+  font-weight: 700;
+}
+
+.axiom-giftcards-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 18px;
+  align-items: center;
+}
+
+.axiom-giftcards-form input {
+  min-height: 66px !important;
+  padding: 0 22px !important;
   border: 1px solid #dbe5ef !important;
   border-radius: 22px !important;
-  background: #ffffff !important;
+  background: #fff !important;
   color: #061525 !important;
   font-size: 18px !important;
   font-weight: 800 !important;
-  box-shadow: 0 10px 30px rgba(15,23,42,.04) !important;
-  box-sizing: border-box !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content input:focus {
-  outline: none !important;
-  border-color: #00aeef !important;
-  box-shadow: 0 0 0 4px rgba(0,174,239,.14) !important;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content button,
-body.woocommerce-account .woocommerce-MyAccount-content .button,
-body.woocommerce-account .woocommerce-MyAccount-content input[type="submit"] {
-  min-height: 64px !important;
-  padding: 16px 26px !important;
+.axiom-giftcards-form button {
+  min-height: 66px !important;
+  padding: 0 30px !important;
   border: none !important;
   border-radius: 999px !important;
   background: #061525 !important;
-  color: #ffffff !important;
+  color: #fff !important;
   font-size: 18px !important;
   font-weight: 950 !important;
-  box-shadow: 0 18px 42px rgba(2,8,23,.16) !important;
+  box-shadow: 0 18px 42px rgba(2,8,23,.16);
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content button:hover,
-body.woocommerce-account .woocommerce-MyAccount-content .button:hover {
+.axiom-giftcards-form button:hover {
   background: linear-gradient(135deg, #0057a8, #00aeef) !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content table,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-table,
-body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-myaccount-giftcards-table {
-  width: 100% !important;
-  max-width: 880px !important;
-  margin: 0 auto 34px !important;
-  border: 1px solid #dbeafe !important;
-  border-radius: 30px !important;
-  background: #ffffff !important;
-  box-shadow: 0 18px 50px rgba(15,23,42,.06) !important;
-  overflow: hidden !important;
-  border-collapse: separate !important;
-  border-spacing: 0 !important;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content td,
-body.woocommerce-account .woocommerce-MyAccount-content th {
-  padding: 20px !important;
-  border-color: #e5eef8 !important;
-  color: #334155 !important;
-  font-weight: 850 !important;
-  white-space: normal !important;
-}
-
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-message {
-  white-space: normal !important;
-  overflow-wrap: anywhere !important;
+.axiom-giftcards-empty {
+  padding: 24px;
+  border: 1px solid #dbe5ef;
+  border-radius: 24px;
+  background: #fff;
+  color: #64748b;
+  font-size: 18px;
+  font-weight: 850;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
-  body.woocommerce-account .woocommerce-MyAccount-content form,
-  body.woocommerce-account .woocommerce-MyAccount-content .wc-gc-add-gift-card-form,
-  body.woocommerce-account .woocommerce-MyAccount-content .wc_gc_giftcards,
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-MyAccount-giftcards,
-  body.woocommerce-account .woocommerce-MyAccount-content .giftcards,
-  body.woocommerce-account .woocommerce-MyAccount-content .gift-card {
-    padding: 26px 18px !important;
-    border-radius: 30px !important;
+  .axiom-custom-giftcards-page {
+    padding: 0 10px;
   }
 
-  body.woocommerce-account .woocommerce-MyAccount-content input,
-  body.woocommerce-account .woocommerce-MyAccount-content button,
-  body.woocommerce-account .woocommerce-MyAccount-content .button {
-    width: 100% !important;
+  .axiom-giftcards-hero,
+  .axiom-giftcards-add-card,
+  .axiom-giftcards-section {
+    padding: 28px 22px;
+    border-radius: 30px;
+  }
+
+  .axiom-giftcards-form {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-giftcards-form button {
+    width: 100%;
   }
 }
