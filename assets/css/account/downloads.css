@@ -1,67 +1,83 @@
 /* AXIOM DOWNLOADS PAGE */
 
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message {
+body.woocommerce-account.woocommerce-downloads .woocommerce-MyAccount-content,
+body.woocommerce-account .woocommerce-MyAccount-content {
+  overflow: visible !important;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info {
+  position: relative !important;
   width: 100% !important;
   max-width: 820px !important;
-  margin: 0 auto 28px !important;
-  padding: 34px !important;
+  margin: 0 auto 34px !important;
+  padding: 42px 32px 34px !important;
   border: 1px solid #dbeafe !important;
   border-radius: 34px !important;
   background:
-    radial-gradient(circle at top right, rgba(0,174,239,.10), transparent 35%),
+    radial-gradient(circle at top right, rgba(0, 174, 239, 0.10), transparent 38%),
     linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
-  box-shadow: 0 22px 60px rgba(15,23,42,.07) !important;
-  color: #0f172a !important;
-  font-size: 24px !important;
-  font-weight: 950 !important;
-  line-height: 1.25 !important;
-  text-align: left !important;
+  box-shadow: 0 22px 60px rgba(15, 23, 42, 0.07) !important;
+  color: #061525 !important;
+  font-size: 0 !important;
+  text-align: center !important;
+  overflow: hidden !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::before,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message::before {
-  content: "↓";
-  display: inline-grid;
-  place-items: center;
-  width: 54px;
-  height: 54px;
-  margin-right: 14px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #0057a8, #00aeef);
-  color: #ffffff;
-  font-size: 28px;
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info::before,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::before {
+  content: "No downloads available yet";
+  display: block;
+  margin: 0 0 24px;
+  color: #061525;
+  font-size: clamp(30px, 6vw, 54px);
+  line-height: 0.92;
   font-weight: 950;
-  vertical-align: middle;
-  box-shadow: 0 14px 32px rgba(0,174,239,.28);
+  letter-spacing: -0.07em;
 }
 
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info::after,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info::after {
+  content: "Downloadable files from your orders will appear here once available.";
+  display: block;
+  max-width: 520px;
+  margin: 0 auto 28px;
+  color: #64748b;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info .button,
 body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info .button,
-body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message .button,
-body.woocommerce-account .woocommerce-MyAccount-content a.button {
-  display: block !important;
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Button.button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   width: 100% !important;
-  max-width: 620px !important;
-  margin: 28px auto 0 !important;
-  padding: 20px 28px !important;
+  max-width: 560px !important;
+  min-height: 68px !important;
+  margin: 0 auto !important;
+  padding: 18px 26px !important;
+  border: none !important;
   border-radius: 999px !important;
   background: #061525 !important;
   color: #ffffff !important;
   font-size: 20px !important;
   font-weight: 950 !important;
   text-align: center !important;
-  box-shadow: 0 18px 42px rgba(2,8,23,.16) !important;
+  box-shadow: 0 18px 42px rgba(2, 8, 23, 0.16) !important;
 }
 
-body.woocommerce-account .woocommerce-MyAccount-content a.button:hover {
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info .button:hover,
+body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info .button:hover {
   background: linear-gradient(135deg, #0057a8, #00aeef) !important;
 }
 
 @media (max-width: 768px) {
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info,
-  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message {
-    padding: 28px 22px !important;
+  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-Message--info,
+  body.woocommerce-account .woocommerce-MyAccount-content .woocommerce-info {
+    padding: 34px 22px 28px !important;
     border-radius: 30px !important;
-    font-size: 22px !important;
   }
 }
