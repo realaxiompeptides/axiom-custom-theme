@@ -290,8 +290,7 @@ function axiom_custom_giftcards_page() {
  * Custom Axiom Dashboard page.
  */
 remove_action('woocommerce_account_dashboard', 'woocommerce_account_dashboard');
-
-add_action('woocommerce_account_dashboard', 'axiom_custom_account_dashboard', 999);
+add_action('woocommerce_account_dashboard', 'axiom_custom_account_dashboard', 1);
 
 function axiom_custom_account_dashboard() {
     if (!is_user_logged_in()) {
@@ -370,12 +369,5 @@ function axiom_custom_account_dashboard() {
             </div>
         </div>
     </section>
-
-    <style>
-        .woocommerce-MyAccount-content > p:not(.axiom-dashboard-kicker):not(.axiom-dashboard-kicker-dark),
-        .woocommerce-MyAccount-content > div:not(.axiom-custom-dashboard-page) {
-            display: none !important;
-        }
-    </style>
     <?php
 }
