@@ -1,4 +1,6 @@
-/* AXIOM FULL OVERRIDE — POINTS & REWARDS */
+/* =========================================================
+   AXIOM POINTS & REWARDS — FULL PAGE + CUSTOM TOP CARD
+========================================================= */
 
 body.woocommerce-account .woocommerce-MyAccount-content {
   width: 100% !important;
@@ -7,7 +9,168 @@ body.woocommerce-account .woocommerce-MyAccount-content {
   padding: 0 !important;
 }
 
-/* Main plugin wrapper */
+/* =========================
+   CUSTOM TOP REWARDS CARD
+========================= */
+
+.axiom-rewards-custom-top {
+  width: 100%;
+  max-width: 880px;
+  margin: 0 auto 34px !important;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.axiom-rewards-balance-card {
+  position: relative;
+  overflow: hidden;
+  padding: 34px;
+  border-radius: 34px;
+  background:
+    radial-gradient(circle at 85% 10%, rgba(0, 174, 239, 0.35), transparent 34%),
+    radial-gradient(circle at 5% 100%, rgba(0, 76, 151, 0.42), transparent 42%),
+    linear-gradient(135deg, #061525 0%, #071a2c 48%, #020817 100%);
+  border: 1px solid rgba(0, 174, 239, 0.38);
+  box-shadow:
+    0 28px 80px rgba(2, 8, 23, 0.28),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+}
+
+.axiom-rewards-balance-card::before {
+  content: "";
+  position: absolute;
+  top: -90px;
+  right: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 999px;
+  background: rgba(0, 174, 239, 0.22);
+  filter: blur(34px);
+}
+
+.axiom-rewards-balance-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 34px 34px;
+  opacity: .35;
+  pointer-events: none;
+}
+
+.axiom-rewards-card-top,
+.axiom-rewards-progress-info,
+.axiom-rewards-progress-bar,
+.axiom-rewards-mini-info {
+  position: relative;
+  z-index: 2;
+}
+
+.axiom-rewards-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.axiom-rewards-kicker {
+  margin: 0 0 12px !important;
+  color: rgba(255,255,255,.55) !important;
+  font-size: 13px !important;
+  font-weight: 950 !important;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+
+.axiom-rewards-balance-card h2 {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-size: clamp(62px, 10vw, 92px) !important;
+  line-height: .82 !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.08em !important;
+}
+
+.axiom-rewards-earned-pill {
+  padding: 15px 22px;
+  border-radius: 18px;
+  background: rgba(0, 174, 239, 0.13);
+  border: 1px solid rgba(0, 174, 239, 0.45);
+  color: #7ddcff !important;
+  font-size: 15px;
+  font-weight: 950;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.axiom-rewards-progress-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 0 14px;
+  color: rgba(255,255,255,.64);
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.axiom-rewards-progress-info strong {
+  color: #ffffff !important;
+  font-weight: 950 !important;
+}
+
+.axiom-rewards-progress-bar {
+  height: 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.13);
+  overflow: hidden;
+}
+
+.axiom-rewards-progress-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #00aeef, #7ddcff);
+  box-shadow: 0 0 20px rgba(0,174,239,.65);
+}
+
+.axiom-rewards-mini-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.axiom-rewards-mini-info div {
+  padding: 16px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.09);
+}
+
+.axiom-rewards-mini-info span {
+  display: block;
+  margin-bottom: 6px;
+  color: rgba(255,255,255,.45) !important;
+  font-size: 12px !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.axiom-rewards-mini-info strong {
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+/* =========================
+   PLUGIN PAGE WRAPPER
+========================= */
+
 body.woocommerce-account .wlr-myaccount-page,
 body.woocommerce-account .wlr-page-myaccount {
   width: 100% !important;
@@ -16,48 +179,33 @@ body.woocommerce-account .wlr-page-myaccount {
   padding: 42px !important;
   border: 1px solid #dbeafe !important;
   border-radius: 38px !important;
-  background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
+  background:
+    radial-gradient(circle at top, rgba(0, 174, 239, 0.06), transparent 35%),
+    linear-gradient(180deg, #f8fbff 0%, #ffffff 100%) !important;
   box-shadow: 0 24px 70px rgba(15, 23, 42, 0.08) !important;
   box-sizing: border-box !important;
 }
 
-/* Remove ugly default plugin spacing/wrappers */
 body.woocommerce-account .wlr-myaccount-page *,
 body.woocommerce-account .wlr-page-myaccount * {
   box-sizing: border-box !important;
 }
 
-body.woocommerce-account .wlr-user-details,
-body.woocommerce-account .wlr-heading-container,
-body.woocommerce-account .wlr-points-container,
-body.woocommerce-account #wlr-points,
-body.woocommerce-account #wlr-your-reward,
-body.woocommerce-account .wlr-earning-options,
-body.woocommerce-account .wlr-enable-email-sent-blog {
-  width: 100% !important;
-  max-width: 100% !important;
-}
-
-/* Headings */
-body.woocommerce-account .wlr-myaccount-page h1,
-body.woocommerce-account .wlr-myaccount-page h2,
-body.woocommerce-account .wlr-myaccount-page h3,
-body.woocommerce-account .wlr-page-myaccount h1,
-body.woocommerce-account .wlr-page-myaccount h2,
-body.woocommerce-account .wlr-page-myaccount h3 {
-  color: #0f172a !important;
-  font-weight: 950 !important;
-  letter-spacing: -0.07em !important;
-  text-transform: uppercase !important;
-  line-height: 0.9 !important;
-  margin: 0 0 28px !important;
-}
+/* =========================
+   PLUGIN HEADINGS
+========================= */
 
 body.woocommerce-account .wlr-myaccount-page h1,
 body.woocommerce-account .wlr-myaccount-page h2,
 body.woocommerce-account .wlr-page-myaccount h1,
 body.woocommerce-account .wlr-page-myaccount h2 {
-  font-size: clamp(42px, 5vw, 72px) !important;
+  color: #07111f !important;
+  font-size: clamp(40px, 5vw, 70px) !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.075em !important;
+  text-transform: uppercase !important;
+  line-height: .9 !important;
+  margin: 0 0 30px !important;
 }
 
 body.woocommerce-account .wlr-myaccount-page h1::before,
@@ -69,12 +217,15 @@ body.woocommerce-account .wlr-page-myaccount h2::before {
   width: 6px;
   height: 52px;
   margin-right: 14px;
-  background: #18aee2;
-  border-radius: 99px;
+  background: #00aeef;
+  border-radius: 999px;
   vertical-align: middle;
 }
 
-/* Top points cards */
+/* =========================
+   POINT CARDS
+========================= */
+
 body.woocommerce-account .wlr-points-container,
 body.woocommerce-account #wlr-points {
   display: grid !important;
@@ -84,11 +235,9 @@ body.woocommerce-account #wlr-points {
   padding: 0 !important;
 }
 
-/* Individual points boxes */
 body.woocommerce-account #wlr-available-points,
 body.woocommerce-account #wlr-redeemed-points,
-body.woocommerce-account #wlr-used-rewards,
-body.woocommerce-account .wlr-border-color {
+body.woocommerce-account #wlr-used-rewards {
   min-height: 190px !important;
   padding: 30px !important;
   border: 1px solid #dbe5ef !important;
@@ -97,7 +246,10 @@ body.woocommerce-account .wlr-border-color {
   box-shadow: 0 16px 45px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* Rewards / tabs / earn sections */
+/* =========================
+   REWARD / EARNING SECTIONS
+========================= */
+
 body.woocommerce-account #wlr-your-reward,
 body.woocommerce-account .wlr-your-reward,
 body.woocommerce-account .wlr-earning-options,
@@ -110,7 +262,10 @@ body.woocommerce-account .wlr-enable-email-sent-blog {
   box-shadow: 0 16px 45px rgba(15, 23, 42, 0.06) !important;
 }
 
-/* Tabs */
+/* =========================
+   TABS
+========================= */
+
 body.woocommerce-account .wlr-myaccount-page ul,
 body.woocommerce-account .wlr-page-myaccount ul {
   display: flex !important;
@@ -137,12 +292,15 @@ body.woocommerce-account .wlr-myaccount-page li.active,
 body.woocommerce-account .wlr-page-myaccount li.active,
 body.woocommerce-account .wlr-myaccount-page li:hover,
 body.woocommerce-account .wlr-page-myaccount li:hover {
-  background: #18aee2 !important;
+  background: #00aeef !important;
   color: #ffffff !important;
-  border-color: #18aee2 !important;
+  border-color: #00aeef !important;
 }
 
-/* Text */
+/* =========================
+   TEXT + BUTTONS
+========================= */
+
 body.woocommerce-account .wlr-myaccount-page p,
 body.woocommerce-account .wlr-myaccount-page div,
 body.woocommerce-account .wlr-myaccount-page span,
@@ -154,17 +312,6 @@ body.woocommerce-account .wlr-page-myaccount span {
   line-height: 1.65 !important;
 }
 
-/* Keep headings dark after global div rule */
-body.woocommerce-account .wlr-myaccount-page h1,
-body.woocommerce-account .wlr-myaccount-page h2,
-body.woocommerce-account .wlr-myaccount-page h3,
-body.woocommerce-account .wlr-page-myaccount h1,
-body.woocommerce-account .wlr-page-myaccount h2,
-body.woocommerce-account .wlr-page-myaccount h3 {
-  color: #0f172a !important;
-}
-
-/* Strong numbers */
 body.woocommerce-account .wlr-myaccount-page strong,
 body.woocommerce-account .wlr-myaccount-page b,
 body.woocommerce-account .wlr-page-myaccount strong,
@@ -173,7 +320,6 @@ body.woocommerce-account .wlr-page-myaccount b {
   font-weight: 950 !important;
 }
 
-/* Buttons */
 body.woocommerce-account .wlr-myaccount-page button,
 body.woocommerce-account .wlr-myaccount-page .button,
 body.woocommerce-account .wlr-myaccount-page input[type="submit"],
@@ -182,15 +328,44 @@ body.woocommerce-account .wlr-page-myaccount .button,
 body.woocommerce-account .wlr-page-myaccount input[type="submit"] {
   border: none !important;
   border-radius: 999px !important;
-  background: #18aee2 !important;
+  background: #00aeef !important;
   color: #ffffff !important;
   font-weight: 900 !important;
   padding: 14px 24px !important;
-  box-shadow: 0 12px 28px rgba(24, 174, 226, 0.28) !important;
+  box-shadow: 0 12px 28px rgba(0, 174, 239, 0.28) !important;
 }
 
-/* Mobile */
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 768px) {
+  .axiom-rewards-custom-top {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .axiom-rewards-balance-card {
+    padding: 28px 22px;
+    border-radius: 30px;
+  }
+
+  .axiom-rewards-card-top {
+    flex-direction: column;
+  }
+
+  .axiom-rewards-earned-pill {
+    width: fit-content;
+  }
+
+  .axiom-rewards-progress-info {
+    font-size: 15px;
+  }
+
+  .axiom-rewards-mini-info {
+    grid-template-columns: 1fr;
+  }
+
   body.woocommerce-account .wlr-myaccount-page,
   body.woocommerce-account .wlr-page-myaccount {
     padding: 24px 18px !important;
@@ -207,142 +382,5 @@ body.woocommerce-account .wlr-page-myaccount input[type="submit"] {
   body.woocommerce-account .wlr-page-myaccount h1,
   body.woocommerce-account .wlr-page-myaccount h2 {
     font-size: 42px !important;
-  }
-}
-
-.axiom-rewards-custom-top {
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto 34px;
-}
-
-.axiom-rewards-balance-card {
-  padding: 34px;
-  border-radius: 34px;
-  background: radial-gradient(circle at top right, rgba(24,174,226,.18), transparent 35%),
-              linear-gradient(135deg, #07111f 0%, #0b1728 100%);
-  border: 1px solid rgba(24,174,226,.28);
-  color: #fff;
-  box-shadow: 0 24px 70px rgba(15,23,42,.18);
-}
-
-.axiom-rewards-card-top {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  align-items: flex-start;
-}
-
-.axiom-rewards-kicker {
-  margin: 0 0 12px !important;
-  color: rgba(255,255,255,.58) !important;
-  font-size: 13px !important;
-  font-weight: 900 !important;
-  letter-spacing: .15em;
-  text-transform: uppercase;
-}
-
-.axiom-rewards-balance-card h2 {
-  margin: 0 !important;
-  color: #fff !important;
-  font-size: 68px !important;
-  line-height: .9 !important;
-  font-weight: 950 !important;
-}
-
-.axiom-rewards-earned-pill {
-  padding: 14px 22px;
-  border-radius: 18px;
-  background: rgba(61, 220, 132, .12);
-  border: 1px solid rgba(61, 220, 132, .35);
-  color: #4ade80;
-  font-weight: 950;
-  text-transform: uppercase;
-}
-
-.axiom-rewards-progress-info {
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 26px;
-  color: rgba(255,255,255,.65);
-  font-size: 17px;
-}
-
-.axiom-rewards-progress-info strong {
-  color: #fff;
-}
-
-.axiom-rewards-progress-bar {
-  height: 10px;
-  margin-top: 14px;
-  border-radius: 999px;
-  background: rgba(255,255,255,.12);
-  overflow: hidden;
-}
-
-.axiom-rewards-progress-bar span {
-  display: block;
-  height: 100%;
-  border-radius: inherit;
-  background: #4ade80;
-}
-
-.axiom-rewards-earn-card {
-  margin-top: 26px;
-  padding: 30px;
-  border-radius: 30px;
-  background: #0f172a;
-  border: 1px solid rgba(255,255,255,.08);
-  color: #fff;
-}
-
-.axiom-rewards-earn-card h3 {
-  margin: 0 0 22px !important;
-  color: #fff !important;
-  font-size: 24px !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-.axiom-rewards-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 12px 0;
-  color: rgba(255,255,255,.64);
-  font-size: 18px;
-}
-
-.axiom-rewards-row strong {
-  color: #4ade80;
-  font-weight: 950;
-}
-
-.axiom-rewards-note {
-  margin-top: 20px;
-  padding: 18px;
-  border-radius: 18px;
-  background: rgba(61,220,132,.08);
-  border: 1px solid rgba(61,220,132,.2);
-  color: rgba(255,255,255,.65);
-}
-
-@media (max-width: 768px) {
-  .axiom-rewards-custom-top {
-    max-width: 100%;
-  }
-
-  .axiom-rewards-balance-card,
-  .axiom-rewards-earn-card {
-    padding: 26px 22px;
-  }
-
-  .axiom-rewards-card-top {
-    flex-direction: column;
-  }
-
-  .axiom-rewards-balance-card h2 {
-    font-size: 58px !important;
   }
 }
