@@ -5,7 +5,6 @@ if (!defined('ABSPATH')) {
 
 function axiom_account_asset_version($relative_path) {
     $full_path = get_template_directory() . $relative_path;
-
     return file_exists($full_path) ? filemtime($full_path) : time();
 }
 
@@ -71,12 +70,27 @@ function axiom_account_assets() {
         );
 
         /*
+         * Points & Rewards custom styling.
+         * Create this file:
+         * /assets/css/account/points-rewards.css
+         */
+        wp_enqueue_style(
+            'axiom-account-points-rewards',
+            $theme_uri . '/assets/css/account/points-rewards.css',
+            array('axiom-account'),
+            axiom_account_asset_version('/assets/css/account/points-rewards.css')
+        );
+
+        /*
          * Load orders.css LAST so view-order/account order styles override everything.
          */
         wp_enqueue_style(
             'axiom-account-orders-final',
             $theme_uri . '/assets/css/account/orders.css',
-            array('axiom-account'),
+            array(
+                'axiom-account',
+                'axiom-account-points-rewards',
+            ),
             axiom_account_asset_version('/assets/css/account/orders.css')
         );
 
