@@ -15,8 +15,8 @@ body.woocommerce-account .woocommerce-MyAccount-content {
 
 .axiom-rewards-custom-top {
   width: 100%;
-  max-width: 880px;
-  margin: 0 auto 34px !important;
+  max-width: 900px;
+  margin: 0 auto 38px !important;
   padding: 0 16px;
   box-sizing: border-box;
 }
@@ -24,16 +24,16 @@ body.woocommerce-account .woocommerce-MyAccount-content {
 .axiom-rewards-balance-card {
   position: relative;
   overflow: hidden;
-  padding: 34px;
-  border-radius: 34px;
+  padding: 38px;
+  border-radius: 36px;
   background:
-    radial-gradient(circle at 85% 10%, rgba(0, 174, 239, 0.35), transparent 34%),
-    radial-gradient(circle at 5% 100%, rgba(0, 76, 151, 0.42), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgba(0, 174, 239, 0.38), transparent 34%),
+    radial-gradient(circle at 8% 100%, rgba(0, 87, 168, 0.48), transparent 42%),
     linear-gradient(135deg, #061525 0%, #071a2c 48%, #020817 100%);
-  border: 1px solid rgba(0, 174, 239, 0.38);
+  border: 1px solid rgba(0, 174, 239, 0.45);
   box-shadow:
-    0 28px 80px rgba(2, 8, 23, 0.28),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.045);
+    0 30px 85px rgba(2, 8, 23, 0.30),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.055);
 }
 
 .axiom-rewards-balance-card::before {
@@ -41,11 +41,12 @@ body.woocommerce-account .woocommerce-MyAccount-content {
   position: absolute;
   top: -90px;
   right: -90px;
-  width: 260px;
-  height: 260px;
+  width: 280px;
+  height: 280px;
   border-radius: 999px;
-  background: rgba(0, 174, 239, 0.22);
-  filter: blur(34px);
+  background: rgba(0, 174, 239, 0.24);
+  filter: blur(36px);
+  pointer-events: none;
 }
 
 .axiom-rewards-balance-card::after {
@@ -56,115 +57,112 @@ body.woocommerce-account .woocommerce-MyAccount-content {
     linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
   background-size: 34px 34px;
-  opacity: .35;
+  opacity: .28;
   pointer-events: none;
 }
 
-.axiom-rewards-card-top,
+.axiom-rewards-kicker,
+.axiom-rewards-card-main,
 .axiom-rewards-progress-info,
-.axiom-rewards-progress-bar,
-.axiom-rewards-mini-info {
+.axiom-rewards-progress-bar {
   position: relative;
   z-index: 2;
 }
 
-.axiom-rewards-card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 18px;
-  margin-bottom: 28px;
-}
-
 .axiom-rewards-kicker {
-  margin: 0 0 12px !important;
-  color: rgba(255,255,255,.55) !important;
+  margin: 0 0 16px !important;
+  color: rgba(255,255,255,.56) !important;
   font-size: 13px !important;
+  line-height: 1.2 !important;
   font-weight: 950 !important;
   letter-spacing: .18em;
   text-transform: uppercase;
 }
 
+.axiom-rewards-card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
 .axiom-rewards-balance-card h2 {
+  max-width: 560px;
   margin: 0 !important;
   color: #ffffff !important;
-  font-size: clamp(62px, 10vw, 92px) !important;
-  line-height: .82 !important;
+  font-size: clamp(54px, 8vw, 86px) !important;
+  line-height: .86 !important;
   font-weight: 950 !important;
   letter-spacing: -0.08em !important;
+  text-transform: none !important;
+}
+
+.axiom-rewards-points-number {
+  margin-top: 14px;
+  color: #ffffff !important;
+  font-size: clamp(58px, 8vw, 86px);
+  line-height: .85;
+  font-weight: 950;
+  letter-spacing: -0.07em;
 }
 
 .axiom-rewards-earned-pill {
+  min-width: 150px;
+  text-align: center;
   padding: 15px 22px;
   border-radius: 18px;
-  background: rgba(0, 174, 239, 0.13);
-  border: 1px solid rgba(0, 174, 239, 0.45);
+  background: rgba(0, 174, 239, 0.13) !important;
+  border: 1px solid rgba(0, 174, 239, 0.48) !important;
   color: #7ddcff !important;
   font-size: 15px;
+  line-height: 1.1;
   font-weight: 950;
   letter-spacing: .05em;
   text-transform: uppercase;
   white-space: nowrap;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.04);
 }
 
 .axiom-rewards-progress-info {
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
   gap: 16px;
   margin: 0 0 14px;
-  color: rgba(255,255,255,.64);
-  font-size: 17px;
-  font-weight: 800;
+  color: rgba(255,255,255,.68);
+  font-size: 18px;
+  line-height: 1.35;
+  font-weight: 850;
 }
 
 .axiom-rewards-progress-info strong {
   color: #ffffff !important;
   font-weight: 950 !important;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .axiom-rewards-progress-bar {
-  height: 12px;
+  height: 13px;
   border-radius: 999px;
-  background: rgba(255,255,255,.13);
+  background: rgba(255,255,255,.14);
   overflow: hidden;
+  box-shadow: inset 0 1px 5px rgba(0,0,0,.22);
 }
 
 .axiom-rewards-progress-bar span {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #00aeef, #7ddcff);
-  box-shadow: 0 0 20px rgba(0,174,239,.65);
+  background: linear-gradient(90deg, #0057a8 0%, #00aeef 58%, #7ddcff 100%) !important;
+  box-shadow: 0 0 22px rgba(0,174,239,.7);
+  transition: width .35s ease;
 }
 
+/* hide old mini info if old PHP is still outputting it */
 .axiom-rewards-mini-info {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.axiom-rewards-mini-info div {
-  padding: 16px;
-  border-radius: 18px;
-  background: rgba(255,255,255,.055);
-  border: 1px solid rgba(255,255,255,.09);
-}
-
-.axiom-rewards-mini-info span {
-  display: block;
-  margin-bottom: 6px;
-  color: rgba(255,255,255,.45) !important;
-  font-size: 12px !important;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: .12em;
-}
-
-.axiom-rewards-mini-info strong {
-  color: #ffffff !important;
-  font-size: 15px;
-  font-weight: 950;
+  display: none !important;
 }
 
 /* =========================
@@ -237,7 +235,8 @@ body.woocommerce-account #wlr-points {
 
 body.woocommerce-account #wlr-available-points,
 body.woocommerce-account #wlr-redeemed-points,
-body.woocommerce-account #wlr-used-rewards {
+body.woocommerce-account #wlr-used-rewards,
+body.woocommerce-account .wlr-border-color {
   min-height: 190px !important;
   padding: 30px !important;
   border: 1px solid #dbe5ef !important;
@@ -350,8 +349,9 @@ body.woocommerce-account .wlr-page-myaccount input[type="submit"] {
     border-radius: 30px;
   }
 
-  .axiom-rewards-card-top {
+  .axiom-rewards-card-main {
     flex-direction: column;
+    gap: 22px;
   }
 
   .axiom-rewards-earned-pill {
@@ -360,10 +360,6 @@ body.woocommerce-account .wlr-page-myaccount input[type="submit"] {
 
   .axiom-rewards-progress-info {
     font-size: 15px;
-  }
-
-  .axiom-rewards-mini-info {
-    grid-template-columns: 1fr;
   }
 
   body.woocommerce-account .wlr-myaccount-page,
