@@ -150,3 +150,10 @@ body.woocommerce-account .woocommerce-MyAccount-content > .woocommerce-message {
   font-size: 32px !important;
   line-height: 1 !important;
 }
+
+/* Hide leftover original gift card balance duplicate */
+body.woocommerce-account .woocommerce-MyAccount-content > div:not(.axiom-custom-giftcards-page):has(+ .axiom-custom-giftcards-page),
+body.woocommerce-account .woocommerce-MyAccount-content > div:not(.axiom-custom-giftcards-page):has(.amount),
+body.woocommerce-account .woocommerce-MyAccount-content > p:not(.axiom-giftcards-kicker):has(+ .axiom-custom-giftcards-page) {
+  display: none !important;
+}
