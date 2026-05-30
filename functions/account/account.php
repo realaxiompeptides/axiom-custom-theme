@@ -53,6 +53,27 @@ function axiom_account_assets() {
         );
 
         wp_enqueue_style(
+            'axiom-account-downloads',
+            $theme_uri . '/assets/css/account/downloads.css',
+            array('axiom-account-details'),
+            axiom_account_asset_version('/assets/css/account/downloads.css')
+        );
+
+        wp_enqueue_style(
+            'axiom-account-gift-cards',
+            $theme_uri . '/assets/css/account/gift-cards.css',
+            array('axiom-account-downloads'),
+            axiom_account_asset_version('/assets/css/account/gift-cards.css')
+        );
+
+        wp_enqueue_style(
+            'axiom-account-addresses',
+            $theme_uri . '/assets/css/account/addresses.css',
+            array('axiom-account-gift-cards'),
+            axiom_account_asset_version('/assets/css/account/addresses.css')
+        );
+
+        wp_enqueue_style(
             'axiom-account-mobile',
             $theme_uri . '/assets/css/account/mobile.css',
             array(
@@ -61,6 +82,9 @@ function axiom_account_assets() {
                 'axiom-account-dashboard',
                 'axiom-account-forms',
                 'axiom-account-details',
+                'axiom-account-downloads',
+                'axiom-account-gift-cards',
+                'axiom-account-addresses',
             ),
             axiom_account_asset_version('/assets/css/account/mobile.css')
         );
@@ -74,6 +98,9 @@ function axiom_account_assets() {
                 'axiom-account-dashboard',
                 'axiom-account-forms',
                 'axiom-account-details',
+                'axiom-account-downloads',
+                'axiom-account-gift-cards',
+                'axiom-account-addresses',
                 'axiom-account-mobile',
             ),
             axiom_account_asset_version('/assets/css/account/account.css')
@@ -154,19 +181,10 @@ function axiom_custom_rewards_balance_card() {
     $reward_points_needed = 100;
     $reward_value = 5;
 
-    /*
-     * Progress restarts every 100 points.
-     * Example:
-     * 40 pts  = 40% progress, 60 to go
-     * 100 pts = 100% progress, ready to redeem
-     * 140 pts = 40% progress, 60 to next reward
-     * 240 pts = 40% progress, 60 to next reward
-     */
     $current_cycle_points = $points % $reward_points_needed;
 
     if ($points > 0 && $current_cycle_points === 0) {
         $progress = 100;
-        $points_to_go = 0;
         $next_text = 'Ready to redeem';
     } else {
         $progress = min(100, ($current_cycle_points / $reward_points_needed) * 100);
