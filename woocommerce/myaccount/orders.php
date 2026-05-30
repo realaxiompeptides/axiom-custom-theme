@@ -33,8 +33,8 @@ $has_orders = !empty($customer_orders->orders);
         <span>Shipping Notice</span>
         <h3>Carrier delivery times are estimates only</h3>
         <p>
-          USPS, UPS, and FedEx delivery windows are not guaranteed unless the selected shipping service specifically includes a carrier-backed guarantee.
-          Once your order is accepted by the carrier, delays, missed scans, routing issues, weather delays, and lost packages are outside of our direct control.
+          USPS, UPS, and FedEx delivery windows are estimates only and are not guaranteed unless the selected service specifically includes a carrier-backed guarantee.
+          Once your order is accepted by the carrier, delivery delays, missed scans, routing issues, weather delays, and lost packages are outside of our direct control.
         </p>
       </div>
     </div>
@@ -57,7 +57,7 @@ $has_orders = !empty($customer_orders->orders);
     </div>
 
     <p class="axiom-shipping-help">
-      If your package is delayed or missing, please contact support and we will help open a carrier investigation.
+      If your package is delayed or missing, please contact support and we will help open a carrier investigation with the shipping carrier.
     </p>
   </div>
 
@@ -66,6 +66,11 @@ $has_orders = !empty($customer_orders->orders);
       <div class="axiom-account-orders-list">
         <?php foreach ($customer_orders->orders as $customer_order) :
           $order = wc_get_order($customer_order);
+
+          if (!$order) {
+            continue;
+          }
+
           $item_count = $order->get_item_count() - $order->get_item_count_refunded();
           ?>
           <div class="axiom-account-order-row">
@@ -101,7 +106,9 @@ $has_orders = !empty($customer_orders->orders);
 
       <?php if (1 < $customer_orders->max_num_pages) : ?>
         <div class="axiom-account-pagination">
-          <?php if (1 !== $current_page = absint(get_query_var('paged') ? get_query_var('paged') : 1)) : ?>
+          <?php $current_page = absint(get_query_var('paged') ? get_query_var('paged') : 1); ?>
+
+          <?php if (1 !== $current_page) : ?>
             <a class="axiom-account-order-btn" href="<?php echo esc_url(wc_get_endpoint_url('orders', $current_page - 1)); ?>">
               Previous
             </a>
