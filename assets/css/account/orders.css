@@ -1,63 +1,90 @@
-/* FORCE account orders page styling */
-.woocommerce-account .woocommerce-MyAccount-content {
-  padding-bottom: 90px !important;
+.axiom-orders-modern-list {
+  display: grid;
+  gap: 16px;
+  margin-top: 18px;
 }
 
-/* The card that contains the raw order list */
-.woocommerce-account .woocommerce-MyAccount-content > div,
-.woocommerce-account .woocommerce-MyAccount-content > section {
-  border-radius: 28px !important;
+.axiom-order-card {
+  padding: 18px;
+  border-radius: 26px;
+  border: 1px solid #dbeafe;
+  background:
+    radial-gradient(circle at top right, rgba(90,168,223,.18), transparent 35%),
+    linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 16px 40px rgba(15,23,42,.07);
 }
 
-/* Target raw order list text/cards */
-.woocommerce-account .woocommerce-MyAccount-content a[href*="view-order"],
-.woocommerce-account .woocommerce-MyAccount-content a:contains("View") {
-  display: inline-flex !important;
+.axiom-order-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
 }
 
-/* Style every View link */
-.woocommerce-account .woocommerce-MyAccount-content a {
+.axiom-order-number {
   color: #071126;
-  font-weight: 900;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 1000;
+  letter-spacing: -.05em;
 }
 
-.woocommerce-account .woocommerce-MyAccount-content a[href*="view-order"] {
+.axiom-order-status {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.axiom-order-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.axiom-order-meta div {
+  padding: 12px;
+  border-radius: 18px;
+  background: #fff;
+  border: 1px solid #e0edff;
+}
+
+.axiom-order-meta span {
+  display: block;
+  margin-bottom: 3px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.axiom-order-meta strong {
+  color: #071126;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.axiom-order-view {
   width: 100%;
   min-height: 48px;
-  margin: 10px 0 18px;
   border-radius: 999px;
   background: #071126 !important;
-  color: #ffffff !important;
+  color: #fff !important;
+  display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 950;
   text-decoration: none !important;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
+  box-shadow: 0 14px 30px rgba(15,23,42,.18);
 }
 
-/* Main orders content box */
-.woocommerce-account .woocommerce-MyAccount-content {
-  border-radius: 30px !important;
-  border: 1px solid #dbeafe !important;
-  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
-  box-shadow: 0 18px 50px rgba(15, 23, 42, .07);
-}
-
-/* Better spacing for text list */
-.woocommerce-account .woocommerce-MyAccount-content p,
-.woocommerce-account .woocommerce-MyAccount-content li,
-.woocommerce-account .woocommerce-MyAccount-content div {
-  line-height: 1.45;
-}
-
-/* Hide ugly bullets if orders are output as list */
-.woocommerce-account .woocommerce-MyAccount-content ul {
-  list-style: none !important;
-  padding-left: 0 !important;
-}
-
-/* Mobile */
-@media (max-width: 760px) {
-  .woocommerce-account .woocommerce-MyAccount-content {
-    padding: 20px !important;
-  }
+.woocommerce-account .woocommerce-MyAccount-content > p,
+.woocommerce-account .woocommerce-MyAccount-content > br {
+  display: none !important;
 }
