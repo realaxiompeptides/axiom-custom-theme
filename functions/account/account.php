@@ -5,6 +5,7 @@ if (!defined('ABSPATH')) {
 
 function axiom_account_asset_version($relative_path) {
     $full_path = get_template_directory() . $relative_path;
+
     return file_exists($full_path) ? filemtime($full_path) : time();
 }
 
@@ -69,30 +70,28 @@ function axiom_account_assets() {
             axiom_account_asset_version('/assets/css/account/account.css')
         );
 
-        /*
-         * Points & Rewards custom styling.
-         * Create this file:
-         * /assets/css/account/points-rewards.css
-         */
-        wp_enqueue_style(
-            'axiom-account-points-rewards',
-            $theme_uri . '/assets/css/account/points-rewards.css',
-            array('axiom-account'),
-            axiom_account_asset_version('/assets/css/account/points-rewards.css')
-        );
-
-        /*
-         * Load orders.css LAST so view-order/account order styles override everything.
-         */
         wp_enqueue_style(
             'axiom-account-orders-final',
             $theme_uri . '/assets/css/account/orders.css',
-            array(
-                'axiom-account',
-                'axiom-account-points-rewards',
-            ),
+            array('axiom-account'),
             axiom_account_asset_version('/assets/css/account/orders.css')
         );
+
+        /*
+         * Points & Rewards CSS loads LAST.
+         * File must exist here:
+         * /assets/css/account/points-rewards.css
+         */
+        $points_rewards_css = '/assets/css/account/points-rewards.css';
+
+        if (file_exists(get_template_directory() . $points_rewards_css)) {
+            wp_enqueue_style(
+                'axiom-account-points-rewards-final',
+                $theme_uri . $points_rewards_css,
+                array('axiom-account-orders-final'),
+                axiom_account_asset_version($points_rewards_css)
+            );
+        }
 
         $account_js = '/assets/js/account/account.js';
 
@@ -107,7 +106,7 @@ function axiom_account_assets() {
         }
     }
 }
-add_action('wp_enqueue_scripts', 'axiom_account_assets', 20);
+add_action('wp_enqueue_scripts', 'axiom_account_assets', 999);
 
 /**
  * Force custom view-order template.
