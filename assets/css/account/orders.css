@@ -84,11 +84,10 @@
   box-shadow: 0 14px 30px rgba(15,23,42,.18);
 }
 
-.woocommerce-account .woocommerce-MyAccount-content > p,
-.woocommerce-account .woocommerce-MyAccount-content > br {
+.woocommerce-account .woocommerce-MyAccount-content .axiom-orders-modern-list + p,
+.woocommerce-account .woocommerce-MyAccount-content .axiom-orders-modern-list + br {
   display: none !important;
 }
-
 /* View order details page */
 .woocommerce-account .woocommerce-order-details,
 .woocommerce-account .woocommerce-customer-details,
