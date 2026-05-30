@@ -561,3 +561,88 @@
     font-size: 24px !important;
   }
 }
+
+/* Fix split money signs on view order page */
+.axiom-view-order-page .woocommerce-Price-amount,
+.axiom-view-order-page .woocommerce-Price-currencySymbol {
+  display: inline !important;
+  white-space: nowrap !important;
+}
+
+.axiom-view-order-total-row strong {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 0 !important;
+  white-space: nowrap !important;
+  text-align: right !important;
+}
+
+.axiom-view-order-total-row strong .woocommerce-Price-amount {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0 !important;
+}
+
+/* Better order total rows */
+.axiom-view-order-total-row {
+  display: grid !important;
+  grid-template-columns: 1fr auto !important;
+  align-items: center !important;
+  gap: 16px !important;
+  padding: 18px !important;
+}
+
+.axiom-view-order-total-row span {
+  margin: 0 !important;
+}
+
+.axiom-view-order-total-row strong {
+  color: #071126 !important;
+  font-size: 20px !important;
+  font-weight: 1000 !important;
+}
+
+.axiom-view-order-total-row.order_total strong {
+  font-size: 30px !important;
+}
+
+/* Desktop force wider centered view-order */
+@media (min-width: 1024px) {
+  body.woocommerce-account .woocommerce {
+    max-width: 1320px !important;
+    width: calc(100vw - 80px) !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: 320px minmax(780px, 980px) !important;
+    justify-content: center !important;
+    gap: 40px !important;
+  }
+
+  body.woocommerce-account .woocommerce-MyAccount-content {
+    max-width: 980px !important;
+    width: 100% !important;
+    padding: 38px !important;
+  }
+
+  .axiom-view-order-page {
+    max-width: 980px !important;
+    width: 100% !important;
+  }
+}
+
+/* Mobile tighten */
+@media (max-width: 760px) {
+  .axiom-view-order-total-row {
+    grid-template-columns: 1fr auto !important;
+    padding: 16px !important;
+  }
+
+  .axiom-view-order-total-row strong {
+    font-size: 18px !important;
+  }
+
+  .axiom-view-order-total-row.order_total strong {
+    font-size: 24px !important;
+  }
+}
