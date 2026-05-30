@@ -111,6 +111,100 @@ function axiom_force_custom_view_order_template($order_id) {
 }
 
 /**
+ * Remove default WooCommerce dashboard before adding custom dashboard.
+ */
+add_action('init', 'axiom_remove_default_account_dashboard');
+
+function axiom_remove_default_account_dashboard() {
+    remove_action('woocommerce_account_dashboard', 'woocommerce_account_dashboard', 10);
+}
+
+/**
+ * Custom Axiom Dashboard page.
+ */
+add_action('woocommerce_account_dashboard', 'axiom_custom_account_dashboard', 1);
+
+function axiom_custom_account_dashboard() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    $user = wp_get_current_user();
+    $first_name = $user->first_name ? $user->first_name : $user->display_name;
+    $orders_count = wc_get_customer_order_count(get_current_user_id());
+
+    ?>
+    <section class="axiom-custom-dashboard-page">
+        <div class="axiom-dashboard-hero">
+            <div class="axiom-dashboard-hero-glow"></div>
+
+            <p class="axiom-dashboard-kicker">Axiom Account</p>
+            <h2>Welcome back, <?php echo esc_html($first_name); ?></h2>
+            <p>
+                Manage your orders, rewards, downloads, gift cards, and account settings from your Axiom dashboard.
+            </p>
+        </div>
+
+        <div class="axiom-dashboard-status-grid">
+            <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>" class="axiom-dashboard-status-card">
+                <span>Orders</span>
+                <strong><?php echo esc_html($orders_count); ?></strong>
+            </a>
+
+            <a href="<?php echo esc_url(wc_get_account_endpoint_url('loyalty_reward')); ?>" class="axiom-dashboard-status-card">
+                <span>Rewards</span>
+                <strong>View</strong>
+            </a>
+
+            <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-account')); ?>" class="axiom-dashboard-status-card">
+                <span>Profile</span>
+                <strong>Update</strong>
+            </a>
+        </div>
+
+        <div class="axiom-dashboard-actions-card">
+            <div class="axiom-dashboard-actions-header">
+                <p class="axiom-dashboard-kicker-dark">Quick Access</p>
+                <h3>Account tools</h3>
+            </div>
+
+            <div class="axiom-dashboard-action-grid">
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>">
+                    <span>View order history</span>
+                    <strong>Orders</strong>
+                </a>
+
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-address')); ?>">
+                    <span>Shipping & billing</span>
+                    <strong>Addresses</strong>
+                </a>
+
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-account')); ?>">
+                    <span>Email & password</span>
+                    <strong>Account details</strong>
+                </a>
+
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('downloads')); ?>">
+                    <span>Files from orders</span>
+                    <strong>Downloads</strong>
+                </a>
+
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('giftcards')); ?>">
+                    <span>Store balance</span>
+                    <strong>Gift Cards</strong>
+                </a>
+
+                <a href="<?php echo esc_url(wc_get_account_endpoint_url('loyalty_reward')); ?>">
+                    <span>Points balance</span>
+                    <strong>Rewards</strong>
+                </a>
+            </div>
+        </div>
+    </section>
+    <?php
+}
+
+/**
  * Custom Axiom Rewards balance card above plugin rewards page.
  */
 add_action('woocommerce_account_loyalty_reward_endpoint', 'axiom_custom_rewards_balance_card', 1);
@@ -280,92 +374,6 @@ function axiom_custom_giftcards_page() {
             <h3>Activity</h3>
             <div class="axiom-giftcards-empty">
                 No activity recorded yet.
-            </div>
-        </div>
-    </section>
-    <?php
-}
-
-/**
- * Custom Axiom Dashboard page.
- */
-remove_action('woocommerce_account_dashboard', 'woocommerce_account_dashboard');
-add_action('woocommerce_account_dashboard', 'axiom_custom_account_dashboard', 1);
-
-function axiom_custom_account_dashboard() {
-    if (!is_user_logged_in()) {
-        return;
-    }
-
-    $user = wp_get_current_user();
-    $first_name = $user->first_name ? $user->first_name : $user->display_name;
-    $orders_count = wc_get_customer_order_count(get_current_user_id());
-
-    ?>
-    <section class="axiom-custom-dashboard-page">
-        <div class="axiom-dashboard-hero">
-            <div class="axiom-dashboard-hero-glow"></div>
-
-            <p class="axiom-dashboard-kicker">Axiom Account</p>
-            <h2>Welcome back, <?php echo esc_html($first_name); ?></h2>
-            <p>
-                Manage your orders, rewards, downloads, gift cards, and account settings from your Axiom dashboard.
-            </p>
-        </div>
-
-        <div class="axiom-dashboard-status-grid">
-            <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>" class="axiom-dashboard-status-card">
-                <span>Orders</span>
-                <strong><?php echo esc_html($orders_count); ?></strong>
-            </a>
-
-            <a href="<?php echo esc_url(wc_get_account_endpoint_url('loyalty_reward')); ?>" class="axiom-dashboard-status-card">
-                <span>Rewards</span>
-                <strong>View</strong>
-            </a>
-
-            <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-account')); ?>" class="axiom-dashboard-status-card">
-                <span>Profile</span>
-                <strong>Update</strong>
-            </a>
-        </div>
-
-        <div class="axiom-dashboard-actions-card">
-            <div class="axiom-dashboard-actions-header">
-                <p class="axiom-dashboard-kicker-dark">Quick Access</p>
-                <h3>Account tools</h3>
-            </div>
-
-            <div class="axiom-dashboard-action-grid">
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('orders')); ?>">
-                    <span>View order history</span>
-                    <strong>Orders</strong>
-                </a>
-
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-address')); ?>">
-                    <span>Shipping & billing</span>
-                    <strong>Addresses</strong>
-                </a>
-
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('edit-account')); ?>">
-                    <span>Email & password</span>
-                    <strong>Account details</strong>
-                </a>
-
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('downloads')); ?>">
-                    <span>Files from orders</span>
-                    <strong>Downloads</strong>
-                </a>
-
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('giftcards')); ?>">
-                    <span>Store balance</span>
-                    <strong>Gift Cards</strong>
-                </a>
-
-                <a href="<?php echo esc_url(wc_get_account_endpoint_url('loyalty_reward')); ?>">
-                    <span>Points balance</span>
-                    <strong>Rewards</strong>
-                </a>
             </div>
         </div>
     </section>
