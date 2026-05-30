@@ -75,3 +75,23 @@ function axiom_account_assets() {
     }
 }
 add_action('wp_enqueue_scripts', 'axiom_account_assets', 20);
+
+/**
+ * Force custom view-order template.
+ */
+remove_action('woocommerce_account_view-order_endpoint', 'woocommerce_account_view_order');
+
+add_action('woocommerce_account_view-order_endpoint', 'axiom_force_custom_view_order_template', 1);
+
+function axiom_force_custom_view_order_template($order_id) {
+    $template = get_template_directory() . '/woocommerce/myaccount/view-order.php';
+
+    if (file_exists($template)) {
+        include $template;
+        return;
+    }
+
+    wc_get_template('myaccount/view-order.php', array(
+        'order_id' => $order_id,
+    ));
+}
