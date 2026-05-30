@@ -120,3 +120,53 @@
   padding: 15px !important;
   border-color: #dbeafe !important;
 }
+
+/* Hide weird blank pill/empty Woo elements */
+.woocommerce-account .woocommerce-MyAccount-content > form:empty,
+.woocommerce-account .woocommerce-MyAccount-content > p:empty,
+.woocommerce-account .woocommerce-MyAccount-content > div:empty {
+  display: none !important;
+}
+
+/* Custom order details page styling */
+.woocommerce-account .woocommerce-order-details,
+.woocommerce-account .woocommerce-customer-details,
+.woocommerce-account .woocommerce-order-overview {
+  margin-top: 18px !important;
+  padding: 20px !important;
+  border-radius: 28px !important;
+  border: 1px solid #dbeafe !important;
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbff 100%) !important;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+}
+
+.woocommerce-account .woocommerce-order-details__title,
+.woocommerce-account .woocommerce-column__title {
+  margin: 0 0 16px !important;
+  color: #071126 !important;
+  font-size: 34px !important;
+  line-height: .95 !important;
+  letter-spacing: -.06em !important;
+  font-weight: 1000 !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details {
+  width: 100% !important;
+  border-radius: 24px !important;
+  border: 1px solid #dbeafe !important;
+  background: #ffffff !important;
+  overflow: hidden !important;
+}
+
+.woocommerce-account .woocommerce-table--order-details th,
+.woocommerce-account .woocommerce-table--order-details td {
+  padding: 16px !important;
+  border-color: #dbeafe !important;
+}
+
+.woocommerce-account address {
+  padding: 18px !important;
+  border-radius: 22px !important;
+  background: #ffffff !important;
+  border: 1px solid #dbeafe !important;
+}
