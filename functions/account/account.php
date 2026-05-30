@@ -151,16 +151,28 @@ function axiom_custom_rewards_balance_card() {
     $reward_points_needed = 100;
     $reward_value = 5;
 
-    $points_to_go = max(0, $reward_points_needed - $points);
+    $points_to_go = max(0, $reward_points_needed - min($points, $reward_points_needed));
     $progress = min(100, ($points / $reward_points_needed) * 100);
 
     ?>
-    <div class="axiom-rewards-custom-top">
+    <section class="axiom-rewards-custom-top">
         <div class="axiom-rewards-balance-card">
-            <div class="axiom-rewards-card-top">
+            <div class="axiom-rewards-glow"></div>
+
+            <div class="axiom-rewards-card-header">
+                <div class="axiom-rewards-icon">
+                    <span>✦</span>
+                </div>
+
                 <div>
-                    <p class="axiom-rewards-kicker">Points Balance</p>
-                    <h2><?php echo esc_html($points); ?></h2>
+                    <p class="axiom-rewards-kicker">Axiom Rewards</p>
+                    <h2>Points Balance</h2>
+                </div>
+            </div>
+
+            <div class="axiom-rewards-main-row">
+                <div class="axiom-rewards-points-number">
+                    <?php echo esc_html($points); ?>
                 </div>
 
                 <div class="axiom-rewards-earned-pill">
@@ -176,7 +188,19 @@ function axiom_custom_rewards_balance_card() {
             <div class="axiom-rewards-progress-bar">
                 <span style="width: <?php echo esc_attr($progress); ?>%;"></span>
             </div>
+
+            <div class="axiom-rewards-mini-info">
+                <div>
+                    <span>Reward Value</span>
+                    <strong>100 pts = $5 off</strong>
+                </div>
+
+                <div>
+                    <span>Status</span>
+                    <strong><?php echo $points >= 100 ? 'Ready to redeem' : 'Keep earning'; ?></strong>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
     <?php
 }
