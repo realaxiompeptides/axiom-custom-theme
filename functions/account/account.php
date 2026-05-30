@@ -17,68 +17,25 @@ function axiom_account_assets() {
     ) {
         $theme_uri = get_template_directory_uri();
 
-        wp_enqueue_style(
-            'axiom-account-base',
-            $theme_uri . '/assets/css/account/base.css',
-            array('axiom-base'),
-            axiom_account_asset_version('/assets/css/account/base.css')
-        );
+        wp_enqueue_style('axiom-account-base', $theme_uri . '/assets/css/account/base.css', array('axiom-base'), axiom_account_asset_version('/assets/css/account/base.css'));
 
-        wp_enqueue_style(
-            'axiom-account-login',
-            $theme_uri . '/assets/css/account/login.css',
-            array('axiom-account-base'),
-            axiom_account_asset_version('/assets/css/account/login.css')
-        );
+        wp_enqueue_style('axiom-account-login', $theme_uri . '/assets/css/account/login.css', array('axiom-account-base'), axiom_account_asset_version('/assets/css/account/login.css'));
 
-        wp_enqueue_style(
-            'axiom-account-dashboard',
-            $theme_uri . '/assets/css/account/dashboard.css',
-            array('axiom-account-base'),
-            axiom_account_asset_version('/assets/css/account/dashboard.css')
-        );
+        wp_enqueue_style('axiom-account-dashboard', $theme_uri . '/assets/css/account/dashboard.css', array('axiom-account-base'), axiom_account_asset_version('/assets/css/account/dashboard.css'));
 
-        wp_enqueue_style(
-            'axiom-account-navigation',
-            $theme_uri . '/assets/css/account/navigation.css',
-            array('axiom-account-dashboard'),
-            axiom_account_asset_version('/assets/css/account/navigation.css')
-        );
+        wp_enqueue_style('axiom-account-dashboard-home', $theme_uri . '/assets/css/account/dashboard-home.css', array('axiom-account-dashboard'), axiom_account_asset_version('/assets/css/account/dashboard-home.css'));
 
-        wp_enqueue_style(
-            'axiom-account-forms',
-            $theme_uri . '/assets/css/account/forms.css',
-            array('axiom-account-navigation'),
-            axiom_account_asset_version('/assets/css/account/forms.css')
-        );
+        wp_enqueue_style('axiom-account-navigation', $theme_uri . '/assets/css/account/navigation.css', array('axiom-account-dashboard-home'), axiom_account_asset_version('/assets/css/account/navigation.css'));
 
-        wp_enqueue_style(
-            'axiom-account-details',
-            $theme_uri . '/assets/css/account/account-details.css',
-            array('axiom-account-forms'),
-            axiom_account_asset_version('/assets/css/account/account-details.css')
-        );
+        wp_enqueue_style('axiom-account-forms', $theme_uri . '/assets/css/account/forms.css', array('axiom-account-navigation'), axiom_account_asset_version('/assets/css/account/forms.css'));
 
-        wp_enqueue_style(
-            'axiom-account-downloads',
-            $theme_uri . '/assets/css/account/downloads.css',
-            array('axiom-account-details'),
-            axiom_account_asset_version('/assets/css/account/downloads.css')
-        );
+        wp_enqueue_style('axiom-account-details', $theme_uri . '/assets/css/account/account-details.css', array('axiom-account-forms'), axiom_account_asset_version('/assets/css/account/account-details.css'));
 
-        wp_enqueue_style(
-            'axiom-account-gift-cards',
-            $theme_uri . '/assets/css/account/gift-cards.css',
-            array('axiom-account-downloads'),
-            axiom_account_asset_version('/assets/css/account/gift-cards.css')
-        );
+        wp_enqueue_style('axiom-account-downloads', $theme_uri . '/assets/css/account/downloads.css', array('axiom-account-details'), axiom_account_asset_version('/assets/css/account/downloads.css'));
 
-        wp_enqueue_style(
-            'axiom-account-addresses',
-            $theme_uri . '/assets/css/account/addresses.css',
-            array('axiom-account-gift-cards'),
-            axiom_account_asset_version('/assets/css/account/addresses.css')
-        );
+        wp_enqueue_style('axiom-account-gift-cards', $theme_uri . '/assets/css/account/gift-cards.css', array('axiom-account-downloads'), axiom_account_asset_version('/assets/css/account/gift-cards.css'));
+
+        wp_enqueue_style('axiom-account-addresses', $theme_uri . '/assets/css/account/addresses.css', array('axiom-account-gift-cards'), axiom_account_asset_version('/assets/css/account/addresses.css'));
 
         wp_enqueue_style(
             'axiom-account-mobile',
@@ -87,6 +44,7 @@ function axiom_account_assets() {
                 'axiom-account-base',
                 'axiom-account-login',
                 'axiom-account-dashboard',
+                'axiom-account-dashboard-home',
                 'axiom-account-navigation',
                 'axiom-account-forms',
                 'axiom-account-details',
@@ -104,6 +62,7 @@ function axiom_account_assets() {
                 'axiom-account-base',
                 'axiom-account-login',
                 'axiom-account-dashboard',
+                'axiom-account-dashboard-home',
                 'axiom-account-navigation',
                 'axiom-account-forms',
                 'axiom-account-details',
@@ -115,34 +74,18 @@ function axiom_account_assets() {
             axiom_account_asset_version('/assets/css/account/account.css')
         );
 
-        wp_enqueue_style(
-            'axiom-account-orders-final',
-            $theme_uri . '/assets/css/account/orders.css',
-            array('axiom-account'),
-            axiom_account_asset_version('/assets/css/account/orders.css')
-        );
+        wp_enqueue_style('axiom-account-orders-final', $theme_uri . '/assets/css/account/orders.css', array('axiom-account'), axiom_account_asset_version('/assets/css/account/orders.css'));
 
         $points_rewards_css = '/assets/css/account/points-rewards.css';
 
         if (file_exists(get_template_directory() . $points_rewards_css)) {
-            wp_enqueue_style(
-                'axiom-account-points-rewards-final',
-                $theme_uri . $points_rewards_css,
-                array('axiom-account-orders-final'),
-                axiom_account_asset_version($points_rewards_css)
-            );
+            wp_enqueue_style('axiom-account-points-rewards-final', $theme_uri . $points_rewards_css, array('axiom-account-orders-final'), axiom_account_asset_version($points_rewards_css));
         }
 
         $account_js = '/assets/js/account/account.js';
 
         if (file_exists(get_template_directory() . $account_js)) {
-            wp_enqueue_script(
-                'axiom-account-js',
-                $theme_uri . $account_js,
-                array(),
-                axiom_account_asset_version($account_js),
-                true
-            );
+            wp_enqueue_script('axiom-account-js', $theme_uri . $account_js, array(), axiom_account_asset_version($account_js), true);
         }
     }
 }
@@ -152,7 +95,6 @@ add_action('wp_enqueue_scripts', 'axiom_account_assets', 999);
  * Force custom view-order template.
  */
 remove_action('woocommerce_account_view-order_endpoint', 'woocommerce_account_view_order');
-
 add_action('woocommerce_account_view-order_endpoint', 'axiom_force_custom_view_order_template', 1);
 
 function axiom_force_custom_view_order_template($order_id) {
@@ -239,7 +181,6 @@ function axiom_custom_rewards_balance_card() {
  * Custom Axiom Downloads page.
  */
 remove_action('woocommerce_account_downloads_endpoint', 'woocommerce_account_downloads');
-
 add_action('woocommerce_account_downloads_endpoint', 'axiom_custom_downloads_page', 1);
 
 function axiom_custom_downloads_page() {
@@ -253,7 +194,6 @@ function axiom_custom_downloads_page() {
     <section class="axiom-custom-downloads-page">
         <div class="axiom-downloads-card">
             <div class="axiom-downloads-icon">↓</div>
-
             <p class="axiom-downloads-kicker">Downloads</p>
 
             <?php if (empty($downloads)) : ?>
