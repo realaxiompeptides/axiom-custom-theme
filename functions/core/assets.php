@@ -296,6 +296,38 @@ function axiom_custom_theme_assets() {
     }
 
     /*
+ * Account page assets
+ */
+if (function_exists('is_account_page') && is_account_page()) {
+    $account_css_files = array(
+        'axiom-account-main'   => '/assets/css/account/account.css',
+        'axiom-account-orders' => '/assets/css/account/orders.css',
+    );
+
+    foreach ($account_css_files as $handle => $file_path) {
+        if (file_exists($theme_path . $file_path)) {
+            wp_enqueue_style(
+                $handle,
+                $theme_uri . $file_path,
+                array('axiom-base'),
+                filemtime($theme_path . $file_path)
+            );
+        }
+    }
+
+    $account_js = '/assets/js/account/account.js';
+
+    if (file_exists($theme_path . $account_js)) {
+        wp_enqueue_script(
+            'axiom-account-js',
+            $theme_uri . $account_js,
+            array(),
+            filemtime($theme_path . $account_js),
+            true
+        );
+    }
+}
+    /*
      * Checkout assets
      */
     if (function_exists('is_checkout') && is_checkout() && !is_order_received_page()) {
