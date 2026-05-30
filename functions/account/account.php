@@ -272,3 +272,60 @@ function axiom_custom_downloads_page() {
     </section>
     <?php
 }
+
+/**
+ * Custom Axiom Gift Cards page.
+ */
+remove_action('woocommerce_account_giftcards_endpoint', 'woocommerce_account_giftcards');
+
+add_action('woocommerce_account_giftcards_endpoint', 'axiom_custom_giftcards_page', 1);
+add_action('woocommerce_account_gift-cards_endpoint', 'axiom_custom_giftcards_page', 1);
+
+function axiom_custom_giftcards_page() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    ?>
+    <section class="axiom-custom-giftcards-page">
+        <div class="axiom-giftcards-hero">
+            <div class="axiom-giftcards-icon">🎁</div>
+            <p class="axiom-giftcards-kicker">Gift Cards</p>
+            <h2>Your Balance</h2>
+            <div class="axiom-giftcards-balance">$0.00</div>
+        </div>
+
+        <div class="axiom-giftcards-add-card">
+            <h3>Add a gift card</h3>
+            <p>Enter your gift card code below to add it to your account.</p>
+
+            <form method="post" class="axiom-giftcards-form">
+                <input 
+                    type="text" 
+                    name="wc_gc_code" 
+                    placeholder="Enter gift card code..." 
+                    autocomplete="off"
+                >
+
+                <button type="submit" name="wc_gc_add_gift_card_to_account">
+                    Add to account
+                </button>
+            </form>
+        </div>
+
+        <div class="axiom-giftcards-section">
+            <h3>Active Gift Cards</h3>
+            <div class="axiom-giftcards-empty">
+                No active gift cards yet.
+            </div>
+        </div>
+
+        <div class="axiom-giftcards-section">
+            <h3>Activity</h3>
+            <div class="axiom-giftcards-empty">
+                No activity recorded yet.
+            </div>
+        </div>
+    </section>
+    <?php
+}
