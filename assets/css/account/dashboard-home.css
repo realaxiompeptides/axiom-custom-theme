@@ -236,3 +236,9 @@ body.woocommerce-account .axiom-custom-dashboard-page ~ p,
 body.woocommerce-account .axiom-custom-dashboard-page ~ div {
   display: none !important;
 }
+
+/* Hide old dashboard content when custom dashboard exists */
+body.woocommerce-account .woocommerce-MyAccount-content > p:has(~ .axiom-custom-dashboard-page),
+body.woocommerce-account .woocommerce-MyAccount-content > div:has(~ .axiom-custom-dashboard-page):not(.axiom-custom-dashboard-page) {
+  display: none !important;
+}
