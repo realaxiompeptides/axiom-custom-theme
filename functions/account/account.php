@@ -225,3 +225,50 @@ function axiom_custom_rewards_balance_card() {
     </section>
     <?php
 }
+
+/**
+ * Custom Axiom Downloads page.
+ */
+remove_action('woocommerce_account_downloads_endpoint', 'woocommerce_account_downloads');
+
+add_action('woocommerce_account_downloads_endpoint', 'axiom_custom_downloads_page', 1);
+
+function axiom_custom_downloads_page() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    $downloads = wc_get_customer_available_downloads(get_current_user_id());
+
+    ?>
+    <section class="axiom-custom-downloads-page">
+        <div class="axiom-downloads-card">
+            <div class="axiom-downloads-icon">↓</div>
+
+            <p class="axiom-downloads-kicker">Downloads</p>
+
+            <?php if (empty($downloads)) : ?>
+                <h2>No downloads yet</h2>
+                <p class="axiom-downloads-text">
+                    Downloadable files from your orders will appear here once they are available.
+                </p>
+
+                <a class="axiom-downloads-button" href="<?php echo esc_url(wc_get_page_permalink('shop')); ?>">
+                    Browse products
+                </a>
+            <?php else : ?>
+                <h2>Your downloads</h2>
+
+                <div class="axiom-downloads-list">
+                    <?php foreach ($downloads as $download) : ?>
+                        <a class="axiom-download-item" href="<?php echo esc_url($download['download_url']); ?>">
+                            <span><?php echo esc_html($download['download_name']); ?></span>
+                            <strong>Download</strong>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+    <?php
+}
