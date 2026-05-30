@@ -136,3 +136,17 @@
     width: 100%;
   }
 }
+
+body.woocommerce-account .woocommerce-MyAccount-content > h2:not(.axiom-keep),
+body.woocommerce-account .woocommerce-MyAccount-content > form:not(.axiom-giftcards-form),
+body.woocommerce-account .woocommerce-MyAccount-content > table,
+body.woocommerce-account .woocommerce-MyAccount-content > .woocommerce-info,
+body.woocommerce-account .woocommerce-MyAccount-content > .woocommerce-message {
+  display: none !important;
+}
+
+.axiom-giftcards-icon i {
+  color: #ffffff !important;
+  font-size: 32px !important;
+  line-height: 1 !important;
+}
