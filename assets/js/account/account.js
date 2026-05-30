@@ -4,28 +4,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const path = window.location.pathname.replace(/\/+$/, "");
 
-  // STOP on single order details pages.
-  if (path.includes("/view-order/")) return;
+  // DO NOT run on single order details page.
+  if (path.includes("/view-order")) return;
 
-  // Only run on exact Orders page.
-  const isOrdersPage =
-    path.endsWith("/my-account/orders") ||
-    path.endsWith("/my-account/orders/page/1");
+  // Only run on the orders list page.
+  if (!path.includes("/orders")) return;
 
-  if (!isOrdersPage) return;
-
-  const originalHtml = content.innerHTML;
   const links = Array.from(content.querySelectorAll('a[href*="view-order"]'));
-
   if (!links.length) return;
 
   const text = content.innerText;
   const matches = [...text.matchAll(/#(\d+)\s+([A-Za-z]+)\s+Date:\s+(.+?)\s+Total:\s+\$?([\d.]+)\s+Items:\s+(\d+)/g)];
-
-  if (!matches.length) {
-    content.innerHTML = originalHtml;
-    return;
-  }
+  if (!matches.length) return;
 
   const hero = content.querySelector(".axiom-account-page-hero");
 
