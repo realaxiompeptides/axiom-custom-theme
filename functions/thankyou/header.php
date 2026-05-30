@@ -34,9 +34,8 @@ function axiom_render_custom_thankyou_header($order_id) {
     $payment_method_id_lower = strtolower($payment_method_id);
     $payment_method_lower    = strtolower($payment_method);
 
-    $is_zelle   = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
-    $is_venmo   = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
-    $is_cashapp = (false !== strpos($payment_method_id_lower, 'cashapp') || false !== strpos($payment_method_id_lower, 'cash-app') || false !== strpos($payment_method_lower, 'cash app') || false !== strpos($payment_method_lower, 'cashapp'));
+    $is_zelle = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
+    $is_venmo = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
 
     $hero_title = 'Thank you for your order';
     $hero_copy  = 'You can review your order details and shipping timeline below.';
@@ -118,31 +117,6 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '  </div>';
     }
 
-    if ($is_cashapp) {
-        echo '  <div class="axiom-payment-alert-card">';
-        echo '      <div class="axiom-payment-alert-title">Complete Cash App Bitcoin Payment</div>';
-        echo '      <p>Your order includes the <strong>5% Cash App discount</strong>.</p>';
-        echo '      <p>Use <strong>ORDER NUMBER ONLY</strong> when contacting us about payment: <strong>#' . esc_html($order_number) . '</strong></p>';
-        echo '  </div>';
-
-        echo '  <div class="axiom-payment-instructions-card">';
-        echo '      <div class="axiom-payment-instructions-header"><h3>Cash App Bitcoin Instructions</h3></div>';
-        echo '      <div class="axiom-payment-instructions-body">';
-        echo '          <p>Follow these steps to complete payment with Cash App Bitcoin.</p>';
-        echo '          <ol style="margin:0 0 18px 18px; padding:0; color:#64748b; line-height:1.7;">';
-        echo '              <li>Open <strong>Cash App</strong> on your phone.</li>';
-        echo '              <li>Tap the <strong>Bitcoin</strong> tab inside Cash App.</li>';
-        echo '              <li>Buy enough BTC to cover your order total if needed.</li>';
-        echo '              <li>Tap <strong>Send</strong> on the Bitcoin screen.</li>';
-        echo '              <li>Paste our exact Bitcoin address below.</li>';
-        echo '              <li>Send us your order number and transaction confirmation.</li>';
-        echo '          </ol>';
-        echo '          <div class="axiom-payment-copy-field"><span>Bitcoin address</span><div class="axiom-payment-copy-row"><strong style="font-size:14px; word-break:break-all;">bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'bc1qh05z8lqpxf3ptd9w7vepqfz4ux3dxwy4mgnzmp\')">Copy</button></div></div>';
-        echo '          <div class="axiom-payment-copy-field"><span>Order number</span><div class="axiom-payment-copy-row"><strong>#' . esc_html($order_number) . '</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button></div></div>';
-        echo '      </div>';
-        echo '  </div>';
-    }
-
     echo '  <div class="axiom-delivery-command-card" data-axiom-delivery-card>';
     echo '      <div class="axiom-delivery-card-glow"></div>';
 
@@ -198,34 +172,6 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      </div>';
 
     echo '  </div>';
-
-    if (!is_user_logged_in()) {
-        $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
-
-        echo '<div class="axiom-thankyou-account-card">';
-        echo '  <div class="axiom-thankyou-account-icon"><i class="fa-solid fa-user-plus"></i></div>';
-        echo '  <div>';
-        echo '      <h3>Create your customer account</h3>';
-        echo '      <p>Track this order faster, save your shipping address, and view future order history.</p>';
-        echo '      <a href="' . esc_url($account_url) . '" class="axiom-thankyou-account-button">Create account or log in</a>';
-        echo '  </div>';
-        echo '</div>';
-    }
-
-    echo '<div class="axiom-thankyou-support-card">';
-    echo '  <div class="axiom-thankyou-support-top">';
-    echo '      <i class="fa-solid fa-headset"></i>';
-    echo '      <div>';
-    echo '          <h3>Need help with your order?</h3>';
-    echo '          <p>Contact support and include your order number: <strong>#' . esc_html($order_number) . '</strong></p>';
-    echo '      </div>';
-    echo '  </div>';
-    echo '  <div class="axiom-thankyou-support-actions">';
-    echo '      <a href="mailto:realaxiompeptides@gmail.com?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
-    echo '      <button type="button" class="axiom-thankyou-support-btn" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy order #</button>';
-    echo '  </div>';
-    echo '</div>';
-
     echo '</section>';
 
     echo '<script>
@@ -268,6 +214,48 @@ function axiom_render_custom_thankyou_header($order_id) {
         });
     });
     </script>';
+}
+
+add_action('woocommerce_thankyou', 'axiom_render_thankyou_bottom_customer_help', 80);
+
+function axiom_render_thankyou_bottom_customer_help($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+    if (!$order) return;
+
+    $order_number = $order->get_order_number();
+
+    echo '<section class="axiom-thankyou-bottom-help">';
+
+    if (!is_user_logged_in()) {
+        $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
+
+        echo '<div class="axiom-thankyou-account-card">';
+        echo '  <div class="axiom-thankyou-account-icon"><i class="fa-solid fa-user-plus"></i></div>';
+        echo '  <div>';
+        echo '      <h3>Create your customer account</h3>';
+        echo '      <p>Track this order faster, save your shipping address, and view future order history.</p>';
+        echo '      <a href="' . esc_url($account_url) . '" class="axiom-thankyou-account-button">Create account or log in</a>';
+        echo '  </div>';
+        echo '</div>';
+    }
+
+    echo '<div class="axiom-thankyou-support-card">';
+    echo '  <div class="axiom-thankyou-support-top">';
+    echo '      <i class="fa-solid fa-headset"></i>';
+    echo '      <div>';
+    echo '          <h3>Need help with your order?</h3>';
+    echo '          <p>Contact support and include your order number: <strong>#' . esc_html($order_number) . '</strong></p>';
+    echo '      </div>';
+    echo '  </div>';
+    echo '  <div class="axiom-thankyou-support-actions">';
+    echo '      <a href="mailto:realaxiompeptides@gmail.com?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
+    echo '      <button type="button" class="axiom-thankyou-support-btn" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy order #</button>';
+    echo '  </div>';
+    echo '</div>';
+
+    echo '</section>';
 }
 
 function axiom_get_thankyou_delivery_estimate($order, $shipping_label) {
