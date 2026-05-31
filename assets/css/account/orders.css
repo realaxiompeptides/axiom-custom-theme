@@ -746,3 +746,120 @@
     font-size: 24px;
   }
 }
+
+.axiom-view-order-page {
+  padding-bottom: 22px !important;
+  margin-bottom: 0 !important;
+}
+
+.axiom-view-order-shipping-notice {
+  margin: 18px 0 18px !important;
+}
+
+.axiom-shipping-notice-card {
+  padding: 20px;
+  border-radius: 28px;
+  border: 1px solid #dbeafe;
+  background:
+    radial-gradient(circle at top right, rgba(90,168,223,.18), transparent 38%),
+    linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.07);
+}
+
+.axiom-shipping-notice-top {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.axiom-shipping-notice-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #071126;
+  color: #fff;
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.axiom-shipping-notice-content span {
+  color: #5aa8df;
+  font-size: 12px;
+  font-weight: 1000;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.axiom-shipping-notice-content h3 {
+  margin: 5px 0 8px;
+  color: #071126;
+  font-size: 24px;
+  line-height: 1.05;
+  letter-spacing: -.04em;
+  font-weight: 1000;
+}
+
+.axiom-shipping-notice-content p,
+.axiom-shipping-help {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.5;
+  font-weight: 700;
+}
+
+.axiom-shipping-carriers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-top: 15px;
+}
+
+.axiom-shipping-carriers div {
+  min-height: 50px;
+  border-radius: 17px;
+  border: 1px solid #dbeafe;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  color: #071126;
+  font-weight: 1000;
+}
+
+.axiom-shipping-carriers i {
+  font-size: 21px;
+}
+
+.axiom-shipping-help {
+  margin-top: 12px !important;
+  padding-top: 12px;
+  border-top: 1px solid #dbeafe;
+}
+
+.axiom-view-order-support {
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .axiom-shipping-notice-card {
+    padding: 18px;
+    border-radius: 24px;
+  }
+
+  .axiom-shipping-notice-top {
+    flex-direction: column;
+  }
+
+  .axiom-shipping-carriers {
+    grid-template-columns: 1fr;
+  }
+
+  .axiom-shipping-notice-content h3 {
+    font-size: 22px;
+  }
+}
