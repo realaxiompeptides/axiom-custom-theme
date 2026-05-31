@@ -42,40 +42,22 @@ if (in_array($order->get_status(), array('processing', 'completed'), true)) {
     </div>
 
     <div class="axiom-shipping-notice-card axiom-view-order-shipping-notice">
-        <div class="axiom-shipping-notice-top">
-            <div class="axiom-shipping-notice-icon">
-                <i class="fa-solid fa-truck-fast"></i>
-            </div>
-
-            <div class="axiom-shipping-notice-content">
-                <span>Shipping Notice</span>
-                <h3>Carrier delivery times are estimates only</h3>
-                <p>
-                    USPS, UPS, and FedEx delivery windows are estimates only and are not guaranteed unless the selected service specifically includes a carrier-backed guarantee.
-                    Once your order is accepted by the carrier, delivery delays, missed scans, routing issues, weather delays, and lost packages are outside of our direct control.
-                </p>
-            </div>
+        <div class="axiom-shipping-carrier-icons">
+            <i class="fa-brands fa-usps"></i>
+            <i class="fa-brands fa-ups"></i>
+            <i class="fa-brands fa-fedex"></i>
         </div>
 
-        <div class="axiom-shipping-carriers">
-            <div>
-                <i class="fa-brands fa-usps"></i>
-                <strong>USPS</strong>
-            </div>
-
-            <div>
-                <i class="fa-brands fa-ups"></i>
-                <strong>UPS</strong>
-            </div>
-
-            <div>
-                <i class="fa-brands fa-fedex"></i>
-                <strong>FedEx</strong>
-            </div>
+        <div class="axiom-shipping-notice-content">
+            <span>Shipping Notice</span>
+            <h3>Delivery times are estimates</h3>
+            <p>
+                USPS, UPS, and FedEx delivery windows are not guaranteed unless the selected service includes a carrier-backed guarantee. Once accepted by the carrier, delays, missed scans, routing issues, weather delays, and lost packages are outside of our direct control.
+            </p>
         </div>
 
         <p class="axiom-shipping-help">
-            If your package is delayed or missing, please contact support and we will help open a carrier investigation with the shipping carrier.
+            If your package is delayed or missing, contact support and we’ll help open a carrier investigation.
         </p>
     </div>
 
