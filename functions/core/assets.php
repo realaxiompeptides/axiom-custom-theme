@@ -36,14 +36,12 @@ function axiom_custom_theme_assets() {
     if (is_page()) {
         $seo_css = '/assets/css/seo/seo.css';
 
-        if (file_exists($theme_path . $seo_css)) {
-            wp_enqueue_style(
-                'axiom-seo-pages',
-                $theme_uri . $seo_css,
-                array('axiom-base'),
-                filemtime($theme_path . $seo_css)
-            );
-        }
+        wp_enqueue_style(
+            'axiom-seo-pages',
+            $theme_uri . $seo_css,
+            array('axiom-base'),
+            file_exists($theme_path . $seo_css) ? filemtime($theme_path . $seo_css) : time()
+        );
     }
 
     /*
