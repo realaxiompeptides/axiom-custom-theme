@@ -111,6 +111,23 @@ function axiom_force_custom_view_order_template($order_id) {
 }
 
 /**
+ * Force custom orders template.
+ */
+remove_action('woocommerce_account_orders_endpoint', 'woocommerce_account_orders');
+add_action('woocommerce_account_orders_endpoint', 'axiom_force_custom_orders_template', 1);
+
+function axiom_force_custom_orders_template() {
+    $template = get_template_directory() . '/woocommerce/myaccount/orders.php';
+
+    if (file_exists($template)) {
+        include $template;
+        return;
+    }
+
+    wc_get_template('myaccount/orders.php');
+}
+
+/**
  * Remove default WooCommerce dashboard before adding custom dashboard.
  */
 add_action('init', 'axiom_remove_default_account_dashboard');
