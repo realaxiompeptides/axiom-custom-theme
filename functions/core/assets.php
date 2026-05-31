@@ -31,6 +31,22 @@ function axiom_custom_theme_assets() {
     wp_enqueue_style('axiom-age-gate', $theme_uri . '/assets/css/age-gate.css', array('axiom-base'), '2.0');
 
     /*
+     * SEO import pages CSS
+     */
+    if (is_page()) {
+        $seo_css = '/assets/css/seo/seo.css';
+
+        if (file_exists($theme_path . $seo_css)) {
+            wp_enqueue_style(
+                'axiom-seo-pages',
+                $theme_uri . $seo_css,
+                array('axiom-base'),
+                filemtime($theme_path . $seo_css)
+            );
+        }
+    }
+
+    /*
      * Legal / policy pages
      */
     if (
@@ -296,37 +312,38 @@ function axiom_custom_theme_assets() {
     }
 
     /*
- * Account page assets
- */
-if (function_exists('is_account_page') && is_account_page()) {
-    $account_css_files = array(
-        'axiom-account-main'   => '/assets/css/account/account.css',
-        'axiom-account-orders' => '/assets/css/account/orders.css',
-    );
+     * Account page assets
+     */
+    if (function_exists('is_account_page') && is_account_page()) {
+        $account_css_files = array(
+            'axiom-account-main'   => '/assets/css/account/account.css',
+            'axiom-account-orders' => '/assets/css/account/orders.css',
+        );
 
-    foreach ($account_css_files as $handle => $file_path) {
-        if (file_exists($theme_path . $file_path)) {
-            wp_enqueue_style(
-                $handle,
-                $theme_uri . $file_path,
-                array('axiom-base'),
-                filemtime($theme_path . $file_path)
+        foreach ($account_css_files as $handle => $file_path) {
+            if (file_exists($theme_path . $file_path)) {
+                wp_enqueue_style(
+                    $handle,
+                    $theme_uri . $file_path,
+                    array('axiom-base'),
+                    filemtime($theme_path . $file_path)
+                );
+            }
+        }
+
+        $account_js = '/assets/js/account/account.js';
+
+        if (file_exists($theme_path . $account_js)) {
+            wp_enqueue_script(
+                'axiom-account-js',
+                $theme_uri . $account_js,
+                array(),
+                filemtime($theme_path . $account_js),
+                true
             );
         }
     }
 
-    $account_js = '/assets/js/account/account.js';
-
-    if (file_exists($theme_path . $account_js)) {
-        wp_enqueue_script(
-            'axiom-account-js',
-            $theme_uri . $account_js,
-            array(),
-            filemtime($theme_path . $account_js),
-            true
-        );
-    }
-}
     /*
      * Checkout assets
      */
@@ -377,11 +394,6 @@ if (function_exists('is_account_page') && is_account_page()) {
             'axiom-checkout-payment',
         );
 
-        /*
-         * Card / Quiklie styling
-         * File: /assets/css/checkout/checkout-card-payment.css
-         * Loads AFTER checkout-payment.css so it can override the default card gateway.
-         */
         if (file_exists($theme_path . $checkout_card_css)) {
             wp_enqueue_style(
                 'axiom-checkout-card-payment',
@@ -393,10 +405,6 @@ if (function_exists('is_account_page') && is_account_page()) {
             $checkout_mobile_deps[] = 'axiom-checkout-card-payment';
         }
 
-        /*
-         * Venmo styling
-         * File: /assets/css/checkout/checkout-venmo-payment.css
-         */
         if (file_exists($theme_path . $checkout_venmo_css)) {
             wp_enqueue_style(
                 'axiom-checkout-venmo-payment',
@@ -449,10 +457,6 @@ if (function_exists('is_account_page') && is_account_page()) {
             ));
         }
 
-        /*
-         * Card / Quiklie custom panel JS
-         * File: /assets/js/checkout/checkout-card-payment.js
-         */
         if (file_exists($theme_path . '/assets/js/checkout/checkout-card-payment.js')) {
             wp_enqueue_script(
                 'axiom-checkout-card-payment',
@@ -494,26 +498,25 @@ if (function_exists('is_account_page') && is_account_page()) {
         }
     }
 
-if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
+    if (function_exists('is_checkout') && is_checkout() && is_order_received_page()) {
+        wp_enqueue_style(
+            'axiom-thankyou',
+            $theme_uri . '/assets/css/order-received/thankyou.css',
+            array('axiom-base'),
+            file_exists($theme_path . '/assets/css/order-received/thankyou.css')
+                ? filemtime($theme_path . '/assets/css/order-received/thankyou.css')
+                : time()
+        );
 
-    wp_enqueue_style(
-        'axiom-thankyou',
-        $theme_uri . '/assets/css/order-received/thankyou.css',
-        array('axiom-base'),
-        file_exists($theme_path . '/assets/css/order-received/thankyou.css')
-            ? filemtime($theme_path . '/assets/css/order-received/thankyou.css')
-            : time()
-    );
-
-    wp_enqueue_style(
-        'axiom-thankyou-next-steps',
-        $theme_uri . '/assets/css/order-received/thankyou/next-steps.css',
-        array('axiom-base', 'axiom-thankyou'),
-        file_exists($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
-            ? filemtime($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
-            : time()
-    );
-}
+        wp_enqueue_style(
+            'axiom-thankyou-next-steps',
+            $theme_uri . '/assets/css/order-received/thankyou/next-steps.css',
+            array('axiom-base', 'axiom-thankyou'),
+            file_exists($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
+                ? filemtime($theme_path . '/assets/css/order-received/thankyou/next-steps.css')
+                : time()
+        );
+    }
 
     wp_enqueue_script('jquery');
     wp_enqueue_script('wc-cart-fragments');
