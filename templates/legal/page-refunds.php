@@ -1,130 +1,174 @@
-<?php
-/**
- * Template Name: Axiom Refund and Return Policy
- * Template Post Type: page
- */
+<h1>Refund Policy</h1>
 
-defined('ABSPATH') || exit;
+<p>
+At Axiom, all sales are final once an order has been confirmed, processed, or reserved for fulfillment.
+Because orders are prepared quickly and inventory is allocated after purchase, orders cannot be canceled, changed, or refunded after confirmation.
+</p>
 
-get_header();
+<h2>All Sales Are Final</h2>
 
-$site_name = 'Axiom Research';
-$email     = 'support@axiomresearch.shop';
-$last_date = 'May 11, 2026';
-?>
+<p>
+By placing an order with Axiom, you agree that your order is final once it has been confirmed, processed, or reserved for fulfillment.
+After this point, we are unable to cancel the order or issue a refund for buyer’s remorse, order changes, delays within our stated processing window, or incorrect ordering by the customer.
+</p>
 
-<main class="axiom-legal-page">
-  <section class="axiom-legal-hero">
-    <div class="axiom-legal-container">
-      <p class="axiom-legal-kicker"><?php echo esc_html($site_name); ?></p>
-      <h1>Refund and Return Policy</h1>
-      <p class="axiom-legal-subtitle">
-        Order cancellation, refund, return, damaged shipment, and payment dispute policy.
-      </p>
-    </div>
-  </section>
+<h2>No Cancellations After Order Confirmation</h2>
 
-  <section class="axiom-legal-content">
-    <div class="axiom-legal-container">
-      <article class="axiom-legal-box">
+<p>
+Orders cannot be canceled once Axiom has confirmed the order, reserved inventory, or started processing the order.
+This includes orders that are awaiting fulfillment, awaiting shipment, or delayed due to order volume, inventory allocation, batch availability, kit availability, or replacement/reshipment processing.
+</p>
 
-        <p class="axiom-legal-updated">
-          <strong>Last Updated:</strong> <?php echo esc_html($last_date); ?>
-        </p>
+<p>
+Submitting a cancellation request after an order has already been confirmed or processed does not guarantee that the order can be canceled.
+If the order has already entered our fulfillment process, the sale is final.
+</p>
 
-        <div class="axiom-legal-warning">
-          <strong>Research Product Notice:</strong> Due to the nature of research-use-only products, returns may be
-          restricted after an order has been processed, packed, shipped, opened, handled, or delivered.
-        </div>
+<h2>Kit Product Fulfillment Notice</h2>
 
-        <h2>1. General Policy</h2>
-        <p>
-          This Refund and Return Policy applies to purchases made from <?php echo esc_html($site_name); ?>.
-          By placing an order, you agree to this policy and understand that products are sold strictly for lawful
-          laboratory research purposes only.
-        </p>
+<p>
+Some kit products may have unpredictable fulfillment timing.
+Displayed stock, inventory counts, or availability on the website may represent an order allocation estimate and does not always guarantee same-day shipment.
+</p>
 
-        <h2>2. Order Cancellations</h2>
-        <p>
-          Cancellation requests must be submitted as soon as possible. We may cancel and refund an order if the request
-          is received before the order has been processed, packed, shipped, or transferred to fulfillment.
-        </p>
+<p>
+Kit product fulfillment may vary depending on current order volume, batch allocation, fulfillment inventory, supplier timing, and replacement or reshipment processing for previous orders.
+Because of this, kit products may take up to 7 business days to process before shipment.
+</p>
 
-        <p>
-          Once an order is processed, packed, labeled, shipped, or transferred to a carrier, cancellation may no longer
-          be available.
-        </p>
+<p>
+Shipping timelines begin after the order has been fulfilled, labeled, and accepted by the shipping carrier.
+A selected shipping method such as Priority, Express, UPS, or any other carrier service refers to transit time after carrier acceptance, not the processing time before shipment.
+</p>
 
-        <h2>3. Returns</h2>
-        <p>
-          Because our products are research-use-only materials, we may not accept returns after products have been
-          shipped, delivered, opened, handled, stored outside our control, or otherwise removed from our custody.
-        </p>
+<p>
+Orders cannot be canceled or refunded due to kit fulfillment timing if the order is still within the stated processing window.
+</p>
 
-        <p>
-          Any approved return must be authorized by <?php echo esc_html($site_name); ?> in writing before the item is
-          sent back. Unauthorized returns may be refused, discarded, or returned to sender.
-        </p>
+<h2>Refunds, Store Credit, or Replacements</h2>
 
-        <h2>4. Damaged, Missing, or Incorrect Items</h2>
-        <p>
-          If your order arrives damaged, missing an item, or contains an incorrect item, contact us within 48 hours of
-          delivery. Include your order number, photos of the package, photos of the product, and a clear description of
-          the issue.
-        </p>
+<p>
+Refunds are not offered for buyer’s remorse, accidental orders, incorrect product selection, delayed processing within the stated fulfillment window, or cancellation requests made after order confirmation.
+</p>
 
-        <p>
-          We may offer a replacement, store credit, refund, or other resolution at our discretion after reviewing the
-          claim.
-        </p>
+<p>
+A refund, store credit, or replacement may be offered only in the following situations:
+</p>
 
-        <h2>5. Shipping Issues</h2>
-        <p>
-          We are not responsible for carrier delays, weather delays, incorrect addresses entered by the customer,
-          refused packages, abandoned packages, failed delivery attempts, theft after delivery, or delivery issues
-          outside our control.
-        </p>
+<ul>
+  <li>The order arrives damaged during shipping.</li>
+  <li>The incorrect item was sent.</li>
+  <li>The package is confirmed lost in transit by the shipping carrier.</li>
+</ul>
 
-        <h2>6. Address Accuracy</h2>
-        <p>
-          Customers are responsible for entering a complete and accurate shipping address. If an order is shipped to an
-          incorrect address provided by the customer, we may be unable to refund or replace the order.
-        </p>
+<p>
+Axiom reserves the right to determine whether a refund, replacement, or store credit is the appropriate resolution depending on the specific issue.
+</p>
 
-        <h2>7. Non-Refundable Items and Fees</h2>
-        <p>The following may be non-refundable:</p>
+<h2>Damaged Orders</h2>
 
-        <ul>
-          <li>Orders that have already shipped;</li>
-          <li>Opened, handled, or used products;</li>
-          <li>Products returned without authorization;</li>
-          <li>Shipping fees, carrier fees, payment processing fees, and handling fees;</li>
-          <li>Orders delayed by carriers or events outside our control;</li>
-          <li>Orders refused due to customer ineligibility, misuse concerns, or compliance concerns.</li>
-        </ul>
+<p>
+If your order arrives damaged, you must contact us within 48 hours of delivery.
+Damage claims submitted after this window may not be eligible for replacement, store credit, or refund.
+</p>
 
-        <h2>8. Payment Disputes and Chargebacks</h2>
-        <p>
-          If you have an issue with an order, contact us before opening a payment dispute or chargeback. Fraudulent,
-          abusive, or premature disputes may result in account restriction, refusal of future orders, or submission of
-          supporting records to the payment provider.
-        </p>
+<p>
+To review a damaged order claim, we may require clear photos of:
+</p>
 
-        <h2>9. Refund Timing</h2>
-        <p>
-          Approved refunds are issued to the original payment method when possible. Processing times vary depending on
-          the payment provider, bank, card network, and payment method.
-        </p>
+<ul>
+  <li>The outside shipping package.</li>
+  <li>The shipping label.</li>
+  <li>The damaged item or items.</li>
+  <li>Any packaging materials inside the shipment.</li>
+</ul>
 
-        <h2>10. Contact</h2>
-        <p>
-          For refund or return questions, contact:
-          <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
-        </p>
+<p>
+Do not discard the package or products until the claim has been reviewed.
+Failure to provide the requested photos or information may result in the claim being denied.
+</p>
 
-      </article>
-    </div>
-  </section>
-</main>
+<h2>Incorrect Items</h2>
 
-<?php get_footer(); ?>
+<p>
+If the wrong item was sent, you must contact us within 48 hours of delivery.
+We may require photos of the item received, the packing materials, and the shipping label before approving a replacement, store credit, or refund.
+</p>
+
+<p>
+If an incorrect item claim is approved, Axiom will determine the appropriate resolution based on the order details and available inventory.
+</p>
+
+<h2>Lost Packages</h2>
+
+<p>
+A package is not considered lost simply because tracking has not updated for several days.
+Carrier delays, missed scans, customs delays, weather delays, holiday delays, or facility delays do not automatically qualify an order for a refund or replacement.
+</p>
+
+<p>
+A package may only be eligible for a refund, store credit, or replacement if it is confirmed lost in transit by the shipping carrier or if Axiom determines, based on the tracking history and carrier information, that the shipment is unlikely to be delivered.
+</p>
+
+<p>
+If the carrier confirms the package was delivered, the order is considered delivered.
+Axiom is not responsible for packages that are marked delivered by the carrier but are missing, stolen, misplaced, or delivered to an incorrect location due to an address issue.
+</p>
+
+<h2>Shipping Delays</h2>
+
+<p>
+Shipping delays do not qualify for cancellation or refund once an order has been confirmed or processed.
+This includes delays caused by the shipping carrier, customs, weather, holidays, incorrect shipping information, high order volume, or any other issue outside of Axiom’s control.
+</p>
+
+<p>
+Estimated delivery dates are not guarantees.
+Once a package is accepted by the carrier, transit speed and delivery timing are controlled by the carrier.
+</p>
+
+<h2>Address Issues</h2>
+
+<p>
+Customers are responsible for entering a complete and accurate shipping address at checkout.
+Axiom is not responsible for delayed, returned, lost, or misdelivered packages caused by an incorrect or incomplete shipping address provided by the customer.
+</p>
+
+<p>
+If a package is returned due to an address issue, refusal, failed delivery attempt, or failure to pick up the package, the order is not eligible for a refund.
+A reshipment may require an additional shipping fee.
+</p>
+
+<h2>Returned Packages</h2>
+
+<p>
+Returned packages do not automatically qualify for a refund.
+If a package is returned to us by the carrier, Axiom will review the reason for return and determine whether the order is eligible for reshipment, store credit, or another resolution.
+</p>
+
+<p>
+Shipping fees are non-refundable once an order has been shipped or a label has been purchased.
+</p>
+
+<h2>Chargebacks and Payment Disputes</h2>
+
+<p>
+By placing an order with Axiom, you agree to contact us first regarding any order issue before opening a payment dispute or chargeback.
+We are willing to review legitimate issues involving damaged orders, incorrect items, or carrier-confirmed lost shipments.
+</p>
+
+<p>
+Opening a payment dispute for an order that is still within the stated processing window, already confirmed, already shipped, or marked delivered by the carrier may delay resolution of the issue.
+</p>
+
+<h2>Final Sale Agreement</h2>
+
+<p>
+By completing checkout, you acknowledge and agree that all sales are final once the order is confirmed, processed, or reserved for fulfillment.
+Orders cannot be canceled after confirmation.
+Refunds, store credit, or replacements are only available for approved claims involving damaged shipments, incorrect items, or packages confirmed lost in transit by the carrier.
+</p>
+
+<p>
+If you have an issue with your order, please contact us with your order number and any relevant photos or tracking information so we can review the situation.
+</p>
