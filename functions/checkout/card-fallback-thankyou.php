@@ -43,7 +43,6 @@ function axiom_card_fallback_payment_methods_thankyou($order_id) {
     $venmo_username  = '@thomas-harris-axiom';
     $venmo_link      = 'https://venmo.com/code?user_id=4564578725790758651&created=1777431398.570389&printed=1';
 
-    $zelle_phone     = '916-233-5312';
 
     $bitcoin_address = 'bc1qtaef69mdkj8q25z32cjw3h3kayv207ydcgejsy';
     $btc_usd_price   = axiom_get_live_btc_usd_price();
