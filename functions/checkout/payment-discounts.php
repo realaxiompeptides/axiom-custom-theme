@@ -14,7 +14,8 @@ function axiom_crypto_btc_address() {
  * Zelle email.
  */
 function axiom_zelle_display_value() {
-    return 'jaxferone@gmail.com';
+    return 'realaxiompeptides@gmail.com';
+}
 }
 
 /**
