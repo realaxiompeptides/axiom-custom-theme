@@ -105,14 +105,12 @@ function axiom_get_manual_payment_instructions($method_type) {
             'icon'    => '💸',
         ),
 
-        'zelle' => array(
+'zelle' => array(
             'subject' => 'Complete your Axiom payment with Zelle',
             'title'   => 'Complete Payment with Zelle',
             'label'   => 'ZELLE',
-            'handle'  => 'jaxferone@gmail.com',
-            'link'    => '',
-            'button'  => '',
-            'note'    => 'Send the exact order total through Zelle. Please include your order number in the memo.',
+            'handle'  => 'realaxiompeptides@gmail.com',
+            'note'    => 'Send the exact order total through Zelle. Please include your order number in the memo.'
             'icon'    => '🏦',
         ),
 
