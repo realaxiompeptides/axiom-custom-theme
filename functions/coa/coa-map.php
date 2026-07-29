@@ -54,22 +54,48 @@ function axiom_coa_file_map() {
         ),
 
         'CJC 1295 No DAC' => array(
-            'product_aliases' => array('cjc 1295 no dac', 'cjc-1295 no dac', 'cjc1295 no dac', 'cjc-no-dac', 'cjc no dac'),
+            'product_aliases' => array(
+                'cjc 1295 no dac',
+                'cjc-1295 no dac',
+                'cjc1295 no dac',
+                'cjc-no-dac',
+                'cjc no dac'
+            ),
             'variant_aliases' => array('5mg'),
         ),
 
         'CJC with DAC' => array(
-            'product_aliases' => array('cjc with dac', 'cjc-1295 with dac', 'cjc1295 with dac', 'cjc dac', 'cjc-dac', 'cjc1295 dac'),
+            'product_aliases' => array(
+                'cjc with dac',
+                'cjc-1295 with dac',
+                'cjc1295 with dac',
+                'cjc dac',
+                'cjc-dac',
+                'cjc1295 dac'
+            ),
             'variant_aliases' => array('2mg'),
         ),
 
         'CJC + IPA' => array(
-            'product_aliases' => array('cjc + ipa', 'cjc ipa', 'cjc+ipa', 'cjc/ipamorelin', 'cjc ipamorelin'),
+            'product_aliases' => array(
+                'cjc + ipa',
+                'cjc ipa',
+                'cjc+ipa',
+                'cjc/ipamorelin',
+                'cjc ipamorelin'
+            ),
             'variant_aliases' => array('5mg'),
         ),
 
         'MT-2' => array(
-            'product_aliases' => array('mt-2', 'mt2', 'melanotan 2', 'melanotan-2', 'melanotan 2 acetate', 'melanotan-2-acetate'),
+            'product_aliases' => array(
+                'mt-2',
+                'mt2',
+                'melanotan 2',
+                'melanotan-2',
+                'melanotan 2 acetate',
+                'melanotan-2-acetate'
+            ),
             'variant_aliases' => array('10mg'),
         ),
 
@@ -84,7 +110,13 @@ function axiom_coa_file_map() {
         ),
 
         'BAC Water' => array(
-            'product_aliases' => array('bac water', 'bac-water', 'bacwater', 'bacteriostatic water', 'bacteriostatic-water'),
+            'product_aliases' => array(
+                'bac water',
+                'bac-water',
+                'bacwater',
+                'bacteriostatic water',
+                'bacteriostatic-water'
+            ),
             'variant_aliases' => array('10ml'),
         ),
 
@@ -109,7 +141,13 @@ function axiom_coa_file_map() {
         ),
 
         'Wolverine' => array(
-            'product_aliases' => array('wolverine', 'bpc tb', 'bpc + tb', 'bpc tb500', 'bpc157 tb500'),
+            'product_aliases' => array(
+                'wolverine',
+                'bpc tb',
+                'bpc + tb',
+                'bpc tb500',
+                'bpc157 tb500'
+            ),
             'variant_aliases' => array('5mg', '10mg'),
         ),
 
@@ -166,6 +204,46 @@ function axiom_coa_file_map() {
         'Selank' => array(
             'product_aliases' => array('selank'),
             'variant_aliases' => array('5mg', '10mg'),
+        ),
+
+        /*
+         * HGH / Somatropin
+         *
+         * Supports product names such as:
+         * HGH
+         * HGH 191AA
+         * HGH 191aa
+         * Somatropin
+         * Human Growth Hormone
+         *
+         * Supports filenames such as:
+         * axiom-hgh-10iu-coa.png
+         * axiom-hgh-24iu-coa.png
+         * axiom-hgh-36iu-coa.png
+         * axiom-hgh-100iu-coa.png
+         */
+        'HGH 191AA' => array(
+            'product_aliases' => array(
+                'hgh',
+                'hgh 191aa',
+                'hgh-191aa',
+                'hgh191aa',
+                'hgh 191',
+                'hgh-191',
+                'somatropin',
+                'human growth hormone',
+                'human-growth-hormone'
+            ),
+            'variant_aliases' => array(
+                '10iu',
+                '10 iu',
+                '24iu',
+                '24 iu',
+                '36iu',
+                '36 iu',
+                '100iu',
+                '100 iu'
+            ),
         ),
 
         'Lemon Bottle' => array(
