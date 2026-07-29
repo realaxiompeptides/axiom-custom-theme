@@ -92,8 +92,7 @@ function axiom_render_custom_thankyou_header($order_id) {
         echo '      <div class="axiom-payment-instructions-header"><h3>Zelle Payment Instructions</h3></div>';
         echo '      <div class="axiom-payment-instructions-body">';
         echo '          <p>Please complete your payment through Zelle after placing your order.</p>';
-        echo '          <div class="axiom-payment-copy-field"><span>Zelle phone</span><div class="axiom-payment-copy-row"><strong>916-233-5312</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'916-233-5312\')">Copy</button></div></div>';
-        echo '          <div class="axiom-payment-copy-field"><span>Zelle email</span><div class="axiom-payment-copy-row"><strong>jaxferone@gmail.com</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'jaxferone@gmail.com\')">Copy</button></div></div>';
+        echo '          <div class="axiom-payment-copy-field"><span>Zelle email</span><div class="axiom-payment-copy-row"><strong>realaxiompeptides@gmail.com</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'jaxferone@gmail.com\')">Copy</button></div></div>';
         echo '          <div class="axiom-payment-copy-field"><span>Payment note</span><div class="axiom-payment-copy-row"><strong>#' . esc_html($order_number) . '</strong><button type="button" class="axiom-copy-button" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy</button></div></div>';
         echo '      </div>';
         echo '  </div>';
