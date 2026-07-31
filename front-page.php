@@ -169,6 +169,7 @@
   'glp-3-rt',
   'hgh-191aa-2',
   'tesamorelin',
+  'igf-1-lr3',
   'ghk-cu',
   'mots-c',
   'nad',
@@ -176,8 +177,6 @@
   'mt-2',
   'semax',
   'selank',
-  'cjc-1295-no-dac',
-  'ipamorelin',
   'bpc-157',
   'tb-500',
 );
