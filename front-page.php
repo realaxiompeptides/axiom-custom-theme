@@ -166,21 +166,21 @@
       <div id="homepageCollectionGrid">
         <?php
         $homepage_product_slugs = array(
-          'glp-3-rt',
-          'tesamorelin',
-          'ghk-cu',
-          'mots-c',
-          'nad',
-          'mt-1',
-          'mt-2',
-          'semax',
-          'selank',
-          'cjc-1295-no-dac',
-          'ipamorelin',
-          'bpc-157',
-          'tb-500',
-        );
-
+  'glp-3-rt',
+  'hgh-191aa-2',
+  'tesamorelin',
+  'ghk-cu',
+  'mots-c',
+  'nad',
+  'mt-1',
+  'mt-2',
+  'semax',
+  'selank',
+  'cjc-1295-no-dac',
+  'ipamorelin',
+  'bpc-157',
+  'tb-500',
+);
         $homepage_product_ids = array();
 
         foreach ($homepage_product_slugs as $slug) {
