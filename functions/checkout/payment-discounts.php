@@ -16,7 +16,6 @@ function axiom_crypto_btc_address() {
 function axiom_zelle_display_value() {
     return 'realaxiompeptides@gmail.com';
 }
-}
 
 /**
  * Get chosen payment method safely.
@@ -72,10 +71,19 @@ function axiom_get_discount_payment_type($gateway_id = '') {
     $gateway_id_normalized = strtolower(trim((string) $gateway_id));
     $gateway               = axiom_get_gateway_object_by_id($gateway_id);
 
-    $title = $gateway && !empty($gateway->title) ? strtolower(wp_strip_all_tags($gateway->title)) : '';
-    $desc  = $gateway && !empty($gateway->description) ? strtolower(wp_strip_all_tags($gateway->description)) : '';
+    $title = $gateway && !empty($gateway->title)
+        ? strtolower(wp_strip_all_tags($gateway->title))
+        : '';
 
-    $haystack = trim($gateway_id_normalized . ' ' . $title . ' ' . $desc);
+    $desc = $gateway && !empty($gateway->description)
+        ? strtolower(wp_strip_all_tags($gateway->description))
+        : '';
+
+    $haystack = trim(
+        $gateway_id_normalized . ' ' .
+        $title . ' ' .
+        $desc
+    );
 
     if (strpos($haystack, 'zelle') !== false) {
         return 'zelle';
@@ -97,28 +105,80 @@ function axiom_get_discount_payment_type($gateway_id = '') {
 }
 
 /**
+ * Return the discount percentage for a payment type.
+ *
+ * Zelle: 5%
+ * Crypto: 10%
+ */
+function axiom_get_payment_discount_rate($type) {
+    if ($type === 'zelle') {
+        return 0.05;
+    }
+
+    if ($type === 'crypto') {
+        return 0.10;
+    }
+
+    return 0;
+}
+
+/**
+ * Return the human-readable discount percentage.
+ */
+function axiom_get_payment_discount_percentage($type) {
+    if ($type === 'zelle') {
+        return 5;
+    }
+
+    if ($type === 'crypto') {
+        return 10;
+    }
+
+    return 0;
+}
+
+/**
  * Add checkout description text.
  */
-add_filter('woocommerce_gateway_description', 'axiom_gateway_description_with_discount', 20, 2);
+add_filter(
+    'woocommerce_gateway_description',
+    'axiom_gateway_description_with_discount',
+    20,
+    2
+);
 
 function axiom_gateway_description_with_discount($description, $gateway_id) {
     $type = axiom_get_discount_payment_type($gateway_id);
 
     if ($type === 'zelle') {
-        $description .= '<p class="axiom-payment-discount-copy">Pay with Zelle and receive an automatic 5% discount on your order subtotal.</p>';
+        $description .=
+            '<p class="axiom-payment-discount-copy">' .
+            'Pay with Zelle and receive an automatic 5% discount on your order subtotal.' .
+            '</p>';
     }
 
     if ($type === 'crypto') {
-        $description .= '<p class="axiom-payment-discount-copy">Pay with crypto and receive an automatic 5% discount on your order subtotal.</p>';
+        $description .=
+            '<p class="axiom-payment-discount-copy">' .
+            'Pay with crypto and receive an automatic 10% discount on your order subtotal.' .
+            '</p>';
     }
 
     return $description;
 }
 
 /**
- * Apply 5% discount based on payment method.
+ * Apply payment-method discount.
+ *
+ * Zelle: 5%
+ * Crypto: 10%
  */
-add_action('woocommerce_cart_calculate_fees', 'axiom_apply_payment_method_discount', 20, 1);
+add_action(
+    'woocommerce_cart_calculate_fees',
+    'axiom_apply_payment_method_discount',
+    20,
+    1
+);
 
 function axiom_apply_payment_method_discount($cart) {
     if (is_admin() && !defined('DOING_AJAX')) {
@@ -136,38 +196,65 @@ function axiom_apply_payment_method_discount($cart) {
         return;
     }
 
+    $discount_rate = axiom_get_payment_discount_rate($type);
+
+    if ($discount_rate <= 0) {
+        return;
+    }
+
     $subtotal = (float) $cart->get_subtotal();
 
     if ($subtotal <= 0) {
         return;
     }
 
-    $discount_amount = round($subtotal * 0.05, wc_get_price_decimals());
+    $discount_amount = round(
+        $subtotal * $discount_rate,
+        wc_get_price_decimals()
+    );
 
     if ($discount_amount <= 0) {
         return;
     }
 
-    $discount_label = ($type === 'zelle') ? 'Zelle Discount (5%)' : 'Crypto Discount (5%)';
+    if ($type === 'zelle') {
+        $discount_label = 'Zelle Discount (5%)';
+    } else {
+        $discount_label = 'Crypto Discount (10%)';
+    }
 
-    $cart->add_fee($discount_label, -$discount_amount, false);
+    $cart->add_fee(
+        $discount_label,
+        -$discount_amount,
+        false
+    );
 }
 
 /**
- * Refresh checkout totals only once when payment method actually changes.
+ * Refresh checkout totals only once when payment method changes.
  */
-add_action('wp_enqueue_scripts', 'axiom_enqueue_checkout_discount_script');
+add_action(
+    'wp_enqueue_scripts',
+    'axiom_enqueue_checkout_discount_script'
+);
 
 function axiom_enqueue_checkout_discount_script() {
-    if (!function_exists('is_checkout') || !is_checkout() || is_order_received_page()) {
+    if (
+        !function_exists('is_checkout') ||
+        !is_checkout() ||
+        is_order_received_page()
+    ) {
         return;
     }
 
     wp_register_script(
         'axiom-checkout-payment-discount',
         false,
-        array('jquery', 'wc-checkout'),
-        '1.0.6',
+        array(
+            'jquery',
+            'wc-checkout',
+        ),
+        '1.0.7',
         true
     );
 
@@ -177,26 +264,33 @@ function axiom_enqueue_checkout_discount_script() {
         'axiom-checkout-payment-discount',
         "
         jQuery(function($) {
-            var axiomLastPaymentMethod = $('input[name=\"payment_method\"]:checked').val() || '';
+            var axiomLastPaymentMethod =
+                $('input[name=\"payment_method\"]:checked').val() || '';
+
             var axiomDiscountRefreshTimer = null;
 
-            $('form.checkout').on('change', 'input[name=\"payment_method\"]', function() {
-                var newPaymentMethod = $('input[name=\"payment_method\"]:checked').val() || '';
+            $('form.checkout').on(
+                'change',
+                'input[name=\"payment_method\"]',
+                function() {
+                    var newPaymentMethod =
+                        $('input[name=\"payment_method\"]:checked').val() || '';
 
-                if (newPaymentMethod === axiomLastPaymentMethod) {
-                    return;
-                }
-
-                axiomLastPaymentMethod = newPaymentMethod;
-
-                clearTimeout(axiomDiscountRefreshTimer);
-
-                axiomDiscountRefreshTimer = setTimeout(function() {
-                    if (!$('body').hasClass('processing')) {
-                        $('body').trigger('update_checkout');
+                    if (newPaymentMethod === axiomLastPaymentMethod) {
+                        return;
                     }
-                }, 250);
-            });
+
+                    axiomLastPaymentMethod = newPaymentMethod;
+
+                    clearTimeout(axiomDiscountRefreshTimer);
+
+                    axiomDiscountRefreshTimer = setTimeout(function() {
+                        if (!$('body').hasClass('processing')) {
+                            $('body').trigger('update_checkout');
+                        }
+                    }, 250);
+                }
+            );
         });
         "
     );
@@ -205,7 +299,12 @@ function axiom_enqueue_checkout_discount_script() {
 /**
  * Rename coupon row wording.
  */
-add_filter('woocommerce_cart_totals_coupon_label', 'axiom_custom_coupon_label', 10, 2);
+add_filter(
+    'woocommerce_cart_totals_coupon_label',
+    'axiom_custom_coupon_label',
+    10,
+    2
+);
 
 function axiom_custom_coupon_label($label, $coupon) {
     return 'Promo Code Discount';
@@ -214,7 +313,10 @@ function axiom_custom_coupon_label($label, $coupon) {
 /**
  * Small checkout style.
  */
-add_action('wp_head', 'axiom_checkout_discount_styles');
+add_action(
+    'wp_head',
+    'axiom_checkout_discount_styles'
+);
 
 function axiom_checkout_discount_styles() {
     if (!function_exists('is_checkout') || !is_checkout()) {
@@ -233,10 +335,14 @@ function axiom_checkout_discount_styles() {
 }
 
 /**
- * Save payment method display/instructions on order.
- * Thank-you page duplicate output removed.
+ * Save payment method display and instructions on the order.
  */
-add_action('woocommerce_checkout_create_order', 'axiom_store_payment_instruction_meta', 20, 2);
+add_action(
+    'woocommerce_checkout_create_order',
+    'axiom_store_payment_instruction_meta',
+    20,
+    2
+);
 
 function axiom_store_payment_instruction_meta($order, $data) {
     if (!$order instanceof WC_Order) {
@@ -247,59 +353,106 @@ function axiom_store_payment_instruction_meta($order, $data) {
     $type       = axiom_get_discount_payment_type($gateway_id);
 
     if ($type === 'zelle') {
-        $order->update_meta_data('_axiom_payment_method_display', 'Zelle');
-        $order->update_meta_data('_axiom_payment_instruction_title', 'Zelle Payment Instructions');
-        $order->update_meta_data('_axiom_payment_instruction_body', 'Send your payment via Zelle to ' . axiom_zelle_display_value() . '. Your 5% discount has already been applied to the order total.');
+        $order->update_meta_data(
+            '_axiom_payment_method_display',
+            'Zelle'
+        );
+
+        $order->update_meta_data(
+            '_axiom_payment_instruction_title',
+            'Zelle Payment Instructions'
+        );
+
+        $order->update_meta_data(
+            '_axiom_payment_instruction_body',
+            'Send your payment via Zelle to ' .
+            axiom_zelle_display_value() .
+            '. Your 5% discount has already been applied to the order total.'
+        );
     }
 
     if ($type === 'crypto') {
-        $order->update_meta_data('_axiom_payment_method_display', 'Bitcoin / Crypto');
-        $order->update_meta_data('_axiom_payment_instruction_title', 'Bitcoin / Crypto Payment Instructions');
-        $order->update_meta_data('_axiom_payment_instruction_body', 'Send your Bitcoin payment to: ' . axiom_crypto_btc_address() . '. Your 5% discount has already been applied to the order total.');
+        $order->update_meta_data(
+            '_axiom_payment_method_display',
+            'Bitcoin / Crypto'
+        );
+
+        $order->update_meta_data(
+            '_axiom_payment_instruction_title',
+            'Bitcoin / Crypto Payment Instructions'
+        );
+
+        $order->update_meta_data(
+            '_axiom_payment_instruction_body',
+            'Send your Bitcoin payment to: ' .
+            axiom_crypto_btc_address() .
+            '. Your 10% discount has already been applied to the order total.'
+        );
     }
 }
 
 /**
- * IMPORTANT:
  * Duplicate thank-you payment box removed.
- * Your main payment instructions still show from functions/thankyou/header.php.
+ * Main payment instructions display from functions/thankyou/header.php.
  */
 
 /**
- * Order details page instructions.
- * This still shows payment instructions inside My Account / order details, not on thank-you page.
+ * Display instructions on My Account order-details pages.
  */
-add_action('woocommerce_order_details_after_order_table', 'axiom_render_custom_payment_instructions_order_details', 20);
+add_action(
+    'woocommerce_order_details_after_order_table',
+    'axiom_render_custom_payment_instructions_order_details',
+    20
+);
 
 function axiom_render_custom_payment_instructions_order_details($order) {
     if (!$order instanceof WC_Order) {
         return;
     }
 
-    $title = $order->get_meta('_axiom_payment_instruction_title');
-    $body  = $order->get_meta('_axiom_payment_instruction_body');
+    $title = $order->get_meta(
+        '_axiom_payment_instruction_title'
+    );
+
+    $body = $order->get_meta(
+        '_axiom_payment_instruction_body'
+    );
 
     if (!$title || !$body) {
         return;
     }
 
     echo '<section class="axiom-order-payment-box" style="margin:24px 0;padding:20px;border:1px solid #dbe6f2;border-radius:20px;background:#f8fbff;">';
-    echo '<h2 style="margin:0 0 10px;font-size:22px;font-weight:900;color:#0f172a;">' . esc_html($title) . '</h2>';
-    echo '<p style="margin:0;color:#475569;line-height:1.6;">' . esc_html($body) . '</p>';
+
+    echo '<h2 style="margin:0 0 10px;font-size:22px;font-weight:900;color:#0f172a;">' .
+        esc_html($title) .
+        '</h2>';
+
+    echo '<p style="margin:0;color:#475569;line-height:1.6;">' .
+        esc_html($body) .
+        '</p>';
+
     echo '</section>';
 }
 
 /**
- * Replace displayed payment method title on order screens.
+ * Replace displayed payment-method title on order screens.
  */
-add_filter('woocommerce_order_get_payment_method_title', 'axiom_custom_order_payment_method_title', 20, 2);
+add_filter(
+    'woocommerce_order_get_payment_method_title',
+    'axiom_custom_order_payment_method_title',
+    20,
+    2
+);
 
 function axiom_custom_order_payment_method_title($title, $order) {
     if (!$order instanceof WC_Order) {
         return $title;
     }
 
-    $custom_title = $order->get_meta('_axiom_payment_method_display');
+    $custom_title = $order->get_meta(
+        '_axiom_payment_method_display'
+    );
 
     if ($custom_title) {
         return $custom_title;
