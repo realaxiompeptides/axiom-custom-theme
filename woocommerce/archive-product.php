@@ -39,15 +39,17 @@ $tax_query = array(
 if (function_exists('wc_get_product_visibility_term_ids')) {
     $product_visibility_terms = wc_get_product_visibility_term_ids();
 
-    $hidden_visibility_terms = array_filter(array(
-        isset($product_visibility_terms['exclude-from-catalog'])
-            ? (int) $product_visibility_terms['exclude-from-catalog']
-            : 0,
+    $hidden_visibility_terms = array_filter(
+        array(
+            isset($product_visibility_terms['exclude-from-catalog'])
+                ? (int) $product_visibility_terms['exclude-from-catalog']
+                : 0,
 
-        isset($product_visibility_terms['exclude-from-search'])
-            ? (int) $product_visibility_terms['exclude-from-search']
-            : 0,
-    ));
+            isset($product_visibility_terms['exclude-from-search'])
+                ? (int) $product_visibility_terms['exclude-from-search']
+                : 0,
+        )
+    );
 
     if (!empty($hidden_visibility_terms)) {
         $tax_query[] = array(
@@ -74,20 +76,22 @@ $product_query_args['tax_query'] = $tax_query;
 $products = new WP_Query($product_query_args);
 
 /**
- * Featured product order.
+ * Custom featured product order.
  *
  * Products listed here appear first in this exact order.
- * Any products not listed here appear underneath them.
+ * Products not listed here appear underneath them.
  *
- * Change these slugs if a product uses a different slug in WooCommerce.
+ * WordPress product slugs are normally lowercase, so Aqualyx is matched
+ * using "aqualyx" even if WooCommerce displays it as "Aqualyx".
  */
 $featured_product_slugs = array(
     'glp-3-rt',
     'hgh-191aa-2',
-    'igf-1-lr3',
-    'tesamorelin',
+    'aqualyx',
     'ghk-cu',
+    'igf-1-lr3',
     'retatrutide',
+    'tesamorelin',
     'bpc-157',
     'tb-500',
     'mots-c',
@@ -99,32 +103,67 @@ $featured_product_slugs = array(
 );
 
 /**
- * Move featured products into the custom order above.
+ * Products that should appear near the bottom.
+ */
+$low_priority_product_slugs = array(
+    '5-amino-1mq',
+    '5-amino-1mq-5mg',
+    '5-amino-1mq-20mg',
+);
+
+/**
+ * Sort products into featured, regular, and low-priority groups.
  */
 if (!empty($products->posts)) {
-    $featured_rank     = array_flip($featured_product_slugs);
+    $featured_rank = array_flip($featured_product_slugs);
+    $bottom_rank   = array_flip($low_priority_product_slugs);
+
     $featured_products = array();
-    $other_products    = array();
+    $regular_products  = array();
+    $bottom_products   = array();
 
     foreach ($products->posts as $product_post) {
-        $product_slug = $product_post->post_name;
+        $product_slug = strtolower((string) $product_post->post_name);
 
         if (isset($featured_rank[$product_slug])) {
             $featured_products[] = $product_post;
+        } elseif (isset($bottom_rank[$product_slug])) {
+            $bottom_products[] = $product_post;
         } else {
-            $other_products[] = $product_post;
+            $regular_products[] = $product_post;
         }
     }
 
     usort(
         $featured_products,
         function ($product_a, $product_b) use ($featured_rank) {
-            $rank_a = isset($featured_rank[$product_a->post_name])
-                ? $featured_rank[$product_a->post_name]
+            $slug_a = strtolower((string) $product_a->post_name);
+            $slug_b = strtolower((string) $product_b->post_name);
+
+            $rank_a = isset($featured_rank[$slug_a])
+                ? $featured_rank[$slug_a]
                 : PHP_INT_MAX;
 
-            $rank_b = isset($featured_rank[$product_b->post_name])
-                ? $featured_rank[$product_b->post_name]
+            $rank_b = isset($featured_rank[$slug_b])
+                ? $featured_rank[$slug_b]
+                : PHP_INT_MAX;
+
+            return $rank_a <=> $rank_b;
+        }
+    );
+
+    usort(
+        $bottom_products,
+        function ($product_a, $product_b) use ($bottom_rank) {
+            $slug_a = strtolower((string) $product_a->post_name);
+            $slug_b = strtolower((string) $product_b->post_name);
+
+            $rank_a = isset($bottom_rank[$slug_a])
+                ? $bottom_rank[$slug_a]
+                : PHP_INT_MAX;
+
+            $rank_b = isset($bottom_rank[$slug_b])
+                ? $bottom_rank[$slug_b]
                 : PHP_INT_MAX;
 
             return $rank_a <=> $rank_b;
@@ -133,7 +172,8 @@ if (!empty($products->posts)) {
 
     $products->posts = array_merge(
         $featured_products,
-        $other_products
+        $regular_products,
+        $bottom_products
     );
 
     $products->post_count = count($products->posts);
@@ -141,9 +181,6 @@ if (!empty($products->posts)) {
 
 /**
  * Catalog category cards.
- *
- * Anabolics uses the category slug "anabolics".
- * The older "steroids" slug is also recognized on products.
  */
 $catalog_filter_groups = array(
     array(
@@ -175,7 +212,7 @@ $catalog_filter_groups = array(
 );
 
 /**
- * Return the inline SVG for each catalog category.
+ * Return the inline SVG for each category.
  */
 function axiom_catalog_filter_icon($icon) {
     switch ($icon) {
@@ -280,15 +317,22 @@ function axiom_catalog_filter_icon($icon) {
         line-height: 1.05;
     }
 
+    .axiom-category-scroll-shell {
+        position: relative;
+        width: min(1200px, 100%);
+        margin: 0 auto;
+    }
+
     .axiom-catalog-filter-pills {
         display: grid;
-        width: min(1200px, 100%);
+        width: 100%;
         margin: 0 auto;
         grid-template-columns: repeat(5, minmax(135px, 1fr));
         gap: 12px;
         overflow-x: auto;
         padding: 2px 1px 8px;
         scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
     }
 
     .axiom-catalog-filter-pills::-webkit-scrollbar {
@@ -398,16 +442,72 @@ function axiom_catalog_filter_icon($icon) {
         color: #0b5b99;
     }
 
+    .axiom-category-scroll-cue {
+        display: none;
+        margin-top: 5px;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 7px;
+        color: #ffffff;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        opacity: 0.95;
+    }
+
+    .axiom-category-scroll-arrow {
+        display: inline-block;
+        font-size: 23px;
+        line-height: 1;
+        animation: axiom-scroll-arrow 1.2s ease-in-out infinite;
+    }
+
+    @keyframes axiom-scroll-arrow {
+        0%,
+        100% {
+            transform: translateX(0);
+            opacity: 0.65;
+        }
+
+        50% {
+            transform: translateX(8px);
+            opacity: 1;
+        }
+    }
+
     @media (max-width: 900px) {
         .axiom-catalog-filter-pills {
             display: flex;
             width: 100%;
+            scroll-snap-type: x proximity;
+            scroll-padding-right: 56px;
         }
 
         .axiom-filter-pill {
             width: 145px;
             min-width: 145px;
             min-height: 148px;
+            scroll-snap-align: start;
+        }
+
+        .axiom-category-scroll-cue {
+            display: flex;
+        }
+
+        .axiom-category-scroll-shell::after {
+            content: "";
+            position: absolute;
+            z-index: 4;
+            top: 0;
+            right: -1px;
+            width: 52px;
+            height: calc(100% - 30px);
+            pointer-events: none;
+            background: linear-gradient(
+                90deg,
+                rgba(13, 78, 145, 0),
+                rgba(13, 78, 145, 0.96)
+            );
         }
     }
 
@@ -466,36 +566,43 @@ function axiom_catalog_filter_icon($icon) {
             <h2>Shop by category</h2>
         </div>
 
-        <div
-            class="axiom-catalog-filter-pills"
-            id="axiomCatalogFilters"
-        >
-            <?php foreach ($catalog_filter_groups as $index => $filter_group) : ?>
-                <button
-                    type="button"
-                    class="axiom-filter-pill<?php echo $index === 0 ? ' is-active' : ''; ?>"
-                    data-filter="<?php echo esc_attr($filter_group['slug']); ?>"
-                    aria-pressed="<?php echo $index === 0 ? 'true' : 'false'; ?>"
-                >
-                    <span class="axiom-filter-pill-icon">
-                        <?php
-                        echo axiom_catalog_filter_icon(
-                            $filter_group['icon']
-                        );
-                        ?>
-                    </span>
-
-                    <span class="axiom-filter-pill-label">
-                        <?php echo esc_html($filter_group['label']); ?>
-                    </span>
-
-                    <?php if (!empty($filter_group['note'])) : ?>
-                        <span class="axiom-filter-pill-note">
-                            <?php echo esc_html($filter_group['note']); ?>
+        <div class="axiom-category-scroll-shell">
+            <div
+                class="axiom-catalog-filter-pills"
+                id="axiomCatalogFilters"
+            >
+                <?php foreach ($catalog_filter_groups as $index => $filter_group) : ?>
+                    <button
+                        type="button"
+                        class="axiom-filter-pill<?php echo $index === 0 ? ' is-active' : ''; ?>"
+                        data-filter="<?php echo esc_attr($filter_group['slug']); ?>"
+                        aria-pressed="<?php echo $index === 0 ? 'true' : 'false'; ?>"
+                    >
+                        <span class="axiom-filter-pill-icon">
+                            <?php
+                            echo axiom_catalog_filter_icon(
+                                $filter_group['icon']
+                            );
+                            ?>
                         </span>
-                    <?php endif; ?>
-                </button>
-            <?php endforeach; ?>
+
+                        <span class="axiom-filter-pill-label">
+                            <?php echo esc_html($filter_group['label']); ?>
+                        </span>
+
+                        <?php if (!empty($filter_group['note'])) : ?>
+                            <span class="axiom-filter-pill-note">
+                                <?php echo esc_html($filter_group['note']); ?>
+                            </span>
+                        <?php endif; ?>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="axiom-category-scroll-cue" aria-hidden="true">
+                <span>Swipe to see more categories</span>
+                <span class="axiom-category-scroll-arrow">→</span>
+            </div>
         </div>
     </section>
 
@@ -667,15 +774,14 @@ function axiom_catalog_filter_icon($icon) {
                     }
 
                     /**
-                     * All products always appear in the All Products filter.
+                     * Every product appears under All Products.
                      */
                     $term_slugs[] = 'all';
 
                     /**
-                     * Assign each product to the correct front-end filters.
+                     * Assign each product to its front-end filters.
                      *
-                     * Research supplies remain visible in All Products but are
-                     * not incorrectly placed under Peptides.
+                     * Research supplies remain under All Products only.
                      */
                     if ($is_kit_product) {
                         $term_slugs[] = 'kits';
