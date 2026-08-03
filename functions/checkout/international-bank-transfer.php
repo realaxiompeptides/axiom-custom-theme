@@ -2,17 +2,14 @@
 defined('ABSPATH') || exit;
 
 /**
- * Axiom International Bank Transfer payment gateway.
- *
- * Displays only for customers whose billing/shipping country
- * is outside the United States.
+ * Axiom International Bank Transfer gateway.
  */
+function axiom_ibt_register_gateway_class() {
+    if (class_exists('Axiom_WC_Gateway_International_Bank_Transfer')) {
+        return;
+    }
 
-function axiom_register_international_bank_transfer_class() {
-    if (
-        !class_exists('WC_Payment_Gateway') ||
-        class_exists('Axiom_WC_Gateway_International_Bank_Transfer')
-    ) {
+    if (!class_exists('WC_Payment_Gateway')) {
         return;
     }
 
@@ -24,7 +21,7 @@ function axiom_register_international_bank_transfer_class() {
             $this->has_fields         = true;
             $this->method_title       = __('International Bank Transfer', 'axiom');
             $this->method_description = __(
-                'Accept international wire transfers and display copy-ready payment instructions after checkout.',
+                'Accept international wire transfers and show copy-ready payment instructions after checkout.',
                 'axiom'
             );
 
@@ -63,7 +60,7 @@ function axiom_register_international_bank_transfer_class() {
         }
 
         /**
-         * Gateway settings shown in WooCommerce admin.
+         * Payment gateway settings.
          */
         public function init_form_fields() {
             $this->form_fields = array(
@@ -78,7 +75,7 @@ function axiom_register_international_bank_transfer_class() {
                     'title'       => __('Order Status', 'axiom'),
                     'type'        => 'select',
                     'description' => __(
-                        'The order status used while the international transfer is awaiting verification.',
+                        'Order status used while the transfer is awaiting verification.',
                         'axiom'
                     ),
                     'default'     => 'on-hold',
@@ -93,7 +90,7 @@ function axiom_register_international_bank_transfer_class() {
                     'type'        => 'text',
                     'default'     => __('International Bank Transfer', 'axiom'),
                     'description' => __(
-                        'The payment method title shown during checkout.',
+                        'Payment method title shown during checkout.',
                         'axiom'
                     ),
                     'desc_tip'    => true,
@@ -115,7 +112,7 @@ function axiom_register_international_bank_transfer_class() {
         }
 
         /**
-         * Only make this gateway available to international customers.
+         * Show only for international customers.
          */
         public function is_available() {
             if (!parent::is_available()) {
@@ -133,14 +130,14 @@ function axiom_register_international_bank_transfer_class() {
             }
 
             /*
-             * Keep the option visible until a country is selected.
-             * Hide it once the customer selects the United States.
+             * Leave visible before a country is selected.
+             * Hide after the customer selects the United States.
              */
             return empty($country) || strtoupper($country) !== 'US';
         }
 
         /**
-         * Styled checkout description.
+         * Styled checkout payment description.
          */
         public function payment_fields() {
             $description = $this->description
@@ -195,9 +192,9 @@ function axiom_register_international_bank_transfer_class() {
                         </span>
 
                         <span>
-                            International transfers usually take 1–5 business days.
-                            Pay any bank or intermediary fees separately so the
-                            complete order total reaches us.
+                            International transfers usually take 1–5 business
+                            days. Pay bank and intermediary fees separately so
+                            the complete order total reaches us.
                         </span>
                     </div>
                 </div>
@@ -206,7 +203,7 @@ function axiom_register_international_bank_transfer_class() {
         }
 
         /**
-         * Process the order without an immediate online payment.
+         * Process the offline payment.
          */
         public function process_payment($order_id) {
             $order = wc_get_order($order_id);
@@ -222,31 +219,29 @@ function axiom_register_international_bank_transfer_class() {
                 );
             }
 
-            $allowed_statuses = array(
-                'on-hold',
-                'pending',
-            );
-
             $status = in_array(
                 $this->order_status,
-                $allowed_statuses,
+                array('on-hold', 'pending'),
                 true
             )
                 ? $this->order_status
                 : 'on-hold';
+
+            /*
+             * Save the gateway information before redirecting.
+             */
+            $order->set_payment_method($this->id);
+            $order->set_payment_method_title($this->title);
 
             $order->update_status(
                 $status,
                 __('Awaiting international bank transfer.', 'axiom')
             );
 
-            $order->set_payment_method($this->id);
-            $order->set_payment_method_title($this->title);
             $order->save();
 
             /*
-             * Reduce stock in the same way as WooCommerce's built-in
-             * offline bank transfer gateway.
+             * Reserve stock for the order.
              */
             wc_reduce_stock_levels($order_id);
 
@@ -263,27 +258,37 @@ function axiom_register_international_bank_transfer_class() {
 }
 
 /*
- * The theme loads after WordPress plugins, so WooCommerce's gateway
- * class should already exist. Register immediately when possible.
+ * Register immediately because theme files normally load after
+ * WooCommerce. The WooCommerce-init fallback adds extra protection.
  */
-axiom_register_international_bank_transfer_class();
+axiom_ibt_register_gateway_class();
+
+add_action(
+    'woocommerce_init',
+    'axiom_ibt_register_gateway_class',
+    1
+);
 
 /**
  * Add the gateway to WooCommerce.
  */
 add_filter(
     'woocommerce_payment_gateways',
-    'axiom_add_international_bank_transfer_gateway'
+    'axiom_ibt_add_gateway'
 );
 
-function axiom_add_international_bank_transfer_gateway($gateways) {
-    $gateways[] = 'Axiom_WC_Gateway_International_Bank_Transfer';
+function axiom_ibt_add_gateway($gateways) {
+    axiom_ibt_register_gateway_class();
+
+    if (class_exists('Axiom_WC_Gateway_International_Bank_Transfer')) {
+        $gateways[] = 'Axiom_WC_Gateway_International_Bank_Transfer';
+    }
 
     return $gateways;
 }
 
 /**
- * International wire transfer details.
+ * International bank-transfer information.
  */
 function axiom_ibt_get_bank_details() {
     return array(
@@ -302,7 +307,38 @@ function axiom_ibt_get_bank_details() {
 }
 
 /**
- * Render one copyable bank-detail row.
+ * Determine whether an order used this gateway.
+ *
+ * The title fallback supports older test orders that may have the correct
+ * visible payment title but a different saved payment-method ID.
+ */
+function axiom_ibt_order_uses_gateway($order) {
+    if (!($order instanceof WC_Order)) {
+        return false;
+    }
+
+    $method = strtolower(
+        trim(
+            (string) $order->get_payment_method()
+        )
+    );
+
+    $title = strtolower(
+        trim(
+            wp_strip_all_tags(
+                (string) $order->get_payment_method_title()
+            )
+        )
+    );
+
+    return (
+        $method === 'axiom_international_bank_transfer' ||
+        $title === 'international bank transfer'
+    );
+}
+
+/**
+ * Render one bank-detail row with a copy button.
  */
 function axiom_ibt_render_copy_row($label, $value, $extra_class = '') {
     ?>
@@ -339,11 +375,11 @@ function axiom_ibt_render_copy_row($label, $value, $extra_class = '') {
 }
 
 /**
- * Display complete wire instructions on the WooCommerce thank-you page.
+ * Display bank-transfer instructions.
  *
- * The custom Axiom thank-you template runs the general WooCommerce
- * thank-you hook. We register on both hooks so the payment instructions
- * still appear whether WooCommerce or the custom template renders the page.
+ * Your custom thankyou.php runs the general woocommerce_thankyou hook.
+ * This file therefore attaches to both the general and gateway-specific
+ * hooks. Duplicate protection prevents the panel from appearing twice.
  */
 add_action(
     'woocommerce_thankyou_axiom_international_bank_transfer',
@@ -354,7 +390,7 @@ add_action(
 add_action(
     'woocommerce_thankyou',
     'axiom_ibt_render_thankyou_instructions',
-    6
+    12
 );
 
 function axiom_ibt_render_thankyou_instructions($order_id) {
@@ -362,10 +398,6 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 
     $order_id = absint($order_id);
 
-    /*
-     * Prevent invalid orders and prevent the instructions from
-     * appearing twice when both thank-you hooks run.
-     */
     if (
         !$order_id ||
         isset($rendered_orders[$order_id])
@@ -377,17 +409,24 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 
     if (
         !$order ||
-        $order->get_payment_method() !== 'axiom_international_bank_transfer'
+        !axiom_ibt_order_uses_gateway($order)
     ) {
         return;
     }
 
+    /*
+     * Mark it as rendered only after confirming it is the correct gateway.
+     */
     $rendered_orders[$order_id] = true;
 
     $details      = axiom_ibt_get_bank_details();
     $order_number = $order->get_order_number();
-    $amount_text  = wp_strip_all_tags(
-        $order->get_formatted_order_total()
+    $amount_html  = $order->get_formatted_order_total();
+
+    $amount_text = html_entity_decode(
+        wp_strip_all_tags($amount_html),
+        ENT_QUOTES,
+        get_bloginfo('charset')
     );
 
     $copy_all = implode(
@@ -451,11 +490,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 </span>
 
                 <strong class="axiom-ibt-important-value">
-                    <?php
-                    echo wp_kses_post(
-                        $order->get_formatted_order_total()
-                    );
-                    ?>
+                    <?php echo wp_kses_post($amount_html); ?>
                 </strong>
 
                 <button
@@ -519,8 +554,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 
             <div>
                 <strong>
-                    Use
-                    <?php echo esc_html($order_number); ?>
+                    Use <?php echo esc_html($order_number); ?>
                     as your payment reference.
                 </strong>
 
@@ -742,7 +776,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 }
 
 /**
- * Include the instructions in customer emails.
+ * Add the bank-transfer information to customer emails.
  */
 add_action(
     'woocommerce_email_after_order_table',
@@ -759,23 +793,26 @@ function axiom_ibt_add_email_instructions(
 ) {
     if (
         $sent_to_admin ||
-        !($order instanceof WC_Order) ||
-        $order->get_payment_method() !== 'axiom_international_bank_transfer'
+        !axiom_ibt_order_uses_gateway($order)
     ) {
         return;
     }
 
     $details      = axiom_ibt_get_bank_details();
     $order_number = $order->get_order_number();
-    $amount       = wp_strip_all_tags(
-        $order->get_formatted_order_total()
+    $amount_html  = $order->get_formatted_order_total();
+
+    $amount_text = html_entity_decode(
+        wp_strip_all_tags($amount_html),
+        ENT_QUOTES,
+        get_bloginfo('charset')
     );
 
     if ($plain_text) {
         echo "\n";
         echo "INTERNATIONAL BANK TRANSFER\n";
         echo "---------------------------\n";
-        echo 'Amount: ' . $amount . "\n";
+        echo 'Amount: ' . $amount_text . "\n";
         echo 'Payment reference: ' . $order_number . "\n\n";
 
         echo 'Beneficiary name: ';
@@ -886,11 +923,7 @@ function axiom_ibt_add_email_instructions(
                         font-weight:700;
                     "
                 >
-                    <?php
-                    echo wp_kses_post(
-                        $order->get_formatted_order_total()
-                    );
-                    ?>
+                    <?php echo wp_kses_post($amount_html); ?>
                 </td>
             </tr>
 
@@ -974,6 +1007,27 @@ function axiom_ibt_add_email_instructions(
                         color:#64748b;
                     "
                 >
+                    Bank name
+                </td>
+
+                <td
+                    style="
+                        padding:10px;
+                        border:1px solid #d6e5f3;
+                    "
+                >
+                    <?php echo esc_html($details['bank_name']); ?>
+                </td>
+            </tr>
+
+            <tr>
+                <td
+                    style="
+                        padding:10px;
+                        border:1px solid #d6e5f3;
+                        color:#64748b;
+                    "
+                >
                     SWIFT / BIC
                 </td>
 
@@ -1026,15 +1080,14 @@ function axiom_ibt_add_email_instructions(
             </strong>
 
             in your bank’s payment reference, memo, message, or notes field.
-            Pay any bank fees separately.
+            Pay bank fees separately.
         </p>
     </div>
     <?php
 }
 
 /**
- * Load the stylesheet and copy-button JavaScript on checkout,
- * order-received and customer order pages.
+ * Load the existing CSS and JavaScript files.
  */
 add_action(
     'wp_enqueue_scripts',
