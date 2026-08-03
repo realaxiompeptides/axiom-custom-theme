@@ -130,8 +130,8 @@ function axiom_ibt_register_gateway_class() {
             }
 
             /*
-             * Leave visible before a country is selected.
-             * Hide after the customer selects the United States.
+             * Keep visible before a country is selected.
+             * Hide when the customer selects the United States.
              */
             return empty($country) || strtoupper($country) !== 'US';
         }
@@ -227,9 +227,6 @@ function axiom_ibt_register_gateway_class() {
                 ? $this->order_status
                 : 'on-hold';
 
-            /*
-             * Save the gateway information before redirecting.
-             */
             $order->set_payment_method($this->id);
             $order->set_payment_method_title($this->title);
 
@@ -240,9 +237,6 @@ function axiom_ibt_register_gateway_class() {
 
             $order->save();
 
-            /*
-             * Reserve stock for the order.
-             */
             wc_reduce_stock_levels($order_id);
 
             if (function_exists('WC') && WC()->cart) {
@@ -257,9 +251,8 @@ function axiom_ibt_register_gateway_class() {
     }
 }
 
-/*
- * Register immediately because theme files normally load after
- * WooCommerce. The WooCommerce-init fallback adds extra protection.
+/**
+ * Register the gateway class.
  */
 axiom_ibt_register_gateway_class();
 
@@ -308,9 +301,6 @@ function axiom_ibt_get_bank_details() {
 
 /**
  * Determine whether an order used this gateway.
- *
- * The title fallback supports older test orders that may have the correct
- * visible payment title but a different saved payment-method ID.
  */
 function axiom_ibt_order_uses_gateway($order) {
     if (!($order instanceof WC_Order)) {
@@ -375,25 +365,25 @@ function axiom_ibt_render_copy_row($label, $value, $extra_class = '') {
 }
 
 /**
- * Display bank-transfer instructions.
+ * Correct thank-you page placement.
  *
- * Your custom thankyou.php runs the general woocommerce_thankyou hook.
- * This file therefore attaches to both the general and gateway-specific
- * hooks. Duplicate protection prevents the panel from appearing twice.
+ * This hook is inside functions/thankyou/header.php directly after the
+ * order totals/payment method rows and directly before Smart Estimate.
+ *
+ * The general woocommerce_thankyou hook is intentionally not used here,
+ * because it would place the bank information after Smart Estimate.
  */
 add_action(
-    'woocommerce_thankyou_axiom_international_bank_transfer',
+    'axiom_thankyou_after_order_summary',
     'axiom_ibt_render_thankyou_instructions',
-    5
+    10,
+    2
 );
 
-add_action(
-    'woocommerce_thankyou',
-    'axiom_ibt_render_thankyou_instructions',
-    12
-);
-
-function axiom_ibt_render_thankyou_instructions($order_id) {
+function axiom_ibt_render_thankyou_instructions(
+    $order_id,
+    $passed_order = null
+) {
     static $rendered_orders = array();
 
     $order_id = absint($order_id);
@@ -405,7 +395,9 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
         return;
     }
 
-    $order = wc_get_order($order_id);
+    $order = $passed_order instanceof WC_Order
+        ? $passed_order
+        : wc_get_order($order_id);
 
     if (
         !$order ||
@@ -414,9 +406,6 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
         return;
     }
 
-    /*
-     * Mark it as rendered only after confirming it is the correct gateway.
-     */
     $rendered_orders[$order_id] = true;
 
     $details      = axiom_ibt_get_bank_details();
@@ -478,7 +467,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 <p>
                     Your order has been reserved and is awaiting payment.
                     Copy the information below into your bank’s international
-                    wire transfer form.
+                    wire-transfer form.
                 </p>
             </div>
         </div>
@@ -511,12 +500,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 </button>
             </div>
 
-            <div
-                class="
-                    axiom-ibt-important-card
-                    axiom-ibt-reference
-                "
-            >
+            <div class="axiom-ibt-important-card axiom-ibt-reference">
                 <span class="axiom-ibt-important-label">
                     Payment reference / memo
                 </span>
@@ -573,13 +557,8 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 </span>
 
                 <div>
-                    <h3>
-                        Beneficiary information
-                    </h3>
-
-                    <p>
-                        The business receiving your transfer.
-                    </p>
+                    <h3>Beneficiary information</h3>
+                    <p>The business receiving your transfer.</p>
                 </div>
             </div>
 
@@ -608,13 +587,11 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 </span>
 
                 <div>
-                    <h3>
-                        Receiving bank
-                    </h3>
+                    <h3>Receiving bank</h3>
 
                     <p>
                         Enter these details in your bank’s international
-                        wire transfer section.
+                        wire-transfer section.
                     </p>
                 </div>
             </div>
@@ -661,11 +638,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                     </strong>
                     first. If your bank does not recognize it, use
                     <strong>
-                        <?php
-                        echo esc_html(
-                            $details['alternate_routing']
-                        );
-                        ?>
+                        <?php echo esc_html($details['alternate_routing']); ?>
                     </strong>.
                 </p>
             </div>
@@ -682,13 +655,8 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                     </span>
 
                     <span>
-                        <strong>
-                            Intermediary bank
-                        </strong>
-
-                        <small>
-                            Open only if your bank asks for one
-                        </small>
+                        <strong>Intermediary bank</strong>
+                        <small>Open only if your bank asks for one</small>
                     </span>
                 </span>
 
@@ -760,9 +728,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
             </span>
 
             <div>
-                <h3>
-                    What happens next?
-                </h3>
+                <h3>What happens next?</h3>
 
                 <p>
                     International wires normally arrive within 1–5 business
@@ -776,7 +742,7 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 }
 
 /**
- * Add the bank-transfer information to customer emails.
+ * Add bank-transfer information to customer emails.
  */
 add_action(
     'woocommerce_email_after_order_table',
@@ -966,11 +932,7 @@ function axiom_ibt_add_email_instructions(
                         border:1px solid #d6e5f3;
                     "
                 >
-                    <?php
-                    echo esc_html(
-                        $details['beneficiary_name']
-                    );
-                    ?>
+                    <?php echo esc_html($details['beneficiary_name']); ?>
                 </td>
             </tr>
 
@@ -991,11 +953,7 @@ function axiom_ibt_add_email_instructions(
                         border:1px solid #d6e5f3;
                     "
                 >
-                    <?php
-                    echo esc_html(
-                        $details['account_number']
-                    );
-                    ?>
+                    <?php echo esc_html($details['account_number']); ?>
                 </td>
             </tr>
 
@@ -1069,9 +1027,7 @@ function axiom_ibt_add_email_instructions(
                 line-height:1.6;
             "
         >
-            <strong>
-                Important:
-            </strong>
+            <strong>Important:</strong>
 
             Enter
 
@@ -1087,7 +1043,7 @@ function axiom_ibt_add_email_instructions(
 }
 
 /**
- * Load the existing CSS and JavaScript files.
+ * Load the CSS and JavaScript files.
  */
 add_action(
     'wp_enqueue_scripts',
@@ -1113,8 +1069,8 @@ function axiom_ibt_enqueue_assets() {
         return;
     }
 
-    $theme_uri  = get_template_directory_uri();
-    $theme_path = get_template_directory();
+    $theme_uri  = get_stylesheet_directory_uri();
+    $theme_path = get_stylesheet_directory();
 
     $css_file = '/assets/css/checkout/international-bank-transfer.css';
     $js_file  = '/assets/js/checkout/international-bank-transfer.js';
