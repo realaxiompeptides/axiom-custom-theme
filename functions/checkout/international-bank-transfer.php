@@ -33,16 +33,28 @@ function axiom_register_international_bank_transfer_class() {
             $this->init_form_fields();
             $this->init_settings();
 
-            $this->enabled      = $this->get_option('enabled', 'no');
-            $this->title        = $this->get_option(
+            $this->enabled = $this->get_option(
+                'enabled',
+                'no'
+            );
+
+            $this->title = $this->get_option(
                 'title',
                 __('International Bank Transfer', 'axiom')
             );
-            $this->description  = $this->get_option(
+
+            $this->description = $this->get_option(
                 'description',
-                __('Pay securely by international wire transfer. Your copy-ready bank details will appear after you place your order.', 'axiom')
+                __(
+                    'Pay securely by international wire transfer. Your copy-ready bank details will appear after you place your order.',
+                    'axiom'
+                )
             );
-            $this->order_status = $this->get_option('order_status', 'on-hold');
+
+            $this->order_status = $this->get_option(
+                'order_status',
+                'on-hold'
+            );
 
             add_action(
                 'woocommerce_update_options_payment_gateways_' . $this->id,
@@ -80,7 +92,10 @@ function axiom_register_international_bank_transfer_class() {
                     'title'       => __('Title', 'axiom'),
                     'type'        => 'text',
                     'default'     => __('International Bank Transfer', 'axiom'),
-                    'description' => __('The payment method title shown during checkout.', 'axiom'),
+                    'description' => __(
+                        'The payment method title shown during checkout.',
+                        'axiom'
+                    ),
                     'desc_tip'    => true,
                 ),
 
@@ -91,7 +106,10 @@ function axiom_register_international_bank_transfer_class() {
                         'Pay securely by international wire transfer. Your copy-ready bank details will appear after you place your order.',
                         'axiom'
                     ),
-                    'description' => __('Shown inside the payment method during checkout.', 'axiom'),
+                    'description' => __(
+                        'Shown inside the payment method during checkout.',
+                        'axiom'
+                    ),
                 ),
             );
         }
@@ -169,12 +187,17 @@ function axiom_register_international_bank_transfer_class() {
                     </div>
 
                     <div class="axiom-ibt-checkout-note">
-                        <span class="axiom-ibt-note-icon" aria-hidden="true">i</span>
+                        <span
+                            class="axiom-ibt-note-icon"
+                            aria-hidden="true"
+                        >
+                            i
+                        </span>
 
                         <span>
                             International transfers usually take 1–5 business days.
-                            Pay any bank or intermediary fees separately so the complete
-                            order total reaches us.
+                            Pay any bank or intermediary fees separately so the
+                            complete order total reaches us.
                         </span>
                     </div>
                 </div>
@@ -199,7 +222,10 @@ function axiom_register_international_bank_transfer_class() {
                 );
             }
 
-            $allowed_statuses = array('on-hold', 'pending');
+            $allowed_statuses = array(
+                'on-hold',
+                'pending',
+            );
 
             $status = in_array(
                 $this->order_status,
@@ -297,8 +323,16 @@ function axiom_ibt_render_copy_row($label, $value, $extra_class = '') {
             data-copy="<?php echo esc_attr($value); ?>"
             aria-label="<?php echo esc_attr('Copy ' . $label); ?>"
         >
-            <span class="axiom-ibt-copy-icon" aria-hidden="true">⧉</span>
-            <span class="axiom-ibt-copy-label">Copy</span>
+            <span
+                class="axiom-ibt-copy-icon"
+                aria-hidden="true"
+            >
+                ⧉
+            </span>
+
+            <span class="axiom-ibt-copy-label">
+                Copy
+            </span>
         </button>
     </div>
     <?php
@@ -306,6 +340,10 @@ function axiom_ibt_render_copy_row($label, $value, $extra_class = '') {
 
 /**
  * Display complete wire instructions on the WooCommerce thank-you page.
+ *
+ * The custom Axiom thank-you template runs the general WooCommerce
+ * thank-you hook. We register on both hooks so the payment instructions
+ * still appear whether WooCommerce or the custom template renders the page.
  */
 add_action(
     'woocommerce_thankyou_axiom_international_bank_transfer',
@@ -313,7 +351,28 @@ add_action(
     5
 );
 
+add_action(
+    'woocommerce_thankyou',
+    'axiom_ibt_render_thankyou_instructions',
+    6
+);
+
 function axiom_ibt_render_thankyou_instructions($order_id) {
+    static $rendered_orders = array();
+
+    $order_id = absint($order_id);
+
+    /*
+     * Prevent invalid orders and prevent the instructions from
+     * appearing twice when both thank-you hooks run.
+     */
+    if (
+        !$order_id ||
+        isset($rendered_orders[$order_id])
+    ) {
+        return;
+    }
+
     $order = wc_get_order($order_id);
 
     if (
@@ -323,9 +382,13 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
         return;
     }
 
+    $rendered_orders[$order_id] = true;
+
     $details      = axiom_ibt_get_bank_details();
     $order_number = $order->get_order_number();
-    $amount_text  = wp_strip_all_tags($order->get_formatted_order_total());
+    $amount_text  = wp_strip_all_tags(
+        $order->get_formatted_order_total()
+    );
 
     $copy_all = implode(
         "\n",
@@ -357,7 +420,10 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
         aria-labelledby="axiom-ibt-title"
     >
         <div class="axiom-ibt-hero">
-            <div class="axiom-ibt-hero-icon" aria-hidden="true">
+            <div
+                class="axiom-ibt-hero-icon"
+                aria-hidden="true"
+            >
                 🏦
             </div>
 
@@ -385,7 +451,11 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                 </span>
 
                 <strong class="axiom-ibt-important-value">
-                    <?php echo wp_kses_post($order->get_formatted_order_total()); ?>
+                    <?php
+                    echo wp_kses_post(
+                        $order->get_formatted_order_total()
+                    );
+                    ?>
                 </strong>
 
                 <button
@@ -393,12 +463,25 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                     class="axiom-ibt-copy axiom-ibt-copy-wide"
                     data-copy="<?php echo esc_attr($amount_text); ?>"
                 >
-                    <span class="axiom-ibt-copy-icon" aria-hidden="true">⧉</span>
-                    <span class="axiom-ibt-copy-label">Copy amount</span>
+                    <span
+                        class="axiom-ibt-copy-icon"
+                        aria-hidden="true"
+                    >
+                        ⧉
+                    </span>
+
+                    <span class="axiom-ibt-copy-label">
+                        Copy amount
+                    </span>
                 </button>
             </div>
 
-            <div class="axiom-ibt-important-card axiom-ibt-reference">
+            <div
+                class="
+                    axiom-ibt-important-card
+                    axiom-ibt-reference
+                "
+            >
                 <span class="axiom-ibt-important-label">
                     Payment reference / memo
                 </span>
@@ -412,18 +495,33 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
                     class="axiom-ibt-copy axiom-ibt-copy-wide"
                     data-copy="<?php echo esc_attr($order_number); ?>"
                 >
-                    <span class="axiom-ibt-copy-icon" aria-hidden="true">⧉</span>
-                    <span class="axiom-ibt-copy-label">Copy order number</span>
+                    <span
+                        class="axiom-ibt-copy-icon"
+                        aria-hidden="true"
+                    >
+                        ⧉
+                    </span>
+
+                    <span class="axiom-ibt-copy-label">
+                        Copy order number
+                    </span>
                 </button>
             </div>
         </div>
 
         <div class="axiom-ibt-alert">
-            <span class="axiom-ibt-alert-icon" aria-hidden="true">!</span>
+            <span
+                class="axiom-ibt-alert-icon"
+                aria-hidden="true"
+            >
+                !
+            </span>
 
             <div>
                 <strong>
-                    Use <?php echo esc_html($order_number); ?> as your payment reference.
+                    Use
+                    <?php echo esc_html($order_number); ?>
+                    as your payment reference.
                 </strong>
 
                 <p>
@@ -436,11 +534,18 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 
         <div class="axiom-ibt-section">
             <div class="axiom-ibt-section-head">
-                <span class="axiom-ibt-step">1</span>
+                <span class="axiom-ibt-step">
+                    1
+                </span>
 
                 <div>
-                    <h3>Beneficiary information</h3>
-                    <p>The business receiving your transfer.</p>
+                    <h3>
+                        Beneficiary information
+                    </h3>
+
+                    <p>
+                        The business receiving your transfer.
+                    </p>
                 </div>
             </div>
 
@@ -464,10 +569,15 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
 
         <div class="axiom-ibt-section">
             <div class="axiom-ibt-section-head">
-                <span class="axiom-ibt-step">2</span>
+                <span class="axiom-ibt-step">
+                    2
+                </span>
 
                 <div>
-                    <h3>Receiving bank</h3>
+                    <h3>
+                        Receiving bank
+                    </h3>
+
                     <p>
                         Enter these details in your bank’s international
                         wire transfer section.
@@ -503,13 +613,26 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
             ?>
 
             <div class="axiom-ibt-helper">
-                <span class="axiom-ibt-helper-icon" aria-hidden="true">i</span>
+                <span
+                    class="axiom-ibt-helper-icon"
+                    aria-hidden="true"
+                >
+                    i
+                </span>
 
                 <p>
                     Use routing number
-                    <strong><?php echo esc_html($details['routing']); ?></strong>
+                    <strong>
+                        <?php echo esc_html($details['routing']); ?>
+                    </strong>
                     first. If your bank does not recognize it, use
-                    <strong><?php echo esc_html($details['alternate_routing']); ?></strong>.
+                    <strong>
+                        <?php
+                        echo esc_html(
+                            $details['alternate_routing']
+                        );
+                        ?>
+                    </strong>.
                 </p>
             </div>
         </div>
@@ -517,23 +640,37 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
         <details class="axiom-ibt-section axiom-ibt-details">
             <summary>
                 <span class="axiom-ibt-details-summary">
-                    <span class="axiom-ibt-details-icon" aria-hidden="true">
+                    <span
+                        class="axiom-ibt-details-icon"
+                        aria-hidden="true"
+                    >
                         ⇄
                     </span>
 
                     <span>
-                        <strong>Intermediary bank</strong>
-                        <small>Open only if your bank asks for one</small>
+                        <strong>
+                            Intermediary bank
+                        </strong>
+
+                        <small>
+                            Open only if your bank asks for one
+                        </small>
                     </span>
                 </span>
 
-                <span class="axiom-ibt-chevron" aria-hidden="true">⌄</span>
+                <span
+                    class="axiom-ibt-chevron"
+                    aria-hidden="true"
+                >
+                    ⌄
+                </span>
             </summary>
 
             <div class="axiom-ibt-details-body">
                 <p class="axiom-ibt-details-intro">
                     Most customers will not need this field. Enter it only
-                    when your bank asks for an intermediary or correspondent bank.
+                    when your bank asks for an intermediary or correspondent
+                    bank.
                 </p>
 
                 <?php
@@ -550,36 +687,53 @@ function axiom_ibt_render_thankyou_instructions($order_id) {
             class="axiom-ibt-copy-all"
             data-copy="<?php echo esc_attr($copy_all); ?>"
         >
-            <span aria-hidden="true">⧉</span>
+            <span aria-hidden="true">
+                ⧉
+            </span>
+
             <span class="axiom-ibt-copy-label">
                 Copy all international wire details
             </span>
         </button>
 
         <div class="axiom-ibt-fees-notice">
-            <span class="axiom-ibt-fees-icon" aria-hidden="true">$</span>
+            <span
+                class="axiom-ibt-fees-icon"
+                aria-hidden="true"
+            >
+                $
+            </span>
 
             <div>
-                <strong>Make sure we receive the full order amount</strong>
+                <strong>
+                    Make sure we receive the full order amount
+                </strong>
 
                 <p>
-                    Your bank or an intermediary bank may charge a transfer fee.
-                    Select the option that makes the sender responsible for all
-                    fees whenever your bank provides that choice.
+                    Your bank or an intermediary bank may charge a transfer
+                    fee. Select the option that makes the sender responsible
+                    for all fees whenever your bank provides that choice.
                 </p>
             </div>
         </div>
 
         <div class="axiom-ibt-next">
-            <span class="axiom-ibt-next-icon" aria-hidden="true">◷</span>
+            <span
+                class="axiom-ibt-next-icon"
+                aria-hidden="true"
+            >
+                ◷
+            </span>
 
             <div>
-                <h3>What happens next?</h3>
+                <h3>
+                    What happens next?
+                </h3>
 
                 <p>
-                    International wires normally arrive within 1–5 business days.
-                    We will email you when your payment is received and your order
-                    moves into processing.
+                    International wires normally arrive within 1–5 business
+                    days. We will email you when your payment is received and
+                    your order moves into processing.
                 </p>
             </div>
         </div>
@@ -613,7 +767,9 @@ function axiom_ibt_add_email_instructions(
 
     $details      = axiom_ibt_get_bank_details();
     $order_number = $order->get_order_number();
-    $amount       = wp_strip_all_tags($order->get_formatted_order_total());
+    $amount       = wp_strip_all_tags(
+        $order->get_formatted_order_total()
+    );
 
     if ($plain_text) {
         echo "\n";
@@ -622,15 +778,29 @@ function axiom_ibt_add_email_instructions(
         echo 'Amount: ' . $amount . "\n";
         echo 'Payment reference: ' . $order_number . "\n\n";
 
-        echo 'Beneficiary name: ' . $details['beneficiary_name'] . "\n";
-        echo 'Account number: ' . $details['account_number'] . "\n";
-        echo 'Beneficiary address: ' . $details['beneficiary_address'] . "\n\n";
+        echo 'Beneficiary name: ';
+        echo $details['beneficiary_name'] . "\n";
 
-        echo 'Bank name: ' . $details['bank_name'] . "\n";
-        echo 'SWIFT / BIC: ' . $details['swift'] . "\n";
-        echo 'ABA routing number: ' . $details['routing'] . "\n";
-        echo 'Alternate ABA routing number: ' . $details['alternate_routing'] . "\n";
-        echo 'Bank address: ' . $details['bank_address'] . "\n\n";
+        echo 'Account number: ';
+        echo $details['account_number'] . "\n";
+
+        echo 'Beneficiary address: ';
+        echo $details['beneficiary_address'] . "\n\n";
+
+        echo 'Bank name: ';
+        echo $details['bank_name'] . "\n";
+
+        echo 'SWIFT / BIC: ';
+        echo $details['swift'] . "\n";
+
+        echo 'ABA routing number: ';
+        echo $details['routing'] . "\n";
+
+        echo 'Alternate ABA routing number: ';
+        echo $details['alternate_routing'] . "\n";
+
+        echo 'Bank address: ';
+        echo $details['bank_address'] . "\n\n";
 
         echo 'Intermediary SWIFT / BIC, if required: ';
         echo $details['intermediary_swift'] . "\n\n";
@@ -679,7 +849,12 @@ function axiom_ibt_add_email_instructions(
             International bank transfer
         </h2>
 
-        <p style="margin:0 0 16px;line-height:1.6;">
+        <p
+            style="
+                margin:0 0 16px;
+                line-height:1.6;
+            "
+        >
             Send the exact amount below and use your order number as the
             transfer reference.
         </p>
@@ -711,7 +886,11 @@ function axiom_ibt_add_email_instructions(
                         font-weight:700;
                     "
                 >
-                    <?php echo wp_kses_post($order->get_formatted_order_total()); ?>
+                    <?php
+                    echo wp_kses_post(
+                        $order->get_formatted_order_total()
+                    );
+                    ?>
                 </td>
             </tr>
 
@@ -754,7 +933,11 @@ function axiom_ibt_add_email_instructions(
                         border:1px solid #d6e5f3;
                     "
                 >
-                    <?php echo esc_html($details['beneficiary_name']); ?>
+                    <?php
+                    echo esc_html(
+                        $details['beneficiary_name']
+                    );
+                    ?>
                 </td>
             </tr>
 
@@ -775,7 +958,11 @@ function axiom_ibt_add_email_instructions(
                         border:1px solid #d6e5f3;
                     "
                 >
-                    <?php echo esc_html($details['account_number']); ?>
+                    <?php
+                    echo esc_html(
+                        $details['account_number']
+                    );
+                    ?>
                 </td>
             </tr>
 
@@ -822,9 +1009,22 @@ function axiom_ibt_add_email_instructions(
             </tr>
         </table>
 
-        <p style="margin:0;line-height:1.6;">
-            <strong>Important:</strong> Enter
-            <strong><?php echo esc_html($order_number); ?></strong>
+        <p
+            style="
+                margin:0;
+                line-height:1.6;
+            "
+        >
+            <strong>
+                Important:
+            </strong>
+
+            Enter
+
+            <strong>
+                <?php echo esc_html($order_number); ?>
+            </strong>
+
             in your bank’s payment reference, memo, message, or notes field.
             Pay any bank fees separately.
         </p>
@@ -836,7 +1036,11 @@ function axiom_ibt_add_email_instructions(
  * Load the stylesheet and copy-button JavaScript on checkout,
  * order-received and customer order pages.
  */
-add_action('wp_enqueue_scripts', 'axiom_ibt_enqueue_assets', 35);
+add_action(
+    'wp_enqueue_scripts',
+    'axiom_ibt_enqueue_assets',
+    35
+);
 
 function axiom_ibt_enqueue_assets() {
     if (!function_exists('is_checkout')) {
@@ -845,7 +1049,10 @@ function axiom_ibt_enqueue_assets() {
 
     $should_load = is_checkout();
 
-    if (function_exists('is_account_page') && is_account_page()) {
+    if (
+        function_exists('is_account_page') &&
+        is_account_page()
+    ) {
         $should_load = true;
     }
 
