@@ -4,10 +4,15 @@ if (!defined('ABSPATH')) {
 }
 
 function axiom_render_custom_thankyou_header($order_id) {
-    if (!$order_id) return;
+    if (!$order_id) {
+        return;
+    }
 
     $order = wc_get_order($order_id);
-    if (!$order) return;
+
+    if (!$order) {
+        return;
+    }
 
     $order_number      = $order->get_order_number();
     $order_total       = (float) $order->get_total();
@@ -23,7 +28,9 @@ function axiom_render_custom_thankyou_header($order_id) {
 
     if (!empty($shipping_methods)) {
         $first_shipping = reset($shipping_methods);
-        $shipping_label = $first_shipping ? $first_shipping->get_name() : '';
+        $shipping_label = $first_shipping
+            ? $first_shipping->get_name()
+            : '';
     }
 
     $delivery      = axiom_get_thankyou_delivery_estimate($order, $shipping_label);
@@ -34,8 +41,15 @@ function axiom_render_custom_thankyou_header($order_id) {
     $payment_method_id_lower = strtolower($payment_method_id);
     $payment_method_lower    = strtolower($payment_method);
 
-    $is_zelle = (false !== strpos($payment_method_id_lower, 'zelle') || false !== strpos($payment_method_lower, 'zelle'));
-    $is_venmo = (false !== strpos($payment_method_id_lower, 'venmo') || false !== strpos($payment_method_lower, 'venmo'));
+    $is_zelle = (
+        false !== strpos($payment_method_id_lower, 'zelle') ||
+        false !== strpos($payment_method_lower, 'zelle')
+    );
+
+    $is_venmo = (
+        false !== strpos($payment_method_id_lower, 'venmo') ||
+        false !== strpos($payment_method_lower, 'venmo')
+    );
 
     $hero_title = 'Thank you for your order';
     $hero_copy  = 'You can review your order details and shipping timeline below.';
@@ -80,6 +94,19 @@ function axiom_render_custom_thankyou_header($order_id) {
     echo '      <div class="axiom-payment-status-row axiom-payment-status-row--total"><span>Total</span><strong>' . wp_kses_post(wc_price($order_total)) . '</strong></div>';
     echo '      <div class="axiom-payment-status-row"><span>Payment method</span><strong>' . esc_html($payment_method) . '</strong></div>';
     echo '  </div>';
+
+    /**
+     * Custom payment-instruction placement.
+     *
+     * International Bank Transfer instructions are attached to this hook,
+     * so they appear directly below the order information and directly
+     * above the Smart Estimate shipping card.
+     */
+    do_action(
+        'axiom_thankyou_after_order_summary',
+        $order_id,
+        $order
+    );
 
     if ($is_zelle) {
         echo '  <div class="axiom-payment-alert-card">';
@@ -175,10 +202,13 @@ function axiom_render_custom_thankyou_header($order_id) {
 
     echo '<script>
     function axiomCopyValue(button, value) {
-        if (!navigator.clipboard) return;
+        if (!navigator.clipboard) {
+            return;
+        }
 
         navigator.clipboard.writeText(value).then(function() {
             var originalText = button.innerText;
+
             button.innerText = "Copied!";
             button.classList.add("is-copied");
 
@@ -192,7 +222,10 @@ function axiom_render_custom_thankyou_header($order_id) {
     document.addEventListener("DOMContentLoaded", function() {
         document.querySelectorAll(".axiom-local-date").forEach(function(el) {
             var ts = parseInt(el.getAttribute("data-ts"), 10);
-            if (!ts) return;
+
+            if (!ts) {
+                return;
+            }
 
             el.textContent = new Intl.DateTimeFormat(undefined, {
                 month: "short",
@@ -202,7 +235,10 @@ function axiom_render_custom_thankyou_header($order_id) {
 
         document.querySelectorAll(".axiom-local-datetime").forEach(function(el) {
             var ts = parseInt(el.getAttribute("data-ts"), 10);
-            if (!ts) return;
+
+            if (!ts) {
+                return;
+            }
 
             el.textContent = new Intl.DateTimeFormat(undefined, {
                 month: "short",
@@ -215,20 +251,31 @@ function axiom_render_custom_thankyou_header($order_id) {
     </script>';
 }
 
-add_action('woocommerce_thankyou', 'axiom_render_thankyou_bottom_customer_help', 80);
+add_action(
+    'woocommerce_thankyou',
+    'axiom_render_thankyou_bottom_customer_help',
+    80
+);
 
 function axiom_render_thankyou_bottom_customer_help($order_id) {
-    if (!$order_id) return;
+    if (!$order_id) {
+        return;
+    }
 
     $order = wc_get_order($order_id);
-    if (!$order) return;
+
+    if (!$order) {
+        return;
+    }
 
     $order_number = $order->get_order_number();
 
     echo '<section class="axiom-thankyou-bottom-help">';
 
     if (!is_user_logged_in()) {
-        $account_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('myaccount') : home_url('/my-account/');
+        $account_url = function_exists('wc_get_page_permalink')
+            ? wc_get_page_permalink('myaccount')
+            : home_url('/my-account/');
 
         echo '<div class="axiom-thankyou-account-card">';
         echo '  <div class="axiom-thankyou-account-icon"><i class="fa-solid fa-user-plus"></i></div>';
@@ -248,6 +295,7 @@ function axiom_render_thankyou_bottom_customer_help($order_id) {
     echo '          <p>Contact support and include your order number: <strong>#' . esc_html($order_number) . '</strong></p>';
     echo '      </div>';
     echo '  </div>';
+
     echo '  <div class="axiom-thankyou-support-actions">';
     echo '      <a href="mailto:realaxiompeptides@gmail.com?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
     echo '      <button type="button" class="axiom-thankyou-support-btn" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy order #</button>';
@@ -266,14 +314,21 @@ function axiom_get_thankyou_delivery_estimate($order, $shipping_label) {
 
     $created->setTimezone($la_timezone);
 
-    $country = strtoupper($order->get_shipping_country() ?: $order->get_billing_country());
-    $is_international = ($country && $country !== 'US');
+    $country = strtoupper(
+        $order->get_shipping_country()
+        ?: $order->get_billing_country()
+    );
+
+    $is_international = (
+        $country &&
+        $country !== 'US'
+    );
 
     $shipping_lower = strtolower((string) $shipping_label);
     $shipping_total = (float) $order->get_shipping_total();
 
     if ($is_international) {
-        $service = 'USPS International';
+        $service  = 'USPS International';
         $min_days = 10;
         $max_days = 21;
 
@@ -287,27 +342,31 @@ function axiom_get_thankyou_delivery_estimate($order, $shipping_label) {
 
         $delivery_note = 'International delivery can take longer if customs or the local carrier delays the package.';
     } elseif (strpos($shipping_lower, 'priority') !== false) {
-        $service = 'USPS Priority Mail';
-        $min_days = 2;
-        $max_days = 3;
+        $service       = 'USPS Priority Mail';
+        $min_days      = 2;
+        $max_days      = 3;
         $delivery_note = 'Priority Mail is calculated using business days after your package ships.';
     } else {
-        $service = $shipping_total <= 0 ? 'Free Shipping - USPS Ground Advantage' : 'USPS Ground Advantage';
-        $min_days = 3;
-        $max_days = 6;
+        $service = $shipping_total <= 0
+            ? 'Free Shipping - USPS Ground Advantage'
+            : 'USPS Ground Advantage';
+
+        $min_days      = 3;
+        $max_days      = 6;
         $delivery_note = 'Ground Advantage is calculated using business days after your package ships.';
     }
 
-    $ship = clone $created;
+    $ship   = clone $created;
     $cutoff = clone $created;
+
     $cutoff->setTime(14, 0, 0);
 
     if (!axiom_is_usps_shipping_day($ship)) {
-        $ship = axiom_next_usps_shipping_day($ship);
+        $ship        = axiom_next_usps_shipping_day($ship);
         $cutoff_note = 'Order was placed on a weekend or USPS holiday.';
     } elseif ($created > $cutoff) {
         $ship->modify('+1 day');
-        $ship = axiom_next_usps_shipping_day($ship);
+        $ship        = axiom_next_usps_shipping_day($ship);
         $cutoff_note = 'Order was placed after the shipping cutoff.';
     } else {
         $cutoff_note = 'Order was placed before the shipping cutoff.';
@@ -317,18 +376,18 @@ function axiom_get_thankyou_delivery_estimate($order, $shipping_label) {
     $delivery_end   = axiom_add_usps_business_days($ship, $max_days);
 
     return array(
-        'service' => $service,
-        'order_created_ts' => $created->getTimestamp() * 1000,
-        'ship_ts' => $ship->getTimestamp() * 1000,
-        'delivery_start_ts' => $delivery_start->getTimestamp() * 1000,
-        'delivery_end_ts' => $delivery_end->getTimestamp() * 1000,
-        'order_created_fallback' => $created->format('M j, g:i A'),
-        'ship_fallback' => $ship->format('M j'),
-        'delivery_start_fallback' => $delivery_start->format('M j'),
-        'delivery_end_fallback' => $delivery_end->format('M j'),
-        'transit_label' => $min_days . '-' . $max_days . ' business days',
-        'delivery_note' => $delivery_note,
-        'cutoff_note' => $cutoff_note,
+        'service'                    => $service,
+        'order_created_ts'           => $created->getTimestamp() * 1000,
+        'ship_ts'                    => $ship->getTimestamp() * 1000,
+        'delivery_start_ts'          => $delivery_start->getTimestamp() * 1000,
+        'delivery_end_ts'            => $delivery_end->getTimestamp() * 1000,
+        'order_created_fallback'     => $created->format('M j, g:i A'),
+        'ship_fallback'              => $ship->format('M j'),
+        'delivery_start_fallback'    => $delivery_start->format('M j'),
+        'delivery_end_fallback'      => $delivery_end->format('M j'),
+        'transit_label'              => $min_days . '-' . $max_days . ' business days',
+        'delivery_note'              => $delivery_note,
+        'cutoff_note'                => $cutoff_note,
     );
 }
 
@@ -336,7 +395,9 @@ function axiom_order_has_backorder_items($order) {
     foreach ($order->get_items() as $item) {
         $product = $item->get_product();
 
-        if (!$product) continue;
+        if (!$product) {
+            continue;
+        }
 
         if ($product->is_on_backorder((int) $item->get_quantity())) {
             return true;
@@ -358,7 +419,7 @@ function axiom_get_order_shipped_date($order) {
 
 function axiom_add_usps_business_days(DateTime $date, $days) {
     $result = clone $date;
-    $added = 0;
+    $added  = 0;
 
     while ($added < $days) {
         $result->modify('+1 day');
@@ -384,9 +445,15 @@ function axiom_next_usps_shipping_day(DateTime $date) {
 function axiom_is_usps_shipping_day(DateTime $date) {
     $weekday = (int) $date->format('N');
 
-    if ($weekday >= 6) return false;
+    if ($weekday >= 6) {
+        return false;
+    }
 
-    return !in_array($date->format('Y-m-d'), axiom_usps_holiday_dates((int) $date->format('Y')), true);
+    return !in_array(
+        $date->format('Y-m-d'),
+        axiom_usps_holiday_dates((int) $date->format('Y')),
+        true
+    );
 }
 
 function axiom_usps_holiday_dates($year) {
@@ -406,7 +473,7 @@ function axiom_usps_holiday_dates($year) {
 }
 
 function axiom_observed_usps_date($date_string) {
-    $date = new DateTime($date_string);
+    $date    = new DateTime($date_string);
     $weekday = (int) $date->format('N');
 
     if ($weekday === 6) {
