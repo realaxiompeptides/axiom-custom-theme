@@ -43,6 +43,7 @@ $axiom_function_files = array(
     '/functions/checkout/manual-payment-instructions-email.php',
     '/functions/checkout/kit-crypto-only.php',
     '/functions/checkout/checkout-addons.php',
+        '/functions/checkout/international-bank-transfer.php',
 
     // THANK YOU
     '/functions/thankyou/templates.php',
