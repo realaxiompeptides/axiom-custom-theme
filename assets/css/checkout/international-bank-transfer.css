@@ -1,0 +1,835 @@
+/* =========================================================
+   AXIOM INTERNATIONAL BANK TRANSFER
+   Checkout + thank-you page
+   ========================================================= */
+
+.payment_method_axiom_international_bank_transfer > label {
+    display: flex !important;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.payment_method_axiom_international_bank_transfer > label::after {
+    content: "International";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
+    padding: 5px 9px;
+    border: 1px solid #cfe3f7;
+    border-radius: 999px;
+    background: #edf7ff;
+    color: #287db7;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* Checkout expanded payment card */
+
+.axiom-ibt-checkout-card {
+    display: flex;
+    gap: 15px;
+    margin-top: 4px;
+    color: #172033;
+}
+
+.axiom-ibt-checkout-icon {
+    display: flex;
+    flex: 0 0 46px;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    border: 1px solid #d5e8f7;
+    border-radius: 14px;
+    background:
+        linear-gradient(
+            135deg,
+            #f4fbff 0%,
+            #e1f2ff 100%
+        );
+    box-shadow: 0 8px 18px rgba(41, 126, 183, 0.1);
+    font-size: 21px;
+}
+
+.axiom-ibt-checkout-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.axiom-ibt-checkout-description,
+.axiom-ibt-checkout-description p {
+    margin: 0;
+    color: #53657a;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.axiom-ibt-checkout-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.axiom-ibt-checkout-badges > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 7px 10px;
+    border: 1px solid #dbe8f3;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #38516b;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.axiom-ibt-checkout-badges > span > span {
+    color: #2687c4;
+}
+
+.axiom-ibt-checkout-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 12px 0;
+}
+
+.axiom-ibt-checkout-step {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 78px;
+    padding: 11px;
+    border: 1px solid #e1eaf2;
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.axiom-ibt-checkout-step strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 23px;
+    height: 23px;
+    border-radius: 8px;
+    background: #e7f5ff;
+    color: #267eb9;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.axiom-ibt-checkout-step span {
+    color: #3f5268;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.axiom-ibt-checkout-note {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    padding: 12px;
+    border: 1px solid #d6e8f7;
+    border-radius: 12px;
+    background: #f1f9ff;
+    color: #435e76;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.axiom-ibt-note-icon {
+    display: inline-flex;
+    flex: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 50%;
+    background: #3188c2;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+/* Thank-you page wrapper */
+
+.axiom-ibt-wrap {
+    width: 100%;
+    margin: 28px 0 36px;
+    color: #111827;
+}
+
+.axiom-ibt-wrap *,
+.axiom-ibt-wrap *::before,
+.axiom-ibt-wrap *::after {
+    box-sizing: border-box;
+}
+
+/* Hero */
+
+.axiom-ibt-hero {
+    position: relative;
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    overflow: hidden;
+    padding: 26px;
+    border: 1px solid #cfe4f5;
+    border-radius: 24px;
+    background:
+        radial-gradient(
+            circle at 90% 5%,
+            rgba(82, 175, 236, 0.2),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #fbfdff 0%,
+            #edf8ff 100%
+        );
+    box-shadow: 0 18px 45px rgba(30, 99, 145, 0.09);
+}
+
+.axiom-ibt-hero::after {
+    content: "";
+    position: absolute;
+    right: -55px;
+    bottom: -70px;
+    width: 170px;
+    height: 170px;
+    border: 28px solid rgba(57, 146, 207, 0.06);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.axiom-ibt-hero-icon {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex: 0 0 64px;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid #e3edf5;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 12px 26px rgba(37, 113, 164, 0.14);
+    font-size: 28px;
+}
+
+.axiom-ibt-hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.axiom-ibt-eyebrow {
+    display: block;
+    margin-bottom: 5px;
+    color: #267db6;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.axiom-ibt-hero h2 {
+    margin: 0 0 7px;
+    color: #111827;
+    font-size: clamp(21px, 3vw, 27px);
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.axiom-ibt-hero p {
+    max-width: 730px;
+    margin: 0;
+    color: #607086;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+/* Amount and order reference */
+
+.axiom-ibt-important-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 16px;
+}
+
+.axiom-ibt-important-card {
+    min-width: 0;
+    padding: 21px;
+    border: 1px solid #dae6f0;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+}
+
+.axiom-ibt-important-card.axiom-ibt-reference {
+    border-color: #abd7f1;
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f0f9ff 100%
+        );
+}
+
+.axiom-ibt-important-label {
+    display: block;
+    color: #6b7b8f;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.axiom-ibt-important-value {
+    display: block;
+    margin: 8px 0 15px;
+    color: #111827;
+    font-size: clamp(21px, 4vw, 27px);
+    font-weight: 800;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+/* Important reference alert */
+
+.axiom-ibt-alert {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    margin: 16px 0;
+    padding: 17px 18px;
+    border: 1px solid #ffd29e;
+    border-radius: 18px;
+    background: #fff8ec;
+    color: #78350f;
+}
+
+.axiom-ibt-alert-icon {
+    display: inline-flex;
+    flex: 0 0 27px;
+    align-items: center;
+    justify-content: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 9px;
+    background: #f59e0b;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.axiom-ibt-alert strong {
+    display: block;
+    margin: 1px 0 4px;
+    color: #78350f;
+    font-size: 14px;
+}
+
+.axiom-ibt-alert p {
+    margin: 0;
+    color: #8a4b18;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* Bank information sections */
+
+.axiom-ibt-section {
+    margin-top: 16px;
+    padding: 22px;
+    border: 1px solid #dce7ef;
+    border-radius: 22px;
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.035);
+}
+
+.axiom-ibt-section-head {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.axiom-ibt-step {
+    display: inline-flex;
+    flex: 0 0 35px;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 11px;
+    background: #e7f5ff;
+    color: #257db8;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.axiom-ibt-section-head h3 {
+    margin: 0;
+    color: #111827;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.axiom-ibt-section-head p {
+    margin: 3px 0 0;
+    color: #748296;
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+/* Individual copy rows */
+
+.axiom-ibt-row {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 0;
+    padding: 14px 0;
+    border-top: 1px solid #edf2f6;
+}
+
+.axiom-ibt-row-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.axiom-ibt-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #738196;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+}
+
+.axiom-ibt-value {
+    display: block;
+    max-width: 650px;
+    color: #172033;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Copy buttons */
+
+.axiom-ibt-copy {
+    display: inline-flex !important;
+    flex: 0 0 auto;
+    gap: 7px;
+    align-items: center;
+    justify-content: center;
+    min-width: 87px;
+    min-height: 39px;
+    margin: 0 !important;
+    padding: 9px 12px !important;
+    border: 1px solid #b8d8ed !important;
+    border-radius: 11px !important;
+    outline: none;
+    background: #f3faff !important;
+    box-shadow: none !important;
+    color: #2478b2 !important;
+    font-family: inherit;
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    text-decoration: none !important;
+    text-transform: none !important;
+    cursor: pointer;
+    appearance: none;
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.axiom-ibt-copy:hover,
+.axiom-ibt-copy:focus-visible {
+    border-color: #75b8e1 !important;
+    background: #e8f6ff !important;
+    color: #1e6eaa !important;
+    transform: translateY(-1px);
+}
+
+.axiom-ibt-copy.is-copied {
+    border-color: #8ed2b1 !important;
+    background: #ecfdf5 !important;
+    color: #087a4b !important;
+}
+
+.axiom-ibt-copy-wide {
+    width: 100%;
+}
+
+.axiom-ibt-copy-icon {
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* Routing helper */
+
+.axiom-ibt-helper {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    margin-top: 12px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: #f6f9fc;
+    color: #53657a;
+}
+
+.axiom-ibt-helper-icon {
+    display: inline-flex;
+    flex: 0 0 20px;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #3188c2;
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.axiom-ibt-helper p {
+    margin: 0;
+    color: #53657a;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+/* Intermediary-bank dropdown */
+
+.axiom-ibt-details {
+    padding: 0;
+    overflow: hidden;
+}
+
+.axiom-ibt-details summary {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 19px 22px;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.axiom-ibt-details summary::-webkit-details-marker {
+    display: none;
+}
+
+.axiom-ibt-details-summary {
+    display: flex;
+    gap: 11px;
+    align-items: center;
+}
+
+.axiom-ibt-details-icon {
+    display: inline-flex;
+    flex: 0 0 34px;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+    background: #e9f6ff;
+    color: #2a80b9;
+    font-weight: 900;
+}
+
+.axiom-ibt-details-summary strong {
+    display: block;
+    margin-bottom: 2px;
+    color: #172033;
+    font-size: 16px;
+    line-height: 1.3;
+}
+
+.axiom-ibt-details-summary small {
+    display: block;
+    color: #738196;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.axiom-ibt-chevron {
+    color: #5e7187;
+    font-size: 20px;
+    transition: transform 0.2s ease;
+}
+
+.axiom-ibt-details[open] .axiom-ibt-chevron {
+    transform: rotate(180deg);
+}
+
+.axiom-ibt-details-body {
+    padding: 0 22px 12px;
+}
+
+.axiom-ibt-details-intro {
+    margin: 0 0 4px;
+    color: #66768b;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* Copy all */
+
+.axiom-ibt-copy-all {
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 56px;
+    margin: 16px 0 0;
+    padding: 16px 20px;
+    border: 0;
+    border-radius: 16px;
+    outline: none;
+    background:
+        linear-gradient(
+            135deg,
+            #356ee1 0%,
+            #3297d0 100%
+        );
+    box-shadow: 0 14px 30px rgba(48, 112, 199, 0.23);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.2;
+    cursor: pointer;
+    appearance: none;
+    transition:
+        transform 0.18s ease,
+        filter 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.axiom-ibt-copy-all:hover,
+.axiom-ibt-copy-all:focus-visible {
+    color: #ffffff;
+    filter: brightness(1.04);
+    transform: translateY(-1px);
+    box-shadow: 0 17px 34px rgba(48, 112, 199, 0.28);
+}
+
+.axiom-ibt-copy-all.is-copied {
+    background:
+        linear-gradient(
+            135deg,
+            #13865a 0%,
+            #20a56f 100%
+        );
+}
+
+/* Fee notice */
+
+.axiom-ibt-fees-notice {
+    display: flex;
+    gap: 13px;
+    align-items: flex-start;
+    margin-top: 16px;
+    padding: 17px 18px;
+    border: 1px solid #cfe3f5;
+    border-radius: 18px;
+    background: #f3f9ff;
+}
+
+.axiom-ibt-fees-icon {
+    display: inline-flex;
+    flex: 0 0 28px;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+    background: #3188c2;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 900;
+}
+
+.axiom-ibt-fees-notice strong {
+    display: block;
+    margin: 1px 0 4px;
+    color: #17324a;
+    font-size: 14px;
+}
+
+.axiom-ibt-fees-notice p {
+    margin: 0;
+    color: #526b81;
+    font-size: 13px;
+    line-height: 1.55;
+}
+
+/* What happens next */
+
+.axiom-ibt-next {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 16px;
+    padding: 19px;
+    border-radius: 18px;
+    background:
+        linear-gradient(
+            135deg,
+            #111827 0%,
+            #172b43 100%
+        );
+    color: #ffffff;
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.16);
+}
+
+.axiom-ibt-next-icon {
+    color: #8dd1fa;
+    font-size: 23px;
+    line-height: 1;
+}
+
+.axiom-ibt-next h3 {
+    margin: 0 0 5px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.3;
+}
+
+.axiom-ibt-next p {
+    margin: 0;
+    color: #cad6e3;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+/* Mobile */
+
+@media (max-width: 680px) {
+    .axiom-ibt-checkout-card {
+        display: block;
+    }
+
+    .axiom-ibt-checkout-icon {
+        margin-bottom: 11px;
+    }
+
+    .axiom-ibt-checkout-steps {
+        grid-template-columns: 1fr;
+    }
+
+    .axiom-ibt-checkout-step {
+        flex-direction: row;
+        align-items: center;
+        min-height: 0;
+    }
+
+    .axiom-ibt-hero {
+        align-items: flex-start;
+        padding: 20px;
+        border-radius: 19px;
+    }
+
+    .axiom-ibt-hero-icon {
+        flex-basis: 49px;
+        width: 49px;
+        height: 49px;
+        border-radius: 15px;
+        font-size: 21px;
+    }
+
+    .axiom-ibt-important-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .axiom-ibt-important-card {
+        padding: 18px;
+    }
+
+    .axiom-ibt-section {
+        padding: 18px;
+        border-radius: 18px;
+    }
+
+    .axiom-ibt-row {
+        align-items: flex-start;
+    }
+
+    .axiom-ibt-value {
+        font-size: 13px;
+    }
+
+    .axiom-ibt-copy {
+        min-width: 76px;
+        min-height: 38px;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+    }
+
+    .axiom-ibt-details {
+        padding: 0;
+    }
+
+    .axiom-ibt-details summary {
+        padding: 18px;
+    }
+
+    .axiom-ibt-details-body {
+        padding: 0 18px 10px;
+    }
+}
+
+@media (max-width: 420px) {
+    .axiom-ibt-hero {
+        display: block;
+    }
+
+    .axiom-ibt-hero-icon {
+        margin-bottom: 13px;
+    }
+
+    .axiom-ibt-row {
+        display: block;
+    }
+
+    .axiom-ibt-copy {
+        width: 100%;
+        margin-top: 10px !important;
+    }
+
+    .axiom-ibt-alert,
+    .axiom-ibt-fees-notice,
+    .axiom-ibt-next {
+        padding: 15px;
+    }
+}
