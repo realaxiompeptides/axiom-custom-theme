@@ -297,7 +297,7 @@ function axiom_render_thankyou_bottom_customer_help($order_id) {
     echo '  </div>';
 
     echo '  <div class="axiom-thankyou-support-actions">';
-    echo '      <a href="mailto:realaxiompeptides@gmail.com?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
+    echo '      <a href="mailto:support@axiomresearch.shop?subject=Order%20%23' . rawurlencode($order_number) . '%20Support" class="axiom-thankyou-support-btn">Email support</a>';
     echo '      <button type="button" class="axiom-thankyou-support-btn" onclick="axiomCopyValue(this, \'#' . esc_js($order_number) . '\')">Copy order #</button>';
     echo '  </div>';
     echo '</div>';
