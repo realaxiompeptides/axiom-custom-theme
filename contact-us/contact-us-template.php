@@ -82,7 +82,7 @@ get_header();
                 </div>
               </a>
 
-              <a class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-whatsapp" href="https://wa.me/15307019349" target="_blank" rel="noopener">
+              <a class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-whatsapp" href="https://wa.me/19162335312" target="_blank" rel="noopener">
                 <div class="axiom-contact-info-icon">
                   <i class="fa-brands fa-whatsapp"></i>
                 </div>
