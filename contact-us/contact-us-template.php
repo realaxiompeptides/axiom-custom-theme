@@ -88,7 +88,7 @@ get_header();
                 </div>
                 <div class="axiom-contact-info-copy">
                   <span>WhatsApp</span>
-                  <strong>+1 (530) 701-9349</strong>
+                  <strong>+1 (916) 233-5312</strong>
                   <small>Quick support from a USA number</small>
                 </div>
                 <div class="axiom-contact-arrow">
@@ -102,7 +102,7 @@ get_header();
                 </div>
                 <div class="axiom-contact-info-copy">
                   <span>Telegram</span>
-                  <strong>@axiompeptides</strong>
+                  <strong>@lenagpeps</strong>
                   <small>Message us directly on Telegram</small>
                 </div>
                 <div class="axiom-contact-arrow">
