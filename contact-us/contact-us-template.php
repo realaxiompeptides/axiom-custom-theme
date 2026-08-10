@@ -88,7 +88,7 @@ get_header();
                 </div>
                 <div class="axiom-contact-info-copy">
                   <span>WhatsApp</span>
-                  <strong>+1 (916) 233-5312</strong>
+                  <strong>+1 (516) 433-5324</strong>
                   <small>Quick support from a USA number</small>
                 </div>
                 <div class="axiom-contact-arrow">
