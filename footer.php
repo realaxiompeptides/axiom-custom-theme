@@ -28,10 +28,10 @@
 
         <div class="footer-column">
           <h3>Get In Touch</h3>
-          <p><strong>Email:</strong> realaxiompeptides@gmail.com</p>
+          <p><strong>Email:</strong> support@axiomresearch.shop</p>
           <p><strong>Business Address:</strong></p>
-          <p>30 N Gould St # 61352</p>
-          <p>Sheridan, WY 82801</p>
+          <p>84 Keetseel Ln</p>
+          <p>Kayenta, AZ 86033</p>
         </div>
       </div>
 
