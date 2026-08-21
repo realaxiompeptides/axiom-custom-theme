@@ -106,8 +106,12 @@ if (!empty($recommended_ids)) {
                     $product_price     = WC()->cart->get_product_price($_product);
                     $product_subtotal  = WC()->cart->get_product_subtotal($_product, $cart_item['quantity']);
                     $variation_data    = wc_get_formatted_cart_item_data($cart_item, true);
+                    $is_free_gift      = !empty($cart_item['_axiom_free_gift']);
+                    $gift_old_price    = $is_free_gift && !empty($cart_item['_axiom_free_gift_original_price'])
+                        ? (float) $cart_item['_axiom_free_gift_original_price']
+                        : 0;
                     ?>
-                    <article class="axiom-cart-item">
+                    <article class="axiom-cart-item<?php echo $is_free_gift ? ' is-free-gift' : ''; ?>">
                       <div class="axiom-cart-item-media">
                         <?php if ($product_permalink) : ?>
                           <a href="<?php echo esc_url($product_permalink); ?>">
@@ -131,39 +135,65 @@ if (!empty($recommended_ids)) {
                               <?php endif; ?>
                             </h3>
 
+                            <?php if ($is_free_gift) : ?>
+                              <span class="axiom-cart-free-gift-badge">
+                                <i class="fa-solid fa-gift" aria-hidden="true"></i>
+                                FREE GIFT
+                              </span>
+                            <?php endif; ?>
+
                             <?php if ($variation_data) : ?>
                               <div class="axiom-cart-item-meta">
                                 <?php echo wp_kses_post($variation_data); ?>
                               </div>
                             <?php endif; ?>
 
-                            <div class="axiom-cart-item-unit-price">
-                              <?php echo wp_kses_post($product_price); ?>
+                            <div class="axiom-cart-item-unit-price<?php echo $is_free_gift ? ' is-free-gift-price' : ''; ?>">
+                              <?php if ($is_free_gift) : ?>
+                                <?php if ($gift_old_price > 0) : ?>
+                                  <span class="axiom-cart-gift-old-price"><?php echo wp_kses_post(wc_price($gift_old_price)); ?></span>
+                                <?php endif; ?>
+                                <span class="axiom-cart-gift-zero"><?php echo wp_kses_post(wc_price(0)); ?></span>
+                                <span class="axiom-cart-gift-free-text">FREE</span>
+                              <?php else : ?>
+                                <?php echo wp_kses_post($product_price); ?>
+                              <?php endif; ?>
                             </div>
                           </div>
 
                           <div class="axiom-cart-item-remove">
-                            <?php
-                            echo apply_filters(
-                                'woocommerce_cart_item_remove_link',
-                                sprintf(
-                                    '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
-                                    esc_url(wc_get_cart_remove_url($cart_item_key)),
-                                    esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($product_name))),
-                                    esc_attr($product_id),
-                                    esc_attr($cart_item_key),
-                                    esc_attr($_product->get_sku())
-                                ),
-                                $cart_item_key
-                            );
-                            ?>
+                            <?php if ($is_free_gift) : ?>
+                              <span class="axiom-cart-free-gift-lock" aria-label="Free promotional gift">
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                              </span>
+                            <?php else : ?>
+                              <?php
+                              echo apply_filters(
+                                  'woocommerce_cart_item_remove_link',
+                                  sprintf(
+                                      '<a href="%s" class="remove" aria-label="%s" data-product_id="%s" data-cart_item_key="%s" data-product_sku="%s">&times;</a>',
+                                      esc_url(wc_get_cart_remove_url($cart_item_key)),
+                                      esc_attr(sprintf(__('Remove %s from cart', 'woocommerce'), wp_strip_all_tags($product_name))),
+                                      esc_attr($product_id),
+                                      esc_attr($cart_item_key),
+                                      esc_attr($_product->get_sku())
+                                  ),
+                                  $cart_item_key
+                              );
+                              ?>
+                            <?php endif; ?>
                           </div>
                         </div>
 
                         <div class="axiom-cart-item-bottom">
                           <div class="axiom-cart-item-qty">
                             <?php
-                            if ($_product->is_sold_individually()) {
+                            if ($is_free_gift) {
+                                echo sprintf(
+                                    '<span class="axiom-qty-static axiom-free-gift-qty">Qty 1</span><input type="hidden" name="cart[%s][qty]" value="1" />',
+                                    esc_attr($cart_item_key)
+                                );
+                            } elseif ($_product->is_sold_individually()) {
                                 echo sprintf(
                                     '<span class="axiom-qty-static">1</span><input type="hidden" name="cart[%s][qty]" value="1" />',
                                     esc_attr($cart_item_key)
@@ -180,8 +210,16 @@ if (!empty($recommended_ids)) {
                             ?>
                           </div>
 
-                          <div class="axiom-cart-item-subtotal">
-                            <?php echo wp_kses_post($product_subtotal); ?>
+                          <div class="axiom-cart-item-subtotal<?php echo $is_free_gift ? ' is-free-gift-subtotal' : ''; ?>">
+                            <?php if ($is_free_gift) : ?>
+                              <?php if ($gift_old_price > 0) : ?>
+                                <span class="axiom-cart-gift-old-price"><?php echo wp_kses_post(wc_price($gift_old_price)); ?></span>
+                              <?php endif; ?>
+                              <span class="axiom-cart-gift-zero"><?php echo wp_kses_post(wc_price(0)); ?></span>
+                              <span class="axiom-cart-gift-free-text">FREE</span>
+                            <?php else : ?>
+                              <?php echo wp_kses_post($product_subtotal); ?>
+                            <?php endif; ?>
                           </div>
                         </div>
                       </div>
