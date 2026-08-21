@@ -11,6 +11,30 @@ function axiom_free_shipping_goal_threshold() {
 }
 
 /**
+ * Free gift promotion deadline.
+ *
+ * Change ONLY this date when you launch a new campaign.
+ * Current deadline: Sunday, August 23, 2026 at 11:59:59 PM Pacific.
+ */
+function axiom_free_gift_promo_ends_at() {
+    static $timestamp = null;
+
+    if ($timestamp !== null) {
+        return $timestamp;
+    }
+
+    $timezone = new DateTimeZone('America/Los_Angeles');
+    $deadline = new DateTime('2026-08-23 23:59:59', $timezone);
+    $timestamp = $deadline->getTimestamp();
+
+    return $timestamp;
+}
+
+function axiom_free_gift_promo_is_active() {
+    return time() < axiom_free_gift_promo_ends_at();
+}
+
+/**
  * Product configuration for automatic free gifts.
  *
  * GHK-CU is resolved from the product slug and, if variable,
@@ -99,10 +123,11 @@ function axiom_resolve_free_gift_product($gift) {
         );
 
         return array(
-            'product_id'   => $parent_id,
-            'variation_id' => $variation_id,
-            'attributes'   => $attributes,
-            'name'         => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+            'product_id'     => $parent_id,
+            'variation_id'   => $variation_id,
+            'attributes'     => $attributes,
+            'name'           => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+            'original_price' => (float) $variation->get_price(),
         );
     }
 
@@ -143,10 +168,11 @@ function axiom_resolve_free_gift_product($gift) {
         }
 
         return array(
-            'product_id'   => (int) $product->get_id(),
-            'variation_id' => 0,
-            'attributes'   => array(),
-            'name'         => !empty($gift['display_name']) ? $gift['display_name'] : $product->get_name(),
+            'product_id'     => (int) $product->get_id(),
+            'variation_id'   => 0,
+            'attributes'     => array(),
+            'name'           => !empty($gift['display_name']) ? $gift['display_name'] : $product->get_name(),
+            'original_price' => (float) $product->get_price(),
         );
     }
 
@@ -260,10 +286,11 @@ function axiom_resolve_free_gift_product($gift) {
         : array();
 
     return array(
-        'product_id'   => (int) $product->get_id(),
-        'variation_id' => $variation_id,
-        'attributes'   => $attributes,
-        'name'         => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+        'product_id'     => (int) $product->get_id(),
+        'variation_id'   => $variation_id,
+        'attributes'     => $attributes,
+        'name'           => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+        'original_price' => (float) $variation->get_price(),
     );
 }
 
@@ -338,7 +365,7 @@ function axiom_sync_automatic_free_gifts() {
 
     $syncing = true;
 
-    $qualified = axiom_free_shipping_goal_subtotal() >= (float) axiom_free_shipping_goal_threshold();
+    $qualified = axiom_free_gift_promo_is_active() && axiom_free_shipping_goal_subtotal() >= (float) axiom_free_shipping_goal_threshold();
     $resolved  = array();
 
     foreach (axiom_free_gift_config() as $gift) {
@@ -357,6 +384,14 @@ function axiom_sync_automatic_free_gifts() {
                 if ((int) WC()->cart->get_cart_item($existing_key)['quantity'] !== 1) {
                     WC()->cart->set_quantity($existing_key, 1, false);
                 }
+
+                if (
+                    empty(WC()->cart->cart_contents[$existing_key]['_axiom_free_gift_original_price']) &&
+                    isset($gift['original_price'])
+                ) {
+                    WC()->cart->cart_contents[$existing_key]['_axiom_free_gift_original_price'] = (float) $gift['original_price'];
+                }
+
                 continue;
             }
 
@@ -366,8 +401,9 @@ function axiom_sync_automatic_free_gifts() {
                 $gift['variation_id'],
                 $gift['attributes'],
                 array(
-                    '_axiom_free_gift'      => 1,
-                    '_axiom_free_gift_name' => $gift['name'],
+                    '_axiom_free_gift'                => 1,
+                    '_axiom_free_gift_name'           => $gift['name'],
+                    '_axiom_free_gift_original_price' => isset($gift['original_price']) ? (float) $gift['original_price'] : 0,
                 )
             );
 
@@ -463,31 +499,51 @@ function axiom_render_free_shipping_goal() {
     $threshold = (float) axiom_free_shipping_goal_threshold();
     $subtotal  = (float) axiom_free_shipping_goal_subtotal();
     $remaining = max(0, $threshold - $subtotal);
-    $progress  = $threshold > 0 ? min(100, ($subtotal / $threshold) * 100) : 0;
-    $unlocked  = $subtotal >= $threshold;
+    $progress     = $threshold > 0 ? min(100, ($subtotal / $threshold) * 100) : 0;
+    $promo_active = axiom_free_gift_promo_is_active();
+    $unlocked     = $promo_active && $subtotal >= $threshold;
+    $deadline_ms  = axiom_free_gift_promo_ends_at() * 1000;
 
-    $goal_class = $unlocked ? 'is-unlocked' : 'is-progress';
+    $goal_class = !$promo_active ? 'is-ended' : ($unlocked ? 'is-unlocked' : 'is-progress');
     ?>
-    <div class="axiom-free-shipping-goal <?php echo esc_attr($goal_class); ?>" data-threshold="<?php echo esc_attr($threshold); ?>" data-subtotal="<?php echo esc_attr($subtotal); ?>">
+    <div class="axiom-free-shipping-goal <?php echo esc_attr($goal_class); ?>" data-threshold="<?php echo esc_attr($threshold); ?>" data-subtotal="<?php echo esc_attr($subtotal); ?>" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">
         <div class="axiom-free-shipping-goal__top">
-            <span class="axiom-free-shipping-goal__badge">FREE GIFT</span>
+            <span class="axiom-free-shipping-goal__badge">LIMITED-TIME FREE GIFT</span>
 
             <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__status">Unlocked</span>
             <?php endif; ?>
         </div>
 
+        <?php if ($promo_active) : ?>
+            <div class="axiom-free-shipping-goal__countdown-row">
+                <span class="axiom-free-shipping-goal__countdown-label">Offer ends in</span>
+                <strong class="axiom-promo-countdown" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">--:--:--</strong>
+            </div>
+        <?php else : ?>
+            <div class="axiom-free-shipping-goal__countdown-row is-ended">
+                <span class="axiom-free-shipping-goal__countdown-label">This promotion has ended</span>
+            </div>
+        <?php endif; ?>
+
         <div class="axiom-free-shipping-goal__message">
-            <?php if ($unlocked) : ?>
+            <?php if (!$promo_active) : ?>
+                <span class="axiom-free-shipping-goal__headline">
+                    Free gift promotion ended
+                </span>
+                <span class="axiom-free-shipping-goal__subheadline">
+                    Watch the announcement bar for the next Axiom promotion.
+                </span>
+            <?php elseif ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__headline">
                     GHK-CU 100mg + MT-1 10mg unlocked
                 </span>
                 <span class="axiom-free-shipping-goal__subheadline">
-                    Both gifts are automatically added to your cart for <strong>FREE</strong>.
+                    Both gifts were automatically added to your cart for <strong>FREE</strong>.
                 </span>
             <?php else : ?>
                 <span class="axiom-free-shipping-goal__headline">
-                    Free GHK-CU 100mg + MT-1 10mg at $175
+                    Get GHK-CU 100mg + MT-1 10mg FREE at $175
                 </span>
                 <span class="axiom-free-shipping-goal__subheadline">
                     Add <strong><?php echo wp_kses_post(wc_price($remaining)); ?></strong> more to unlock both gifts.
@@ -568,6 +624,42 @@ function axiom_enqueue_free_shipping_goal_styles() {
     .axiom-free-shipping-goal__status {
         background: #e2f7ea;
         color: #16834a;
+    }
+
+    .axiom-free-shipping-goal__countdown-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin: 0 0 9px;
+        padding: 8px 10px;
+        border: 1px solid #d8e9fb;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .axiom-free-shipping-goal__countdown-label {
+        color: #53657a;
+        font-size: 11px;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+    }
+
+    .axiom-promo-countdown {
+        color: #1478d4;
+        font-size: 15px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: .04em;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .axiom-free-shipping-goal__countdown-row.is-ended {
+        justify-content: center;
+        background: #f8fafc;
     }
 
     .axiom-free-shipping-goal__message {
@@ -659,6 +751,25 @@ function axiom_enqueue_free_shipping_goal_styles() {
         fill: #35a86b;
     }
 
+    .axiom-free-shipping-goal.is-ended {
+        background: #f8fafc;
+        border-bottom-color: #e5e7eb;
+    }
+
+    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__badge {
+        background: #eef2f7;
+        color: #667085;
+    }
+
+    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__bar {
+        background: #e5e7eb;
+    }
+
+    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__fill {
+        width: 0 !important;
+        background: #cbd5e1;
+    }
+
     .axiom-free-gift-qty {
         display: inline-flex;
         align-items: center;
@@ -684,6 +795,18 @@ function axiom_enqueue_free_shipping_goal_styles() {
             font-size: 11.5px;
         }
 
+        .axiom-free-shipping-goal__countdown-row {
+            padding: 7px 9px;
+        }
+
+        .axiom-free-shipping-goal__countdown-label {
+            font-size: 9.5px;
+        }
+
+        .axiom-promo-countdown {
+            font-size: 14px;
+        }
+
         .axiom-free-shipping-goal__icon {
             flex-basis: 32px;
             width: 32px;
@@ -695,4 +818,76 @@ function axiom_enqueue_free_shipping_goal_styles() {
     wp_register_style('axiom-free-shipping-goal', false, array(), '1.2.0');
     wp_enqueue_style('axiom-free-shipping-goal');
     wp_add_inline_style('axiom-free-shipping-goal', $css);
+}
+
+
+/**
+ * Lightweight countdown timer.
+ * Works for both the AJAX cart drawer and the full cart page because it scans
+ * the current DOM once per second instead of attaching duplicate timers.
+ */
+add_action('wp_footer', 'axiom_render_free_gift_countdown_script', 99);
+
+function axiom_render_free_gift_countdown_script() {
+    ?>
+    <script>
+    (function () {
+        if (window.__axiomFreeGiftCountdownStarted) {
+            return;
+        }
+
+        window.__axiomFreeGiftCountdownStarted = true;
+
+        function pad(value) {
+            return String(value).padStart(2, '0');
+        }
+
+        function updateCountdowns() {
+            var nodes = document.querySelectorAll('.axiom-promo-countdown');
+
+            nodes.forEach(function (node) {
+                var end = Number(node.getAttribute('data-promo-end') || 0);
+
+                if (!end) {
+                    return;
+                }
+
+                var remaining = Math.max(0, end - Date.now());
+
+                if (remaining <= 0) {
+                    node.textContent = '00:00:00';
+
+                    var goal = node.closest('.axiom-free-shipping-goal');
+                    if (goal) {
+                        goal.classList.remove('is-progress', 'is-unlocked');
+                        goal.classList.add('is-ended');
+
+                        var label = goal.querySelector('.axiom-free-shipping-goal__countdown-label');
+                        if (label) {
+                            label.textContent = 'Offer ended';
+                        }
+                    }
+
+                    return;
+                }
+
+                var totalSeconds = Math.floor(remaining / 1000);
+                var days = Math.floor(totalSeconds / 86400);
+                var hours = Math.floor((totalSeconds % 86400) / 3600);
+                var minutes = Math.floor((totalSeconds % 3600) / 60);
+                var seconds = totalSeconds % 60;
+
+                if (days > 0) {
+                    node.textContent = days + 'd ' + pad(hours) + 'h ' + pad(minutes) + 'm';
+                } else {
+                    node.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+                }
+            });
+        }
+
+        updateCountdowns();
+        window.setInterval(updateCountdowns, 1000);
+    })();
+    </script>
+    <?php
 }
