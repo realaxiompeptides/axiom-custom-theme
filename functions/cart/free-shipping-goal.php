@@ -11,14 +11,12 @@ function axiom_free_shipping_goal_threshold() {
 }
 
 /**
- * Real flash free-gift promotion.
+ * Rolling free-gift bonus window.
  *
- * The countdown is GLOBAL, not per-visitor, and it never resets on refresh.
- * The first request after a new campaign ID is deployed starts a random
- * countdown between 40 and 60 minutes.
+ * The offer stays active continuously. The visible bonus window runs for
+ * a random 40-60 minutes and immediately rolls into a new window when it expires.
  *
- * To launch a NEW flash campaign later, change the campaign ID below.
- * Example: axiom-free-gift-flash-2
+ * Changing the campaign ID resets the stored server-side window if needed.
  */
 function axiom_free_gift_campaign_id() {
     return 'axiom-free-gift-flash-1';
@@ -34,21 +32,23 @@ function axiom_free_gift_promo_ends_at() {
     $option_key = 'axiom_free_gift_end_' . sanitize_key(axiom_free_gift_campaign_id());
     $stored_end = (int) get_option($option_key, 0);
 
-    if ($stored_end > 0) {
-        $timestamp = $stored_end;
-        return $timestamp;
+    /*
+     * If there is no timer yet, or the previous bonus window expired,
+     * immediately start a new random 40-60 minute window.
+     */
+    if ($stored_end <= time()) {
+        $stored_end = time() + random_int(40 * 60, 60 * 60);
+        update_option($option_key, $stored_end, false);
     }
 
-    // Random real flash deadline: 40 to 60 minutes, global for all visitors.
-    $seconds = random_int(40 * 60, 60 * 60);
-    $timestamp = time() + $seconds;
-    add_option($option_key, $timestamp, '', false);
+    $timestamp = $stored_end;
 
     return $timestamp;
 }
 
 function axiom_free_gift_promo_is_active() {
-    return time() < axiom_free_gift_promo_ends_at();
+    // The free-gift offer remains active continuously.
+    return true;
 }
 
 /**
@@ -527,14 +527,7 @@ function axiom_render_free_shipping_goal() {
         <div class="axiom-free-shipping-goal__top">
             <span class="axiom-free-shipping-goal__badge">FREE GIFT</span>
 
-            <?php if (!$promo_active) : ?>
-                <span class="axiom-free-shipping-goal__status axiom-free-shipping-goal__status--ended">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 5v5.59l3.3 3.29-1.42 1.42L11 13V7Z"></path>
-                    </svg>
-                    Ended
-                </span>
-            <?php elseif ($unlocked) : ?>
+            <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__status axiom-free-shipping-goal__status--unlocked">
                     <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M17 8h-1V6a4 4 0 1 0-8 0h2a2 2 0 1 1 4 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm0 10H7v-8h10Z"></path>
@@ -551,26 +544,13 @@ function axiom_render_free_shipping_goal() {
             <?php endif; ?>
         </div>
 
-        <?php if ($promo_active) : ?>
-            <div class="axiom-free-shipping-goal__countdown-row">
-                <span class="axiom-free-shipping-goal__countdown-label">Flash bonus ends in</span>
-                <strong class="axiom-promo-countdown" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">--:--:--</strong>
-            </div>
-        <?php else : ?>
-            <div class="axiom-free-shipping-goal__countdown-row is-ended">
-                <span class="axiom-free-shipping-goal__countdown-label">This promotion has ended</span>
-            </div>
-        <?php endif; ?>
+        <div class="axiom-free-shipping-goal__countdown-row">
+            <span class="axiom-free-shipping-goal__countdown-label">Bonus window refreshes in</span>
+            <strong class="axiom-promo-countdown" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">--:--</strong>
+        </div>
 
         <div class="axiom-free-shipping-goal__message">
-            <?php if (!$promo_active) : ?>
-                <span class="axiom-free-shipping-goal__headline">
-                    Free gift promotion ended
-                </span>
-                <span class="axiom-free-shipping-goal__subheadline">
-                    Watch the announcement bar for the next Axiom promotion.
-                </span>
-            <?php elseif ($unlocked) : ?>
+            <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__headline">
                     GHK-CU 100mg + MT-1 10mg unlocked
                 </span>
@@ -676,10 +656,6 @@ function axiom_enqueue_free_shipping_goal_styles() {
         color: #15803d;
     }
 
-    .axiom-free-shipping-goal__status--ended {
-        background: #eef2f7;
-        color: #667085;
-    }
 
     .axiom-free-shipping-goal__countdown-row {
         display: flex;
@@ -728,10 +704,6 @@ function axiom_enqueue_free_shipping_goal_styles() {
         50% { opacity: .62; }
     }
 
-    .axiom-free-shipping-goal__countdown-row.is-ended {
-        justify-content: center;
-        background: #f8fafc;
-    }
 
     .axiom-free-shipping-goal__message {
         margin-bottom: 10px;
@@ -822,24 +794,6 @@ function axiom_enqueue_free_shipping_goal_styles() {
         fill: #35a86b;
     }
 
-    .axiom-free-shipping-goal.is-ended {
-        background: #f8fafc;
-        border-bottom-color: #e5e7eb;
-    }
-
-    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__badge {
-        background: #eef2f7;
-        color: #667085;
-    }
-
-    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__bar {
-        background: #e5e7eb;
-    }
-
-    .axiom-free-shipping-goal.is-ended .axiom-free-shipping-goal__fill {
-        width: 0 !important;
-        background: #cbd5e1;
-    }
 
     .axiom-free-gift-qty {
         display: inline-flex;
@@ -927,20 +881,14 @@ function axiom_render_free_gift_countdown_script() {
                 var remaining = Math.max(0, end - Date.now());
 
                 if (remaining <= 0) {
-                    node.textContent = '00:00:00';
-
-                    var goal = node.closest('.axiom-free-shipping-goal');
-                    if (goal) {
-                        goal.classList.remove('is-progress', 'is-unlocked');
-                        goal.classList.add('is-ended');
-
-                        var label = goal.querySelector('.axiom-free-shipping-goal__countdown-label');
-                        if (label) {
-                            label.textContent = 'Offer ended';
-                        }
-                    }
-
-                    return;
+                    /*
+                     * The free-gift offer stays active. Start a fresh visible
+                     * bonus window immediately instead of showing an ended state.
+                     */
+                    var nextWindowSeconds = Math.floor(Math.random() * ((60 * 60) - (40 * 60) + 1)) + (40 * 60);
+                    end = Date.now() + (nextWindowSeconds * 1000);
+                    node.setAttribute('data-promo-end', String(end));
+                    remaining = end - Date.now();
                 }
 
                 var totalSeconds = Math.floor(remaining / 1000);
