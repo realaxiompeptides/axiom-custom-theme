@@ -140,17 +140,24 @@ function axiom_get_cart_drawer_payload() {
         $quantity           = isset($cart_item['quantity']) ? (int) $cart_item['quantity'] : 1;
         $line_subtotal      = WC()->cart->get_product_subtotal($product, $quantity);
         $variant            = axiom_cart_variation_text($cart_item);
+        $is_free_gift       = !empty($cart_item['_axiom_free_gift']);
+        $original_price     = $is_free_gift && isset($cart_item['_axiom_free_gift_original_price'])
+            ? (float) $cart_item['_axiom_free_gift_original_price']
+            : 0;
 
         $items[] = array(
-            'key'       => $cart_item_key,
-            'productId' => $display_product_id,
-            'name'      => $product->get_name(),
-            'image'     => $image ? $image : wc_placeholder_img_src(),
-            'quantity'  => $quantity,
-            'subtotal'  => $line_subtotal,
-            'priceHtml' => $product->get_price_html(),
-            'variant'   => $variant,
-            'link'      => get_permalink($display_product_id),
+            'key'              => $cart_item_key,
+            'productId'        => $display_product_id,
+            'name'             => $product->get_name(),
+            'image'            => $image ? $image : wc_placeholder_img_src(),
+            'quantity'         => $quantity,
+            'subtotal'         => $line_subtotal,
+            'priceHtml'        => $product->get_price_html(),
+            'variant'          => $variant,
+            'link'             => get_permalink($display_product_id),
+            'isFreeGift'       => $is_free_gift,
+            'originalPriceHtml'=> $original_price > 0 ? wc_price($original_price) : '',
+            'freePriceHtml'    => wc_price(0),
         );
     }
 
