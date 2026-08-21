@@ -563,3 +563,106 @@
     font-size: 14px;
   }
 }
+
+/* Promotional free gift rows */
+.axiom-cart-item.is-free-gift {
+  background: linear-gradient(180deg, #fbfdff 0%, #f2f8ff 100%);
+  border-radius: 18px;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.axiom-cart-free-gift-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 7px;
+  min-height: 23px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #dff0ff;
+  color: #1978cf;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.axiom-cart-free-gift-lock {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: #e4f7eb;
+  color: #1b8d53;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.axiom-cart-item-unit-price.is-free-gift-price,
+.axiom-cart-item-subtotal.is-free-gift-subtotal {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.axiom-cart-item-subtotal.is-free-gift-subtotal {
+  justify-content: flex-end;
+}
+
+.axiom-cart-gift-old-price {
+  color: #8b98a9;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.axiom-cart-gift-zero {
+  color: #167a48;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.axiom-cart-gift-free-text {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: #ddf5e7;
+  color: #167a48;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+.axiom-cart-item.is-free-gift .axiom-free-gift-qty {
+  min-width: 70px;
+  padding: 7px 12px;
+  border: 1px solid #d7e8f7;
+  border-radius: 999px;
+  background: #fff;
+  color: #617287;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+@media (max-width: 767px) {
+  .axiom-cart-item.is-free-gift {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .axiom-cart-gift-old-price {
+    font-size: 11px;
+  }
+
+  .axiom-cart-gift-zero {
+    font-size: 15px;
+  }
+}
