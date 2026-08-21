@@ -545,7 +545,7 @@ function axiom_render_free_shipping_goal() {
         </div>
 
         <div class="axiom-free-shipping-goal__countdown-row">
-            <span class="axiom-free-shipping-goal__countdown-label">Bonus window refreshes in</span>
+            <span class="axiom-free-shipping-goal__countdown-label">Free gift offer ends in</span>
             <strong class="axiom-promo-countdown" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">--:--</strong>
         </div>
 
