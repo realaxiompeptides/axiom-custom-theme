@@ -11,16 +11,17 @@ function axiom_free_shipping_goal_threshold() {
 }
 
 /**
- * Real one-hour free-gift flash promotion.
+ * Real flash free-gift promotion.
  *
  * The countdown is GLOBAL, not per-visitor, and it never resets on refresh.
- * The first request after a new campaign ID is deployed starts the 59:59 window.
+ * The first request after a new campaign ID is deployed starts a random
+ * countdown between 40 and 60 minutes.
  *
- * To launch a NEW one-hour campaign later, change the campaign ID below.
- * Example: axiom-free-gift-hour-2
+ * To launch a NEW flash campaign later, change the campaign ID below.
+ * Example: axiom-free-gift-flash-2
  */
 function axiom_free_gift_campaign_id() {
-    return 'axiom-free-gift-hour-1';
+    return 'axiom-free-gift-flash-1';
 }
 
 function axiom_free_gift_promo_ends_at() {
@@ -38,8 +39,9 @@ function axiom_free_gift_promo_ends_at() {
         return $timestamp;
     }
 
-    // 59 minutes, 59 seconds. This is a real global deadline.
-    $timestamp = time() + 3599;
+    // Random real flash deadline: 40 to 60 minutes, global for all visitors.
+    $seconds = random_int(40 * 60, 60 * 60);
+    $timestamp = time() + $seconds;
     add_option($option_key, $timestamp, '', false);
 
     return $timestamp;
@@ -523,7 +525,7 @@ function axiom_render_free_shipping_goal() {
     ?>
     <div class="axiom-free-shipping-goal <?php echo esc_attr($goal_class); ?>" data-threshold="<?php echo esc_attr($threshold); ?>" data-subtotal="<?php echo esc_attr($subtotal); ?>" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">
         <div class="axiom-free-shipping-goal__top">
-            <span class="axiom-free-shipping-goal__badge">LIMITED-TIME FREE GIFT</span>
+            <span class="axiom-free-shipping-goal__badge">FREE GIFT</span>
 
             <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__status">Unlocked</span>
