@@ -22,15 +22,14 @@ function axiom_free_shipping_goal_threshold() {
 function axiom_free_gift_config() {
     return array(
         array(
-            'slugs'                    => array('ghk-cu'),
-            'preferred_variation_id'   => 83,
-            'variation_match'          => '100mg',
-            'display_name'             => 'GHK-CU 100mg',
+            'product_id'       => 63,
+            'variation_id'     => 83,
+            'display_name'     => 'GHK-CU 100mg',
         ),
         array(
-            'slugs'                    => array('mt-1'),
-            'variation_match'          => '10mg',
-            'display_name'             => 'MT-1 10mg',
+            'slugs'            => array('mt-1'),
+            'variation_match'  => '10mg',
+            'display_name'     => 'MT-1 10mg',
         ),
     );
 }
@@ -47,6 +46,66 @@ function axiom_free_gift_normalize($value) {
  * Resolve a configured free gift product/variation.
  */
 function axiom_resolve_free_gift_product($gift) {
+    /*
+     * Exact variable-product mapping.
+     * GHK-CU parent = 63, 100mg variation = 83.
+     */
+    if (!empty($gift['product_id']) && !empty($gift['variation_id'])) {
+        $parent_id    = (int) $gift['product_id'];
+        $variation_id = (int) $gift['variation_id'];
+
+        $parent    = wc_get_product($parent_id);
+        $variation = wc_get_product($variation_id);
+
+        if (!$parent || !$parent->is_type('variable')) {
+            error_log('Axiom free gift: expected variable parent product #' . $parent_id . ' was not found.');
+            return null;
+        }
+
+        if (!$variation || !$variation->is_type('variation')) {
+            error_log('Axiom free gift: variation #' . $variation_id . ' was not found or is not a variation.');
+            return null;
+        }
+
+        if ((int) $variation->get_parent_id() !== $parent_id) {
+            error_log(
+                'Axiom free gift: variation #' . $variation_id .
+                ' belongs to parent #' . (int) $variation->get_parent_id() .
+                ', expected parent #' . $parent_id
+            );
+            return null;
+        }
+
+        if (!$variation->is_purchasable()) {
+            error_log('Axiom free gift: variation #' . $variation_id . ' is not purchasable.');
+            return null;
+        }
+
+        if (!$variation->is_in_stock() && !$variation->backorders_allowed()) {
+            error_log('Axiom free gift: variation #' . $variation_id . ' is out of stock.');
+            return null;
+        }
+
+        /*
+         * This is the exact attribute format WC_Cart::add_to_cart expects,
+         * e.g. attribute_pa_size => 100mg.
+         */
+        $attributes = $variation->get_variation_attributes();
+
+        error_log(
+            'Axiom free gift exact GHK mapping: parent=' . $parent_id .
+            ' variation=' . $variation_id .
+            ' attributes=' . wp_json_encode($attributes)
+        );
+
+        return array(
+            'product_id'   => $parent_id,
+            'variation_id' => $variation_id,
+            'attributes'   => $attributes,
+            'name'         => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+        );
+    }
+
     $slugs = !empty($gift['slugs']) && is_array($gift['slugs'])
         ? $gift['slugs']
         : array();
