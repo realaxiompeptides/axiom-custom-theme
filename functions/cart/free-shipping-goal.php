@@ -4,14 +4,14 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Free shipping goal threshold.
+ * Free gift goal threshold.
  */
 function axiom_free_shipping_goal_threshold() {
     return 175;
 }
 
 /**
- * Get subtotal for the free shipping goal.
+ * Get subtotal for the goal.
  * Uses cart contents total, excluding shipping.
  */
 function axiom_free_shipping_goal_subtotal() {
@@ -23,7 +23,7 @@ function axiom_free_shipping_goal_subtotal() {
 }
 
 /**
- * Render the free shipping goal UI.
+ * Render the free gift goal UI.
  */
 function axiom_render_free_shipping_goal() {
     if (!function_exists('WC') || !WC()->cart) {
@@ -39,14 +39,28 @@ function axiom_render_free_shipping_goal() {
     $goal_class = $unlocked ? 'is-unlocked' : 'is-progress';
     ?>
     <div class="axiom-free-shipping-goal <?php echo esc_attr($goal_class); ?>" data-threshold="<?php echo esc_attr($threshold); ?>" data-subtotal="<?php echo esc_attr($subtotal); ?>">
+        <div class="axiom-free-shipping-goal__top">
+            <span class="axiom-free-shipping-goal__badge">FREE GIFT PROGRESS</span>
+
+            <?php if ($unlocked) : ?>
+                <span class="axiom-free-shipping-goal__status">Unlocked</span>
+            <?php endif; ?>
+        </div>
+
         <div class="axiom-free-shipping-goal__message">
             <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__headline">
-                    Congrats! You’ve unlocked your FREE GHK-CU 100mg + MT-1 10mg gifts
+                    You’ve unlocked FREE GHK-CU 100mg + MT-1 10mg
+                </span>
+                <span class="axiom-free-shipping-goal__subheadline">
+                    Your free gift bundle is now qualified for this order.
                 </span>
             <?php else : ?>
                 <span class="axiom-free-shipping-goal__headline">
-                    Add items worth <strong><?php echo wp_kses_post(wc_price($remaining)); ?></strong> to unlock your FREE GHK-CU 100mg + MT-1 10mg gifts
+                    Unlock FREE GHK-CU 100mg + MT-1 10mg
+                </span>
+                <span class="axiom-free-shipping-goal__subheadline">
+                    Add <strong><?php echo wp_kses_post(wc_price($remaining)); ?></strong> more to claim your free gift bundle.
                 </span>
             <?php endif; ?>
         </div>
@@ -58,7 +72,7 @@ function axiom_render_free_shipping_goal() {
 
             <div class="axiom-free-shipping-goal__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" focusable="false">
-                    <path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h9A1.5 1.5 0 0 1 15 7.5V9h2.086a1.5 1.5 0 0 1 1.2.6l2.414 3.219c.195.26.3.577.3.902V16.5A1.5 1.5 0 0 1 19.5 18H18a3 3 0 0 1-6 0H9a3 3 0 0 1-6 0H2.5A1.5 1.5 0 0 1 1 16.5v-1A1.5 1.5 0 0 1 2.5 14H3V7.5Zm12 3V14h4.5l-1.928-2.571a.5.5 0 0 0-.4-.2H15Zm-9.5 8a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Zm9 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3Z"></path>
+                    <path d="M20 7h-2.18A2.996 2.996 0 0 0 18 6c0-1.66-1.34-3-3-3-1.54 0-2.81 1.16-2.98 2.65h-.04A2.995 2.995 0 0 0 9 3C7.34 3 6 4.34 6 6c0 .35.06.69.18 1H4c-1.1 0-2 .9-2 2v2c0 .74.4 1.38 1 1.72V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6.28c.6-.34 1-.98 1-1.72V9c0-1.1-.9-2-2-2Zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1h-2V6c0-.55.45-1 1-1Zm-6 0c.55 0 1 .45 1 1v1H9c-.55 0-1-.45-1-1s.45-1 1-1Zm11 6h-7v-2h7v2Zm-9-2v2H4V9h7Zm-7 4h7v6H5v-6Zm9 6v-6h7v6h-7Z"></path>
                 </svg>
             </div>
         </div>
@@ -67,7 +81,7 @@ function axiom_render_free_shipping_goal() {
 }
 
 /**
- * Return the free shipping goal markup as HTML for AJAX cart drawer rendering.
+ * Return the free gift goal markup as HTML for AJAX cart drawer rendering.
  */
 function axiom_get_cart_drawer_free_shipping_goal_html() {
     if (!function_exists('WC') || !WC()->cart) {
@@ -80,7 +94,7 @@ function axiom_get_cart_drawer_free_shipping_goal_html() {
 }
 
 /**
- * Free shipping goal styles.
+ * Free gift goal styles.
  */
 add_action('wp_enqueue_scripts', 'axiom_enqueue_free_shipping_goal_styles', 30);
 
@@ -88,41 +102,89 @@ function axiom_enqueue_free_shipping_goal_styles() {
     $css = "
     .axiom-free-shipping-goal {
         margin: 0 0 18px;
-        padding: 4px 0 2px;
+        padding: 14px 14px 12px;
+        border: 1px solid #dbeafe;
+        border-radius: 18px;
+        background: linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
+    }
+
+    .axiom-free-shipping-goal__top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .axiom-free-shipping-goal__badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #e0efff;
+        color: #2d6fb5;
+        font-size: 11px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .axiom-free-shipping-goal__status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 28px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: #dff6e8;
+        color: #1f8a4d;
+        font-size: 11px;
+        line-height: 1;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        white-space: nowrap;
     }
 
     .axiom-free-shipping-goal__message {
-        text-align: center;
-        margin-bottom: 14px;
+        margin-bottom: 12px;
     }
 
     .axiom-free-shipping-goal__headline {
-        display: inline-block;
+        display: block;
         font-size: 16px;
+        line-height: 1.3;
+        font-weight: 800;
+        color: #0f172a;
+        margin-bottom: 4px;
+    }
+
+    .axiom-free-shipping-goal__subheadline {
+        display: block;
+        font-size: 13px;
         line-height: 1.45;
         font-weight: 600;
-        color: #6b7280;
-        letter-spacing: 0;
+        color: #64748b;
     }
 
-    .axiom-free-shipping-goal__headline strong {
-        color: #53a7f7;
-        font-weight: 800;
-    }
-
-    .axiom-free-shipping-goal.is-unlocked .axiom-free-shipping-goal__headline {
-        color: #53a7f7;
+    .axiom-free-shipping-goal__subheadline strong {
+        color: #2f8ff2;
         font-weight: 800;
     }
 
     .axiom-free-shipping-goal__bar-wrap {
         position: relative;
-        padding-right: 68px;
+        padding-right: 50px;
+        min-height: 40px;
     }
 
     .axiom-free-shipping-goal__bar {
         position: relative;
-        height: 14px;
+        height: 12px;
         border-radius: 999px;
         background: #dbeafe;
         overflow: hidden;
@@ -132,8 +194,8 @@ function axiom_enqueue_free_shipping_goal_styles() {
         display: block;
         height: 100%;
         border-radius: 999px;
-        background: linear-gradient(90deg, #67b5fb 0%, #53a7f7 100%);
-        box-shadow: 0 4px 14px rgba(83, 167, 247, 0.28);
+        background: linear-gradient(90deg, #6ab8ff 0%, #3b99f4 100%);
+        box-shadow: 0 4px 14px rgba(59, 153, 244, 0.28);
         transition: width 0.3s ease;
     }
 
@@ -141,12 +203,12 @@ function axiom_enqueue_free_shipping_goal_styles() {
         position: absolute;
         top: 50%;
         right: 0;
-        width: 56px;
-        height: 56px;
+        width: 40px;
+        height: 40px;
         transform: translateY(-50%);
         border-radius: 999px;
         background: #ffffff;
-        border: 3px solid #dbeafe;
+        border: 2px solid #cfe5ff;
         box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
         display: flex;
         align-items: center;
@@ -154,48 +216,80 @@ function axiom_enqueue_free_shipping_goal_styles() {
     }
 
     .axiom-free-shipping-goal__icon svg {
-        width: 25px;
-        height: 25px;
-        fill: #53a7f7;
+        width: 19px;
+        height: 19px;
+        fill: #3b99f4;
+    }
+
+    .axiom-free-shipping-goal.is-unlocked {
+        border-color: #bfe0ff;
+        background: linear-gradient(180deg, #f4faff 0%, #eaf4ff 100%);
+    }
+
+    .axiom-free-shipping-goal.is-unlocked .axiom-free-shipping-goal__headline {
+        color: #1673d3;
+    }
+
+    .axiom-free-shipping-goal.is-unlocked .axiom-free-shipping-goal__bar {
+        background: #cfe6ff;
     }
 
     .axiom-free-shipping-goal.is-unlocked .axiom-free-shipping-goal__icon {
-        border-color: #53a7f7;
-        background: #eef7ff;
+        border-color: #7cbcff;
+        background: #ffffff;
     }
 
     @media (max-width: 767px) {
         .axiom-free-shipping-goal {
             margin: 0 0 16px;
+            padding: 12px 12px 10px;
+            border-radius: 16px;
+        }
+
+        .axiom-free-shipping-goal__top {
+            gap: 8px;
+            margin-bottom: 9px;
+        }
+
+        .axiom-free-shipping-goal__badge,
+        .axiom-free-shipping-goal__status {
+            font-size: 10px;
+            min-height: 26px;
+            padding: 6px 9px;
         }
 
         .axiom-free-shipping-goal__headline {
-            font-size: 14px;
-            line-height: 1.5;
+            font-size: 15px;
+            line-height: 1.32;
+        }
+
+        .axiom-free-shipping-goal__subheadline {
+            font-size: 12.5px;
+            line-height: 1.45;
         }
 
         .axiom-free-shipping-goal__bar-wrap {
-            padding-right: 58px;
+            padding-right: 46px;
+            min-height: 36px;
         }
 
         .axiom-free-shipping-goal__bar {
-            height: 12px;
+            height: 10px;
         }
 
         .axiom-free-shipping-goal__icon {
-            width: 48px;
-            height: 48px;
-            border-width: 2px;
+            width: 36px;
+            height: 36px;
         }
 
         .axiom-free-shipping-goal__icon svg {
-            width: 22px;
-            height: 22px;
+            width: 17px;
+            height: 17px;
         }
     }
     ";
 
-    wp_register_style('axiom-free-shipping-goal', false, array(), '1.0.0');
+    wp_register_style('axiom-free-shipping-goal', false, array(), '1.1.0');
     wp_enqueue_style('axiom-free-shipping-goal');
     wp_add_inline_style('axiom-free-shipping-goal', $css);
 }
