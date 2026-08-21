@@ -67,86 +67,46 @@ function axiom_get_single_variation_for_upsell($product) {
 
 function axiom_find_bac_water_upsell_product() {
     /*
-     * TEMPORARILY DISABLED:
-     * Hides BAC Water upsell without deleting the upsell code.
-     * Remove this return null; line when BAC Water is back in stock.
+     * BAC Water cart upsell.
+     *
+     * Uses the exact WooCommerce product slug instead of running
+     * a product search every time the cart drawer refreshes.
      */
-    return null;
+    $page = get_page_by_path('bac-water', OBJECT, 'product');
 
-    $candidate_slugs = array(
-        'bac-water-10ml',
-        'bac-water-10mL',
-        'bac-water',
+    if (!$page) {
+        return null;
+    }
+
+    $product = wc_get_product($page->ID);
+
+    if (!$product || !$product->is_purchasable()) {
+        return null;
+    }
+
+    if ($product->is_type('variable')) {
+        $single_variation = axiom_get_single_variation_for_upsell($product);
+
+        if (!$single_variation) {
+            return null;
+        }
+
+        return array(
+            'product'      => $product,
+            'variation_id' => $single_variation['variation_id'],
+            'attributes'   => $single_variation['attributes'],
+        );
+    }
+
+    if (!$product->is_in_stock() && !$product->backorders_allowed()) {
+        return null;
+    }
+
+    return array(
+        'product'      => $product,
+        'variation_id' => 0,
+        'attributes'   => array(),
     );
-
-    foreach ($candidate_slugs as $slug) {
-        $page = get_page_by_path($slug, OBJECT, 'product');
-        if (!$page) continue;
-
-        $product = wc_get_product($page->ID);
-
-        if (!$product || !$product->is_purchasable()) continue;
-
-        if ($product->is_type('variable')) {
-            $single_variation = axiom_get_single_variation_for_upsell($product);
-
-            if ($single_variation) {
-                return array(
-                    'product'      => $product,
-                    'variation_id' => $single_variation['variation_id'],
-                    'attributes'   => $single_variation['attributes'],
-                );
-            }
-        } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-            return array(
-                'product'      => $product,
-                'variation_id' => 0,
-                'attributes'   => array(),
-            );
-        }
-    }
-
-    $query = new WP_Query(array(
-        'post_type'      => 'product',
-        'post_status'    => 'publish',
-        'posts_per_page' => 5,
-        's'              => 'BAC Water',
-    ));
-
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            $product = wc_get_product(get_the_ID());
-
-            if (!$product || !$product->is_purchasable()) continue;
-
-            if ($product->is_type('variable')) {
-                $single_variation = axiom_get_single_variation_for_upsell($product);
-
-                if ($single_variation) {
-                    wp_reset_postdata();
-
-                    return array(
-                        'product'      => $product,
-                        'variation_id' => $single_variation['variation_id'],
-                        'attributes'   => $single_variation['attributes'],
-                    );
-                }
-            } elseif ($product->is_in_stock() || $product->backorders_allowed()) {
-                wp_reset_postdata();
-
-                return array(
-                    'product'      => $product,
-                    'variation_id' => 0,
-                    'attributes'   => array(),
-                );
-            }
-        }
-
-        wp_reset_postdata();
-    }
-
-    return null;
 }
 
 function axiom_get_cart_drawer_payload() {
