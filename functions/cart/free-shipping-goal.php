@@ -7,7 +7,7 @@ if (!defined('ABSPATH')) {
  * Free shipping goal threshold.
  */
 function axiom_free_shipping_goal_threshold() {
-    return 250;
+    return 175;
 }
 
 /**
@@ -42,11 +42,11 @@ function axiom_render_free_shipping_goal() {
         <div class="axiom-free-shipping-goal__message">
             <?php if ($unlocked) : ?>
                 <span class="axiom-free-shipping-goal__headline">
-                    Congrats! You’ve unlocked free shipping
+                    Congrats! You’ve unlocked your FREE GHK-CU 100mg + MT-1 10mg gifts
                 </span>
             <?php else : ?>
                 <span class="axiom-free-shipping-goal__headline">
-                    Add items worth <strong><?php echo wp_kses_post(wc_price($remaining)); ?></strong> to unlock free shipping
+                    Add items worth <strong><?php echo wp_kses_post(wc_price($remaining)); ?></strong> to unlock your FREE GHK-CU 100mg + MT-1 10mg gifts
                 </span>
             <?php endif; ?>
         </div>
