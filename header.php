@@ -29,7 +29,7 @@ $drawer_checkout_url = home_url('/checkout/');
     <div class="top-guide-bar__inner">
       <span class="top-guide-bar__text">
         <i class="fa-solid fa-gift" aria-hidden="true"></i>
-        Free Research Guide Included With Every Order
+        Orders $175+ Get FREE GHK-CU 100mg + MT-1 10mg
       </span>
     </div>
   </div>
@@ -38,7 +38,7 @@ $drawer_checkout_url = home_url('/checkout/');
     <div class="top-announcement-track">
 
       <div class="top-announcement-group">
-        <span class="announcement-item">Orders $175+ Get FREE GHK-CU 100mg + MT-1 10mg</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
@@ -47,7 +47,7 @@ $drawer_checkout_url = home_url('/checkout/');
       </div>
 
       <div class="top-announcement-group" aria-hidden="true">
-        <span class="announcement-item">Orders $175+ Get FREE GHK-CU 100mg + MT-1 10mg</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
@@ -56,7 +56,7 @@ $drawer_checkout_url = home_url('/checkout/');
       </div>
 
       <div class="top-announcement-group" aria-hidden="true">
-        <span class="announcement-item">Orders $175+ Get FREE GHK-CU 100mg + MT-1 10mg</span>
+        <span class="announcement-item">Free Shipping on Orders $250+</span>
         <span class="announcement-dot"></span>
         <span class="announcement-item">Same-Day Shipping on Orders Before 2 PM PST</span>
         <span class="announcement-dot"></span>
