@@ -626,3 +626,116 @@
 .cart-summary-row-discount strong {
   color: #16a34a;
 }
+
+/* Free gift cart rows */
+.cart-item-card.is-free-gift {
+  border-color: #b9ddff;
+  background: linear-gradient(180deg, #fbfdff 0%, #f2f8ff 100%);
+}
+
+.cart-item-name-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+.cart-free-gift-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 22px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: #dff0ff;
+  color: #1978cf;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cart-free-gift-badge i {
+  font-size: 9px;
+}
+
+.cart-free-gift-lock {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 999px;
+  background: #e5f7ec;
+  color: #1d9257;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.cart-free-gift-qty-display {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 70px;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid #d7e8f7;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #617287;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.cart-free-gift-price-stack {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cart-free-gift-old-price {
+  color: #8b98a9;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: line-through;
+  text-decoration-thickness: 1.5px;
+}
+
+.cart-free-gift-zero {
+  color: #167a48;
+  font-size: 16px;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.cart-free-gift-free-text {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 3px 6px;
+  border-radius: 999px;
+  background: #ddf5e7;
+  color: #167a48;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: .06em;
+}
+
+@media (max-width: 767px) {
+  .cart-free-gift-badge {
+    font-size: 8px;
+  }
+
+  .cart-free-gift-old-price {
+    font-size: 11px;
+  }
+
+  .cart-free-gift-zero {
+    font-size: 15px;
+  }
+}
