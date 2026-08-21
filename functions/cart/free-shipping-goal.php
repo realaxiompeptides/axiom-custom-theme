@@ -527,8 +527,27 @@ function axiom_render_free_shipping_goal() {
         <div class="axiom-free-shipping-goal__top">
             <span class="axiom-free-shipping-goal__badge">FREE GIFT</span>
 
-            <?php if ($unlocked) : ?>
-                <span class="axiom-free-shipping-goal__status">Unlocked</span>
+            <?php if (!$promo_active) : ?>
+                <span class="axiom-free-shipping-goal__status axiom-free-shipping-goal__status--ended">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm1 5v5.59l3.3 3.29-1.42 1.42L11 13V7Z"></path>
+                    </svg>
+                    Ended
+                </span>
+            <?php elseif ($unlocked) : ?>
+                <span class="axiom-free-shipping-goal__status axiom-free-shipping-goal__status--unlocked">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M17 8h-1V6a4 4 0 1 0-8 0h2a2 2 0 1 1 4 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm0 10H7v-8h10Z"></path>
+                    </svg>
+                    Unlocked
+                </span>
+            <?php else : ?>
+                <span class="axiom-free-shipping-goal__status axiom-free-shipping-goal__status--locked">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M17 8h-1V6a4 4 0 0 0-8 0v2H7a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2Zm-7-2a2 2 0 1 1 4 0v2h-4Zm7 12H7v-8h10Z"></path>
+                    </svg>
+                    Locked
+                </span>
             <?php endif; ?>
         </div>
 
@@ -622,6 +641,8 @@ function axiom_enqueue_free_shipping_goal_styles() {
     .axiom-free-shipping-goal__status {
         display: inline-flex;
         align-items: center;
+        justify-content: center;
+        gap: 6px;
         min-height: 22px;
         padding: 4px 8px;
         border-radius: 999px;
@@ -638,9 +659,26 @@ function axiom_enqueue_free_shipping_goal_styles() {
         color: #2279cc;
     }
 
-    .axiom-free-shipping-goal__status {
-        background: #e2f7ea;
-        color: #16834a;
+    .axiom-free-shipping-goal__status svg {
+        width: 12px;
+        height: 12px;
+        fill: currentColor;
+        flex: 0 0 12px;
+    }
+
+    .axiom-free-shipping-goal__status--locked {
+        background: #fff1f2;
+        color: #dc2626;
+    }
+
+    .axiom-free-shipping-goal__status--unlocked {
+        background: #e9f9ef;
+        color: #15803d;
+    }
+
+    .axiom-free-shipping-goal__status--ended {
+        background: #eef2f7;
+        color: #667085;
     }
 
     .axiom-free-shipping-goal__countdown-row {
