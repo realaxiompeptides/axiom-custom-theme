@@ -11,11 +11,18 @@ function axiom_free_shipping_goal_threshold() {
 }
 
 /**
- * Free gift promotion deadline.
+ * Real one-hour free-gift flash promotion.
  *
- * Change ONLY this date when you launch a new campaign.
- * Current deadline: Sunday, August 23, 2026 at 11:59:59 PM Pacific.
+ * The countdown is GLOBAL, not per-visitor, and it never resets on refresh.
+ * The first request after a new campaign ID is deployed starts the 59:59 window.
+ *
+ * To launch a NEW one-hour campaign later, change the campaign ID below.
+ * Example: axiom-free-gift-hour-2
  */
+function axiom_free_gift_campaign_id() {
+    return 'axiom-free-gift-hour-1';
+}
+
 function axiom_free_gift_promo_ends_at() {
     static $timestamp = null;
 
@@ -23,9 +30,17 @@ function axiom_free_gift_promo_ends_at() {
         return $timestamp;
     }
 
-    $timezone = new DateTimeZone('America/Los_Angeles');
-    $deadline = new DateTime('2026-08-23 23:59:59', $timezone);
-    $timestamp = $deadline->getTimestamp();
+    $option_key = 'axiom_free_gift_end_' . sanitize_key(axiom_free_gift_campaign_id());
+    $stored_end = (int) get_option($option_key, 0);
+
+    if ($stored_end > 0) {
+        $timestamp = $stored_end;
+        return $timestamp;
+    }
+
+    // 59 minutes, 59 seconds. This is a real global deadline.
+    $timestamp = time() + 3599;
+    add_option($option_key, $timestamp, '', false);
 
     return $timestamp;
 }
@@ -517,7 +532,7 @@ function axiom_render_free_shipping_goal() {
 
         <?php if ($promo_active) : ?>
             <div class="axiom-free-shipping-goal__countdown-row">
-                <span class="axiom-free-shipping-goal__countdown-label">Offer ends in</span>
+                <span class="axiom-free-shipping-goal__countdown-label">Flash bonus ends in</span>
                 <strong class="axiom-promo-countdown" data-promo-end="<?php echo esc_attr($deadline_ms); ?>">--:--:--</strong>
             </div>
         <?php else : ?>
@@ -630,31 +645,47 @@ function axiom_enqueue_free_shipping_goal_styles() {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        margin: 0 0 9px;
-        padding: 8px 10px;
-        border: 1px solid #d8e9fb;
+        gap: 12px;
+        margin: 0 0 10px;
+        padding: 9px 11px;
+        border: 1px solid #ffd6d6;
         border-radius: 12px;
-        background: #ffffff;
+        background: #fff7f7;
     }
 
     .axiom-free-shipping-goal__countdown-label {
-        color: #53657a;
-        font-size: 11px;
+        color: #9f2f2f;
+        font-size: 10px;
         line-height: 1.2;
-        font-weight: 800;
-        letter-spacing: .04em;
+        font-weight: 900;
+        letter-spacing: .07em;
         text-transform: uppercase;
     }
 
     .axiom-promo-countdown {
-        color: #1478d4;
-        font-size: 15px;
+        min-width: 74px;
+        text-align: right;
+        color: #d62929;
+        font-size: 21px;
         line-height: 1;
         font-weight: 900;
         letter-spacing: .04em;
         font-variant-numeric: tabular-nums;
         white-space: nowrap;
+    }
+
+    .axiom-free-shipping-goal__countdown-row.is-critical {
+        border-color: #ffbcbc;
+        background: #fff0f0;
+    }
+
+    .axiom-free-shipping-goal__countdown-row.is-critical .axiom-promo-countdown {
+        animation: axiomPromoPulse 1s ease-in-out infinite;
+    }
+
+    @keyframes axiomPromoPulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: .62; }
     }
 
     .axiom-free-shipping-goal__countdown-row.is-ended {
@@ -804,7 +835,8 @@ function axiom_enqueue_free_shipping_goal_styles() {
         }
 
         .axiom-promo-countdown {
-            font-size: 14px;
+            min-width: 68px;
+            font-size: 19px;
         }
 
         .axiom-free-shipping-goal__icon {
@@ -872,15 +904,16 @@ function axiom_render_free_gift_countdown_script() {
                 }
 
                 var totalSeconds = Math.floor(remaining / 1000);
-                var days = Math.floor(totalSeconds / 86400);
-                var hours = Math.floor((totalSeconds % 86400) / 3600);
-                var minutes = Math.floor((totalSeconds % 3600) / 60);
+                var minutes = Math.floor(totalSeconds / 60);
                 var seconds = totalSeconds % 60;
 
-                if (days > 0) {
-                    node.textContent = days + 'd ' + pad(hours) + 'h ' + pad(minutes) + 'm';
-                } else {
-                    node.textContent = pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+                // This campaign is never longer than one hour, so keep the
+                // display focused on urgency: MM:SS.
+                node.textContent = pad(minutes) + ':' + pad(seconds);
+
+                var row = node.closest('.axiom-free-shipping-goal__countdown-row');
+                if (row) {
+                    row.classList.toggle('is-critical', remaining <= 10 * 60 * 1000);
                 }
             });
         }
