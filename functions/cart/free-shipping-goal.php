@@ -22,9 +22,8 @@ function axiom_free_shipping_goal_threshold() {
 function axiom_free_gift_config() {
     return array(
         array(
-            'slugs'            => array('ghk-cu', 'ghk-cu-50mg-100mg'),
-            'variation_match'  => '100mg',
-            'display_name'     => 'GHK-CU 100mg',
+            'variation_id'    => 83,
+            'display_name'    => 'GHK-CU 100mg',
         ),
         array(
             'slugs'            => array('mt-1'),
@@ -46,6 +45,45 @@ function axiom_free_gift_normalize($value) {
  * Resolve a configured free gift product/variation.
  */
 function axiom_resolve_free_gift_product($gift) {
+    /**
+     * Best path: exact WooCommerce variation ID.
+     * GHK-CU 100mg is variation #83.
+     */
+    if (!empty($gift['variation_id'])) {
+        $variation = wc_get_product((int) $gift['variation_id']);
+
+        if (
+            !$variation ||
+            !$variation->is_type('variation') ||
+            !$variation->is_purchasable() ||
+            (!$variation->is_in_stock() && !$variation->backorders_allowed())
+        ) {
+            return null;
+        }
+
+        $parent_id = (int) $variation->get_parent_id();
+
+        if (!$parent_id) {
+            return null;
+        }
+
+        $attributes = array();
+
+        foreach ($variation->get_attributes() as $attribute_name => $attribute_value) {
+            $attributes['attribute_' . sanitize_title($attribute_name)] = $attribute_value;
+        }
+
+        return array(
+            'product_id'   => $parent_id,
+            'variation_id' => (int) $variation->get_id(),
+            'attributes'   => $attributes,
+            'name'         => !empty($gift['display_name']) ? $gift['display_name'] : $variation->get_name(),
+        );
+    }
+
+    /**
+     * Fallback path for gifts resolved by product slug + variation text.
+     */
     $slugs = !empty($gift['slugs']) && is_array($gift['slugs'])
         ? $gift['slugs']
         : array();
