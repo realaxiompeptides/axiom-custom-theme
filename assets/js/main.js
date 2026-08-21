@@ -45,11 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
     overlay.classList.add("active");
 
     body.style.overflow = "hidden";
-
-    /**
-     * IMPORTANT:
-     * This hides the mobile bottom nav only while the cart drawer is open.
-     */
     body.classList.add("axiom-cart-drawer-open");
   }
 
@@ -63,16 +58,13 @@ document.addEventListener("DOMContentLoaded", function () {
       body.style.overflow = "";
     }
 
-    /**
-     * IMPORTANT:
-     * This brings the mobile bottom nav back when the cart drawer closes.
-     */
     body.classList.remove("axiom-cart-drawer-open");
   }
 
   async function postAjax(action, extra = {}) {
     if (!window.AXIOM_THEME || !AXIOM_THEME.ajaxUrl || !AXIOM_THEME.nonce) {
       console.error("AXIOM_THEME is missing. Check assets.php wp_localize_script.");
+
       return {
         success: false,
         data: {
@@ -133,7 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function renderCartCoupon(data = {}) {
-    const appliedCoupons = Array.isArray(data.appliedCoupons) ? data.appliedCoupons : [];
+    const appliedCoupons = Array.isArray(data.appliedCoupons)
+      ? data.appliedCoupons
+      : [];
+
     const discountTotal = data.discountTotal || "";
 
     return `
@@ -146,63 +141,181 @@ document.addEventListener("DOMContentLoaded", function () {
             placeholder="Discount code"
             autocomplete="off"
           >
-          <button type="button" class="cart-coupon-apply" id="cartCouponApply">
+
+          <button
+            type="button"
+            class="cart-coupon-apply"
+            id="cartCouponApply"
+          >
             Apply
           </button>
         </div>
 
         ${
           appliedCoupons.length
-            ? `<div class="cart-coupon-message is-success" id="cartCouponMessage">Applied: ${appliedCoupons.join(", ")}${discountTotal ? " — -" + discountTotal : ""}</div>`
-            : `<div class="cart-coupon-message" id="cartCouponMessage"></div>`
+            ? `
+              <div
+                class="cart-coupon-message is-success"
+                id="cartCouponMessage"
+              >
+                Applied: ${appliedCoupons.join(", ")}
+                ${discountTotal ? " — -" + discountTotal : ""}
+              </div>
+            `
+            : `
+              <div
+                class="cart-coupon-message"
+                id="cartCouponMessage"
+              ></div>
+            `
         }
       </div>
     `;
   }
 
   function renderCartItem(item) {
+    const isFreeGift = Boolean(item.isFreeGift);
+
+    const giftBadge = isFreeGift
+      ? `
+        <span class="cart-free-gift-badge">
+          <i class="fa-solid fa-gift" aria-hidden="true"></i>
+          FREE GIFT
+        </span>
+      `
+      : "";
+
+    const removeButton = isFreeGift
+      ? `
+        <span
+          class="cart-free-gift-lock"
+          aria-label="Promotional gift locked in cart"
+        >
+          <i class="fa-solid fa-check"></i>
+        </span>
+      `
+      : `
+        <button
+          class="cart-remove-btn"
+          type="button"
+          aria-label="Remove item"
+          data-remove-cart-key="${item.key}"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      `;
+
+    const quantityControl = isFreeGift
+      ? `
+        <div class="cart-free-gift-qty-display">
+          Qty 1
+        </div>
+      `
+      : `
+        <div class="cart-qty-control">
+          <button
+            type="button"
+            class="cart-qty-btn"
+            data-qty-action="decrease"
+            data-cart-key="${item.key}"
+          >
+            −
+          </button>
+
+          <input
+            type="number"
+            class="cart-qty-input"
+            data-cart-key="${item.key}"
+            value="${item.quantity}"
+            min="1"
+            step="1"
+            inputmode="numeric"
+          >
+
+          <button
+            type="button"
+            class="cart-qty-btn"
+            data-qty-action="increase"
+            data-cart-key="${item.key}"
+          >
+            +
+          </button>
+        </div>
+      `;
+
+    const priceBlock = isFreeGift
+      ? `
+        <div class="cart-free-gift-price-stack">
+          ${
+            item.originalPriceHtml
+              ? `
+                <span class="cart-free-gift-old-price">
+                  ${item.originalPriceHtml}
+                </span>
+              `
+              : ""
+          }
+
+          <span class="cart-free-gift-zero">
+            ${item.freePriceHtml || "$0.00"}
+          </span>
+
+          <span class="cart-free-gift-free-text">
+            FREE
+          </span>
+        </div>
+      `
+      : `
+        <span class="cart-item-price">
+          ${item.subtotal}
+        </span>
+      `;
+
     return `
-      <div class="cart-item-card" data-cart-key="${item.key}">
-        <a class="cart-item-image-wrap" href="${item.link || "#"}">
-          <img src="${item.image}" alt="${item.name}">
+      <div
+        class="cart-item-card${isFreeGift ? " is-free-gift" : ""}"
+        data-cart-key="${item.key}"
+      >
+        <a
+          class="cart-item-image-wrap"
+          href="${item.link || "#"}"
+        >
+          <img
+            src="${item.image}"
+            alt="${item.name}"
+          >
         </a>
 
         <div class="cart-item-main">
           <div class="cart-item-top-row">
             <div class="cart-item-meta">
-              <h3 class="cart-item-name">${item.name}</h3>
-              ${item.variant ? `<p class="cart-item-variant">${item.variant}</p>` : ""}
+              <div class="cart-item-name-row">
+                <h3 class="cart-item-name">
+                  ${item.name}
+                </h3>
+
+                ${giftBadge}
+              </div>
+
+              ${
+                item.variant
+                  ? `
+                    <p class="cart-item-variant">
+                      ${item.variant}
+                    </p>
+                  `
+                  : ""
+              }
             </div>
 
-            <button
-              class="cart-remove-btn"
-              type="button"
-              aria-label="Remove item"
-              data-remove-cart-key="${item.key}"
-            >
-              <i class="fa-solid fa-trash"></i>
-            </button>
+            ${removeButton}
           </div>
 
           <div class="cart-item-bottom-row">
-            <div class="cart-qty-control">
-              <button type="button" class="cart-qty-btn" data-qty-action="decrease" data-cart-key="${item.key}">−</button>
-
-              <input
-                type="number"
-                class="cart-qty-input"
-                data-cart-key="${item.key}"
-                value="${item.quantity}"
-                min="1"
-                step="1"
-                inputmode="numeric"
-              >
-
-              <button type="button" class="cart-qty-btn" data-qty-action="increase" data-cart-key="${item.key}">+</button>
-            </div>
+            ${quantityControl}
 
             <div class="cart-item-price-wrap">
-              <span class="cart-item-price">${item.subtotal}</span>
+              ${priceBlock}
             </div>
           </div>
         </div>
@@ -214,64 +327,102 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!cartSubtotal) return;
 
     const subtotalRow = cartSubtotal.closest(".cart-summary-row");
-    const existingDiscountRow = document.querySelector(".cart-summary-row-discount");
+
+    const existingDiscountRow = document.querySelector(
+      ".cart-summary-row-discount"
+    );
 
     if (existingDiscountRow) {
       existingDiscountRow.remove();
     }
 
-    if (data.discountTotal && subtotalRow && subtotalRow.parentNode) {
+    if (
+      data.discountTotal &&
+      subtotalRow &&
+      subtotalRow.parentNode
+    ) {
       const discountRow = document.createElement("div");
 
-      discountRow.className = "cart-summary-row cart-summary-row-discount";
+      discountRow.className =
+        "cart-summary-row cart-summary-row-discount";
+
       discountRow.innerHTML = `
         <span>Discount</span>
         <strong>-${data.discountTotal}</strong>
       `;
 
-      subtotalRow.parentNode.insertBefore(discountRow, subtotalRow);
+      subtotalRow.parentNode.insertBefore(
+        discountRow,
+        subtotalRow
+      );
     }
   }
 
   function renderCartDrawer(data) {
-    const items = Array.isArray(data.items) ? data.items : [];
+    const items = Array.isArray(data.items)
+      ? data.items
+      : [];
+
     const count = Number(data.count || 0);
 
     if (cartCount) {
       cartCount.textContent = String(count);
-      cartCount.style.display = count > 0 ? "flex" : "none";
+
+      cartCount.style.display =
+        count > 0 ? "flex" : "none";
     }
 
     if (cartSubtotal) {
-      cartSubtotal.innerHTML = data.total || data.subtotal || "$0.00";
+      cartSubtotal.innerHTML =
+        data.total ||
+        data.subtotal ||
+        "$0.00";
+
       syncCartDiscountRow(data);
     }
 
     if (cartShippingValue) {
-      cartShippingValue.textContent = data.shippingLabel || "Calculated at checkout";
+      cartShippingValue.textContent =
+        data.shippingLabel ||
+        "Calculated at checkout";
     }
 
     if (cartFreeShippingGoal) {
-      cartFreeShippingGoal.innerHTML = count > 0 ? data.freeShippingGoalHtml || "" : "";
-      cartFreeShippingGoal.style.display = count > 0 ? "block" : "none";
+      cartFreeShippingGoal.innerHTML =
+        count > 0
+          ? data.freeShippingGoalHtml || ""
+          : "";
+
+      cartFreeShippingGoal.style.display =
+        count > 0 ? "block" : "none";
     }
 
     if (cartItemCountBadge) {
       if (count > 0) {
         cartItemCountBadge.hidden = false;
-        cartItemCountBadge.textContent = `${count} item${count === 1 ? "" : "s"}`;
+
+        cartItemCountBadge.textContent =
+          `${count} item${count === 1 ? "" : "s"}`;
       } else {
         cartItemCountBadge.hidden = true;
         cartItemCountBadge.textContent = "";
       }
     }
 
-    if (!cartItemsList || !cartEmptyState) return;
+    if (!cartItemsList || !cartEmptyState) {
+      return;
+    }
 
     if (!items.length) {
       cartEmptyState.style.display = "block";
-      cartItemsList.innerHTML = data.upsell ? renderUpsell(data.upsell) : "";
+
+      cartItemsList.innerHTML =
+        data.upsell
+          ? renderUpsell(data.upsell)
+          : "";
+
       syncCartDiscountRow(data);
+
       return;
     }
 
@@ -281,71 +432,138 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="cart-items-stack">
         ${items.map(renderCartItem).join("")}
       </div>
-      ${data.upsell ? renderUpsell(data.upsell) : ""}
+
+      ${
+        data.upsell
+          ? renderUpsell(data.upsell)
+          : ""
+      }
+
       ${renderCartCoupon(data)}
     `;
   }
 
   async function refreshCartDrawer() {
     try {
-      const result = await postAjax("axiom_get_cart_drawer");
+      const result = await postAjax(
+        "axiom_get_cart_drawer"
+      );
 
-      if (!result || !result.success || !result.data) return;
+      if (
+        !result ||
+        !result.success ||
+        !result.data
+      ) {
+        return;
+      }
 
       renderCartDrawer(result.data);
     } catch (error) {
-      console.error("Cart drawer refresh failed:", error);
+      console.error(
+        "Cart drawer refresh failed:",
+        error
+      );
     }
   }
 
-  async function updateCartQuantity(cartKey, quantity) {
+  async function updateCartQuantity(
+    cartKey,
+    quantity
+  ) {
     try {
-      const result = await postAjax("axiom_update_cart_item_quantity", {
-        cart_key: cartKey,
-        quantity: quantity,
-      });
+      const result = await postAjax(
+        "axiom_update_cart_item_quantity",
+        {
+          cart_key: cartKey,
+          quantity: quantity,
+        }
+      );
 
-      if (!result || !result.success || !result.data) return;
+      if (
+        !result ||
+        !result.success ||
+        !result.data
+      ) {
+        return;
+      }
 
       renderCartDrawer(result.data);
     } catch (error) {
-      console.error("Update quantity failed:", error);
+      console.error(
+        "Update quantity failed:",
+        error
+      );
     }
   }
 
-  function updateCartQuantityDebounced(cartKey, quantity) {
+  function updateCartQuantityDebounced(
+    cartKey,
+    quantity
+  ) {
     if (qtyUpdateTimers[cartKey]) {
-      clearTimeout(qtyUpdateTimers[cartKey]);
+      clearTimeout(
+        qtyUpdateTimers[cartKey]
+      );
     }
 
-    qtyUpdateTimers[cartKey] = setTimeout(function () {
-      updateCartQuantity(cartKey, quantity);
-    }, 350);
+    qtyUpdateTimers[cartKey] =
+      setTimeout(function () {
+        updateCartQuantity(
+          cartKey,
+          quantity
+        );
+      }, 350);
   }
 
   async function removeCartItem(cartKey) {
     try {
-      const result = await postAjax("axiom_remove_cart_item", {
-        cart_key: cartKey,
-      });
+      const result = await postAjax(
+        "axiom_remove_cart_item",
+        {
+          cart_key: cartKey,
+        }
+      );
 
-      if (!result || !result.success || !result.data) return;
+      if (
+        !result ||
+        !result.success ||
+        !result.data
+      ) {
+        return;
+      }
 
       renderCartDrawer(result.data);
     } catch (error) {
-      console.error("Remove item failed:", error);
+      console.error(
+        "Remove item failed:",
+        error
+      );
     }
   }
 
   async function applyCartCoupon(code) {
-    const messageEl = document.getElementById("cartCouponMessage");
-    const inputEl = document.getElementById("cartCouponInput");
-    const buttonEl = document.getElementById("cartCouponApply");
+    const messageEl =
+      document.getElementById(
+        "cartCouponMessage"
+      );
+
+    const inputEl =
+      document.getElementById(
+        "cartCouponInput"
+      );
+
+    const buttonEl =
+      document.getElementById(
+        "cartCouponApply"
+      );
 
     if (!code || !code.trim()) {
       if (messageEl) {
-        messageEl.textContent = "Enter a discount code.";
-        messageEl.className = "cart-coupon-message is-error";
+        messageEl.textContent =
+          "Enter a discount code.";
+
+        messageEl.className =
+          "cart-coupon-message is-error";
       }
 
       return;
@@ -354,26 +572,34 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       if (buttonEl) {
         buttonEl.disabled = true;
-        buttonEl.textContent = "Applying...";
+        buttonEl.textContent =
+          "Applying...";
       }
 
       if (messageEl) {
         messageEl.textContent = "";
-        messageEl.className = "cart-coupon-message";
+        messageEl.className =
+          "cart-coupon-message";
       }
 
-      const result = await postAjax("axiom_apply_cart_coupon", {
-        coupon_code: code.trim(),
-      });
+      const result = await postAjax(
+        "axiom_apply_cart_coupon",
+        {
+          coupon_code: code.trim(),
+        }
+      );
 
       if (!result || !result.success) {
         if (messageEl) {
           messageEl.textContent =
-            result && result.data && result.data.message
+            result &&
+            result.data &&
+            result.data.message
               ? result.data.message
               : "Coupon could not be applied.";
 
-          messageEl.className = "cart-coupon-message is-error";
+          messageEl.className =
+            "cart-coupon-message is-error";
         }
 
         return;
@@ -383,17 +609,28 @@ document.addEventListener("DOMContentLoaded", function () {
         inputEl.value = "";
       }
 
-      if (result.data && result.data.cart) {
-        renderCartDrawer(result.data.cart);
+      if (
+        result.data &&
+        result.data.cart
+      ) {
+        renderCartDrawer(
+          result.data.cart
+        );
       } else {
         await refreshCartDrawer();
       }
     } catch (error) {
-      console.error("Coupon apply failed:", error);
+      console.error(
+        "Coupon apply failed:",
+        error
+      );
 
       if (messageEl) {
-        messageEl.textContent = "Something went wrong. Try again.";
-        messageEl.className = "cart-coupon-message is-error";
+        messageEl.textContent =
+          "Something went wrong. Try again.";
+
+        messageEl.className =
+          "cart-coupon-message is-error";
       }
     } finally {
       if (buttonEl) {
@@ -406,181 +643,345 @@ document.addEventListener("DOMContentLoaded", function () {
   async function addUpsellProduct(button) {
     if (!button) return;
 
-    const productId = button.getAttribute("data-add-product-id");
-    const variationId = button.getAttribute("data-add-variation-id") || "";
-    const attributesRaw = button.getAttribute("data-add-attributes") || "{}";
+    const productId =
+      button.getAttribute(
+        "data-add-product-id"
+      );
+
+    const variationId =
+      button.getAttribute(
+        "data-add-variation-id"
+      ) || "";
+
+    const attributesRaw =
+      button.getAttribute(
+        "data-add-attributes"
+      ) || "{}";
 
     let attributes = {};
 
     try {
-      attributes = JSON.parse(attributesRaw);
+      attributes =
+        JSON.parse(attributesRaw);
     } catch (error) {
-      console.error("Failed to parse upsell attributes:", error);
+      console.error(
+        "Failed to parse upsell attributes:",
+        error
+      );
     }
 
-    const originalText = button.textContent;
+    const originalText =
+      button.textContent;
 
     try {
       button.disabled = true;
-      button.textContent = "Adding...";
+      button.textContent =
+        "Adding...";
 
       const payload = {
         product_id: productId,
       };
 
       if (variationId) {
-        payload.variation_id = variationId;
+        payload.variation_id =
+          variationId;
       }
 
-      Object.keys(attributes).forEach((key) => {
-        payload[key] = attributes[key];
-      });
+      Object.keys(attributes).forEach(
+        (key) => {
+          payload[key] =
+            attributes[key];
+        }
+      );
 
-      const result = await postAjax("axiom_add_simple_product_to_cart", payload);
+      const result = await postAjax(
+        "axiom_add_simple_product_to_cart",
+        payload
+      );
 
-      if (!result || !result.success || !result.data) {
-        if (result && result.data && result.data.message) {
-          alert(result.data.message);
+      if (
+        !result ||
+        !result.success ||
+        !result.data
+      ) {
+        if (
+          result &&
+          result.data &&
+          result.data.message
+        ) {
+          alert(
+            result.data.message
+          );
         }
 
         return;
       }
 
-      renderCartDrawer(result.data);
+      renderCartDrawer(
+        result.data
+      );
+
       openCart();
     } catch (error) {
-      console.error("Upsell add failed:", error);
+      console.error(
+        "Upsell add failed:",
+        error
+      );
     } finally {
       button.disabled = false;
-      button.textContent = originalText;
+      button.textContent =
+        originalText;
     }
   }
 
   if (menuToggle) {
-    menuToggle.addEventListener("click", function (e) {
-      e.preventDefault();
-      openMenu();
-    });
+    menuToggle.addEventListener(
+      "click",
+      function (e) {
+        e.preventDefault();
+        openMenu();
+      }
+    );
   }
 
   if (menuClose) {
-    menuClose.addEventListener("click", function (e) {
-      e.preventDefault();
-      closeMenu();
-    });
+    menuClose.addEventListener(
+      "click",
+      function (e) {
+        e.preventDefault();
+        closeMenu();
+      }
+    );
   }
 
   if (cartToggle) {
-    cartToggle.addEventListener("click", async function (e) {
-      e.preventDefault();
+    cartToggle.addEventListener(
+      "click",
+      async function (e) {
+        e.preventDefault();
 
-      await refreshCartDrawer();
-      openCart();
-    });
+        await refreshCartDrawer();
+        openCart();
+      }
+    );
   }
 
   if (cartClose) {
-    cartClose.addEventListener("click", function (e) {
-      e.preventDefault();
-      closeCart();
-    });
+    cartClose.addEventListener(
+      "click",
+      function (e) {
+        e.preventDefault();
+        closeCart();
+      }
+    );
   }
 
   if (overlay) {
-    overlay.addEventListener("click", function () {
-      closeMenu();
-      closeCart();
-    });
+    overlay.addEventListener(
+      "click",
+      function () {
+        closeMenu();
+        closeCart();
+      }
+    );
   }
 
   if (cartItemsList) {
-    cartItemsList.addEventListener("click", async function (e) {
-      const qtyBtn = e.target.closest(".cart-qty-btn");
-      const removeBtn = e.target.closest("[data-remove-cart-key]");
-      const addBtn = e.target.closest("[data-add-product-id]");
-      const couponBtn = e.target.closest("#cartCouponApply");
+    cartItemsList.addEventListener(
+      "click",
+      async function (e) {
+        const qtyBtn =
+          e.target.closest(
+            ".cart-qty-btn"
+          );
 
-      if (qtyBtn) {
-        e.preventDefault();
+        const removeBtn =
+          e.target.closest(
+            "[data-remove-cart-key]"
+          );
 
-        const cartKey = qtyBtn.getAttribute("data-cart-key");
-        const card = qtyBtn.closest(".cart-item-card");
-        const inputEl = card ? card.querySelector(".cart-qty-input") : null;
-        const currentQty = inputEl ? parseInt(inputEl.value, 10) || 1 : 1;
-        const action = qtyBtn.getAttribute("data-qty-action");
+        const addBtn =
+          e.target.closest(
+            "[data-add-product-id]"
+          );
 
-        let nextQty = currentQty;
+        const couponBtn =
+          e.target.closest(
+            "#cartCouponApply"
+          );
 
-        if (action === "increase") {
-          nextQty = currentQty + 1;
+        if (qtyBtn) {
+          e.preventDefault();
+
+          const cartKey =
+            qtyBtn.getAttribute(
+              "data-cart-key"
+            );
+
+          const card =
+            qtyBtn.closest(
+              ".cart-item-card"
+            );
+
+          const inputEl = card
+            ? card.querySelector(
+                ".cart-qty-input"
+              )
+            : null;
+
+          const currentQty = inputEl
+            ? parseInt(
+                inputEl.value,
+                10
+              ) || 1
+            : 1;
+
+          const action =
+            qtyBtn.getAttribute(
+              "data-qty-action"
+            );
+
+          let nextQty =
+            currentQty;
+
+          if (
+            action === "increase"
+          ) {
+            nextQty =
+              currentQty + 1;
+          }
+
+          if (
+            action === "decrease"
+          ) {
+            nextQty =
+              Math.max(
+                1,
+                currentQty - 1
+              );
+          }
+
+          if (inputEl) {
+            inputEl.value =
+              String(nextQty);
+          }
+
+          updateCartQuantityDebounced(
+            cartKey,
+            nextQty
+          );
+
+          return;
         }
 
-        if (action === "decrease") {
-          nextQty = Math.max(1, currentQty - 1);
+        if (removeBtn) {
+          e.preventDefault();
+
+          const cartKey =
+            removeBtn.getAttribute(
+              "data-remove-cart-key"
+            );
+
+          await removeCartItem(
+            cartKey
+          );
+
+          return;
         }
 
-        if (inputEl) {
-          inputEl.value = String(nextQty);
+        if (addBtn) {
+          e.preventDefault();
+
+          await addUpsellProduct(
+            addBtn
+          );
+
+          return;
         }
 
-        updateCartQuantityDebounced(cartKey, nextQty);
-        return;
+        if (couponBtn) {
+          e.preventDefault();
+
+          const inputEl =
+            document.getElementById(
+              "cartCouponInput"
+            );
+
+          await applyCartCoupon(
+            inputEl
+              ? inputEl.value
+              : ""
+          );
+        }
       }
+    );
 
-      if (removeBtn) {
-        e.preventDefault();
+    cartItemsList.addEventListener(
+      "input",
+      function (e) {
+        const qtyInput =
+          e.target.closest(
+            ".cart-qty-input"
+          );
 
-        const cartKey = removeBtn.getAttribute("data-remove-cart-key");
+        if (!qtyInput) return;
 
-        await removeCartItem(cartKey);
-        return;
+        const cartKey =
+          qtyInput.getAttribute(
+            "data-cart-key"
+          );
+
+        let nextQty =
+          parseInt(
+            qtyInput.value,
+            10
+          );
+
+        if (
+          !nextQty ||
+          nextQty < 1
+        ) {
+          nextQty = 1;
+        }
+
+        qtyInput.value =
+          String(nextQty);
+
+        updateCartQuantityDebounced(
+          cartKey,
+          nextQty
+        );
       }
+    );
 
-      if (addBtn) {
-        e.preventDefault();
+    cartItemsList.addEventListener(
+      "keydown",
+      async function (e) {
+        const couponInput =
+          e.target.closest(
+            "#cartCouponInput"
+          );
 
-        await addUpsellProduct(addBtn);
-        return;
+        if (
+          couponInput &&
+          e.key === "Enter"
+        ) {
+          e.preventDefault();
+
+          await applyCartCoupon(
+            couponInput.value
+          );
+        }
       }
-
-      if (couponBtn) {
-        e.preventDefault();
-
-        const inputEl = document.getElementById("cartCouponInput");
-
-        await applyCartCoupon(inputEl ? inputEl.value : "");
-      }
-    });
-
-    cartItemsList.addEventListener("input", function (e) {
-      const qtyInput = e.target.closest(".cart-qty-input");
-
-      if (!qtyInput) return;
-
-      const cartKey = qtyInput.getAttribute("data-cart-key");
-      let nextQty = parseInt(qtyInput.value, 10);
-
-      if (!nextQty || nextQty < 1) {
-        nextQty = 1;
-      }
-
-      qtyInput.value = String(nextQty);
-      updateCartQuantityDebounced(cartKey, nextQty);
-    });
-
-    cartItemsList.addEventListener("keydown", async function (e) {
-      const couponInput = e.target.closest("#cartCouponInput");
-
-      if (couponInput && e.key === "Enter") {
-        e.preventDefault();
-        await applyCartCoupon(couponInput.value);
-      }
-    });
+    );
   }
 
-  document.body.addEventListener("added_to_cart", function () {
-    refreshCartDrawer();
-  });
+  document.body.addEventListener(
+    "added_to_cart",
+    function () {
+      refreshCartDrawer();
+    }
+  );
 
   if (window.jQuery) {
     jQuery(document.body).on(
@@ -592,55 +993,130 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function initAgeGate() {
-    const STORAGE_KEY = "axiom_age_gate_accepted_v1";
-    const gateOverlay = document.getElementById("ageGateOverlay");
-    const ageCheck = document.getElementById("ageGateAgeCheck");
-    const useCheck = document.getElementById("ageGateUseCheck");
-    const enterBtn = document.getElementById("ageGateEnterBtn");
-    const exitBtn = document.getElementById("ageGateExitBtn");
-    const logo = document.getElementById("ageGateLogo");
+    const STORAGE_KEY =
+      "axiom_age_gate_accepted_v1";
 
-    if (!gateOverlay || !ageCheck || !useCheck || !enterBtn || !exitBtn || !logo) {
+    const gateOverlay =
+      document.getElementById(
+        "ageGateOverlay"
+      );
+
+    const ageCheck =
+      document.getElementById(
+        "ageGateAgeCheck"
+      );
+
+    const useCheck =
+      document.getElementById(
+        "ageGateUseCheck"
+      );
+
+    const enterBtn =
+      document.getElementById(
+        "ageGateEnterBtn"
+      );
+
+    const exitBtn =
+      document.getElementById(
+        "ageGateExitBtn"
+      );
+
+    const logo =
+      document.getElementById(
+        "ageGateLogo"
+      );
+
+    if (
+      !gateOverlay ||
+      !ageCheck ||
+      !useCheck ||
+      !enterBtn ||
+      !exitBtn ||
+      !logo
+    ) {
       return;
     }
 
-    if (window.AXIOM_THEME && AXIOM_THEME.themeUrl) {
-      logo.src = AXIOM_THEME.themeUrl + "/assets/images/axiom-menu-logo.PNG";
+    if (
+      window.AXIOM_THEME &&
+      AXIOM_THEME.themeUrl
+    ) {
+      logo.src =
+        AXIOM_THEME.themeUrl +
+        "/assets/images/axiom-menu-logo.PNG";
     }
 
     function syncButton() {
-      enterBtn.disabled = !(ageCheck.checked && useCheck.checked);
+      enterBtn.disabled =
+        !(
+          ageCheck.checked &&
+          useCheck.checked
+        );
     }
 
     function openGate() {
-      gateOverlay.classList.add("active");
-      body.classList.add("age-gate-locked");
+      gateOverlay.classList.add(
+        "active"
+      );
+
+      body.classList.add(
+        "age-gate-locked"
+      );
     }
 
     function closeGate() {
-      gateOverlay.classList.remove("active");
-      body.classList.remove("age-gate-locked");
+      gateOverlay.classList.remove(
+        "active"
+      );
+
+      body.classList.remove(
+        "age-gate-locked"
+      );
     }
 
-    if (localStorage.getItem(STORAGE_KEY) === "true") {
+    if (
+      localStorage.getItem(
+        STORAGE_KEY
+      ) === "true"
+    ) {
       closeGate();
     } else {
       openGate();
     }
 
-    ageCheck.addEventListener("change", syncButton);
-    useCheck.addEventListener("change", syncButton);
+    ageCheck.addEventListener(
+      "change",
+      syncButton
+    );
 
-    enterBtn.addEventListener("click", function () {
-      if (enterBtn.disabled) return;
+    useCheck.addEventListener(
+      "change",
+      syncButton
+    );
 
-      localStorage.setItem(STORAGE_KEY, "true");
-      closeGate();
-    });
+    enterBtn.addEventListener(
+      "click",
+      function () {
+        if (enterBtn.disabled) {
+          return;
+        }
 
-    exitBtn.addEventListener("click", function () {
-      window.location.href = "https://www.google.com";
-    });
+        localStorage.setItem(
+          STORAGE_KEY,
+          "true"
+        );
+
+        closeGate();
+      }
+    );
+
+    exitBtn.addEventListener(
+      "click",
+      function () {
+        window.location.href =
+          "https://www.google.com";
+      }
+    );
 
     syncButton();
   }
