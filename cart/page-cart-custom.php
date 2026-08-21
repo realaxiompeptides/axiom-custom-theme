@@ -74,6 +74,12 @@ if (!empty($recommended_ids)) {
 
       <?php wc_print_notices(); ?>
 
+      <?php if ($cart && !$cart->is_empty() && function_exists('axiom_render_free_shipping_goal')) : ?>
+        <div class="axiom-cart-page-gift-goal">
+          <?php axiom_render_free_shipping_goal(); ?>
+        </div>
+      <?php endif; ?>
+
       <?php if ($cart && !$cart->is_empty()) : ?>
         <form class="woocommerce-cart-form axiom-cart-layout" action="<?php echo esc_url($cart_url); ?>" method="post">
           <section class="axiom-cart-main">
