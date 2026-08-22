@@ -96,7 +96,7 @@ get_header();
                 </div>
               </a>
 
-              <a class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-telegram" href="https://t.me/axiompeptides" target="_blank" rel="noopener">
+              <a class="axiom-contact-info-item axiom-contact-info-item-link axiom-contact-telegram" href="https://t.me/lenagpeps" target="_blank" rel="noopener">
                 <div class="axiom-contact-info-icon">
                   <i class="fa-brands fa-telegram"></i>
                 </div>
